@@ -1,0 +1,2 @@
+Descargo de responsabilidad
+El software contenido en este paquete está exento de cualquier garantía. El usuario ejecutara este software bajo su total responsabilidad, asumiendo posibles fallos en su funcionamiento,  pérdidas de datos o daños en el hardware u otro software y los posibles costes que puedan derivarse. El usuario con la ejecución del mismo asume que ha leído y acepta los términos de esta licencia.

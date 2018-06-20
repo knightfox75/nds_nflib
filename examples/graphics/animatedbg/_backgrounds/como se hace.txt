@@ -1,0 +1,18 @@
+Se deben de cortar los tiles de cada frame de la animacion de izquierda a derecha
+y de arriba a abajo, poniendolos todos en una imagen de manera consecutiva.
+
+Si el frame es de 4x4 tiles en un documento de 32x256 pixeles por ejemplo:
+
+[01][02][03][04]
+[05][05][07][07]
+[09][10][11][12]
+[13][14][15][16]
+
+[..][..][..][..]
+
+
+En el documento preparado para la animacion cuyo tamaño seria de 256x256 pixeles
+los colorariamos de esta manera:
+
+[01][02][03][04][05][05][07][07][09][10][11][12][13][14][15][16][..][..][..][..]
+

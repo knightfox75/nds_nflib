@@ -1,0 +1,2 @@
+Disclaimer 
+The software contained in this package is free from any guarantee. The user run this software under its full responsibility, assuming potential failures in performance, loss of data or damage to hardware or other software and any costs that may arise. The user executing this software deemed to have read and accept the terms of this license.

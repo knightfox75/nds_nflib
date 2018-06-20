@@ -1,0 +1,473 @@
+NightFox's Lib Ver. 20140413
+--------------------------------------------------------------------------------
+- Recompilada con las ultimas versiones de Libnds.
+- Cambios menores en la libreria para compatibilizarla con la r42 de devkitPro.
+
+
+NightFox's Lib Ver. 20130409
+--------------------------------------------------------------------------------
+- Optimizaciones menores en varias funciones (GetTile, GetPoint, SetColor...).
+- Recompilada con las ultimas versiones de Libnds.
+
+
+NightFox's Lib Ver. 20120804
+--------------------------------------------------------------------------------
+- Cambiado el numero maximo de fondos tileados de 32 a 64.
+- Deteccion de la memoria VRAM maxima direccionable para sprites dependiendo
+  del modo iniciado (1D_64 o 1D_128).
+
+
+NightFox's Lib Ver. 20120318
+--------------------------------------------------------------------------------
+- Modificada la funcion NF_InitSpriteSys(); Ahora es posible seleccionar, 
+  opcionalmente, el tipo de mapeado de VRAM para sprites, (64 o 128). El mapa
+  64 divide la VRAM en celdas de 64 bytes, con lo que como mucho podremos usar
+  64kb para sprites. El modo 128 nos permite usar los 128kb de VRAM, pero en
+  contrapartida no podremos usar sprites de 8x8. Todos los demas tamaños son
+  admitidos. Si no especificamos el segundo parametro, se asume que es 64.
+  Los proyectos actuales no deberan ser modificados en absoluto si no quereis
+  usae el modo 128.
+
+
+NightFox's Lib Ver. 20120317
+--------------------------------------------------------------------------------
+- Corregido el error de alineamiento de VRAM que provocava que los Sprites de
+  8x8 pixeles no se mostraran correctamente en algunos casos.
+- Libreria recompilada con el devkitArm R37.
+
+
+- Ajustes en los archivos .h para poder usar la libreria en proyectos c++.
+NightFox's Lib Ver. 20111108
+--------------------------------------------------------------------------------
+
+- Ajustes en los archivos .h para poder usar la libreria en proyectos c++.
+
+
+NightFox's Lib Ver. 20111011 - BETA
+--------------------------------------------------------------------------------
+
+- Optimizada la gestion de VRAM de Sprites y 3D Sprites.
+- Corregido bug en la gestion de VRAM de Sprites y 3d Sprites (Muy raramente
+  se mezclavan graficos al borrar y recrear muchos Sprites).
+
+
+NightFox's Lib Ver. 20110911
+--------------------------------------------------------------------------------
+
+- Optimizada la funcion NF_SpriteFrame();
+- Removidas las funciones de WIFI de la libreria principal. Ahora se distribuyen
+  en una libreria a parte.
+
+
+
+NightFox's Lib Ver. 20110906
+--------------------------------------------------------------------------------
+- Añadida la funcion NF_GetLanguage(); la cual devuelve el codigo del idioma
+  seleccionado en la consola. Se añade tambien el ejemplo de uso.
+- Los mensages de error de inicializacion de FAT/NitroFS ahora son bilingües
+  (Español/Ingles), basandose en el Idioma seleccionado en la consola.
+- Añadido el modo mixto para fondos (Tiled BG + Bitmap 8 bits).
+- Añadida la funcion NF_InitMixedBgSys(); la cual inicializa el modo mixto.
+- Revisados los ejemplos y makefile.
+
+
+
+NightFox's Lib Ver. 20110424
+--------------------------------------------------------------------------------
+- Modificada la estructura de control de las texturas en VRAM de los 3dSprites,
+  para que los datos que contienen puedan ser acedidos desde el codigo del
+  usuario.
+
+
+
+NightFox's Lib Ver. 20110412
+--------------------------------------------------------------------------------
+- Añadido el soporte para los caracteres ÁÉÍÓÚáéíóúïü¡¿ en el motor de
+  texto de 8x8.
+- Añadido el soporte para los caracteres ¡¿ en el motor de texto de 8x16.
+
+
+
+NightFox's Lib Ver. 20110409
+--------------------------------------------------------------------------------
+- Correcciones en la proyection ortografica de los 3d Sprites.
+- Corregido un bug en la desfragmentacion de VRAM de los Sprites y 3dSprites.
+- Ajustes en la inicializacion de OpenGL.
+
+
+
+NightFox's Lib Ver. 20110215
+--------------------------------------------------------------------------------
+- Correcciones en la proyection ortografica para ajustar el dibujado de los
+  3dSprites, habilitando ademas el eje Z.
+- Añadida la funcion NF_3dSpriteSetDeep(); la cual permite cambiar la 
+  profundidad donde se dibuja el Sprite, ignorando la prioridad.
+- Actualizado el ejemplo "SetPriority" de los 3dSprites.
+
+
+
+NightFox's Lib Ver. 20110209
+--------------------------------------------------------------------------------
+- Añadido soporte para acentos y dieresis (ÁÉÍÓÚáéíóúïü) al motor de texto
+  de 8x16. (Ver template de la fuente).
+- Añadida la funcion NF_3dSpriteEditPalColor();
+- Añadida la funcion NF_3dSpriteUpdatePalette();
+- Añadida la funcion NF_3dSpriteGetPalColor();
+- Documentacion actualizada para todas las funciones de 3dSprites.
+
+
+
+NightFox's Lib Ver. 20101212 - BETA
+--------------------------------------------------------------------------------
+- Añadida la funcion NF_Blend3dSprite(); la cual establece la transparencia
+  para el sprite seleccionado.
+- Añadido el ejemplo de 3dSprites con transparencia.
+- Añadida la funcion NF_3dSpritesLayer(); la cual permite seleccionar la capa
+  donde se dibujaran los Sprites 3D.
+- Añadido el ejemplo de uso de la funcion NF_3dSpritesLayer();
+
+
+
+NightFox's Lib Ver. 20101128 - BETA
+--------------------------------------------------------------------------------
+- Corregidos algunos comentarios en los ejemplos de Sprites.
+- Añadida la funcion NF_LoadColisionBg(); para cargar un fondo de colisiones.
+- Añadida la funcion NF_UnloadColisionBg(); para descargar un fondo de
+  colisiones de la RAM.
+- Añadida la funcion NF_GetPoint(); para obtener el pixel de la coordenada dada
+  en un fondo de colisiones. Si la coordenada esta fuera del mapa, devuelve 0.
+- Modificadas las funciones NF_GetTile y NF_SetTile(); para que en caso de querer
+  cambiar un tile fuera de rango, la orden sea ignorada.
+- Añadido el error nº119
+- Añadida la funcion NF_Set3D(); para iniciar el modo 3D
+- Añadida la funcion NF_InitOpenGL(); para iniciar el motor OpenGL
+- Añadida la funcion NF_Init3dSpriteSys(); para iniciar el sistema Sprites 3D.
+- Añadida la funcion NF_Vram3dSpriteGfx(); la cual copia a la VRAM un grafico
+  para usarlo posteriormente en la creacion de un sprite 3D.
+- Añadida la funcion NF_Free3dSpriteGfx(); la cual elimina de la VRAM el
+  grafico especificado.
+- Añadida la funcion NF_Vram3dSpriteGfxDefrag(); la cual reordena la VRAM
+  de texturas.
+- Añadida la funcion NF_Vram3dSpritePal(); la cual copia a la VRAM una paleta
+  para poder usarla posteriormente en un sprite 3D.
+- Añadida la funcion NF_Create3dSprite(); la cual crea un Sprite 3D en las
+  coordenadas indicadas, usando la textura y paleta indicadas. El tamaño de
+  estos sprites puede ser de cualquier medida en potencia de 2 (entre 8 y 1024).
+- Añadida la funcion NF_Delete3dSprite(); la cual borra de la pantalla el
+  Sprite 3D con la ID indicada.
+- Añadida la funcion NF_Sort3dSprites(); la cual reordena la prioridad de los
+  Sprites 3D basandola en su ID.
+- Añadida la funcion NF_Move3dSprite(); para mover un Sprite 3D
+  por la pantalla.
+- Añadida la funcion NF_Show3dSprite(); la cual muestra u oculta el sprite
+  con la ID indicada.
+- Añadida la funcion NF_Set3dSpriteFrame(); la cual cambia el frame del sprite
+  indicado.
+- Añadida la funcion NF_Update3dSprites(); la cual actualiza los Sprites 3D
+  en la pantalla.
+- Añadida la funcion NF_Rotate3dSprite(); la cual rota el sprite indicado
+  sobre los ejes indicados.
+- Añadida la funcion NF_Scale3dSprite(); la cual escala el sprite indicado
+  sobre los ejes indicados.
+- Añadidos ejemplos para el uso de 3D Sprites.
+
+
+
+NightFox's Lib Ver. 20100901
+--------------------------------------------------------------------------------
+- Corregido un bug en la funcion NF_SetExBgPal(); la cual no
+  funcionava correctamente. (Gracias a XIAO32 por el aviso).
+- corregido tambien el ejemplo relacionado con las paletas extendidas.
+
+
+
+NightFox's Lib Ver. 20100806
+--------------------------------------------------------------------------------
+- Corregido un bug en la funcion NF_CreateTiledBg(); que almacenava
+  incorrectamente el tamaño del fondo si este era exactamente de 512x256 o
+  256x512 pixeles, lo que provocava que el scroll del mismo fuera erratico.
+
+
+
+NightFox's Lib Ver. 20100730 - Summer Edition
+--------------------------------------------------------------------------------
+- Añadido el modo 2 en 2D para poder usar fondos tileados Affine.
+- Añadida la funcion NF_InitAffineBgSys(); para inicializar los fondos Affine.
+- Añadida la funcion NF_LoadAffineBg(); para la carga de fondos Affine,
+  con tamaños de 256x256 y 512x512 pixeles.Los buffers para fondos tileados
+  deben estar inicializados antes de usar esta funcion.
+- Añadida la funcion NF_UnloadAffineBg(); para descargar de la RAM los fondos
+  affine cargados. Simplemente llama a la funcion NF_UnloadTiledBg();
+- Añadida la funcion NF_CreateAffineBg(); para la creacion de fondos Affine,
+  con tamaños de 256x256 y 512x512 pixeles.
+- Añadida la funcion NF_DeleteAffineBg(); para el borrado de fondos Affine.
+- Añadida la funcion NF_AffineBgTransform(); que modifica los parametros de
+  la matriz de transformacion del fondo affine.
+- Añadida la funcion NF_AffineBgMove(); que desplaza y rota un fondo Affine.
+- Añadida la funcion NF_AffineBgCenter(); que define el centro de rotacion del
+  fondo Affine.
+- Añadido el ejemplo para el uso de fondos Affine.
+- Añadidos los errores 117 y 118.
+- Modificada la funcion NF_SetTile(); para poder asignar tiles en formato U16.
+- Se detecta un bug en la ultima version de GRIT convirtiendo fondos sin
+  optimizar el tileset (fuentes). Se adjunta la version anterior y se modifica
+  el BAT encargado de convertir las fuentes para que use la version antigua.
+- Se recompila la libreria usando la ultima version de devkitarm.
+
+
+
+NightFox's Lib Ver. 20100701
+--------------------------------------------------------------------------------
+- Modificada la funcion NF_GetTile(); devolviendo ahora un valor u16 en
+  vez de u8.
+- En el ejemplo "graphics/bg" eliminada la linea que cargaba dos veces el mismo
+  fondo. (Gracias a Draco por el aviso).
+- Modificado el mensage de error si falla la inicializacion de FAT o NitroFS,
+  informando ahora de las posibles soluciones.
+- Modificadas las splashscreens para dar los creditos de las librerias usadas.
+- No se ha modificado la documentacion, dado que no se ha cambiado ninguna de
+  las funciones de la libreria.
+
+
+
+NightFox's Lib Ver. 20100312
+--------------------------------------------------------------------------------
+- Eliminado el soporte para EFS, dado que la libreria esta obsoleta.
+- Añadido soporte para NitroFS, el cual viene de serie con el DevkitArm.
+- Actualizados todos los ejemplos para que usen NitroFS en vez de EFS.
+- Añadido el "Homebrew menu" para lanzar archivos NDS que usen NitroFS en
+  flashcards no compatibles con pase de argumentos (int argc, char **argv).
+  Puedes encontrarlo en la carpeta tools.
+
+
+
+NightFox's Lib Ver. 20100304
+--------------------------------------------------------------------------------
+- Libreria recompilada para que funcione con devkitPro R28.
+
+- Modificada la libreria EFS lib para corregir las advertencias durante la
+  compilacion.
+
+  efs_lib.c: In function 'CheckFile':
+  efs_lib.c(305): warning: array subscript has type 'char'
+
+  Se ha modidicado esta linea:
+  ext[i] = tolower(ext[i]);
+
+  Con estas:
+  letter = ext[i];
+  if (letter >= 65 && letter <= 90) letter += 32;
+  ext[i] = letter;
+
+
+
+NightFox's Lib Ver. 20100301
+--------------------------------------------------------------------------------
+- Añadida la funcion NF_LoadBMP(); la cual carga un archivo BMP de 8, 16 o 24
+  bits en un slot de imagen de 16 bits.
+- Añadido el parametro "alpha" a la funcion NF_Draw16bitsImage(); para decidir
+  si el color magenta es o no transparente.
+- Añadido los ejemplos de carga de archivos en formato BMP.
+- Añadido el ejemplo de scroll de una imagen cargada desde un BMP.
+
+
+
+NightFox's Lib Ver. 20100209
+--------------------------------------------------------------------------------
+- Añadido el ejemplo de zoom x2 con interpolacion.
+- Añadido el ejemplo de zoom x3 con interpolacion.
+- Añadida la funcion NF_Init8bitsBgBuffers(); que inicializa los buffers para
+  fondos bitmap de 8 bits.
+- Añadida la funcion NF_Reset8bitsBgBuffers(); que reinicializa los buffers de
+  fondos bitmap de 8 bits.
+- Añadida la funcion NF_Load8bitsBg(); que carga un fondo bitmap de 8 bits de
+  hasta 256x256 pixeles.
+- Añadida la funcion NF_Unload8bitsBg(); que borra de la ram un fondo bitmap
+  de 8 bits, previamente cargado.
+- Añadida la funcion NF_Copy8bitsBuffer(); la cual copia un fondo de 8 bits
+  cargado en RAM a la VRAM o al BackBuffer.
+- Añadida la funcion NF_Init8bitsBackBuffer(); que iniciliza el BackBuffer de
+  8 bits.
+- Añadida la funcion NF_Enable8bitsBackBuffer(); que habilita el BackBuffer de
+  8 bits para la pantalla seleccionada.
+- Añadida la funcion NF_Disble8bitsBackBuffer(); que deshabilita el BackBuffer
+  de 8 bits, liberando la memoria RAM usada.
+- Añadida la funcion NF_Flip8bitsBackBuffer(); la cual manda el Backbuffer de
+  8 bits a la VRAM.
+- Añadida la funcion NF_Load16bImgData(); que carga una imagen de 16 bits en
+  RAM, con un tamaño maximo de 256x256 pixeles. La imagen se carga en un slot
+  de fondos de 16 bits.
+- Añadida la funcion NF_Draw16bitsImage(); la cual dibuja una imagen cargada
+  en RAM en el backbuffer de la pantalla indicada.
+
+
+
+NightFox's Lib Ver. 20100203
+--------------------------------------------------------------------------------
+- Añadida la documentacion de la funcion void NF_RotateTileGfx();
+- Añadido el Modo 5 en la funcion NF_Set2D();
+- Añadida la funcion NF_InitBitmapBgSys(); la cual inicializa los fondos en
+  modo bitmap, tanto en 8 como 16 bits.
+- Añadida la funcion NF_Init16bitsBgBuffers(); el cual inicializa los buffer
+  para guardar fondos en modo BITMAP.
+- Añadida la funcion NF_Reset16bitsBgBuffers(); la cual borra el contenido de
+  los buffers de fondos BITMAP.
+- Añadida la funcion NF_Init16bitsBackBuffer(); la cual inicializa los
+  backbuffers de 16bits.
+- Añadida la funcion NF_Enable16bitsBackBuffer(); la cual habilita el 
+  BackBuffer de 16 bits en la pantalla indicada.
+- Añadida la funcion NF_Disble16bitsBackBuffer(); la cual borra y libera de
+  la RAM el BackBuffer indicado.
+- Añadida la funcion NF_Flip16bitsBackBuffer(); la cual copia el contenido del
+  BackBuffer a la VRAM de la pantalla indicada.
+- Añadida la funcion NF_Load16bitsBg(); la cual carga un bitmap de 16 bits
+  convertido previamente con GRIT, siendo el tamaño maximo 256x256.
+- Añadida la funcion NF_Unload16bitsBg(); la cual borra del buffer en RAM
+  una imagen cargada previamente.
+- Añadida la funcion NF_Copy16bitsBuffer(); la cual copia los datos cargados
+  en un buffer a la VRAM o al BackBuffer.
+- Añadida la funcion NF_DmaMemCopy(); la cual copia bloques de memoria usando
+  el DMA de manera segura (vacia el cache antes de manera automatica).
+- Todas las funciones de copia de la libreria de RAM a VRAM ahora se realizan
+  usando el canal DMA, lo que acelera el proceso en un 25% aproximadamente.
+
+
+
+
+NightFox's Lib Ver. 20100130
+--------------------------------------------------------------------------------
+- Añadida la funcion void NF_RotateTileGfx(); la cual rota el grafico de un
+  tile en la direccion indicada.
+- Dado a la funcion anterior, las fuentes para texto no necesitan mas las
+  partes rotadas de derecha e izquierda, pero se mantiene la compatibilidad
+  con las que ya tubieras hechas.
+- Modificada la funcion NF_LoadTextFont16(); para poder cargar
+  fuentes rotadas.
+- Modificada la funcion NF_CreateTextLayer16(); para poder crear capas con
+  el texto rotado.
+- Corregido Bug en la funcion NF_WriteText(); que calculava mal la coordenada
+  Y en modo rotado 90º a la derecha.
+- Añadido ejemplo de texto con fuentes 8x16 con rotacion.
+
+
+
+NightFox's Lib Ver. 20100129
+--------------------------------------------------------------------------------
+- Añadido soporte para texto de 8x16 sin rotacion.
+- Añadida la funcion NF_LoadTextFont16();
+- Añadida la funcion NF_CreateTextLayer16();
+- Añadida la funcion NF_WriteText16();
+- Añadida la funcion NF_ClearTextLayer16();
+- Añadido el ejemplo para textos de 8x16.
+
+
+
+NightFox's Lib Ver. 20091231
+--------------------------------------------------------------------------------
+- Actualizado el Makefile a la version R27.
+- Textos: Corregido un bug en la funcion NF_ClearTextLayer(); que provocaba
+  desbordamientos de memoria al usarla (cosas de poner un bitshift mal por
+  un despiste).
+
+
+
+NightFox's Lib Ver. 20091207
+--------------------------------------------------------------------------------
+- Ejemplos: Añadido el ejemplo "Wave"
+- Ejemplos: Añadido el ejemplo "Water reflect"
+- Entorno: Libreria recompilada y probada con el devkitPro R27
+
+
+
+NightFox's Lib Ver. 20091202
+--------------------------------------------------------------------------------
+
+- Fondos 2D: Añadida la funcion NF_GetTilePal(); que permite obtener el numero
+  de paleta que usa un tile en concreto entre las 16 disponibles. Por defecto,
+  los fondos solo cargan una paleta que se carga en el slot 0.
+- Fondos 2D: Añadida la funcion NF_SetTilePal(); que permite cambiar el numero
+  de paleta que usa un tile en concreto entre las 16 disponibles.
+- Fondos 2D: Añadida la funcion NF_LoadExBgPal(); la cual carga en un slot en 
+  RAM una paleta de fondos para poderla usar luego como paleta extendida.
+- Fondos 2D: Añadida la funcion NF_UnloadExBgPal(); la cual borra de la RAM
+  la paleta del slot especificado.
+- Fondos 2D: Añadida la funcion NF_VramExBgPal(); la cual copia a la VRAM
+  una paleta extendida cargada previamente en RAM.
+- Fondos 2D: Añadida la funcion NF_SetExBgPal(); la cual selecciona que paleta
+  extendida cargada en VRAM usara el fondo seleccionado.
+- Textos: Añadida la funcion NF_DefineTextColor(); la cual permitira definir
+  hasta 16 colores diferentes por cada capa de texto.
+- Textos: Añadida la funcion NF_SetTextColor(); la cual permitira escoger con
+  que color se escribira el texto de entre los 16 definidos por el usuario.
+- Fondos 2D: Añadida la funcion NF_SetTileHflip(); que invierte el estado del
+  FLIP horizontal de un tile del mapa especificado.
+- Fondos 2D: Añadida la funcion NF_SetTileVflip(); que invierte el estado del
+  FLIP vertical de un tile del mapa especificado.
+- Ejemplos actualizados.
+- Documentacion actualizada.
+
+
+
+NightFox's Lib Ver. 20091127
+--------------------------------------------------------------------------------
+
+- Fondos 2D: Las funciones de manipulacion de paletas de han renombrado
+  añadiendo el prefijo "Bg", ya que futuramente se añadiran las mismas
+  para manipular las paletas de los sprites.
+- Reorganizacion de algunas funciones dentro de los ficheros de la libreria.
+- Añadidas varias trampas de debug en caso de querer usar las funciones de
+  tiles o paletas sobre fondos no creados.
+- Sprites: añadida la funcion NF_SpriteSetPalColor();
+- Sprites: Añadida la funcion NF_SpriteEditPalColor();
+- Sprites: Añadida la funcion NF_SpriteUpdatePalette();
+- Sprites: Añadida la funcion NF_SpriteGetPalColor();
+- Documentacion actualizada.
+- Ejemplos actualizados.
+
+
+
+NightFox's Lib Ver. 20091122
+--------------------------------------------------------------------------------
+
+- Texto: Añadido el soporte para los caracteres "Ç", "ç", "Ñ" y "ñ"
+- Texto: Añadido el soporte para el caracter de control "\n" (nueva linea)
+- Ejemplo: Actualizado el ejemplo de texto simple (uso de "\n")
+- Fondos 2D: Añadida la funcion NF_SetPalcolor(); para cambiar un color de
+  la paleta del fondo especificado. (edita la paleta en VRAM, lento)
+- Fondos 2D: Añadida la funcion NF_EditPalColor(); para editar un color de
+  la paleta del fondo especificado (edita el buffer en RAM).
+- Fondos 2D: Añadida la funcion NF_UpdatePalette(); para actualizar en VRAM
+  la paleta modificada en RAM
+- Fondos 2D: Añadida la funcion NF_GetPalColor(); para obtener el valor de un
+  color de la paleta cargada en RAM
+  (Gracias a AntonioD por ayudarme en la manipulacion de paletas)
+- Por hacer: Actualizar la documentacion con las funciones añadidas
+- Ejemplo: Añadido ejemplo sobre la manipulacion de paletas
+
+
+
+NightFox's Lib Ver. 20091115
+--------------------------------------------------------------------------------
+
+- Añadido el ejemplo de alpha blending
+
+
+
+NightFox's Lib Ver. 20091101
+--------------------------------------------------------------------------------
+
+- Añadida la documentacion en Italiano (tide75)
+- Añadido el ejemplo de fondos animados con tiles
+
+
+
+NightFox's Lib Ver. 20091014
+--------------------------------------------------------------------------------
+
+- Añadida la funcion NF_SetTile();
+- Añadido el ejemplo de cliente/servidor por UDP.
+- Libreria de texto reescrita por completo.
+- Eliminada la funcion NF_InitTextBuffers(); siendo inecesario su uso.
+- Cambios en la funcion NF_LoadTextFont(); debiendo ahora de especificar el
+  tamaño en pixeles del mapa (256x256 por ejemplo).
+- Añadidos varios ejemplos, todos ellos compilables.
