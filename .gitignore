@@ -1,2 +1,2 @@
-nflib/build/*
-nflib/lib/*
+nflib/lib
+nflib/build
