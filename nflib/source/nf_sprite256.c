@@ -801,7 +801,7 @@ void NF_DeleteSprite(u8 screen, u8 id) {
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][id].created) {
-		char text[3];
+		char text[4];
 		sprintf(text, "%d", screen);
 		NF_Error(112, text, id);
 	}
