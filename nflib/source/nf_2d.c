@@ -426,7 +426,7 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize) {
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][sprite].created) {
-		char text[3];
+		char text[4];
 		sprintf(text, "%d", screen);
 		NF_Error(112, text, sprite);
 	}
@@ -448,7 +448,7 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite) {
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][sprite].created) {
-		char text[3];
+		char text[4];
 		sprintf(text, "%d", screen);
 		NF_Error(112, text, sprite);
 	}
