@@ -1,2 +1,4 @@
-nflib/lib
-nflib/build
+lib/
+build/
+*.nds
+*.elf
