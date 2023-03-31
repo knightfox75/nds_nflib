@@ -37,7 +37,7 @@
 
 // Includes propios
 #include <nf_lib.h>
-#include <nf_wifi.h>
+#include "nf_wifi.h"
 
 
 /*
@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
 
 					if (loop) {
 						// Debes enviar datos...
-						sprintf(temp, "%05d", contador);
+						sprintf(temp, "%05lu", contador);
 					} else {
 						// o la señal de salida?
 						sprintf(temp, "Exit");
@@ -325,7 +325,7 @@ s16 _LookForServer(void) {
 
 	// Variables locales
 	char myip[18];
-	char temp[18];
+	char temp[64];
 	char character[2];
 
 	u16 n = 0;
