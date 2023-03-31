@@ -1,7 +1,8 @@
-
+// SPDX-License-Identifier: CC-BY-NC-4.0
+//
+// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+//
 // NightFox LIB - Include de funciones de carga de archivos multimedia
-// Requiere DevkitARM
-// Codigo por Cesar Rincon "NightFox"
 // http://www.nightfoxandco.com/
 // Version 20140413
 

@@ -1,15 +1,11 @@
-
+// SPDX-License-Identifier: CC-BY-NC-4.0
+//
+// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+//
 // NightFox LIB - Funciones de WI-FI
-// Requiere DevkitARM
-// Codigo por NightFox
 // http://www.nightfoxandco.com/
 // Version 20110502
 
-
-
-
-
-// Includes devKitPro
 #include <nds.h>
 #include <dswifi9.h>
 

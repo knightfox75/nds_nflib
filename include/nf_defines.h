@@ -1,23 +1,17 @@
+// SPDX-License-Identifier: CC-BY-NC-4.0
+//
+// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+//
+// NightFox LIB - Definiciones General
+// http://www.nightfoxandco.com/
+// Version 20140413
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #ifndef __NF_DEFINES_H__
 #define __NF_DEFINES_H__
-
-
-
-
-
-// NightFox LIB - Definiciones General
-// Requiere DevkitARM
-// Codigo por Cesar Rincon "NightFox"
-// http://www.nightfoxandco.com/
-// Version 20140413
-
-
-
-
 
 // Definicion de los datos del usuario
 // Informacion obtenida de PALIB source code

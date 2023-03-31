@@ -1,21 +1,17 @@
+// SPDX-License-Identifier: CC-BY-NC-4.0
+//
+// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+//
+// NightFox LIB - Include General
+// http://www.nightfoxandco.com/
+// Version 20140413
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #ifndef __NF_LIB_H__
 #define __NF_LIB_H__
-
-
-
-
-
-// NightFox LIB - Include General
-// Requiere DevkitARM
-// Codigo por Cesar Rincon "NightFox"
-// http://www.nightfoxandco.com/
-// Version 20140413
-
-
 
 /*
 

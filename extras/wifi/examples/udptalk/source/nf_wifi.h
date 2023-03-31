@@ -1,21 +1,14 @@
-#ifndef __NF_WIFI_H__
-#define __NF_WIFI_H__
-
-
-
-
-
+// SPDX-License-Identifier: CC-BY-NC-4.0
+//
+// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+//
 // NightFox LIB - Include de funciones de WI-FI
-// Requiere DevkitARM
-// Codigo por NightFox
 // http://www.nightfoxandco.com/
 // Version 20110502
 
+#ifndef __NF_WIFI_H__
+#define __NF_WIFI_H__
 
-
-
-
-// Includes devKitPro
 #include <nds.h>
 #include <dswifi9.h>
 
