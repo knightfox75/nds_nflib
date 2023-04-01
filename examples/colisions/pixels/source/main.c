@@ -51,8 +51,8 @@ int main(int argc, char **argv) {
 	NF_Set2D(0, 0);
 	NF_Set2D(1, 0);	
 	consoleDemoInit();
-	iprintf("\n NitroFS init. Please wait.\n\n");
-	iprintf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+	printf("\n NitroFS init. Please wait.\n\n");
+	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
 	swiWaitForVBlank();
 
 	// Define el ROOT e inicializa el sistema de archivos
@@ -137,25 +137,25 @@ int main(int argc, char **argv) {
 
 		// Imprime la posicion del cursor
 		consoleClear();
-		iprintf("x:%03d  y:%03d \n\n", x, y);
+		printf("x:%03d  y:%03d \n\n", x, y);
 
 		// Imprime el color del pixel
 		pixel = NF_GetPoint(0, x, y);
 		switch (pixel) {
 			case 1:
-				iprintf("Tile: Negro / Black");
+				printf("Tile: Negro / Black");
 				break;
 			case 2:
-				iprintf("Tile: Rojo / Red");
+				printf("Tile: Rojo / Red");
 				break;
 			case 3:
-				iprintf("Tile: Verde / Green");
+				printf("Tile: Verde / Green");
 				break;
 			case 4:
-				iprintf("Tile: Azul / Blue");
+				printf("Tile: Azul / Blue");
 				break;
 			default:
-				iprintf("Value: %03d", pixel); 
+				printf("Value: %03d", pixel); 
 				break;
 		}
 

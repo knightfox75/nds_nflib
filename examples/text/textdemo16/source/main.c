@@ -51,8 +51,8 @@ int main(int argc, char **argv) {
 	NF_Set2D(0, 0);
 	NF_Set2D(1, 0);	
 	consoleDemoInit();
-	iprintf("\n NitroFS init. Please wait.\n\n");
-	iprintf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+	printf("\n NitroFS init. Please wait.\n\n");
+	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
 	swiWaitForVBlank();
 
 	// Define el ROOT e inicializa el sistema de archivos
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 	while(1) {
 
 		myvar ++;
-		sprintf(mytext,"Contador: %d", myvar);
+		snprintf(mytext, sizeof(mytext), "Contador: %lu", myvar);
 		NF_WriteText16(0, 0, 1, 4, mytext);
 		NF_WriteText16(1, 1, 1, 4, mytext);
 		NF_WriteText16(1, 2, 1, 4, mytext);

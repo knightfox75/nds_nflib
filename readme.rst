@@ -1,12 +1,13 @@
+##############
 NightFox’s Lib
-==============
+##############
 
 Introduction
-------------
+============
 
 NightFox’s Lib is a library written in C to make it easier to develop for the
-NDS. It depends on libnds by devkitPro, but it makes it much easier to use
-backgrounds, sprites, collision maps, etc.
+NDS. It depends on libnds, but it is much easier than libnds if the user wants
+to use backgrounds, sprites, collision maps, etc.
 
 Features:
 
@@ -86,8 +87,8 @@ Features:
 
   - Available in PDF format in English and Spanish.
 
-Setup
------
+Setup instructions for devkitPro
+================================
 
 1. Clone this repository. Create a symbolic link to it inside the devkitPro
    folder in your system. For example, in Linux, create a symlink so that
@@ -106,4 +107,25 @@ Setup
 
        make
 
-3. That's it! Go to any of the examples and try to build it with ``make``.
+3. That's it! Go to the folder of any of the examples and try to build it with:
+
+   .. code:: bash
+
+       make
+
+Setup instructions for BlocksDS
+===============================
+
+1. Clone this repository. If you have followed the tutorial of `BlocksDS
+   <https://github.com/blocksds/sdk>`_, you should have the compiler in your
+   ``PATH``. All you have to do is go to the folder of the repository and run:
+
+   .. code:: bash
+
+       make -f Makefile.blocksds install
+
+2. That's it! Go to the folder of any of the examples and try to build it with:
+
+   .. code:: bash
+
+       make -f Makefile.blocksds

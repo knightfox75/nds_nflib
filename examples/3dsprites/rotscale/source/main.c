@@ -56,8 +56,8 @@ int main(int argc, char **argv) {
 	NF_Set2D(0, 0);
 	NF_Set2D(1, 0);	
 	consoleDemoInit();
-	iprintf("\n NitroFS init. Please wait.\n\n");
-	iprintf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+	printf("\n NitroFS init. Please wait.\n\n");
+	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
 	swiWaitForVBlank();
 
 	// Define el ROOT e inicializa el sistema de archivos
@@ -224,11 +224,11 @@ int main(int argc, char **argv) {
 
 		// Debug
 		consoleClear();
-		iprintf("A / B - Sprite select %d\n", id);
-		iprintf("Rotate Z (LEFT/RIGHT) %d\n", rz[id]);
-		iprintf("Rotate Y (UP/DOWN) %d\n", ry[id]);
-		iprintf("Rotate X (X/Y) %d\n", rx[id]);
-		iprintf("Scale (R/L) %d\n", scale[id]);
+		printf("A / B - Sprite select %d\n", id);
+		printf("Rotate Z (LEFT/RIGHT) %d\n", rz[id]);
+		printf("Rotate Y (UP/DOWN) %d\n", ry[id]);
+		printf("Rotate X (X/Y) %d\n", rx[id]);
+		printf("Scale (R/L) %d\n", scale[id]);
 
 		// Espera al sincronismo vertical
 		swiWaitForVBlank();
