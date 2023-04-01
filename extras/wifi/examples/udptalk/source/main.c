@@ -136,15 +136,15 @@ int main(int argc, char **argv) {
 					}
 
 					// Envia y verifica si se han recibido
-					iprintf("Envio: %s\n", temp);
+					printf("Envio: %s\n", temp);
 					if (_SendData(temp) > 0) {
 						// Imprime los datos recibidos
-						iprintf("Verificado: %s\n\n", NF_RECV_BUFFER);
+						printf("Verificado: %s\n\n", NF_RECV_BUFFER);
 						// Incrementa el valor
 						contador ++;
 						if (contador > 9999) contador = 0;
 					} else {
-						iprintf("Error de envio.\n");
+						printf("Error de envio.\n");
 					}
 
 				}
@@ -158,12 +158,12 @@ int main(int argc, char **argv) {
 				// Recibe los datos
 				if (_GetData() > 0) {
 					// Imprime los datos recibidos
-					iprintf("Recivido: %s\n", NF_RECV_BUFFER);
+					printf("Recivido: %s\n", NF_RECV_BUFFER);
 					// Si has recibido la señal de salida...
 					if (strcmp(NF_RECV_BUFFER, "Exit") == 0) loop = false;
 				} else {
 					// Si no hay datos, esperalos
-					iprintf("Esperando datos...\n");
+					printf("Esperando datos...\n");
 				}
 
 			}
@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
 	NF_WiFiDisconnectAp();
 
 	// Informa
-	iprintf("\nSesion finalizada\n");
+	printf("\nSesion finalizada\n");
 
 	while (1) {
 		swiWaitForVBlank();
@@ -209,18 +209,18 @@ bool _ConnectWIFI(void) {
 	bool status = false;
 
 	// Intenta conectarte al AP...
-	iprintf("Conectando via WFC...\n\n");
+	printf("Conectando via WFC...\n\n");
 	swiWaitForVBlank();
 
 	if (NF_WiFiConnectDefaultAp()) {
 
 		// Devuelve los parametros de la conexion TCP/IP con el AP
-		iprintf("Conexion realizada.\n\n");
-		iprintf("Ip     : %s\n", inet_ntoa(NF_IP));
-		iprintf("Gateway: %s\n", inet_ntoa(NF_GATEWAY));
-		iprintf("Mask   : %s\n", inet_ntoa(NF_MASK));
-		iprintf("Dns1   : %s\n", inet_ntoa(NF_DNS1));
-		iprintf("Dns2   : %s\n\n", inet_ntoa(NF_DNS2));
+		printf("Conexion realizada.\n\n");
+		printf("Ip     : %s\n", inet_ntoa(NF_IP));
+		printf("Gateway: %s\n", inet_ntoa(NF_GATEWAY));
+		printf("Mask   : %s\n", inet_ntoa(NF_MASK));
+		printf("Dns1   : %s\n", inet_ntoa(NF_DNS1));
+		printf("Dns2   : %s\n\n", inet_ntoa(NF_DNS2));
 		
 		// Marca como conectado
 		status = true;
@@ -228,7 +228,7 @@ bool _ConnectWIFI(void) {
 	} else {
 
 		// No se ha podido conectar
-		iprintf("Conexion no establecida\n");
+		printf("Conexion no establecida\n");
 
 	}
 
@@ -245,7 +245,7 @@ u8 _SelectMode(void) {
 	u8 modo = 0;
 	u16 keys = 0;
 
-	iprintf("A - Cliente\nB - Servidor\n");
+	printf("A - Cliente\nB - Servidor\n");
 	swiWaitForVBlank();
 
 	while (modo == 0) {
@@ -365,7 +365,7 @@ s16 _LookForServer(void) {
 
 		// Calcula la IP
 		sprintf(temp, "%s%d", myip, n);
-		iprintf("%s   ", temp);
+		printf("%s   ", temp);
 		swiWaitForVBlank();
 
 		// Crea el socket de envio
@@ -377,14 +377,14 @@ s16 _LookForServer(void) {
 			status = _SendData("HANDSHAKE");
 			if (status > 0) {
 				// Imprime los datos recibidos
-				iprintf("Encontrado.\n");
+				printf("Encontrado.\n");
 				// Guarda el valor
 				sprintf(server_ip, temp);
 				p = n;
 				n = 255;
 				loop = false;
 			} else {
-				iprintf("Time Out.\n");
+				printf("Time Out.\n");
 				if (status == -2) loop = false;
 			}
 		}

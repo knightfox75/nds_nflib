@@ -56,8 +56,8 @@ int main(int argc, char **argv) {
 	NF_Set2D(0, 0);
 	NF_Set2D(1, 0);	
 	consoleDemoInit();
-	iprintf("\n NitroFS init. Please wait.\n\n");
-	iprintf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+	printf("\n NitroFS init. Please wait.\n\n");
+	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
 	swiWaitForVBlank();
 
 	// Define el ROOT e inicializa el sistema de archivos
@@ -175,10 +175,10 @@ int main(int argc, char **argv) {
 		// Debug
 		consoleClear();
 		for (n = 0; n < NF_CREATED_3DSPRITE.total; n ++) {
-			iprintf("Pri:%02d Spr:%02d   Spr:%02d Pri:%02d\n", n, NF_CREATED_3DSPRITE.id[n], n, NF_3DSPRITE[n].prio);
+			printf("Pri:%02d Spr:%02d   Spr:%02d Pri:%02d\n", n, NF_CREATED_3DSPRITE.id[n], n, NF_3DSPRITE[n].prio);
 		}
-		iprintf("\nSprite Id%02d is on %02d priority\n\n", TARGET, NF_3DSPRITE[TARGET].prio);
-		iprintf("A - Near   B - Far");
+		printf("\nSprite Id%02d is on %02d priority\n\n", TARGET, NF_3DSPRITE[TARGET].prio);
+		printf("A - Near   B - Far");
 
 		// Espera al sincronismo vertical
 		swiWaitForVBlank();

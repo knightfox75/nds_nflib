@@ -7,6 +7,9 @@
 // Version 
 
 
+#ifdef BLOCKSDS
+#define iprintf printf
+#endif
 
 // Includes devKitPro
 #include <nds.h>

@@ -56,28 +56,28 @@ int main(int argc, char **argv) {
 	// Imprime en pantalla el idioma del usuario
 	switch (NF_GetLanguage()) {
 		case 0 : // Japanese
-			iprintf("Japanese");
+			printf("Japanese");
 			break;
 		case 1 : // English
-			iprintf("English");
+			printf("English");
 			break;
 		case 2 : // French
-			iprintf("French");
+			printf("French");
 			break;
 		case 3 : // German
-			iprintf("German");
+			printf("German");
 			break;
 		case 4 : // Italian
-			iprintf("Italian");
+			printf("Italian");
 			break;
 		case 5 : // Spanish
-			iprintf("Spanish");
+			printf("Spanish");
 			break;
 		case 6 : // Chinese
-			iprintf("Chinese");
+			printf("Chinese");
 			break;
 		default:
-			iprintf("Error");
+			printf("Error");
 			break;
 	}
 
