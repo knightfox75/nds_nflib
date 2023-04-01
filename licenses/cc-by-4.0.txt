@@ -1,4 +1,4 @@
-NFLib is distributed under CREATIVE COMMONS licence:
+The assets of NFLib are distributed under CREATIVE COMMONS licence:
 
 https://creativecommons.org/licenses/by/4.0/
 

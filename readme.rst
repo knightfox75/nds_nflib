@@ -87,6 +87,12 @@ Features:
 
   - Available in PDF format in English and Spanish.
 
+- License:
+
+  - The library is licensed under the MIT license.
+  - The assets in this repository are licensed under the CC-BY-4.0 license.
+  - The examples are licensed under the CC0 license.
+
 Setup instructions for devkitPro
 ================================
 

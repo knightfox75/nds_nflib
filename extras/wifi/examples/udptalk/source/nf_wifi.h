@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: CC-BY-NC-4.0
+// SPDX-License-Identifier: MIT
 //
-// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+// Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
 // NightFox LIB - Include de funciones de WI-FI
 // http://www.nightfoxandco.com/
