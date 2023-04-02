@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-License-Identifier: MIT
 //
-// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+// Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
 // NightFox LIB - Include de Fondos mixtos (Tiled / Bitmap 8 bits)
 // http://www.nightfoxandco.com/

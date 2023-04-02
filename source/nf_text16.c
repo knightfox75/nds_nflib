@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-License-Identifier: MIT
 //
-// Copyright (c) 2011-2014 Cesar Rincon "NightFox"
+// Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
 // NightFox LIB - Funciones de Textos de 16 pixeles
 // http://www.nightfoxandco.com/

@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: CC0-1.0
+//
+// SPDX-FileContributor: NightFox & Co., 2010
+
 /*
 -------------------------------------------------
 
@@ -10,8 +14,6 @@
 	Codigo por NightFox
 	http://www.nightfoxandco.com
 	Inicio 10 de Octubre del 2009
-
-	(c)2010 NightFox & Co.
 
 -------------------------------------------------
 */
