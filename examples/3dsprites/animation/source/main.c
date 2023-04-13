@@ -34,6 +34,7 @@
 
 // Includes propietarios NDS
 #include <nds.h>
+#include <filesystem.h>
 
 // Includes librerias propias
 #include <nf_lib.h>
@@ -64,6 +65,7 @@ int main(int argc, char **argv) {
 	swiWaitForVBlank();
 
 	// Define el ROOT e inicializa el sistema de archivos
+	nitroFSInit(NULL);
 	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
 
 	// Inicializa el motor 3D

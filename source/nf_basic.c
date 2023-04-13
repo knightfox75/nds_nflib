@@ -13,8 +13,6 @@
 
 // Includes devKitPro
 #include <nds.h>
-#include <filesystem.h>
-#include <fat.h>
 
 // Includes C
 #include <stdio.h>
@@ -185,8 +183,9 @@ void NF_SetRootFolder(const char* folder) {
 
 		// Define NitroFS como la carpeta inicial
 		sprintf(NF_ROOTFOLDER, "%s", "");
-		// Intenta inicializar NitroFS
-		if(nitroFSInit(NULL)) {
+		// Check if NitroFS exists.
+		// NitroFS must be mounted beforehand for this to work.
+		if(access("nitro:/", F_OK) == 0) {
 			// NitroFS ok
 			// Si es correcto, cambia al ROOT del NitroFS
 			chdir("nitro:/");
@@ -219,8 +218,13 @@ void NF_SetRootFolder(const char* folder) {
 
 		// Define la carpeta inicial de la FAT
 		sprintf(NF_ROOTFOLDER, "%s", folder);
-		// Intenta inicializar la FAT
-		if (fatInitDefault()) {
+		// Check if DSi SD (sd:/) exists.
+		// If this fails, check if DLDI (fat:/) exists.
+		// If both fails, then fatInitDefault() either failed, or was not called.
+		if (access("sd:/", F_OK) == 0) {
+			// Si es correcto, cambia al ROOT del SD
+			chdir("sd:/");
+		} else if (access("fat:/", F_OK) == 0) {
 			// Si es correcto, cambia al ROOT del FAT
 			chdir("fat:/");
 		} else {
