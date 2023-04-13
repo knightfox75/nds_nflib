@@ -42,17 +42,17 @@ void NF_LoadBMP(const char* file, u8 slot) {
 
 	// Define la estructura para almacenar la cabecera del BMP
 	typedef struct {
-		u32 bmp_size;		// Tamaño en bytes del BMP
+		u32 bmp_size;		// TamaÃ±o en bytes del BMP
 		u16 res_a;			// Reservado
 		u16 res_b;			// Reservado
 		u32 offset;			// Offset donde empiezan los datos
-		u32 header_size;	// Tamaño de la cabecera (40 bytes)
+		u32 header_size;	// TamaÃ±o de la cabecera (40 bytes)
 		u32 bmp_width;		// Ancho de la imagen en pixeles
 		u32 bmp_height;		// Altura de la imagen en pixeles
 		u16 color_planes;	// Numero de planos de color
 		u16 bpp;			// Numero de bits por pixel
 		u32 compression;	// Compresion usada
-		u32 raw_size;		// Tamaño de los datos en RAW despues de la cabecera
+		u32 raw_size;		// TamaÃ±o de los datos en RAW despues de la cabecera
 		u32 dpi_hor;		// Puntos por pulgada (horizontal)
 		u32 dpi_ver;		// Puntos por pulgada (vertical)
 		u32 pal_colors;		// Numero de colores en la paleta
@@ -114,9 +114,9 @@ void NF_LoadBMP(const char* file, u8 slot) {
 	u8 g = 0;
 	u8 b = 0;
 	u16 colors = 0;		// En 8 bits, numero de colores
-	u32 size = 0;		// Tamaño del buffer de 16 bits (en bytes)
+	u32 size = 0;		// TamaÃ±o del buffer de 16 bits (en bytes)
 
-	// Habilita el buffer de destino (u16 de alto x ancho del tamaño de imagen)
+	// Habilita el buffer de destino (u16 de alto x ancho del tamaÃ±o de imagen)
 	size = ((bmp_header.bmp_width * bmp_header.bmp_height) << 1);
 	free(NF_BG16B[slot].buffer);
 	NF_BG16B[slot].buffer = NULL;
@@ -127,7 +127,7 @@ void NF_LoadBMP(const char* file, u8 slot) {
 	switch (bmp_header.bpp) {
 
 		case 8:		// 8 bits por pixel
-			// Calcula el tamaño de la paleta
+			// Calcula el tamaÃ±o de la paleta
 			colors = ((bmp_header.offset - 0x36) >> 2);
 			palette = (char*) calloc ((colors << 2), sizeof(char));
 			if (palette == NULL) NF_Error(102, NULL, (colors << 2));
@@ -207,7 +207,7 @@ void NF_LoadBMP(const char* file, u8 slot) {
 	}
 
 	// Guarda los parametros del fondo
-	NF_BG16B[slot].size = size;			// Guarda el tamaño
+	NF_BG16B[slot].size = size;			// Guarda el tamaÃ±o
 	NF_BG16B[slot].width = bmp_header.bmp_width;		// Ancho del fondo
 	NF_BG16B[slot].height = bmp_header.bmp_height;		// Altura del fondo
 	NF_BG16B[slot].inuse = true;						// Marca que esta en uso

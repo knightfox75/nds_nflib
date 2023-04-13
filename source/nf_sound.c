@@ -47,7 +47,7 @@ void NF_InitRawSoundBuffers(void) {
 	for (n = 0; n < NF_SLOTS_RAWSOUND; n ++) {
 		NF_BUFFER_RAWSOUND[n] = NULL;			// Inicializa puntero
 		NF_RAWSOUND[n].available = true;		// Disponibilidad del slot
-		NF_RAWSOUND[n].size = 0;				// Tamaño del archivo
+		NF_RAWSOUND[n].size = 0;				// TamaÃ±o del archivo
 		NF_RAWSOUND[n].freq = 0;				// Frecuencia del sample
 		NF_RAWSOUND[n].format = 0;				// Formato del sample
 	}
@@ -104,11 +104,11 @@ void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 	sprintf(filename, "%s/%s.raw", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		NF_RAWSOUND[id].size = ftell(file_id);
 		rewind(file_id);
-		// Si excede del tamaño maximo, error
+		// Si excede del tamaÃ±o maximo, error
 		if (NF_RAWSOUND[id].size > (1 << 18)) NF_Error(116, filename, (1 << 18));
 		// Reserva el espacio en RAM
 		NF_BUFFER_RAWSOUND[id] = (char*) calloc (NF_RAWSOUND[id].size, sizeof(char));

@@ -60,7 +60,7 @@ void NF_InitSpriteBuffers(void) {
 	// Inicializa Buffers de GFX
 	for (n = 0; n < NF_SLOTS_SPR256GFX; n ++) {
 		NF_BUFFER_SPR256GFX[n] = NULL;			// Inicializa puntero
-		NF_SPR256GFX[n].size = 0;				// TamaÒo (en bytes) del grafico (GFX)
+		NF_SPR256GFX[n].size = 0;				// Tama√±o (en bytes) del grafico (GFX)
 		NF_SPR256GFX[n].width = 0;				// Ancho del Gfx
 		NF_SPR256GFX[n].height = 0;				// Altura del Gfx
 		NF_SPR256GFX[n].available = true;		// Disponibilidat del Slot
@@ -69,7 +69,7 @@ void NF_InitSpriteBuffers(void) {
 	// Inicializa Buffers de PAL
 	for (n = 0; n < NF_SLOTS_SPR256PAL; n ++) {
 		NF_BUFFER_SPR256PAL[n] = NULL;		// Inicializa puntero
-		NF_SPR256PAL[n].size = 0;			// TamaÒo (en bytes) de la paleta (PAL)
+		NF_SPR256PAL[n].size = 0;			// Tama√±o (en bytes) de la paleta (PAL)
 		NF_SPR256PAL[n].available = true;	// Disponibilidat del Slot
 	}
 
@@ -116,12 +116,12 @@ void NF_InitSpriteSys(int screen, ...) {
 	// y la estructura de datos del OAM (Sprites)
 	for (n = 0; n < 128; n ++) {	// 128 sprites
 		// Gfx en la VRAM (128 Gfx x pantalla)
-		NF_SPR256VRAM[screen][n].size = 0;				// TamaÒo (en bytes) del Gfx
+		NF_SPR256VRAM[screen][n].size = 0;				// Tama√±o (en bytes) del Gfx
 		NF_SPR256VRAM[screen][n].width = 0;				// Ancho del Gfx
 		NF_SPR256VRAM[screen][n].height = 0;			// Altura del Gfx
 		NF_SPR256VRAM[screen][n].address = 0;			// Posicion en la VRAM
 		NF_SPR256VRAM[screen][n].ramid = 0;				// Numero de Slot en RAM del que provienes
-		NF_SPR256VRAM[screen][n].framesize = 0;			// TamaÒo del frame (en bytes)
+		NF_SPR256VRAM[screen][n].framesize = 0;			// Tama√±o del frame (en bytes)
 		NF_SPR256VRAM[screen][n].lastframe = 0;			// Ultimo frame
 		NF_SPR256VRAM[screen][n].keepframes = false;	// Si es un Sprite animado, debes de mantener los frames en RAM ?
 		NF_SPR256VRAM[screen][n].inuse = false;			// Esta en uso ?
@@ -131,7 +131,7 @@ void NF_InitSpriteSys(int screen, ...) {
 		NF_SPRITEOAM[screen][n].y = 0;				// Coordenada Y del Sprite (0 por defecto)
 		NF_SPRITEOAM[screen][n].layer = 0;			// Prioridad en las capas (0 por defecto)
 		NF_SPRITEOAM[screen][n].pal = 0;			// Paleta que usaras (0 por defecto)
-		NF_SPRITEOAM[screen][n].size = SpriteSize_8x8;					// TamaÒo del Sprite (macro) (8x8 por defecto)
+		NF_SPRITEOAM[screen][n].size = SpriteSize_8x8;					// Tama√±o del Sprite (macro) (8x8 por defecto)
 		NF_SPRITEOAM[screen][n].color = SpriteColorFormat_256Color;		// Modo de color (macro) (256 colores)
 		NF_SPRITEOAM[screen][n].gfx = NULL;				// Puntero al grafico usado
 		NF_SPRITEOAM[screen][n].rot = -1;				// Id de rotacion (-1 por defecto) (0 - 31 Id de rotacion)
@@ -142,7 +142,7 @@ void NF_InitSpriteSys(int screen, ...) {
 		NF_SPRITEOAM[screen][n].mosaic = false;			// Mosaico ("NO" por defecto)
 		NF_SPRITEOAM[screen][n].gfxid = 0;				// Numero de Gfx usado
 		NF_SPRITEOAM[screen][n].frame = 0;				// Frame actual
-		NF_SPRITEOAM[screen][n].framesize = 0;			// TamaÒo del frame (en bytes)
+		NF_SPRITEOAM[screen][n].framesize = 0;			// Tama√±o del frame (en bytes)
 		NF_SPRITEOAM[screen][n].lastframe = 0;			// Ultimo frame
 		NF_SPRITEOAM[screen][n].created = false;		// Esta creado este sprite ?
 	}
@@ -160,7 +160,7 @@ void NF_InitSpriteSys(int screen, ...) {
 	NF_SPRVRAM[screen].inarow = NF_SPRVRAM[screen].max;		// Memoria VRAM contigua
 	for (n = 0; n < 128; n ++) {
 		NF_SPRVRAM[screen].pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_SPRVRAM[screen].size[n] = 0;		// TamaÒo del bloque libre para reusar
+		NF_SPRVRAM[screen].size[n] = 0;		// Tama√±o del bloque libre para reusar
 	}
 
 	// Inicializa los datos de las paletas
@@ -233,7 +233,7 @@ void NF_LoadSpriteGfx(const char* file, u16 id,  u16 width, u16 height) {
 	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaÒo del archivo
+		// Obten el tama√±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		NF_SPR256GFX[id].size = ftell(file_id);
 		rewind(file_id);
@@ -278,7 +278,7 @@ void NF_UnloadSpriteGfx(u16 id) {
 
 	// Y reinicia las variables
 	NF_BUFFER_SPR256GFX[id] = NULL;			// Inicializa puntero
-	NF_SPR256GFX[id].size = 0;				// TamaÒo (en bytes) del grafico (GFX)
+	NF_SPR256GFX[id].size = 0;				// Tama√±o (en bytes) del grafico (GFX)
 	NF_SPR256GFX[id].width = 0;				// Ancho del Gfx
 	NF_SPR256GFX[id].height = 0;			// Altura del Gfx
 	NF_SPR256GFX[id].available = true;		// Disponibilidat del Slot
@@ -290,7 +290,7 @@ void NF_UnloadSpriteGfx(u16 id) {
 // Funcion NF_LoadSpritePal();
 void NF_LoadSpritePal(const char* file, u8 id) {
 
-	// Variable temporal del tamaÒo de la paleta
+	// Variable temporal del tama√±o de la paleta
 	u32 pal_size = 0;
 
 	// Verifica el rango de Id's
@@ -317,12 +317,12 @@ void NF_LoadSpritePal(const char* file, u8 id) {
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaÒo del archivo
+		// Obten el tama√±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_SPR256PAL[id].size = pal_size;
 		rewind(file_id);
-		// Si el tamaÒo es inferior a 512 bytes, ajustalo
+		// Si el tama√±o es inferior a 512 bytes, ajustalo
 		if (NF_SPR256PAL[id].size < 512) NF_SPR256PAL[id].size = 512;
 		// Reserva el espacio en RAM
 		NF_BUFFER_SPR256PAL[id] = (char*) calloc (NF_SPR256PAL[id].size, sizeof(char));
@@ -361,7 +361,7 @@ void NF_UnloadSpritePal(u8 id) {
 
 	// Y reinicia las variables
 	NF_BUFFER_SPR256PAL[id] = NULL;		// Inicializa puntero
-	NF_SPR256PAL[id].size = 0;			// TamaÒo (en bytes) de la paleta (PAL)
+	NF_SPR256PAL[id].size = 0;			// Tama√±o (en bytes) de la paleta (PAL)
 	NF_SPR256PAL[id].available = true;	// Disponibilidat del Slot
 
 }
@@ -394,14 +394,14 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 	// Variables de uso general
 	s16 n = 0;				// General
 	s16 id = 255;			// Id del posible bloque libre
-	s16 last_reuse = 0;		// N∫ del ultimo bloque reusable
-	u32 gfxsize = 0;		// TamaÒo de los datos que se copiaran
-	u32 size = 0;			// Diferencia de tamaÒos entre bloque libre y datos
+	s16 last_reuse = 0;		// N¬∫ del ultimo bloque reusable
+	u32 gfxsize = 0;		// Tama√±o de los datos que se copiaran
+	u32 size = 0;			// Diferencia de tama√±os entre bloque libre y datos
 	u8 width = 0;			// Calculo de las medidas
 	u8 height = 0;
 	bool organize = true;	// Se debe de reorganizar el array de bloques libres ?
 
-	// Auto calcula el tamaÒo de 1 frame
+	// Auto calcula el tama√±o de 1 frame
 	width = (NF_SPR256GFX[ram].width >> 3);		// (width / 8)
 	height = (NF_SPR256GFX[ram].height >> 3);	// (height / 8)
 	NF_SPR256VRAM[screen][vram].framesize = ((width * height) << 6);	// ((width * height) * 64)
@@ -409,7 +409,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 	NF_SPR256VRAM[screen][vram].lastframe = ((int)(NF_SPR256GFX[ram].size / NF_SPR256VRAM[screen][vram].framesize)) - 1;
 	NF_SPR256VRAM[screen][vram].inuse = true;						// Slot ocupado
 
-	// Calcula el tamaÒo del grafico a copiar segun si debes o no copiar todos los frames
+	// Calcula el tama√±o del grafico a copiar segun si debes o no copiar todos los frames
 	if (keepframes) {	// Si debes de mantener los frames en RAM, solo copia el primero
 		gfxsize = NF_SPR256VRAM[screen][vram].framesize;
 	} else {			// Si no, copialos todos
@@ -424,20 +424,20 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 		NF_Error(113, "Sprites", gfxsize);
 	}
 
-	// Si hay que aprovechar algun bloque borrado... (tamaÒo identico, preferente)
+	// Si hay que aprovechar algun bloque borrado... (tama√±o identico, preferente)
 	if (NF_SPRVRAM[screen].deleted > 0) {
-		// Busca un bloque vacio del tamaÒo identico
+		// Busca un bloque vacio del tama√±o identico
 		for (n = 0; n < NF_SPRVRAM[screen].deleted; n ++) {
-			if (NF_SPRVRAM[screen].size[n] == gfxsize) {		// Si el bloque tiene el tamaÒo suficiente
+			if (NF_SPRVRAM[screen].size[n] == gfxsize) {		// Si el bloque tiene el tama√±o suficiente
 				id = n;		// Guarda la Id
 				n = NF_SPRVRAM[screen].deleted;	// y sal
 			}
 		}
-		// Si no habia ningun bloque de tamaÒo identico, busca el mas parecido (produce fragmentacion)
+		// Si no habia ningun bloque de tama√±o identico, busca el mas parecido (produce fragmentacion)
 		if (id == 255) {
-			// Busca un bloque vacio del tamaÒo suficiente
+			// Busca un bloque vacio del tama√±o suficiente
 			for (n = 0; n < NF_SPRVRAM[screen].deleted; n ++) {
-				if (NF_SPRVRAM[screen].size[n] > gfxsize) {		// Si el bloque tiene el tamaÒo suficiente
+				if (NF_SPRVRAM[screen].size[n] > gfxsize) {		// Si el bloque tiene el tama√±o suficiente
 					id = n;		// Guarda la Id
 					n = NF_SPRVRAM[screen].deleted;	// y sal
 				}
@@ -445,7 +445,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 		}
 	}
 	
-	// Si hay algun bloque borrado libre del tamaÒo suficiente...
+	// Si hay algun bloque borrado libre del tama√±o suficiente...
 	if (id != 255) {
 
 		// Transfiere el grafico a la VRAM
@@ -453,18 +453,18 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 		// Guarda el puntero donde lo has almacenado
 		NF_SPR256VRAM[screen][vram].address = NF_SPRVRAM[screen].pos[id];
 
-		// Si no has usado todo el tamaÒo, deja constancia
+		// Si no has usado todo el tama√±o, deja constancia
 		if (gfxsize < NF_SPRVRAM[screen].size[id]) {
 
-			// Calcula el tamaÒo del nuevo bloque libre
+			// Calcula el tama√±o del nuevo bloque libre
 			size = (NF_SPRVRAM[screen].size[id] - gfxsize);
 			// Actualiza los datos
 			NF_SPRVRAM[screen].pos[id] += gfxsize;			// Nueva direccion
-			NF_SPRVRAM[screen].size[id] = size;				// Nuevo tamaÒo
+			NF_SPRVRAM[screen].size[id] = size;				// Nuevo tama√±o
 			NF_SPRVRAM[screen].fragmented -= gfxsize;		// Actualiza el contador de VRAM fragmentada
 			organize = false;								// No se debe de reorganizar el array de bloques
 
-		} else {	// Si has usado todo el tamaÒo, deja constancia
+		} else {	// Si has usado todo el tama√±o, deja constancia
 
 			NF_SPRVRAM[screen].fragmented -= NF_SPRVRAM[screen].size[id];	// Actualiza el contador de VRAM fragmentada
 
@@ -480,12 +480,12 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 			) {
 				// Coloca los valores de la ultima posicion en esta
 				NF_SPRVRAM[screen].pos[id] = NF_SPRVRAM[screen].pos[last_reuse];		// Nueva direccion
-				NF_SPRVRAM[screen].size[id] = NF_SPRVRAM[screen].size[last_reuse];		// Nuevo tamaÒo
+				NF_SPRVRAM[screen].size[id] = NF_SPRVRAM[screen].size[last_reuse];		// Nuevo tama√±o
 			}
 			NF_SPRVRAM[screen].deleted --;		// Actualiza el contador de bloques libres, borrando el ultimo registro
 		}
 
-	} else {	// Si no habia ningun bloque borrado o con el tamaÒo suficiente, colacalo al final de la VRAM ocupada
+	} else {	// Si no habia ningun bloque borrado o con el tama√±o suficiente, colacalo al final de la VRAM ocupada
 
 		// Actualiza la VRAM contigua disponible (mayor bloque libre al final)
 		NF_SPRVRAM[screen].inarow -= gfxsize;
@@ -507,7 +507,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 	}
 
 	// Guarda los datos del Gfx que se copiara a la VRAM.
-	NF_SPR256VRAM[screen][vram].size = gfxsize;						// TamaÒo en bytes de los datos copiados
+	NF_SPR256VRAM[screen][vram].size = gfxsize;						// Tama√±o en bytes de los datos copiados
 	NF_SPR256VRAM[screen][vram].width = NF_SPR256GFX[ram].width;	// Alto (px)
 	NF_SPR256VRAM[screen][vram].height = NF_SPR256GFX[ram].height;	// Ancho (px)
 	NF_SPR256VRAM[screen][vram].ramid = ram;						// Slot RAM de origen
@@ -531,7 +531,7 @@ void NF_FreeSpriteGfx(u8 screen, u16 id) {
 	// Actualiza la cantidad de VRAM disponible
 	NF_SPRVRAM[screen].free += NF_SPR256VRAM[screen][id].size;
 
-	// Guarda la posicion y tamaÒo del bloque borrado para su reutilizacion
+	// Guarda la posicion y tama√±o del bloque borrado para su reutilizacion
 	NF_SPRVRAM[screen].pos[NF_SPRVRAM[screen].deleted] = NF_SPR256VRAM[screen][id].address;
 	NF_SPRVRAM[screen].size[NF_SPRVRAM[screen].deleted] = NF_SPR256VRAM[screen][id].size;
 
@@ -542,11 +542,11 @@ void NF_FreeSpriteGfx(u8 screen, u16 id) {
 	NF_SPRVRAM[screen].fragmented += NF_SPR256VRAM[screen][id].size;
 
 	// Reinicia los datos de esta Id. de gfx
-	NF_SPR256VRAM[screen][id].size = 0;			// TamaÒo en bytes
+	NF_SPR256VRAM[screen][id].size = 0;			// Tama√±o en bytes
 	NF_SPR256VRAM[screen][id].width = 0;		// Alto (px)
 	NF_SPR256VRAM[screen][id].height = 0;		// Ancho (px)
 	NF_SPR256VRAM[screen][id].address = 0;		// Puntero en VRAM
-	NF_SPR256VRAM[screen][id].framesize = 0;	// TamaÒo del frame (en bytes)
+	NF_SPR256VRAM[screen][id].framesize = 0;	// Tama√±o del frame (en bytes)
 	NF_SPR256VRAM[screen][id].lastframe = 0;	// Ultimo frame
 	NF_SPR256VRAM[screen][id].inuse = false;
 
@@ -571,7 +571,7 @@ void NF_VramSpriteGfxDefrag(u8 screen) {
 	}
 
 	char* address[128];		// Guarda la direccion en RAM
-	u32 size[128];			// Guarda el tamaÒo
+	u32 size[128];			// Guarda el tama√±o
 	u32 ram = 0;			// Puntero inicial de RAM
 	u8 n = 0;				// Variable General
 	u32 frame_address = 0;	// Guarda la direccion de VRAM del frame
@@ -583,7 +583,7 @@ void NF_VramSpriteGfxDefrag(u8 screen) {
 		if (NF_SPR256VRAM[screen][n].inuse) {
 			// Copia el Gfx a la RAM
 			address[n] = (buffer + ram);		// Calcula el puntero
-			size[n] = NF_SPR256VRAM[screen][n].size;		// Almacena el tamaÒo
+			size[n] = NF_SPR256VRAM[screen][n].size;		// Almacena el tama√±o
 			NF_DmaMemCopy(address[n], (void*)NF_SPR256VRAM[screen][n].address, size[n]);	// Copialo a la VRAM
 			ram += size[n];		// Siguiente posicion en RAM (relativa)
 		}
@@ -597,7 +597,7 @@ void NF_VramSpriteGfxDefrag(u8 screen) {
 	NF_SPRVRAM[screen].inarow = NF_SPRVRAM[screen].max;		// Memoria VRAM contigua
 	for (n = 0; n < 128; n ++) {
 		NF_SPRVRAM[screen].pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_SPRVRAM[screen].size[n] = 0;		// TamaÒo del bloque libre para reusar
+		NF_SPRVRAM[screen].size[n] = 0;		// Tama√±o del bloque libre para reusar
 	}
 	// Aplica la direccion de inicio de la VRAM
 	if (screen == 0) {
@@ -737,9 +737,9 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 	// Informa al array de OAM de que el sprite se ha creado
 	NF_SPRITEOAM[screen][id].created = true;
 
-	// Informa al array de OAM del tamaÒo
+	// Informa al array de OAM del tama√±o
 	if ((NF_SPR256VRAM[screen][gfx].width == 8) && (NF_SPR256VRAM[screen][gfx].height == 8)) {	// 8x8
-		if (NF_SPRVRAM[screen].max != 131072) {		// En modo 1D_128, este tamaÒo es ilegal
+		if (NF_SPRVRAM[screen].max != 131072) {		// En modo 1D_128, este tama√±o es ilegal
 			NF_SPRITEOAM[screen][id].size = SpriteSize_8x8;
 		} else {
 			NF_Error(120, NULL, id);
@@ -782,7 +782,7 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 	// Informa al array de OAM del ultimo frame del Sprite
 	NF_SPRITEOAM[screen][id].lastframe = NF_SPR256VRAM[screen][gfx].lastframe;
 
-	// Informa al array de OAM del tamaÒo del frame del Sprite (en bytes)
+	// Informa al array de OAM del tama√±o del frame del Sprite (en bytes)
 	NF_SPRITEOAM[screen][id].framesize = NF_SPR256VRAM[screen][gfx].framesize;
 
 	// Por defecto, el primer frame (0)
@@ -813,7 +813,7 @@ void NF_DeleteSprite(u8 screen, u8 id) {
 	NF_SPRITEOAM[screen][id].y = 0;			// Coordenada Y del Sprite (0 por defecto)
 	NF_SPRITEOAM[screen][id].layer = 0;		// Prioridad en las capas (0 por defecto)
 	NF_SPRITEOAM[screen][id].pal = 0;		// Paleta que usaras (0 por defecto)
-	NF_SPRITEOAM[screen][id].size = SpriteSize_8x8;					// TamaÒo del Sprite (macro) (8x8 por defecto)
+	NF_SPRITEOAM[screen][id].size = SpriteSize_8x8;					// Tama√±o del Sprite (macro) (8x8 por defecto)
 	NF_SPRITEOAM[screen][id].color = SpriteColorFormat_256Color;	// Modo de color (macro) (256 colores)
 	NF_SPRITEOAM[screen][id].gfx = NULL;			// Puntero al grafico usado
 	NF_SPRITEOAM[screen][id].rot = -1;				// Id de rotacion (-1 ninguno) (0 - 31 Id de rotacion)
@@ -824,7 +824,7 @@ void NF_DeleteSprite(u8 screen, u8 id) {
 	NF_SPRITEOAM[screen][id].mosaic = false;		// Mosaico ("NO" por defecto)
 	NF_SPRITEOAM[screen][id].gfxid = 0;				// Numero de Gfx usado
 	NF_SPRITEOAM[screen][id].frame = 0;				// Frame actual
-	NF_SPRITEOAM[screen][id].framesize = 0;			// TamaÒo del frame (en bytes)
+	NF_SPRITEOAM[screen][id].framesize = 0;			// Tama√±o del frame (en bytes)
 	NF_SPRITEOAM[screen][id].lastframe = 0;			// Ultimo frame
 	NF_SPRITEOAM[screen][id].created = false;		// Esta creado este sprite ?
 
@@ -846,7 +846,7 @@ void NF_SpriteOamSet(u8 screen) {
 				NF_SPRITEOAM[screen][n].y,				// Coordenada Y del Sprite
 				NF_SPRITEOAM[screen][n].layer,			// Prioridad en las capas
 				NF_SPRITEOAM[screen][n].pal,			// Paleta que usaras
-				NF_SPRITEOAM[screen][n].size,			// TamaÒo del Sprite (macro)
+				NF_SPRITEOAM[screen][n].size,			// Tama√±o del Sprite (macro)
 				NF_SPRITEOAM[screen][n].color,			// Modo de color (macro)
 				NF_SPRITEOAM[screen][n].gfx,			// Puntero al grafico usado
 				NF_SPRITEOAM[screen][n].rot,			// Valor de la rotacion
@@ -866,7 +866,7 @@ void NF_SpriteOamSet(u8 screen) {
 				NF_SPRITEOAM[screen][n].y,				// Coordenada Y del Sprite
 				NF_SPRITEOAM[screen][n].layer,			// Prioridad en las capas
 				NF_SPRITEOAM[screen][n].pal,			// Paleta que usaras
-				NF_SPRITEOAM[screen][n].size,			// TamaÒo del Sprite (macro)
+				NF_SPRITEOAM[screen][n].size,			// Tama√±o del Sprite (macro)
 				NF_SPRITEOAM[screen][n].color,			// Modo de color (macro)
 				NF_SPRITEOAM[screen][n].gfx,			// Puntero al grafico usado
 				NF_SPRITEOAM[screen][n].rot,			// Valor de la rotacion

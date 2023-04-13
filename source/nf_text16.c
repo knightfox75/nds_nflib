@@ -32,7 +32,7 @@
 // Funcion NF_LoadTextFont16();
 void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height, u8 rotation) {
 
-	// Variable temporal del tamaÒo de la paleta
+	// Variable temporal del tama√±o de la paleta
 	u32 pal_size = 0;
 
 	// Busca un slot libre
@@ -73,7 +73,7 @@ void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height
 	sprintf(filename, "%s/%s.fnt", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaÒo del archivo
+		// Obten el tama√±o del archivo
 		NF_TILEDBG[slot].tilesize = (NF_TEXT_FONT_CHARS_16 << 7);	// 1 letra 128 bytes (letras * 128)
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGTILES[slot] = (char*) calloc (NF_TILEDBG[slot].tilesize, sizeof(char));
@@ -109,12 +109,12 @@ void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaÒo del archivo
+		// Obten el tama√±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_TILEDBG[slot].palsize = pal_size;
 		rewind(file_id);
-		// Si el tamaÒo es inferior a 512 bytes, ajustalo
+		// Si el tama√±o es inferior a 512 bytes, ajustalo
 		if (NF_TILEDBG[slot].palsize < 512) NF_TILEDBG[slot].palsize = 512;
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGPAL[slot] = (char*) calloc (NF_TILEDBG[slot].palsize, sizeof(char));
@@ -169,11 +169,11 @@ void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name) {
 			NF_TEXT[screen][layer].width = ((NF_TILEDBG[slot].width >> 3) - 1);
 			NF_TEXT[screen][layer].height = ((NF_TILEDBG[slot].height >> 4) - 1);
 			break;
-		case 1:	// 90∫ derecha
+		case 1:	// 90¬∫ derecha
 			NF_TEXT[screen][layer].width = ((NF_TILEDBG[slot].width >> 4) - 1);
 			NF_TEXT[screen][layer].height = ((NF_TILEDBG[slot].height >> 3) - 1);
 			break;
-		case 2:	// 90∫ izquierda
+		case 2:	// 90¬∫ izquierda
 			NF_TEXT[screen][layer].width = ((NF_TILEDBG[slot].width >> 4) - 1);
 			NF_TEXT[screen][layer].height = ((NF_TILEDBG[slot].height >> 3) - 1);
 			break;
@@ -225,62 +225,62 @@ void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 					string[n] = 200;
 					break;
 				// Caracteres especiales
-				case 199:	// «
+				case 199:	// √á
 					string[n] = 96;
 					break;
-				case 231:	// Á
+				case 231:	// √ß
 					string[n] = 97;
 					break;
-				case 209:	// —
+				case 209:	// √ë
 					string[n] = 98;
 					break;
-				case 241:	// Ò
+				case 241:	// √±
 					string[n] = 99;
 					break;
 				// Acentos Mayusculas
-				case 193:	// ¡
+				case 193:	// √Å
 					string[n] = 100;
 					break;
-				case 201:	// …
+				case 201:	// √â
 					string[n] = 101;
 					break;
-				case 205:	// Õ
+				case 205:	// √ç
 					string[n] = 102;
 					break;
-				case 211:	// ”
+				case 211:	// √ì
 					string[n] = 103;
 					break;
-				case 218:	// ⁄
+				case 218:	// √ö
 					string[n] = 104;
 					break;
 				// Acentos Minusculas
-				case 225:	// ·
+				case 225:	// √°
 					string[n] = 105;
 					break;
-				case 233:	// È
+				case 233:	// √©
 					string[n] = 106;
 					break;
-				case 237:	// Ì
+				case 237:	// √≠
 					string[n] = 107;
 					break;
-				case 243:	// Û
+				case 243:	// √≥
 					string[n] = 108;
 					break;
-				case 250:	// ˙
+				case 250:	// √∫
 					string[n] = 109;
 					break;
 				// Dieresis
-				case 239:	// Ô
+				case 239:	// √Ø
 					string[n] = 110;
 					break;
-				case 252:	// ¸
+				case 252:	// √º
 					string[n] = 111;
 					break;
-				// Admiracion e interrogante (EspaÒol)
-				case 161:	// °
+				// Admiracion e interrogante (Espa√±ol)
+				case 161:	// ¬°
 					string[n] = 112;
 					break;
-				case 191:	// ø
+				case 191:	// ¬ø
 					string[n] = 113;
 					break;
 				// Caracter invalido
@@ -327,7 +327,7 @@ void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 			}
 			break;
 
-		case 1:		// 90∫ derecha
+		case 1:		// 90¬∫ derecha
 			// Traspasa las coordenadas
 			tx = (NF_TEXT[screen][layer].width - y);
 			ty = x;
@@ -355,7 +355,7 @@ void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 			}
 			break;
 
-		case 2:		// 90∫ izquierda
+		case 2:		// 90¬∫ izquierda
 			// Traspasa las coordenadas
 			tx = y;
 			ty = (NF_TEXT[screen][layer].height - x);
@@ -408,16 +408,16 @@ void NF_ClearTextLayer16(u8 screen, u8 layer) {
 		NF_Error(114, NULL, screen);
 	}
 
-	// Calcula el tamaÒo del buffer (segun la rotacion)
+	// Calcula el tama√±o del buffer (segun la rotacion)
 	u32 size = 0;
 	switch (NF_TEXT[screen][layer].rotation) {
 		case 0:	// Sin rotacion
 			size = (((NF_TEXT[screen][layer].width + 1) * ((NF_TEXT[screen][layer].height + 1) << 1)) << 1);
 			break;
-		case 1:	// 90∫ a la derecha
+		case 1:	// 90¬∫ a la derecha
 			size = ((((NF_TEXT[screen][layer].width + 1) << 1) * (NF_TEXT[screen][layer].height + 1)) << 1);
 			break;
-		case 2:	// 90∫ a la izquierda
+		case 2:	// 90¬∫ a la izquierda
 			size = ((((NF_TEXT[screen][layer].width + 1) << 1) * (NF_TEXT[screen][layer].height + 1)) << 1);
 			break;
 	}

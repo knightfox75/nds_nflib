@@ -29,7 +29,7 @@ extern char* NF_BUFFER_SPR256PAL[NF_SLOTS_SPR256PAL];
 
 // Define la estructura de datos de los buffers (GFX)
 typedef struct {
-	u32 size;			// Tamaño (en bytes) del grafico (GFX)
+	u32 size;			// TamaÃ±o (en bytes) del grafico (GFX)
 	u16 width;			// Ancho del Gfx
 	u16 height;			// Altura del Gfx
 	bool available;		// Disponibilidat del Slot
@@ -38,19 +38,19 @@ extern NF_TYPE_SPR256GFX_INFO NF_SPR256GFX[NF_SLOTS_SPR256GFX];		// Buffers de G
 
 // Define la estructura de datos de los buffers (PAL)
 typedef struct {
-	u32 size;			// Tamaño (en bytes) de la paleta (PAL)
+	u32 size;			// TamaÃ±o (en bytes) de la paleta (PAL)
 	bool available;		// Disponibilidat del Slot
 } NF_TYPE_SPR256PAL_INFO;
 extern NF_TYPE_SPR256PAL_INFO NF_SPR256PAL[NF_SLOTS_SPR256PAL];		// Buffers de Paletas
 
 // Define la estructura de Gfx en VRAM
 typedef struct {
-	u32 size;			// Tamaño (en bytes) del Gfx
+	u32 size;			// TamaÃ±o (en bytes) del Gfx
 	u16 width;			// Ancho del Gfx
 	u16 height;			// Altura del Gfx
 	u32 address;			// Posicion en la VRAM
 	u16 ramid;			// Numero de Slot en RAM del que provienes
-	u16 framesize;		// Tamaño del frame (en bytes)
+	u16 framesize;		// TamaÃ±o del frame (en bytes)
 	u16 lastframe;		// Ultimo frame
 	bool keepframes;	// Si es un Sprite animado, debes de mantener los frames en RAM ?
 	bool inuse;			// Disponibilidat del Slot
@@ -71,7 +71,7 @@ typedef struct {
 	s16 y;				// Coordenada Y del Sprite
 	u8 layer;			// Prioridad en las capas
 	u8 pal;				// Paleta que usaras
-	u32 size;			// Tamaño del Sprite (macro)
+	u32 size;			// TamaÃ±o del Sprite (macro)
 	u32 color;			// Modo de color (macro)
 	u32* gfx;			// Puntero al grafico usado
 	s8 rot;				// Id de rotacion (-1 ninguno) (0 - 31 Id de rotacion)
@@ -82,7 +82,7 @@ typedef struct {
 	bool mosaic;		// Mosaico
 	u16 gfxid;			// Id de Gfx usado
 	u16 frame;			// Frame actual
-	u16 framesize;		// Tamaño del frame (en bytes)
+	u16 framesize;		// TamaÃ±o del frame (en bytes)
 	u16 lastframe;		// Ultimo frame
 	bool created;		// Esta creado este sprite ?
 } NF_TYPE_SPRITEOAM_INFO;
@@ -94,7 +94,7 @@ typedef struct {
 	u32 next;			// Siguiente posicion libre
 	u32 last;			// Ultima posicion usada
 	u32 pos[128];		// Posicion en VRAM para reusar despues de un borrado
-	u32 size[128];		// Tamaño del bloque libre para reusar
+	u32 size[128];		// TamaÃ±o del bloque libre para reusar
 	u16 deleted;		// Numero de bloques borrados
 	s32 fragmented;		// Memoria VRAM fragmentada
 	s32 inarow;			// Memoria VRAM contigua

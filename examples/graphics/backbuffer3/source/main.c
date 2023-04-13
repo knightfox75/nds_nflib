@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
 			in_touch = false;			// Ya no se esta tocando el touchpad
 		}
 
-		// Si se ha tocado el touchpad y la ventana es del tamaño suficiente...
+		// Si se ha tocado el touchpad y la ventana es del tamaÃ±o suficiente...
 		if (in_touch && (xa != xb) && (ya != yb)) {
 			// Calcula los limites de la ventana
 			if (xa < xb) {

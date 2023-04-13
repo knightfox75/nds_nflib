@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
 		if (keys & KEY_X) NF_SetTileOfMap(1, 2, (x >> 3), (y >> 3), 3);
 		NF_UpdateVramMap(1, 2);
 
-		// Imprime el nº de tile
+		// Imprime el nÂº de tile
 		tilenum = NF_GetTileOfMap(1, 2, (x >> 3),(y >> 3));
 		switch (tilenum) {
 			case 0:

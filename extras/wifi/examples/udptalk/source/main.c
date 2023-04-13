@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
 						// Debes enviar datos...
 						sprintf(temp, "%05lu", contador);
 					} else {
-						// o la señal de salida?
+						// o la seÃ±al de salida?
 						sprintf(temp, "Exit");
 					}
 
@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
 				if (_GetData() > 0) {
 					// Imprime los datos recibidos
 					printf("Recivido: %s\n", NF_RECV_BUFFER);
-					// Si has recibido la señal de salida...
+					// Si has recibido la seÃ±al de salida...
 					if (strcmp(NF_RECV_BUFFER, "Exit") == 0) loop = false;
 				} else {
 					// Si no hay datos, esperalos

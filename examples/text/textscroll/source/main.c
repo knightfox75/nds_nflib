@@ -77,8 +77,8 @@ int main(int argc, char **argv) {
 	NF_LoadTiledBg("bg/layer3", "moon", 256, 256);		// Carga el fondo para la capa 3, pantalla inferior
 
 	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont("fnt/default", "up", 256, 768, 0);	// Carga la seccion "normal" de la fuente, tamaño del mapa 256x256
-	NF_LoadTextFont("fnt/default", "down", 768, 256, 2);	// Carga la seccion "normal" de la fuente, tamaño del mapa 256x256
+	NF_LoadTextFont("fnt/default", "up", 256, 768, 0);	// Carga la seccion "normal" de la fuente, tamaÃ±o del mapa 256x256
+	NF_LoadTextFont("fnt/default", "down", 768, 256, 2);	// Carga la seccion "normal" de la fuente, tamaÃ±o del mapa 256x256
 
 	// Crea los fondos de la pantalla superior
 	NF_CreateTiledBg(0, 3, "moon");

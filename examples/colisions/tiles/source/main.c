@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
 		sprintf(mytext,"x:%d  y:%d ", x, y);
 		NF_WriteText(0, 2, 1, 1, mytext);
 
-		// Imprime el nº de tile
+		// Imprime el nÂº de tile
 		switch (NF_GetTile(0, x, y)) {
 			case 0:
 				sprintf(mytext,"Tile: Vacio / Void  ");

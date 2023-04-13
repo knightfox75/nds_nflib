@@ -27,7 +27,7 @@ extern "C" {
 // Define los Buffers para almacenar datos de 16 bits
 typedef struct {
 	u16* buffer;	// Buffer de datos
-	u32 size;		// Tamaño del buffer
+	u32 size;		// TamaÃ±o del buffer
 	u16 width;		// Ancho de la imagen (256 max)
 	u16 height;		// Altura de la imagen (256 max)
 	bool inuse;		// Esta en uso el buffer?
@@ -40,9 +40,9 @@ extern u16* NF_16BITS_BACKBUFFER[2];
 // Define los Buffers para almacenar datos de 8 bits
 typedef struct {
 	u8* data;			// Buffer de datos
-	u32 data_size;		// Tamaño del buffer de datos
+	u32 data_size;		// TamaÃ±o del buffer de datos
 	u16* pal;			// Buffer para la paleta
-	u32 pal_size;		// Tamaño de la paleta
+	u32 pal_size;		// TamaÃ±o de la paleta
 	bool inuse;		// Esta en uso el buffer?
 } NF_TYPE_BG8B_INFO;
 extern NF_TYPE_BG8B_INFO NF_BG8B[NF_SLOTS_BG8B];	// Fondos indexados de 8 bits
@@ -112,7 +112,7 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode);
 // Funcion NF_Load16bitsBg();
 void NF_Load16bitsBg(const char* file, u8 slot);
 // Carga un Fondo BITMAP (en formato RAW) en el slot indicado,
-// de un tamaño maximo de 256x256 pixeles.
+// de un tamaÃ±o maximo de 256x256 pixeles.
 // Debes especificar el nombre de archivo sin extension.
 // El archivo debe ser un binario con extension .img
 
@@ -121,7 +121,7 @@ void NF_Load16bitsBg(const char* file, u8 slot);
 // Funcion NF_Load16bitsImage();
 void NF_Load16bitsImage(const char* file, u8 slot, u16 size_x, u16 size_y);
 // Carga una imagen BITMAP (en formato RAW) en el slot indicado,
-// de un tamaño maximo de 256x256 pixeles.
+// de un tamaÃ±o maximo de 256x256 pixeles.
 // Debes especificar el nombre de archivo sin extension.
 // El archivo debe ser un binario con extension .img
 // Todos los pixeles Magenta de la imagen (0xFF00FF) seran transparentes.

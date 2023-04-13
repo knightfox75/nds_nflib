@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 	// Ahora coloca los tiles en orden inverso para compensar la imagen
 	for (y = 0; y < 24; y ++) {
 		for (x = 0; x < 32; x ++) {
-			NF_SetTileOfMap(1, 3, (31 - x), (23 - y), mapa[x][y]);	// *** Usa esta linea para el efecto rotado 180บ
+			NF_SetTileOfMap(1, 3, (31 - x), (23 - y), mapa[x][y]);	// *** Usa esta linea para el efecto rotado 180ยบ
 			// NF_SetTileOfMap(1, 3, (31 - x), y, mapa[x][y]);		// *** Usa esta linea para el efecto espejo
 		}
 	}

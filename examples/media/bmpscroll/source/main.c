@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 		bottom = NF_BG16B[0].height;
 	}
 
-	// Calcula el tamaño de la miniatura y el desplazamiento para posicionarla en pantalla
+	// Calcula el tamaÃ±o de la miniatura y el desplazamiento para posicionarla en pantalla
 	if (NF_BG16B[0].width >= NF_BG16B[0].height) {	// Si la imagen es mas ancha que alta
 		mini_x = right;
 		mini_y = (int)((NF_BG16B[0].height * right) / NF_BG16B[0].width);

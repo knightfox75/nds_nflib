@@ -23,7 +23,7 @@
 
 // Defines de la red
 #define NF_MAX_INCOMMING_PENDING 1		// Peticiones de conexion maximas en cola
-#define NF_WIFI_BUFFER_SIZE 256			// Tamaño del buffer de comunicaciones
+#define NF_WIFI_BUFFER_SIZE 256			// TamaÃ±o del buffer de comunicaciones
 
 // Parametros de la RED
 extern struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
@@ -31,7 +31,7 @@ extern struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de
 // Estructura del socket
 extern s32 NF_SOCKET;			// Id del socket (servidor)
 extern s32 NF_CONNECTED;		// Resultado de la conexion
-extern s32 NF_SINSIZE;			// Tamaño de la Struct .SIN
+extern s32 NF_SINSIZE;			// TamaÃ±o de la Struct .SIN
 extern s32 NF_BYTES_RECIEVED;	// Bytes recibidos
 
 extern struct sockaddr_in NF_SA_SERVER;		// Estructura Socket Adress In (Servidor)

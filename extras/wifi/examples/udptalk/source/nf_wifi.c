@@ -31,7 +31,7 @@ struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
 // Estructura del socket
 s32 NF_SOCKET;			// Id del socket (servidor)
 s32 NF_CONNECTED;		// Resultado de la conexion
-s32 NF_SINSIZE;			// Tamaño de la Struct .SIN
+s32 NF_SINSIZE;			// TamaÃ±o de la Struct .SIN
 s32 NF_BYTES_RECIEVED;	// Bytes recibidos
 
 struct sockaddr_in NF_SA_SERVER;		// Estructura Socket Adress In (Servidor)
@@ -143,7 +143,7 @@ bool NF_WIFI_CreateUdpListener(u16 port) {
 	// Enlaza el socket a un puerto concreto
 	if ((bind(NF_SOCKET, (struct sockaddr*) &NF_SA_SERVER, sizeof(NF_SA_SERVER))) == -1) status = false;
 
-	// Tamaño del struct sockaddr
+	// TamaÃ±o del struct sockaddr
 	NF_SINSIZE = sizeof(struct sockaddr);
 
 	// Marca esta DS como servidor (recibe datos desde cualquier IP [CLIENTE])

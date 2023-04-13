@@ -58,9 +58,9 @@ void NF_InitTiledBgBuffers(void) {
 		NF_BUFFER_BGMAP[n] = NULL;			// Buffer para el map
 		NF_BUFFER_BGPAL[n] = NULL;			// Buffer para la paleta
 		sprintf(NF_TILEDBG[n].name, "xxxNONAMExxx");	// Nombre del Tileset
-		NF_TILEDBG[n].tilesize = 0;			// Tamaño del Tileset
-		NF_TILEDBG[n].mapsize = 0;			// Tamaño del Mapa
-		NF_TILEDBG[n].palsize = 0;			// Tamaño de la Paleta
+		NF_TILEDBG[n].tilesize = 0;			// TamaÃ±o del Tileset
+		NF_TILEDBG[n].mapsize = 0;			// TamaÃ±o del Mapa
+		NF_TILEDBG[n].palsize = 0;			// TamaÃ±o de la Paleta
 		NF_TILEDBG[n].width = 0;			// Ancho del Mapa
 		NF_TILEDBG[n].height = 0;			// Alto del Mapa
 		NF_TILEDBG[n].available = true;		// Disponibilidad
@@ -169,7 +169,7 @@ void NF_InitTiledBgSys(u8 screen) {
 // Funcion NF_LoadTiledBg();
 void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 
-	// Variable temporal del tamaño de la paleta
+	// Variable temporal del tamaÃ±o de la paleta
 	u32 pal_size = 0;
 
 	// Busca un slot libre
@@ -210,7 +210,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		NF_TILEDBG[slot].tilesize = ftell(file_id);
 		rewind(file_id);
@@ -230,9 +230,9 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	sprintf(filename, "%s/%s.map", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
-		NF_TILEDBG[slot].mapsize = ((((ftell(file_id) - 1) >> 11) + 1) << 11);	// Ajusta el tamaño a bloques de 2kb
+		NF_TILEDBG[slot].mapsize = ((((ftell(file_id) - 1) >> 11) + 1) << 11);	// Ajusta el tamaÃ±o a bloques de 2kb
 		rewind(file_id);
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGMAP[slot] = (char*) calloc (NF_TILEDBG[slot].mapsize, sizeof(char));
@@ -250,12 +250,12 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_TILEDBG[slot].palsize = pal_size;
 		rewind(file_id);
-		// Si el tamaño es inferior a 512 bytes, ajustalo
+		// Si el tamaÃ±o es inferior a 512 bytes, ajustalo
 		if (NF_TILEDBG[slot].palsize < 512) NF_TILEDBG[slot].palsize = 512;
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGPAL[slot] = (char*) calloc (NF_TILEDBG[slot].palsize, sizeof(char));
@@ -283,7 +283,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 // Funcion NF_LoadTilesForBg();
 void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height, u16 tile_start, u16 tile_end) {
 
-	// Variable temporal del tamaño de los datos
+	// Variable temporal del tamaÃ±o de los datos
 	u32 tile_size = 0;
 	u32 pal_size = 0;
 
@@ -325,13 +325,13 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		tile_size = ftell(file_id);
 		rewind(file_id);
-		// Calcula el tamaño del tilesize a cargar
-		NF_TILEDBG[slot].tilesize = (((tile_end - tile_start) + 1) << 6);	// nº de tiles x 64 bytes
-		// Si el tamaño del Tilesed solicitado excede del tamaño de archivo, error
+		// Calcula el tamaÃ±o del tilesize a cargar
+		NF_TILEDBG[slot].tilesize = (((tile_end - tile_start) + 1) << 6);	// nÂº de tiles x 64 bytes
+		// Si el tamaÃ±o del Tilesed solicitado excede del tamaÃ±o de archivo, error
 		if (((tile_end + 1) << 6) > tile_size) {
 			NF_Error(106, "Tilenumber", (tile_size >> 6));
 		}
@@ -366,12 +366,12 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_TILEDBG[slot].palsize = pal_size;
 		rewind(file_id);
-		// Si el tamaño es inferior a 512 bytes, ajustalo
+		// Si el tamaÃ±o es inferior a 512 bytes, ajustalo
 		if (NF_TILEDBG[slot].palsize < 512) NF_TILEDBG[slot].palsize = 512;
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGPAL[slot] = (char*) calloc (NF_TILEDBG[slot].palsize, sizeof(char));
@@ -427,9 +427,9 @@ void NF_UnloadTiledBg(const char* name) {
 
 	// Resetea las variables para ese fondo
 	sprintf(NF_TILEDBG[slot].name, "xxxNONAMExxx");	// Nombre del Tileset
-	NF_TILEDBG[slot].tilesize = 0;					// Tamaño del Tileset
-	NF_TILEDBG[slot].mapsize = 0;					// Tamaño del Mapa
-	NF_TILEDBG[slot].palsize = 0;					// Tamaño de la Paleta
+	NF_TILEDBG[slot].tilesize = 0;					// TamaÃ±o del Tileset
+	NF_TILEDBG[slot].mapsize = 0;					// TamaÃ±o del Mapa
+	NF_TILEDBG[slot].palsize = 0;					// TamaÃ±o de la Paleta
 	NF_TILEDBG[slot].width = 0;						// Ancho del Mapa
 	NF_TILEDBG[slot].height = 0;					// Alto del Mapa
 	NF_TILEDBG[slot].available = true;				// Disponibilidad
@@ -470,7 +470,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	u8 tilesblocks = 0;
 	u8 basetiles = 0;
 
-	// Transfiere el tamaño del fondo
+	// Transfiere el tamaÃ±o del fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgwidth = NF_TILEDBG[slot].width;		// Ancho del fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgheight = NF_TILEDBG[slot].height;	// Altura del fondo
 	NF_TILEDBG_LAYERS[screen][layer].mapwidth = NF_TILEDBG[slot].width;		// Ancho del mapa
@@ -478,7 +478,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;							// Tipo de fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgslot = slot;							// Buffer de graficos usado
 
-	// Calcula el tipo y tamaño del mapa si es Infinito ( >512 )
+	// Calcula el tipo y tamaÃ±o del mapa si es Infinito ( >512 )
 	// ( >512 x n )
 	if ((NF_TILEDBG[slot].width >= 512) && (NF_TILEDBG[slot].height <= 256)) {
 		NF_TILEDBG_LAYERS[screen][layer].mapwidth = 512;
@@ -573,7 +573,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	}
 
 
-	// Obten el tamaño del fondo
+	// Obten el tamaÃ±o del fondo
 	u32 bg_size = 0;
 	// 256x256
 	if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 256) && (NF_TILEDBG_LAYERS[screen][layer].mapheight == 256)) {
@@ -733,8 +733,8 @@ void NF_DeleteTiledBg(u8 screen, u8 layer) {
 	u8 n;					// Uso general
 	u16 basetiles = 0;		// Base del Tileset
 	u16 basemap = 0;		// Base del Map
-	u16 tilesize = 0;		// Tamaño del Tileset
-	u16 mapsize = 0;		// Tamaño del Map
+	u16 tilesize = 0;		// TamaÃ±o del Tileset
+	u16 mapsize = 0;		// TamaÃ±o del Map
 
 	// Borra el Tileset de la VRAM
 	basetiles = NF_TILEDBG_LAYERS[screen][layer].tilebase;
@@ -819,9 +819,9 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 	// Obtiene las medidas en tiles del mapa
 	u16 size_x = (NF_TILEDBG_LAYERS[screen][layer].bgwidth >> 3);	// Tiles de ancho
 	u16 size_y = (NF_TILEDBG_LAYERS[screen][layer].bgheight >> 3);	// Tiles de alto
-	u16 block_x = (tile_x >> 5);			// nº de pantalla (X)
-	u16 block_y = (tile_y >> 5);			// nº de pantalla (Y)
-	u32 row_size = ((size_x >> 5) << 11);	// Tamaño en bytes de una fila de pantallas
+	u16 block_x = (tile_x >> 5);			// nÂº de pantalla (X)
+	u16 block_y = (tile_y >> 5);			// nÂº de pantalla (Y)
+	u32 row_size = ((size_x >> 5) << 11);	// TamaÃ±o en bytes de una fila de pantallas
 
 	// Protegete de los fuera de rango
 	if (tile_x > size_x) NF_Error(106, "Tile X", size_x);
@@ -891,7 +891,7 @@ void NF_UpdateVramMap(u8 screen, u8 layer) {
 	u32 address = 0;		// Direccion de destino
 	u32 mov_x = 0;		// Desplazamiento X
 	u32 mov_y = 0;		// Desplazamiento Y
-	u32 rowsize = 0;	// Tamaño de la fila de pantallas
+	u32 rowsize = 0;	// TamaÃ±o de la fila de pantallas
 
 	// Calcula la direccion base del mapa
 	if (screen == 0) {	// (VRAM_A)
@@ -1075,7 +1075,7 @@ u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 	// Obten los bytes
 	u8 hibyte = *(NF_BUFFER_BGMAP[NF_TILEDBG_LAYERS[screen][layer].bgslot] + (address + 1));
 
-	// Devuelve el nº de la paleta (4 ultimos bits del HI-Byte)
+	// Devuelve el nÂº de la paleta (4 ultimos bits del HI-Byte)
 	return ((hibyte >> 4) & 0x0F);
 
 }
@@ -1109,7 +1109,7 @@ void NF_LoadExBgPal(const char* file, u8 slot) {
 		NF_Error(106, "ExBgPal", (NF_SLOTS_EXBGPAL - 1));
 	}
 
-	// Variable temporal del tamaño de la paleta
+	// Variable temporal del tamaÃ±o de la paleta
 	u32 pal_size = 0;
 
 	// Vacia el buffer
@@ -1126,12 +1126,12 @@ void NF_LoadExBgPal(const char* file, u8 slot) {
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_EXBGPAL[slot].palsize = pal_size;
 		rewind(file_id);
-		// Si el tamaño es inferior a 512 bytes, ajustalo
+		// Si el tamaÃ±o es inferior a 512 bytes, ajustalo
 		if (NF_EXBGPAL[slot].palsize < 512) NF_EXBGPAL[slot].palsize = 512;
 		// Reserva el espacio en RAM
 		NF_EXBGPAL[slot].buffer = (char*) calloc (NF_EXBGPAL[slot].palsize, sizeof(char));
@@ -1169,7 +1169,7 @@ void NF_UnloadExBgPal(u8 slot) {
 	free(NF_EXBGPAL[slot].buffer);
 	NF_EXBGPAL[slot].buffer = NULL;
 
-	// Tamaño de la paleta a 0
+	// TamaÃ±o de la paleta a 0
 	NF_EXBGPAL[slot].palsize = 0;
 
 	// Guarda el estado del slot
@@ -1225,7 +1225,7 @@ void NF_SetExBgPal(u8 screen, u8 layer, u8 pal) {
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
-	// Tamaño del buffer
+	// TamaÃ±o del buffer
 	u32 mapsize = NF_TILEDBG[NF_TILEDBG_LAYERS[screen][layer].bgslot].mapsize;
 	// Variables comunes
 	u32 pos = 0;
@@ -1318,7 +1318,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 
 	switch (rotation) {
 
-		case 1:		// 90º a la derecha
+		case 1:		// 90Âº a la derecha
 			xb = 7;
 			yb = 0;
 			for (ya = 0; ya < 8; ya ++) {
@@ -1335,7 +1335,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 			}
 			break;
 
-		case 2:		// 90º a la izquierda
+		case 2:		// 90Âº a la izquierda
 			xb = 0;
 			yb = 7;
 			for (ya = 0; ya < 8; ya ++) {
@@ -1352,7 +1352,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 			}
 			break;
 
-		case 3:		// 180 º
+		case 3:		// 180 Âº
 			xb = 7;
 			yb = 7;
 			for (ya = 0; ya < 8; ya ++) {

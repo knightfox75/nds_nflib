@@ -28,7 +28,7 @@ extern char* NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 // Define la estructura de datos de los buffers (Audio)
 typedef struct {
 	bool available;		// Disponibilidat del Slot
-	u32 size;			// Tamaño (en bytes) del sonido
+	u32 size;			// TamaÃ±o (en bytes) del sonido
 	u16 freq;			// Frecuencia del sample
 	u8 format;			// Formato del sample
 } NF_TYPE_RAWSOUND_INFO;

@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
 
 			// Control de colisiones, caida
 			down = true;	// Flag de descenso arriba
-			// Busca pixel por pixel, si hay colisiones (pixel azul, nº4)
+			// Busca pixel por pixel, si hay colisiones (pixel azul, nÂº4)
 			for (n = 0; n < 16; n ++) {
 				if (NF_GetPoint(0, (x[b] + n), (y[b] + py[n])) == 4) down = false;
 			}

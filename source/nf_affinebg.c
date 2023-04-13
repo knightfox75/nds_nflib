@@ -110,11 +110,11 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 	if (((width == 256) && (height == 256)) || ((width == 512) && (height == 512))) {
 		// Medida Ok
 	} else {
-		// Error de tamaño
+		// Error de tamaÃ±o
 		NF_Error(117, name, 0);
 	}
 	
-	// Variable temporal del tamaño de la paleta
+	// Variable temporal del tamaÃ±o de la paleta
 	u32 pal_size = 0;
 
 	// Busca un slot libre
@@ -150,7 +150,7 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		NF_TILEDBG[slot].tilesize = ftell(file_id);
 		rewind(file_id);
@@ -167,7 +167,7 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 	fclose(file_id);		// Cierra el archivo
 	// swiWaitForVBlank();		// Espera al cierre del archivo (Usar en caso de corrupcion de datos)
 
-	// Verifica el tamaño del tileset (Menos de 256 tiles)
+	// Verifica el tamaÃ±o del tileset (Menos de 256 tiles)
 	if (NF_TILEDBG[slot].tilesize > 16384) NF_Error(117, name, 0);
 
 
@@ -175,9 +175,9 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 	sprintf(filename, "%s/%s.map", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
-		NF_TILEDBG[slot].mapsize = ((((ftell(file_id) - 1) >> 10) + 1) << 10);	// Ajusta el tamaño a bloques de 1kb
+		NF_TILEDBG[slot].mapsize = ((((ftell(file_id) - 1) >> 10) + 1) << 10);	// Ajusta el tamaÃ±o a bloques de 1kb
 		rewind(file_id);
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGMAP[slot] = (char*) calloc (NF_TILEDBG[slot].mapsize, sizeof(char));
@@ -196,12 +196,12 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		pal_size = ftell(file_id);
 		NF_TILEDBG[slot].palsize = pal_size;
 		rewind(file_id);
-		// Si el tamaño es inferior a 512 bytes, ajustalo
+		// Si el tamaÃ±o es inferior a 512 bytes, ajustalo
 		if (NF_TILEDBG[slot].palsize < 512) NF_TILEDBG[slot].palsize = 512;
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGPAL[slot] = (char*) calloc (NF_TILEDBG[slot].palsize, sizeof(char));
@@ -270,7 +270,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 	u8 tilesblocks = 0;
 	u8 basetiles = 0;
 
-	// Transfiere el tamaño del fondo
+	// Transfiere el tamaÃ±o del fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgwidth = NF_TILEDBG[slot].width;		// Ancho del fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgheight = NF_TILEDBG[slot].height;	// Altura del fondo
 	NF_TILEDBG_LAYERS[screen][layer].mapwidth = NF_TILEDBG[slot].width;		// Ancho del mapa
@@ -278,7 +278,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 	NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;							// Tipo de fondo
 	NF_TILEDBG_LAYERS[screen][layer].bgslot = slot;							// Buffer de graficos usado
 
-	// Calcula el tipo y tamaño del mapa
+	// Calcula el tipo y tamaÃ±o del mapa
 	n = 0;
 	// ( 256 x 256 )
 	if ((NF_TILEDBG[slot].width == 256) && (NF_TILEDBG[slot].height == 256)) {
@@ -295,7 +295,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 		n = 1;
 	}
 
-	// Verifica el tamaño del tileset (Menos de 256 tiles)
+	// Verifica el tamaÃ±o del tileset (Menos de 256 tiles)
 	if (NF_TILEDBG[slot].tilesize > 16384) n = 0;
 
 	// Si el fondo es de una medida incorrecta...
@@ -368,7 +368,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 	}
 
 
-	// Obten el tamaño del fondo
+	// Obten el tamaÃ±o del fondo
 	s32 bg_size = 0;
 	// 256x256
 	if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 256) && (NF_TILEDBG_LAYERS[screen][layer].mapheight == 256)) {
@@ -475,8 +475,8 @@ void NF_DeleteAffineBg(u8 screen, u8 layer) {
 	u8 n;					// Uso general
 	u16 basetiles = 0;		// Base del Tileset
 	u16 basemap = 0;		// Base del Map
-	u16 tilesize = 0;		// Tamaño del Tileset
-	u16 mapsize = 0;		// Tamaño del Map
+	u16 tilesize = 0;		// TamaÃ±o del Tileset
+	u16 mapsize = 0;		// TamaÃ±o del Map
 
 	// Borra el Tileset de la VRAM
 	basetiles = NF_TILEDBG_LAYERS[screen][layer].tilebase;

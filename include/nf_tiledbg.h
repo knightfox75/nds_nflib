@@ -40,9 +40,9 @@ extern char* NF_BUFFER_BGPAL[NF_SLOTS_TBG];
 // Define estructura para almacenar la info de los fondos
 typedef struct {
 	char name[32];		// Nombre del fondo
-	u32 tilesize;		// Tamaño del Tileset
-	u32 mapsize;		// Tamaño del Map
-	u32 palsize;		// Tamaño de la Paleta
+	u32 tilesize;		// TamaÃ±o del Tileset
+	u32 mapsize;		// TamaÃ±o del Map
+	u32 palsize;		// TamaÃ±o de la Paleta
 	u16 width;			// Ancho del fondo
 	u16 height;			// Altura del fondo
 	bool available;		// Disponibilidat del Slot
@@ -52,7 +52,7 @@ extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];	// Datos de los fondos
 // Define la estructura para almacenar la info y datos de las paletas extendidas
 typedef struct {
 	char* buffer;	// Buffer para almacenar la paleta
-	u32 palsize;	// Tamaño de la paleta
+	u32 palsize;	// TamaÃ±o de la paleta
 	bool inuse;		// Slot libre o en uso
 } NF_TYPE_EXBGPAL_INFO;
 extern NF_TYPE_EXBGPAL_INFO NF_EXBGPAL[NF_SLOTS_EXBGPAL];	// Datos de las paletas extendidas
@@ -221,7 +221,7 @@ void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b);
 // Funcion NF_GetTilePal();
 extern u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 // Devuelve que numero de paleta (0 - 15) esta usando el tile del fondo especificado.
-// Por defecto, todos los tiles usan la paleta del Slot nº0
+// Por defecto, todos los tiles usan la paleta del Slot nÂº0
 // Los datos se obtienen de la compia en RAM del mapa del fondo.
 
 
@@ -231,7 +231,7 @@ extern u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 // Funcion NF_SetTilePal();
 void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
 // Cambia el numero de paleta (0 - 15) que usara el tile del fondo especificado.
-// Por defecto, todos los tiles usan la paleta del Slot nº0
+// Por defecto, todos los tiles usan la paleta del Slot nÂº0
 // Los datos se escriben de la compia en RAM del mapa del fondo, por lo que no seran
 // visibles hasta que ejecutes la funcion NF_UpdateVramMap();
 
@@ -298,9 +298,9 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation);
 // Rota el grafico de un tile especificado. Rota el tile almacenado en un buffer de fondos
 // que se encuentra en RAM. Debes especificar el SLOT del buffer, numero de tile en el buffer
 // y el angulo de la rotacion.
-// 1 - 90º a la derecha
-// 2 - 90º a la izquierda
-// 3 - 180º
+// 1 - 90Âº a la derecha
+// 2 - 90Âº a la izquierda
+// 3 - 180Âº
 
 
 

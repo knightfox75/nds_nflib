@@ -77,7 +77,7 @@ void NF_Init3dSpriteSys(void) {
 		NF_3DSPRITE[n].gfxid = 0;			// Numero de Gfx usado
 		NF_3DSPRITE[n].frame = 0;			// Frame actual
 		NF_3DSPRITE[n].newframe = 0;		// Frame al que cambiar
-		NF_3DSPRITE[n].framesize = 0;		// TamaÒo del frame (en bytes)
+		NF_3DSPRITE[n].framesize = 0;		// Tama√±o del frame (en bytes)
 		NF_3DSPRITE[n].lastframe = 0;		// Ultimo frame
 		NF_3DSPRITE[n].gfx_pal_format = 0;	// Guarda el formato de la paleta
 		NF_3DSPRITE[n].pal = 0;				// Direccion en VRAM de la paleta usada
@@ -87,12 +87,12 @@ void NF_Init3dSpriteSys(void) {
 		NF_3DSPRITE[n].alpha = 31;			// Nivel de alpha (0 - 31) (31 por defecto)
 
 		// Inicializa las estructuras de control de la VRAM de texturas
-		NF_TEX256VRAM[n].size = 0;				// TamaÒo (en bytes) del Gfx
+		NF_TEX256VRAM[n].size = 0;				// Tama√±o (en bytes) del Gfx
 		NF_TEX256VRAM[n].width = 0;				// Ancho del Gfx
 		NF_TEX256VRAM[n].height = 0;			// Altura del Gfx
 		NF_TEX256VRAM[n].address = 0;			// Posicion en la VRAM
 		NF_TEX256VRAM[n].ramid = 0;				// Numero de Slot en RAM del que provienes
-		NF_TEX256VRAM[n].framesize = 0;			// TamaÒo del frame (en bytes)
+		NF_TEX256VRAM[n].framesize = 0;			// Tama√±o del frame (en bytes)
 		NF_TEX256VRAM[n].lastframe = 0;			// Ultimo frame
 		NF_TEX256VRAM[n].keepframes = false;	// Si es un Sprite animado, debes de mantener los frames en RAM ?
 		NF_TEX256VRAM[n].inuse = false;			// Esta en uso ?
@@ -111,7 +111,7 @@ void NF_Init3dSpriteSys(void) {
 	NF_TEXVRAM.inarow = 131072;		// Memoria VRAM contigua
 	for (n = 0; n < NF_3DSPRITES; n ++) {
 		NF_TEXVRAM.pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_TEXVRAM.size[n] = 0;		// TamaÒo del bloque libre para reusar
+		NF_TEXVRAM.size[n] = 0;		// Tama√±o del bloque libre para reusar
 	}
 
 	// Inicializa los datos de las paletas
@@ -164,7 +164,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 		NF_Error(109, "VRAM", vram);
 	}
 
-	// Verifica que la textura tengo un tamaÒo valido
+	// Verifica que la textura tengo un tama√±o valido
 	if (
 		(NF_GetTextureSize(NF_SPR256GFX[ram].width) == 255)
 		||
@@ -179,14 +179,14 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 	// Variables de uso general
 	s16 n = 0;				// General
 	s16 id = 255;			// Id del posible bloque libre
-	s16 last_reuse = 0;		// N∫ del ultimo bloque reusable
-	u32 gfxsize = 0;		// TamaÒo de los datos que se copiaran
-	u32 size = 0;			// Diferencia de tamaÒos entre bloque libre y datos
+	s16 last_reuse = 0;		// N¬∫ del ultimo bloque reusable
+	u32 gfxsize = 0;		// Tama√±o de los datos que se copiaran
+	u32 size = 0;			// Diferencia de tama√±os entre bloque libre y datos
 	u16 width = 0;			// Calculo de las medidas
 	u16 height = 0;
 	bool organize = true;	// Se debe de reorganizar el array de bloques libres ?
 
-	// Auto calcula el tamaÒo de 1 frame
+	// Auto calcula el tama√±o de 1 frame
 	width = (NF_SPR256GFX[ram].width >> 3);		// (width / 8)
 	height = (NF_SPR256GFX[ram].height >> 3);	// (height / 8)
 	NF_TEX256VRAM[vram].framesize = ((width * height) << 6);	// ((width * height) * 64)
@@ -194,7 +194,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 	NF_TEX256VRAM[vram].lastframe = ((int)(NF_SPR256GFX[ram].size / NF_TEX256VRAM[vram].framesize)) - 1;
 	NF_TEX256VRAM[vram].inuse = true;						// Slot ocupado
 
-	// Calcula el tamaÒo del grafico a copiar segun si debes o no copiar todos los frames
+	// Calcula el tama√±o del grafico a copiar segun si debes o no copiar todos los frames
 	if (keepframes) {	// Si debes de mantener los frames en RAM, solo copia el primero
 		gfxsize = NF_TEX256VRAM[vram].framesize;
 	} else {			// Si no, copialos todos
@@ -209,19 +209,19 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 		NF_Error(113, "Sprites", gfxsize);
 	}
 
-	// Si hay que aprovechar algun bloque borrado... (tamaÒo identico, preferente)
+	// Si hay que aprovechar algun bloque borrado... (tama√±o identico, preferente)
 	if (NF_TEXVRAM.deleted > 0) {
-		// Busca un bloque vacio del tamaÒo identico
+		// Busca un bloque vacio del tama√±o identico
 		for (n = 0; n < NF_TEXVRAM.deleted; n ++) {
-			if (NF_TEXVRAM.size[n] == gfxsize) {		// Si el bloque tiene el tamaÒo suficiente
+			if (NF_TEXVRAM.size[n] == gfxsize) {		// Si el bloque tiene el tama√±o suficiente
 				id = n;		// Guarda la Id
 				n = NF_TEXVRAM.deleted;	// y sal
 			}
 		}
-		// Si no habia ningun bloque de tamaÒo identico, busca el mas parecido (produce fragmentacion)
+		// Si no habia ningun bloque de tama√±o identico, busca el mas parecido (produce fragmentacion)
 		if (id != 255) {
 			for (n = 0; n < NF_TEXVRAM.deleted; n ++) {
-				if (NF_TEXVRAM.size[n] > gfxsize) {		// Si el bloque tiene el tamaÒo suficiente
+				if (NF_TEXVRAM.size[n] > gfxsize) {		// Si el bloque tiene el tama√±o suficiente
 					id = n;		// Guarda la Id
 					n = NF_TEXVRAM.deleted;	// y sal
 				}
@@ -229,7 +229,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 		}
 	} 
 	
-	// Si hay algun bloque borrado libre del tamaÒo suficiente...
+	// Si hay algun bloque borrado libre del tama√±o suficiente...
 	if (id != 255) {
 
 		// Transfiere el grafico a la VRAM
@@ -237,18 +237,18 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 		// Guarda el puntero donde lo has almacenado
 		NF_TEX256VRAM[vram].address = NF_TEXVRAM.pos[id];
 
-		// Si no has usado todo el tamaÒo, deja constancia
+		// Si no has usado todo el tama√±o, deja constancia
 		if (gfxsize < NF_TEXVRAM.size[id]) {
 
-			// Calcula el tamaÒo del nuevo bloque libre
+			// Calcula el tama√±o del nuevo bloque libre
 			size = NF_TEXVRAM.size[id] - gfxsize;
 			// Actualiza los datos
 			NF_TEXVRAM.pos[id] += gfxsize;			// Nueva direccion
-			NF_TEXVRAM.size[id] = size;				// Nuevo tamaÒo
+			NF_TEXVRAM.size[id] = size;				// Nuevo tama√±o
 			NF_TEXVRAM.fragmented -= gfxsize;		// Actualiza el contador de VRAM fragmentada
 			organize = false;	// No se debe de reorganizar el array de bloques
 
-		} else {	// Si has usado todo el tamaÒo, deja constancia
+		} else {	// Si has usado todo el tama√±o, deja constancia
 
 			NF_TEXVRAM.fragmented -= NF_TEXVRAM.size[id];	// Actualiza el contador de VRAM fragmentada
 
@@ -264,12 +264,12 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 			) {
 				// Coloca los valores de la ultima posicion en esta
 				NF_TEXVRAM.pos[id] = NF_TEXVRAM.pos[last_reuse];		// Nueva direccion
-				NF_TEXVRAM.size[id] = NF_TEXVRAM.size[last_reuse];		// Nuevo tamaÒo
+				NF_TEXVRAM.size[id] = NF_TEXVRAM.size[last_reuse];		// Nuevo tama√±o
 			}
 			NF_TEXVRAM.deleted --;		// Actualiza el contador de bloques libres, borrando el ultimo registro
 		}
 
-	} else {	// Si no habia ningun bloque borrado o con el tamaÒo suficiente, colacalo al final de la VRAM ocupada
+	} else {	// Si no habia ningun bloque borrado o con el tama√±o suficiente, colacalo al final de la VRAM ocupada
 
 		// Actualiza la VRAM contigua disponible (mayor bloque libre al final)
 		NF_TEXVRAM.inarow -= gfxsize;
@@ -291,7 +291,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 	}
 
 	// Guarda los datos del Gfx que se copiara a la VRAM.
-	NF_TEX256VRAM[vram].size = gfxsize;						// TamaÒo en bytes de los datos copiados
+	NF_TEX256VRAM[vram].size = gfxsize;						// Tama√±o en bytes de los datos copiados
 	NF_TEX256VRAM[vram].width = NF_SPR256GFX[ram].width;	// Alto (px)
 	NF_TEX256VRAM[vram].height = NF_SPR256GFX[ram].height;	// Ancho (px)
 	NF_TEX256VRAM[vram].ramid = ram;						// Slot RAM de origen
@@ -321,7 +321,7 @@ void NF_Free3dSpriteGfx(u16 id) {
 	// Actualiza la cantidad de VRAM disponible
 	NF_TEXVRAM.free += NF_TEX256VRAM[id].size;
 
-	// Guarda la posicion y tamaÒo del bloque borrado para su reutilizacion
+	// Guarda la posicion y tama√±o del bloque borrado para su reutilizacion
 	NF_TEXVRAM.pos[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].address;
 	NF_TEXVRAM.size[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].size;
 
@@ -332,11 +332,11 @@ void NF_Free3dSpriteGfx(u16 id) {
 	NF_TEXVRAM.fragmented += NF_TEX256VRAM[id].size;
 
 	// Reinicia los datos de esta Id. de gfx
-	NF_TEX256VRAM[id].size = 0;			// TamaÒo en bytes
+	NF_TEX256VRAM[id].size = 0;			// Tama√±o en bytes
 	NF_TEX256VRAM[id].width = 0;		// Alto (px)
 	NF_TEX256VRAM[id].height = 0;		// Ancho (px)
 	NF_TEX256VRAM[id].address = 0;		// Puntero en VRAM
-	NF_TEX256VRAM[id].framesize = 0;	// TamaÒo del frame (en bytes)
+	NF_TEX256VRAM[id].framesize = 0;	// Tama√±o del frame (en bytes)
 	NF_TEX256VRAM[id].lastframe = 0;	// Ultimo frame
 	NF_TEX256VRAM[id].inuse = false;
 
@@ -365,7 +365,7 @@ void NF_Vram3dSpriteGfxDefrag(void) {
 	}
 
 	char* address[NF_3DSPRITES];	// Guarda la direccion en RAM
-	u32 size[NF_3DSPRITES];			// Guarda el tamaÒo
+	u32 size[NF_3DSPRITES];			// Guarda el tama√±o
 	u32 ram = 0;					// Puntero inicial de RAM
 	u16 n = 0;						// Variable General
 	u16 x_size = 0;					// Formato de la textura
@@ -378,7 +378,7 @@ void NF_Vram3dSpriteGfxDefrag(void) {
 		if (NF_TEX256VRAM[n].inuse) {
 			// Copia el Gfx a la RAM
 			address[n] = (buffer + ram);		// Calcula el puntero
-			size[n] = NF_TEX256VRAM[n].size;		// Almacena el tamaÒo
+			size[n] = NF_TEX256VRAM[n].size;		// Almacena el tama√±o
 			NF_DmaMemCopy(address[n], (void*)NF_TEX256VRAM[n].address, size[n]);	// Copialo a la VRAM
 			ram += size[n];		// Siguiente posicion en RAM (relativa)
 		}
@@ -392,7 +392,7 @@ void NF_Vram3dSpriteGfxDefrag(void) {
 	NF_TEXVRAM.inarow = 131072;		// Memoria VRAM contigua
 	for (n = 0; n < NF_3DSPRITES; n ++) {
 		NF_TEXVRAM.pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_TEXVRAM.size[n] = 0;		// TamaÒo del bloque libre para reusar
+		NF_TEXVRAM.size[n] = 0;		// Tama√±o del bloque libre para reusar
 	}
 	// Aplica la direccion de inicio de la VRAM
 	NF_TEXVRAM.next = (0x06820000);
@@ -567,7 +567,7 @@ void NF_Delete3dSprite(u16 id) {
 	NF_3DSPRITE[id].gfxid = 0;			// Numero de Gfx usado
 	NF_3DSPRITE[id].frame = 0;			// Frame actual
 	NF_3DSPRITE[id].newframe = 0;		// Frame al que cambiar
-	NF_3DSPRITE[id].framesize = 0;		// TamaÒo del frame (en bytes)
+	NF_3DSPRITE[id].framesize = 0;		// Tama√±o del frame (en bytes)
 	NF_3DSPRITE[id].lastframe = 0;		// Ultimo frame
 	NF_3DSPRITE[id].gfx_pal_format = 0;	// Guarda el formato de la paleta
 	NF_3DSPRITE[id].pal = 0;			// Direccion en VRAM de la paleta usada

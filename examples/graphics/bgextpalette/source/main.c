@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
 	NF_LoadExBgPal("bg/blue", BLUE);
 
 	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont("fnt/default", "up", 256, 256, 0);	// Carga la seccion "normal" de la fuente, tamaño del mapa 256x256
+	NF_LoadTextFont("fnt/default", "up", 256, 256, 0);	// Carga la seccion "normal" de la fuente, tamaÃ±o del mapa 256x256
 	NF_LoadTextFont("fnt/default", "down", 256, 256, 0);
 
 	// Tranfiere las paletas del fondo 3

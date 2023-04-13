@@ -57,7 +57,7 @@ void NF_InitOpenGL(void) {
 	// Inicializa el OpenGL de Libnds
 	glInit();
 
-	// Define el tamaño de la ventana 3D (toda la pantalla)
+	// Define el tamaÃ±o de la ventana 3D (toda la pantalla)
 	glViewport(0, 0, 255, 191);
 
 	// Configura la matriz de proyeccion
@@ -97,7 +97,7 @@ u16 NF_GetTextureSize(u16 textel) {
 	// Variables
 	u16 size = 0;
 
-	// Devuelve el tamaño del textel, segun su base2
+	// Devuelve el tamaÃ±o del textel, segun su base2
 	switch (textel) {
 		case 8:
 			size = 0;

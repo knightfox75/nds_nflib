@@ -45,7 +45,7 @@ typedef struct {
 	u16 gfxid;				// Id de Gfx usado
 	u16 frame;				// Frame actual
 	u16 newframe;			// Frame al que cambiar
-	u16 framesize;			// Tamaño del frame (en bytes)
+	u16 framesize;			// TamaÃ±o del frame (en bytes)
 	u16 lastframe;			// Ultimo frame
 	u32 gfx_pal_format;		// Guarda el formato de la paleta
 	u32 pal;				// Direccion donde esta almacenada la paleta en VRAM
@@ -58,12 +58,12 @@ extern NF_TYPE_3DSPRITE_INFO NF_3DSPRITE[NF_3DSPRITES];
 
 // Estructura de control Texturas en VRAM
 typedef struct {
-	u32 size;			// Tamaño (en bytes) del Gfx
+	u32 size;			// TamaÃ±o (en bytes) del Gfx
 	u16 width;			// Ancho del Gfx
 	u16 height;			// Altura del Gfx
 	u32 address;		// Posicion en la VRAM
 	u16 ramid;			// Numero de Slot en RAM del que provienes
-	u16 framesize;		// Tamaño del frame (en bytes)
+	u16 framesize;		// TamaÃ±o del frame (en bytes)
 	u16 lastframe;		// Ultimo frame
 	bool keepframes;	// Si es un Sprite animado, debes de mantener los frames en RAM ?
 	bool inuse;			// Disponibilidat del Slot
@@ -83,7 +83,7 @@ typedef struct {
 	u32 next;					// Siguiente posicion libre
 	u32 last;					// Ultima posicion usada
 	u32 pos[NF_3DSPRITES];		// Posicion en VRAM para reusar despues de un borrado
-	u32 size[NF_3DSPRITES];		// Tamaño del bloque libre para reusar
+	u32 size[NF_3DSPRITES];		// TamaÃ±o del bloque libre para reusar
 	u16 deleted;				// Numero de bloques borrados
 	s32 fragmented;				// Memoria VRAM fragmentada
 	s32 inarow;					// Memoria VRAM contigua
@@ -186,7 +186,7 @@ void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z);
 
 // Funcion NF_Scale3dSprite();
 void NF_Scale3dSprite(u16 id, u16 x, u16 y);
-// Escala el sprite al tamaño indicado (0/64/512)
+// Escala el sprite al tamaÃ±o indicado (0/64/512)
 
 
 // Funcion NF_Blend3dSprite();
@@ -194,7 +194,7 @@ void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha);
 // Habilita y cambia el nivel de alpha de el sprite 3d indicado. Para que la transparencia
 // sea efectiva entre Sprites, debes especificar un poly_id diferente para cada sprite
 // (entre 1 y 62). El rango de alpha es de 0 a 31, siendo 31 opaco. Para eliminar la
-// transparencia, selecciona un valor para alpha de 31 o especifica como poly_id el nº 0.
+// transparencia, selecciona un valor para alpha de 31 o especifica como poly_id el nÂº 0.
 
 
 // Funcion NF_3dSpritesLayer();

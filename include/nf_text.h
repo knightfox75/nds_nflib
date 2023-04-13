@@ -17,7 +17,7 @@ extern "C" {
 
 
 
-// Define el nº de caracteres que tiene la fuente
+// Define el nÂº de caracteres que tiene la fuente
 #define NF_TEXT_FONT_CHARS 127
 #define NF_TEXT_FONT_LAST_VALID_CHAR 113
 

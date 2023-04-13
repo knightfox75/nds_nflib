@@ -43,7 +43,7 @@ void NF_InitTextSys(u8 screen) {
 		NF_TEXT[screen][n].height = 0;		// Alto del mapa de texto
 		NF_TEXT[screen][n].rotation = 0;	// Rotacion a 0 (ninguna)
 		NF_TEXT[screen][n].slot = 255;		// Slot donde esta el tileset
-		NF_TEXT[screen][n].pal = 0;			// nº de paleta extendida (0 por defecto)
+		NF_TEXT[screen][n].pal = 0;			// nÂº de paleta extendida (0 por defecto)
 		NF_TEXT[screen][n].exist = false;	// Marcalo como no existente
 		NF_TEXT[screen][n].update = false;	// No es necesario actualizarlo
 	}
@@ -93,7 +93,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 	sprintf(filename, "%s/%s.fnt", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		NF_TILEDBG[slot].tilesize = (NF_TEXT_FONT_CHARS << 6);		// 100 caracteres x 64 bytes
 		// Reserva el espacio en RAM
 		NF_BUFFER_BGTILES[slot] = (char*) calloc (NF_TILEDBG[slot].tilesize, sizeof(char));
@@ -128,7 +128,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
+		// Obten el tamaÃ±o del archivo
 		fseek(file_id, 0, SEEK_END);
 		NF_TILEDBG[slot].palsize = ftell(file_id);
 		rewind(file_id);
@@ -258,62 +258,62 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 					string[n] = 200;
 					break;
 				// Caracteres especiales
-				case 199:	// Ç
+				case 199:	// Ã‡
 					string[n] = 96;
 					break;
-				case 231:	// ç
+				case 231:	// Ã§
 					string[n] = 97;
 					break;
-				case 209:	// Ñ
+				case 209:	// Ã‘
 					string[n] = 98;
 					break;
-				case 241:	// ñ
+				case 241:	// Ã±
 					string[n] = 99;
 					break;
 				// Acentos Mayusculas
-				case 193:	// Á
+				case 193:	// Ã
 					string[n] = 100;
 					break;
-				case 201:	// É
+				case 201:	// Ã‰
 					string[n] = 101;
 					break;
-				case 205:	// Í
+				case 205:	// Ã
 					string[n] = 102;
 					break;
-				case 211:	// Ó
+				case 211:	// Ã“
 					string[n] = 103;
 					break;
-				case 218:	// Ú
+				case 218:	// Ãš
 					string[n] = 104;
 					break;
 				// Acentos Minusculas
-				case 225:	// á
+				case 225:	// Ã¡
 					string[n] = 105;
 					break;
-				case 233:	// é
+				case 233:	// Ã©
 					string[n] = 106;
 					break;
-				case 237:	// í
+				case 237:	// Ã­
 					string[n] = 107;
 					break;
-				case 243:	// ó
+				case 243:	// Ã³
 					string[n] = 108;
 					break;
-				case 250:	// ú
+				case 250:	// Ãº
 					string[n] = 109;
 					break;
 				// Dieresis
-				case 239:	// ï
+				case 239:	// Ã¯
 					string[n] = 110;
 					break;
-				case 252:	// ü
+				case 252:	// Ã¼
 					string[n] = 111;
 					break;
-				// Admiracion e interrogante (Español)
-				case 161:	// ¡
+				// Admiracion e interrogante (EspaÃ±ol)
+				case 161:	// Â¡
 					string[n] = 112;
 					break;
-				case 191:	// ¿
+				case 191:	// Â¿
 					string[n] = 113;
 					break;
 				// Caracter invalido
@@ -355,7 +355,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 			break;
 
 
-		case 1:		// Rotacion 90º a la derecha
+		case 1:		// Rotacion 90Âº a la derecha
 			// Traspasa las coordenadas virtuales a las reales
 			tx = (NF_TEXT[screen][layer].width - y);
 			ty = x;
@@ -379,7 +379,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 			break;
 
 
-		case 2:		// Rotacion 90º a la izquierda
+		case 2:		// Rotacion 90Âº a la izquierda
 			// Traspasa las coordenadas virtuales a las reales
 			tx = y;
 			ty = (NF_TEXT[screen][layer].height - x);
@@ -444,7 +444,7 @@ void NF_ClearTextLayer(u8 screen, u8 layer) {
 		NF_Error(114, NULL, screen);
 	}
 
-	// Calcula el tamaño del buffer
+	// Calcula el tamaÃ±o del buffer
 	u32 size = (((NF_TEXT[screen][layer].width + 1) * (NF_TEXT[screen][layer].height + 1)) << 1);
 
 	// Pon a 0 todos los bytes del mapa de la capa de texto

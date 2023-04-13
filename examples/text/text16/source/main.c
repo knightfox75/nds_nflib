@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
 	// Texto con color aleatorio
 	for (n = 4; n < 10; n ++) {
 		NF_SetTextColor(1, 0, n);
-		NF_WriteText16(1, 0, 1, (n + 1), "Random Aa 0123456789 Ññ Çç");
+		NF_WriteText16(1, 0, 1, (n + 1), "Random Aa 0123456789 Ã‘Ã± Ã‡Ã§");
 	}
 	NF_SetTextColor(1, 0, 0);					// Deja color del texto por defecto (definido en la fuente)
 
@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
 			// Escribe de nuevo el texto con los nuevos colores
 			for (n = 4; n < 10; n ++) {
 				NF_SetTextColor(1, 0, n);
-				NF_WriteText16(1, 0, 1, (n + 1), "Random Aa 0123456789 Ññ Çç");
+				NF_WriteText16(1, 0, 1, (n + 1), "Random Aa 0123456789 Ã‘Ã± Ã‡Ã§");
 			}
 			// Actualiza las capas de texto
 			NF_UpdateTextLayers();

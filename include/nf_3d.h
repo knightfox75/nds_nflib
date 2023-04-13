@@ -32,7 +32,7 @@ void NF_InitOpenGL(void);
 
 // Funcion NF_GetTextureSize();
 extern u16 NF_GetTextureSize(u16 textel);
-// Devuelve el tamaño del textel
+// Devuelve el tamaÃ±o del textel
 
 
 
