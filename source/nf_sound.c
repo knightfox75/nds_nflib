@@ -12,8 +12,6 @@
 
 // Includes devKitPro
 #include <nds.h>
-#include <filesystem.h>
-#include <fat.h>
 
 // Includes C
 #include <stdio.h>
