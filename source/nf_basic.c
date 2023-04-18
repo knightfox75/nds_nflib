@@ -218,16 +218,43 @@ void NF_SetRootFolder(const char* folder) {
 
 		// Define la carpeta inicial de la FAT
 		sprintf(NF_ROOTFOLDER, "%s", folder);
-		// Check if DSi SD (sd:/) exists.
-		// If this fails, check if DLDI (fat:/) exists.
-		// If both fails, then fatInitDefault() either failed, or was not called.
-		if (access("sd:/", F_OK) == 0) {
-			// Si es correcto, cambia al ROOT del SD
-			chdir("sd:/");
-		} else if (access("fat:/", F_OK) == 0) {
-			// Si es correcto, cambia al ROOT del FAT
-			chdir("fat:/");
-		} else {
+
+		// Check where the NDS is running from
+		bool init_ok = false;
+
+		// First, try to detect the drive where the NDS ROM is. If argv has been
+		// provided by the loader, it will contain the drive and the path of the
+		// ROM.
+		if (__system_argv->argvMagic == ARGV_MAGIC && __system_argv->argc >= 1) {
+			if (strncmp(__system_argv->argv[0], "fat:", 4) == 0) {
+				// If argv starts by "fat:", try to setup "fat:" as root
+				if (access("fat:/", F_OK) == 0) {
+					chdir("fat:/");
+					init_ok = true;
+				}
+			} else if (strncmp(__system_argv->argv[0], "sd:", 3) == 0) {
+				// If argv starts by "sd:", try to setup "sd:" as root
+				if (access("sd:/", F_OK) == 0) {
+					chdir("sd:/");
+					init_ok = true;
+				}
+			}
+		}
+
+		// Second, try to bruteforce the detection. Check if there is access to
+		// the SD card of the DSi first. If not, try with DLDI.
+		if (!init_ok) {
+			if (access("sd:/", F_OK) == 0) {
+				chdir("sd:/");
+				init_ok = true;
+			} else if (access("fat:/", F_OK) == 0) {
+				chdir("fat:/");
+				init_ok = true;
+			}
+		}
+
+		// If that didn't work, give up.
+		if (!init_ok) {
 			// Fallo. Deten el programa
 			consoleDemoInit();	// Inicializa la consola de texto
 			if (NF_GetLanguage() == 5) {
@@ -248,9 +275,7 @@ void NF_SetRootFolder(const char* folder) {
 				swiWaitForVBlank();
 			}
 		}
-
 	}
-
 }
 
 
