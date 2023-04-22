@@ -68,7 +68,7 @@ void NF_LoadBMP(const char* file, u8 slot) {
 	char filename[256];
 
 	// Carga el archivo .BMP
-	sprintf(filename, "%s/%s.bmp", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.bmp", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 
 	if (file_id) {	// Si el archivo existe...

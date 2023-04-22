@@ -88,7 +88,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 	char filename[256];
 
 	// Carga el archivo .FNT
-	sprintf(filename, "%s/%s.fnt", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.fnt", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -123,7 +123,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 	memset(NF_BUFFER_BGMAP[slot], 0, NF_TILEDBG[slot].mapsize);
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -143,7 +143,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 	fclose(file_id);		// Cierra el archivo
 
 	// Guarda el nombre del Fondo
-	sprintf(NF_TILEDBG[slot].name, "%s", name);
+	snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);
 
 	// Y las medidas
 	NF_TILEDBG[slot].width = width;
@@ -171,7 +171,7 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name) {
 	NF_CreateTiledBg(screen, layer, name);
 
 	// Busca el numero de slot donde esta cargada la fuente
-	sprintf(bg, "%s", name);							// Obten el nombre del fondo a buscar
+	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
 	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
 		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
 			slot = n;									// Guarda el slot a usar

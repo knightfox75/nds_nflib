@@ -60,7 +60,7 @@ void NF_ResetCmapBuffers(void) {
 void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_CMAP)) {
+	if (id >= NF_SLOTS_CMAP) {
 		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
 	}
 
@@ -78,9 +78,9 @@ void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 	// Variable para almacenar el path al archivo
 	char filename[256];
-	
+
 	// Carga el archivo .CMP
-	sprintf(filename, "%s/%s.cmp", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -114,7 +114,7 @@ void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height) {
 void NF_UnloadColisionMap(u8 id) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_CMAP)) {
+	if (id >= NF_SLOTS_CMAP) {
 		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
 	}
 
@@ -219,7 +219,7 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value) {
 void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_CMAP)) {
+	if (id >= NF_SLOTS_CMAP) {
 		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
 	}
 
@@ -239,9 +239,9 @@ void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 	// Variable para almacenar el path al archivo
 	char filename[256];
-	
+
 	// Carga el archivo .DAT (TILES)
-	sprintf(filename, "%s/%s.dat", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename),  "%s/%s.dat", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -261,7 +261,7 @@ void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
 	fclose(file_id);		// Cierra el archivo
 
 	// Carga el archivo .CMP
-	sprintf(filename, "%s/%s.cmp", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -295,7 +295,7 @@ void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
 void NF_UnloadColisionBg(u8 id) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_CMAP)) {
+	if (id >= NF_SLOTS_CMAP) {
 		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
 	}
 

@@ -205,10 +205,10 @@ void NF_InitSpriteSys(int screen, ...) {
 
 
 // Funcion NF_LoadSpriteGfx();
-void NF_LoadSpriteGfx(const char* file, u16 id,  u16 width, u16 height) {
+void NF_LoadSpriteGfx(const char *file, u16 id,  u16 width, u16 height) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256GFX)) {
+	if (id >= NF_SLOTS_SPR256GFX) {
 		NF_Error(106, "Sprite GFX", NF_SLOTS_SPR256GFX);
 	}
 
@@ -228,7 +228,7 @@ void NF_LoadSpriteGfx(const char* file, u16 id,  u16 width, u16 height) {
 	char filename[256];
 
 	// Carga el archivo .IMG
-	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -262,7 +262,7 @@ void NF_LoadSpriteGfx(const char* file, u16 id,  u16 width, u16 height) {
 void NF_UnloadSpriteGfx(u16 id) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256GFX)) {
+	if (id >= NF_SLOTS_SPR256GFX) {
 		NF_Error(106, "Sprite GFX", NF_SLOTS_SPR256GFX);
 	}
 
@@ -292,7 +292,7 @@ void NF_LoadSpritePal(const char* file, u8 id) {
 	u32 pal_size = 0;
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256PAL)) {
+	if (id >= NF_SLOTS_SPR256PAL) {
 		NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
 	}
 
@@ -312,7 +312,7 @@ void NF_LoadSpritePal(const char* file, u8 id) {
 	char filename[256];
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -345,7 +345,7 @@ void NF_LoadSpritePal(const char* file, u8 id) {
 void NF_UnloadSpritePal(u8 id) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256PAL)) {
+	if (id >= NF_SLOTS_SPR256PAL) {
 		NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
 	}
 
@@ -370,7 +370,7 @@ void NF_UnloadSpritePal(u8 id) {
 void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 
 	// Verifica el rango de Id's de RAM
-	if ((ram < 0) || (ram >= NF_SLOTS_SPR256GFX)) {
+	if (ram >= NF_SLOTS_SPR256GFX) {
 		NF_Error(106, "Sprite GFX", (NF_SLOTS_SPR256GFX - 1));
 	}
 
@@ -380,7 +380,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 	}
 
 	// Verifica el rango de Id's de VRAM
-	if ((vram < 0) || (vram > 127)) {
+	if (vram > 127) {
 		NF_Error(106, "VRAM GFX", 127);
 	}
 
@@ -645,7 +645,7 @@ void NF_VramSpriteGfxDefrag(u8 screen) {
 void NF_VramSpritePal(u8 screen, u8 id, u8 slot) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256PAL)) {
+	if (id >= NF_SLOTS_SPR256PAL) {
 		NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
 	}
 
@@ -655,7 +655,7 @@ void NF_VramSpritePal(u8 screen, u8 id, u8 slot) {
 	}
 
 	// Verifica si te has salido de rango (Paleta)
-	if ((slot < 0) || (slot > 15)) {
+	if (slot > 15) {
 		NF_Error(106, "Sprite Palette Slot", 15);
 	}
 
@@ -684,12 +684,12 @@ void NF_VramSpritePal(u8 screen, u8 id, u8 slot) {
 void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > 127)) {
+	if (id > 127) {
 		NF_Error(106, "Sprite", 127);
 	}
 
 	// Verifica el rango de Id's de Gfx
-	if ((gfx < 0) || (gfx > 127)) {
+	if (gfx > 127) {
 		NF_Error(106, "Sprite GFX", 127);
 	}
 
@@ -699,7 +699,7 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 	}
 
 	// Verifica el rango de slots de paletas
-	if ((pal < 0) || (pal > 15)) {
+	if (pal > 15) {
 		NF_Error(106, "Sprite Palette Slot", 15);
 	}
 
@@ -794,14 +794,14 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 void NF_DeleteSprite(u8 screen, u8 id) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > 127)) {
+	if (id > 127) {
 		NF_Error(106, "Sprite", 127);
 	}
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][id].created) {
 		char text[4];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(112, text, id);
 	}
 

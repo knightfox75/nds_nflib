@@ -79,7 +79,7 @@ void NF_ResetRawSoundBuffers(void) {
 void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_RAWSOUND)) {
+	if (id >= NF_SLOTS_RAWSOUND) {
 		NF_Error(106, "Raw Sound", NF_SLOTS_RAWSOUND);
 	}
 
@@ -99,7 +99,7 @@ void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 	char filename[256];
 
 	// Carga el archivo .RAW
-	sprintf(filename, "%s/%s.raw", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.raw", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -138,10 +138,12 @@ void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 void NF_UnloadRawSound(u8 id) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_RAWSOUND)) NF_Error(106, "RAW Sound", NF_SLOTS_RAWSOUND); 
+	if (id >= NF_SLOTS_RAWSOUND)
+		NF_Error(106, "RAW Sound", NF_SLOTS_RAWSOUND);
 
 	// Verifica si el sonido existe
-	if (NF_RAWSOUND[id].available) NF_Error(110, "RAW Sound", id);
+	if (NF_RAWSOUND[id].available)
+		NF_Error(110, "RAW Sound", id);
 
 	// Vacia los buffers de la Id. seleccionada
 	free(NF_BUFFER_RAWSOUND[id]);
@@ -164,10 +166,12 @@ void NF_UnloadRawSound(u8 id) {
 u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_RAWSOUND)) NF_Error(106, "RAW Sound", NF_SLOTS_RAWSOUND); 
+	if (id >= NF_SLOTS_RAWSOUND)
+		NF_Error(106, "RAW Sound", NF_SLOTS_RAWSOUND);
 
 	// Verifica si el sonido existe
-	if (NF_RAWSOUND[id].available) NF_Error(110, "RAW Sound", id);
+	if (NF_RAWSOUND[id].available)
+		NF_Error(110, "RAW Sound", id);
 
 	return soundPlaySample(NF_BUFFER_RAWSOUND[id], NF_RAWSOUND[id].format, NF_RAWSOUND[id].size, NF_RAWSOUND[id].freq, volume, pan, loop, loopfrom);
 

@@ -182,7 +182,7 @@ void NF_SetRootFolder(const char* folder) {
 	if (strcmp(folder, "NITROFS") == 0) {	// Si se debe iniciar el modo NitroFS y FAT
 
 		// Define NitroFS como la carpeta inicial
-		sprintf(NF_ROOTFOLDER, "%s", "");
+		snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", "");
 		// Check if NitroFS exists.
 		// NitroFS must be mounted beforehand for this to work.
 		if(access("nitro:/", F_OK) == 0) {
@@ -217,7 +217,7 @@ void NF_SetRootFolder(const char* folder) {
 	} else {	// Si se debe iniciar solo la FAT
 
 		// Define la carpeta inicial de la FAT
-		sprintf(NF_ROOTFOLDER, "%s", folder);
+		snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", folder);
 
 		// Check where the NDS is running from
 		bool init_ok = false;

@@ -55,7 +55,7 @@ void NF_InitTiledBgBuffers(void) {
 		NF_BUFFER_BGTILES[n] = NULL;		// Buffer para los tiles
 		NF_BUFFER_BGMAP[n] = NULL;			// Buffer para el map
 		NF_BUFFER_BGPAL[n] = NULL;			// Buffer para la paleta
-		sprintf(NF_TILEDBG[n].name, "xxxNONAMExxx");	// Nombre del Tileset
+		snprintf(NF_TILEDBG[n].name, sizeof(NF_TILEDBG[n].name), "xxxNONAMExxx");
 		NF_TILEDBG[n].tilesize = 0;			// Tamaño del Tileset
 		NF_TILEDBG[n].mapsize = 0;			// Tamaño del Mapa
 		NF_TILEDBG[n].palsize = 0;			// Tamaño de la Paleta
@@ -205,7 +205,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	char filename[256];
 
 	// Carga el archivo .IMG
-	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -225,7 +225,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	fclose(file_id);		// Cierra el archivo
 
 	// Carga el archivo .MAP
-	sprintf(filename, "%s/%s.map", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -245,7 +245,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	fclose(file_id);		// Cierra el archivo
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -268,7 +268,7 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 	fclose(file_id);		// Cierra el archivo
 
 	// Guarda el nombre del Fondo
-	sprintf(NF_TILEDBG[slot].name, "%s", name);
+	snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);
 
 	// Y las medidas
 	NF_TILEDBG[slot].width = width;
@@ -320,7 +320,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 	char filename[256];
 
 	// Carga el archivo .IMG
-	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -361,7 +361,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -384,7 +384,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 	fclose(file_id);		// Cierra el archivo
 
 	// Guarda el nombre del Fondo
-	sprintf(NF_TILEDBG[slot].name, "%s", name);
+	snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);
 
 	// Y las medidas
 	NF_TILEDBG[slot].width = width;
@@ -403,7 +403,7 @@ void NF_UnloadTiledBg(const char* name) {
 	char bg[32];		// Nombre
 
 	// Busca el fondo solicitado
-	sprintf(bg, "%s", name);							// Obten el nombre del fondo a buscar
+	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
 	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
 		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
 			slot = n;									// Guarda el slot a usar
@@ -424,7 +424,7 @@ void NF_UnloadTiledBg(const char* name) {
 	NF_BUFFER_BGPAL[slot] = NULL;
 
 	// Resetea las variables para ese fondo
-	sprintf(NF_TILEDBG[slot].name, "xxxNONAMExxx");	// Nombre del Tileset
+	snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "xxxNONAMExxx");
 	NF_TILEDBG[slot].tilesize = 0;					// Tamaño del Tileset
 	NF_TILEDBG[slot].mapsize = 0;					// Tamaño del Mapa
 	NF_TILEDBG[slot].palsize = 0;					// Tamaño de la Paleta
@@ -445,7 +445,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	char bg[32];		// Nombre
 
 	// Busca el fondo solicitado
-	sprintf(bg, "%s", name);							// Obten el nombre del fondo a buscar
+	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
 	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
 		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
 			slot = n;									// Guarda el slot a usar
@@ -719,7 +719,7 @@ void NF_DeleteTiledBg(u8 screen, u8 layer) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -810,7 +810,7 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -881,7 +881,7 @@ void NF_UpdateVramMap(u8 screen, u8 layer) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -946,7 +946,7 @@ void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -982,7 +982,7 @@ void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -1007,7 +1007,7 @@ void NF_BgUpdatePalette(u8 screen, u8 layer) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -1044,7 +1044,7 @@ void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 
@@ -1121,7 +1121,7 @@ void NF_LoadExBgPal(const char* file, u8 slot) {
 	char filename[256];
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -1219,7 +1219,7 @@ void NF_SetExBgPal(u8 screen, u8 layer, u8 pal) {
 	// Verifica que el fondo esta creado
 	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
 		char text[32];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(105, text, layer);		// Si no existe, error
 	}
 

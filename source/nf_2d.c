@@ -365,7 +365,7 @@ bool NF_GetSpriteVflip(u8 screen, u8 id) {
 void NF_SpriteFrame(u8 screen, u8 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > 127)) {
+	if (id > 127) {
 		NF_Error(106, "Sprite", 127);
 	}
 
@@ -416,19 +416,19 @@ void NF_SpriteFrame(u8 screen, u8 id, u16 frame) {
 void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((sprite < 0) || (sprite > 127)) {
+	if (sprite > 127) {
 		NF_Error(106, "Sprite", 127);
 	}
 
 	// Verifica el rango de Id's de Rotacion
-	if ((id < 0) || (id > 31)) {
+	if (id > 31) {
 		NF_Error(106, "RotScale", 127);
 	}
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][sprite].created) {
 		char text[4];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(112, text, sprite);
 	}
 
@@ -443,14 +443,14 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize) {
 void NF_DisableSpriteRotScale(u8 screen, u8 sprite) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((sprite < 0) || (sprite > 127)) {
+	if (sprite > 127) {
 		NF_Error(106, "Sprite", 127);
 	}
 
 	// Verifica si el Sprite esta creado
 	if (!NF_SPRITEOAM[screen][sprite].created) {
 		char text[4];
-		sprintf(text, "%d", screen);
+		snprintf(text, sizeof(text), "%d", screen);
 		NF_Error(112, text, sprite);
 	}
 
@@ -478,20 +478,14 @@ void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy) {
 		in -= 512;
 	}
 	// Limites del factor X
-	if (sx < 0) {
-		sx = 0;
-	}
 	if (sx > 512) {
 		sx = 512;
 	}
 	// Limites del factor Y
-	if (sy < 0) {
-		sy = 0;
-	}
 	if (sy > 512) {
 		sy = 512;
 	}
-	
+
 	// Si es un numero negativo...
 	if (in < 0) {
 		in = -in;			// Pasa a positivo (para poder hacer el bitshift)

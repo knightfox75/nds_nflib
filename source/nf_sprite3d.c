@@ -145,7 +145,7 @@ void NF_Init3dSpriteSys(void) {
 void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 
 	// Verifica el rango de Id's de RAM
-	if ((ram < 0) || (ram >= NF_SLOTS_SPR256GFX)) {
+	if (ram >= NF_SLOTS_SPR256GFX) {
 		NF_Error(106, "Sprite GFX", (NF_SLOTS_SPR256GFX - 1));
 	}
 
@@ -155,7 +155,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 	}
 
 	// Verifica el rango de Id's de VRAM
-	if ((vram < 0) || (vram >= NF_3DSPRITES)) {
+	if (vram >= NF_3DSPRITES) {
 		NF_Error(106, "VRAM GFX", (NF_3DSPRITES - 1));
 	}
 
@@ -442,7 +442,7 @@ void NF_Vram3dSpriteGfxDefrag(void) {
 void NF_Vram3dSpritePal(u8 id, u8 slot) {
 
 	// Verifica el rango de Id's
-	if ((id < 0) || (id >= NF_SLOTS_SPR256PAL)) {
+	if (id >= NF_SLOTS_SPR256PAL) {
 		NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
 	}
 
@@ -452,7 +452,7 @@ void NF_Vram3dSpritePal(u8 id, u8 slot) {
 	}
 
 	// Verifica si te has salido de rango (Paleta)
-	if ((slot < 0) || (slot > 31)) {
+	if (slot > 31) {
 		NF_Error(106, "Sprite Palette Slot", 31);
 	}
 
@@ -474,12 +474,12 @@ void NF_Vram3dSpritePal(u8 id, u8 slot) {
 void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > (NF_3DSPRITES - 1))) {
+	if (id > (NF_3DSPRITES - 1)) {
 		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
 	}
 
 	// Verifica el rango de Id's de Gfx
-	if ((gfx < 0) || (gfx > (NF_3DSPRITES - 1))) {
+	if (gfx > (NF_3DSPRITES - 1)) {
 		NF_Error(106, "3D Sprite GFX", (NF_3DSPRITES - 1));
 	}
 
@@ -489,7 +489,7 @@ void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 	}
 
 	// Verifica el rango de slots de paletas
-	if ((pal < 0) || (pal > 31)) {
+	if (pal > 31) {
 		NF_Error(106, "3D Sprite Palette Slot", 31);
 	}
 
@@ -538,7 +538,7 @@ void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 void NF_Delete3dSprite(u16 id) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > (NF_3DSPRITES - 1))) {
+	if (id > (NF_3DSPRITES - 1)) {
 		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
 	}
 
@@ -723,7 +723,7 @@ void NF_Show3dSprite(u16 id, bool show) {
 void NF_Set3dSpriteFrame(u16 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites
-	if ((id < 0) || (id > (NF_3DSPRITES - 1))) {
+	if (id > (NF_3DSPRITES - 1)) {
 		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
 	}
 

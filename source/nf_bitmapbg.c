@@ -211,9 +211,9 @@ void NF_Load16bitsImage(const char* file, u8 slot, u16 size_x, u16 size_y) {
 
 // Funcion NF_Load16bImgData();
 void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type) {
-	
+
 	// Verifica el rango de Id's
-	if ((slot < 0) || (slot >= NF_SLOTS_BG16B)) {
+	if (slot >= NF_SLOTS_BG16B) {
 		if (type == 0) {
 			NF_Error(106, "16 Bits Bg's", NF_SLOTS_BG16B);
 		} else {
@@ -235,7 +235,7 @@ void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type) {
 	u32 size = 0;
 
 	// Carga el archivo .IMG
-	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -397,9 +397,9 @@ void NF_Reset8bitsBgBuffers(void) {
 
 // Funcion NF_Load8bitsBg();
 void NF_Load8bitsBg(const char* file, u8 slot) {
-	
+
 	// Verifica el rango de Id's
-	if ((slot < 0) || (slot >= NF_SLOTS_BG8B)) {
+	if (slot >= NF_SLOTS_BG8B) {
 		NF_Error(106, "8 Bits Bg's", NF_SLOTS_BG8B);
 	}
 
@@ -419,7 +419,7 @@ void NF_Load8bitsBg(const char* file, u8 slot) {
 	u32 size = 0;
 
 	// Carga el archivo .IMG
-	sprintf(filename, "%s/%s.img", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
@@ -442,7 +442,7 @@ void NF_Load8bitsBg(const char* file, u8 slot) {
 	NF_BG8B[slot].data_size = size;		// Guarda el tamaño del buffer
 
 	// Carga el archivo .PAL
-	sprintf(filename, "%s/%s.pal", NF_ROOTFOLDER, file);
+	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
 	file_id = fopen(filename, "rb");
 	if (file_id) {	// Si el archivo existe...
 		// Obten el tamaño del archivo
