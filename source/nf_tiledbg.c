@@ -330,7 +330,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 		// Calcula el tamaño del tilesize a cargar
 		NF_TILEDBG[slot].tilesize = (((tile_end - tile_start) + 1) << 6);	// nº de tiles x 64 bytes
 		// Si el tamaño del Tilesed solicitado excede del tamaño de archivo, error
-		if (((tile_end + 1) << 6) > tile_size) {
+		if ((u32)((tile_end + 1) << 6) > tile_size) {
 			NF_Error(106, "Tilenumber", (tile_size >> 6));
 		}
 		// Reserva el espacio en RAM

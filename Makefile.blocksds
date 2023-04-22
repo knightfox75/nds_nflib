@@ -75,7 +75,7 @@ DEFINES		+= -D__NDS__ -DARM9
 
 ARCH		:= -march=armv5te -mtune=arm946e-s
 
-WARNFLAGS	:= -Wall -Wextra -Wno-sign-compare
+WARNFLAGS	:= -Wall -Wextra
 
 INCLUDEFLAGS	:= $(foreach path,$(INCLUDEDIRS),-I$(path)) \
 		   $(foreach path,$(LIBDIRS),-I$(path)/include)
