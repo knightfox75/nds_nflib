@@ -16,7 +16,7 @@ extern "C" {
 #include <nds.h>
 
 /// Root folder used by NFLib
-extern char NF_ROOTFOLDER[32];
+extern char NF_ROOTFOLDER[64];
 
 /// Stops program execution and shows the error on the screen.
 ///

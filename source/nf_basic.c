@@ -26,7 +26,7 @@
 
 
 // Define la variable global NF_ROOTFOLDER
-char NF_ROOTFOLDER[32];
+char NF_ROOTFOLDER[64];
 
 
 
