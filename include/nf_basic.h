@@ -15,67 +15,86 @@ extern "C" {
 
 #include <nds.h>
 
-
-
-
-
-// Define la variable global NF_ROOTFOLDER
+/// Root folder used by NFLib
 extern char NF_ROOTFOLDER[32];
 
-
-
-// Funcion NF_Error();
+/// Stops program execution and shows the error on the screen.
+///
+/// This command is used internally by the lib to generate debug messages and
+/// it will rarely be used in you code.
+///
+/// 101: File not found.
+/// 102: Not enough memory.
+/// 103: Not enough free slots.
+/// 104: Background not found.
+/// 105: Background not created.
+/// 106: Value outside of bounds.
+/// 107: Not enough contiguous blocks in VRAM (tiles).
+/// 108: Not enough contiguous blocks in VRAM (maps).
+/// 109: ID already used.
+/// 110: ID not loaded in RAM.
+/// 111: ID not loaded in VRAM.
+/// 112: Sprite not created.
+/// 113: Not enough VRAM.
+/// 114: Text layer doesn't exist.
+/// 115: Background dimensions are invalid (not multiple of 256).
+/// 116: File too big.
+/// 117: Affine background dimensions are invalid.
+/// 118: Affine creation layer is invalid.
+///
+/// @param code Error code.
+/// @param text Description.
+/// @param value Additional info.
 void NF_Error(u16 code, const char* text, u32 value);
-// Errores para debug. Detiene el sistema e informa del error
-// 101: Fichero no encontrado
-// 102: Memoria insuficiente
-// 103: No quedan Slots libres
-// 104: Fondo no encontrado
-// 105: Fondo no creado
-// 106: Fuera de rango
-// 107: Insuficientes bloques contiguos en VRAM (Tiles)
-// 108: Insuficientes bloques contiguos en VRAM (Maps)
-// 109: Id ocupada (ya esta en uso)
-// 110: Id no cargada (en RAM)
-// 111: Id no en VRAM
-// 112: Sprite no creado
-// 113:	Memoria VRAM insuficiente
-// 114: La capa de Texto no existe
-// 115:	Medidas del fondo no compatibles (no son multiplos de 256)
-// 116:	Archivo demasiado grande
-// 117: Medidas del fondo affine incorrectas
-// 118: Capa de creacion del fondo affine incorrecta
 
-
-
-// Funcion NF_SetRootFolder();
+/// Defines the root folder of your project (FAT or NitroFS).
+///
+/// This makes it easy to change the name of folder that contains all files of
+/// your project after it’s compiled. It’s imperative the use of this function
+/// before loading  any file from FAT.
+///
+/// If you want to use NitroFS, use "NITROFS" as root folder name. You must
+/// configure your Makefile correctly to include the NitroFS files in your ROM.
+/// When using a flashcard, it must support argv. Use Homebrew Menu to launch
+/// the ROM if your flashcard doesn't support it.
+///
+/// Example:
+/// <pre>
+/// // Define "mygame" folder as root for your project using FAT
+/// NF_SetRootFolder("mygame");
+/// </pre>
+///
+/// @param folder
 void NF_SetRootFolder(const char* folder);
-// Define el nombre de la carpeta que se usara como "root" si se usa la FAT
 
-
-
-// Funcion NF_DmaMemCopy();
+/// Function copy blocks of memory from RAM to VRAM fast.
+///
+/// DMA copies from RAM to VRAM are the most efficient. The function checks if
+/// the data is aligned for the DMA copy. If not, it uses memcpy() insead.
+///
+/// Example:
+/// <pre>
+/// // Copy to address 0x06000000 (VRAM_A) 128 KB of memory from "buffer"
+/// NF_DmaMemCopy((void*)0x06000000, buffer, 131072);
+/// </pre>
+///
+/// @param destination Destination pointer.
+/// @param source Source pointer.
+/// @param size Number of bytes to copy.
 void NF_DmaMemCopy(void* destination, const void* source, u32 size);
-// Copia un bloque de memoria usando DMA (canal 3, halfwords) y vaciando previamente
-// el cache. Con pruebas de bloques grandes (64kb o 128kb) he observado que memcpy(); 
-// sigue siendo mas rapida.
 
-
-
-// Funcion NF_GetLanguage();
+/// Returns the language ID set by the user in the firmware.
+///
+/// 0 : Japanese
+/// 1 : English
+/// 2 : French
+/// 3 : German
+/// 4 : Italian
+/// 5 : Spanish
+/// 6 : Chinese
+///
+/// @return The language ID.
 extern u8 NF_GetLanguage(void);
-// Devuelve el ID del idioma del usuario
-// 0 : Japanese
-// 1 : English
-// 2 : French
-// 3 : German
-// 4 : Italian
-// 5 : Spanish
-// 6 : Chinese
-
-
-
-
 
 #endif
 
