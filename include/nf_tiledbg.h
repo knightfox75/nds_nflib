@@ -111,13 +111,14 @@ extern u8 NF_MAPBLOCKS[2][NF_MAX_BANKS_MAPS];
 
 /// Initialize library to load files from the filesystem to create tiled BGs.
 ///
-/// Use this function once before loading any BG from FAT.
+/// Use this function once before loading any BG from FAT. Don't call it more
+/// than once.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Init buffers and variables to load tiled BGs
 /// NF_InitTiledBgBuffers();
-/// </pre>
+/// ```
 void NF_InitTiledBgBuffers(void);
 
 /// Reset state used for tiled BGs loaded from FAT.
@@ -127,10 +128,10 @@ void NF_InitTiledBgBuffers(void);
 /// to clean all stuff from RAM and make free space to load the new level.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Empty all buffers and reset variable values
 /// NF_ResetTiledBgBuffers();
-/// </pre>
+/// ```
 void NF_ResetTiledBgBuffers(void);
 
 /// Initialize the tiled BG engine of the selected screen.
@@ -146,17 +147,17 @@ void NF_ResetTiledBgBuffers(void);
 /// - Enables extended palettes.
 ///
 /// The memory allocated for tiles and maps is defined in:
-/// <pre>
+/// ```
 /// #define NF_BANKS_TILES 8
 /// #define NF_BANKS_MAPS 16
-/// </pre>
+/// ```
 /// Each tile bank is as big as 8 map banks.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Init tiled BG system of screen 1
 /// NF_InitTiledBgSys(1);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 void NF_InitTiledBgSys(u8 screen);
@@ -169,17 +170,17 @@ void NF_InitTiledBgSys(u8 screen);
 /// Check the GRIT folder for more info about BG files conversion.
 ///
 /// You can load up to 32 BGs at the same time, this is defined in:
-/// <pre>
+/// ```
 /// #define NF_SLOTS_TBG 32
-/// </pre>
+/// ```
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Load to RAM files "mainstage.img", "mainstage.map" and "mainstage.pal"
 /// // from the "stage1" subfolder and call it “mifondo”. Also store the size of
 /// // the BG (2048 x 256).
 /// NF_LoadTiledBg("stage1/mainstage", "mifondo", 2048, 256);
-/// </pre>
+/// ```
 ///
 /// @param file File path without extension.
 /// @param name Name used for the BG for other functions.
@@ -194,13 +195,13 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height);
 /// is created. The background is created using NF_CreateTiledBg().
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Load to RAM tiles 0 to 23 (24 tiles in total) from "mainstage.img" and
 /// // the palette (from "mainstage.pal") file, from "stage1" subfolder and
 /// // assigns the "mifondo" name to the background. It also sets the size of
 /// // background to 256x256 pixels. This creates a 32x32 tiles blank map.
 /// NF_LoadTilesForBg("stage1/mainstage", "mifondo", 256, 256, 0, 23);
-/// </pre>
+/// ```
 ///
 /// @param file File name, without extension.
 /// @param name Name of the BG.
@@ -217,11 +218,11 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 /// it in RAM until you don't need it anymore.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Delete from RAM the BG with name "mifondo" and mark as free the slot it
 /// // uses.
 /// NF_UnloadTiledBg("mifondo");
-/// </pre>
+/// ```
 ///
 /// @param name Name used for the BG.
 void NF_UnloadTiledBg(const char* name);
@@ -233,10 +234,10 @@ void NF_UnloadTiledBg(const char* name);
 /// specified screen and layer.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Create a tiled BG on layer 3 of screen 0, using the BG called "mifondo"
 /// NF_CreateTiledBg(0, 3, "mifondo");
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -248,10 +249,10 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name);
 /// This also deletes from VRAM the data used by this BG.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Deletes the tiled BG from layer 3 of screen 0
 /// NF_DeleteTiledBg(0, 3);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -271,11 +272,11 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// Gets the value of the tile at the specified position.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Gets the value of the tile at (20, 10) of the map loaded on screen 0,
 /// // layer 2.
 /// u16 mytile = NF_GetTileOfMap(0, 2, 10, 20);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -287,10 +288,10 @@ u16 NF_GetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// Sets the value of the tile at the specified position.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Sets to 5 the tile at (20, 10) of the map loaded on screen 0, layer 2.
 /// NF_SetTileOfMap(0, 2, 10, 20, 5);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -305,10 +306,10 @@ void NF_SetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u16 tile);
 /// this fuction to apply changes made with NF_SetTileOfMap().
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Update the map in VRAM with the modified copy in RAM of screen 0, layer 2
 /// NF_UpdateVramMap(0, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -320,12 +321,12 @@ void NF_UpdateVramMap(u8 screen, u8 layer);
 /// in RAM. It's also a very slow function, use it twice or 3 times per frame.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Change the value of color 1 of the palette of layer 3 on top screen to
 /// // red. If this layer is a text layer with the default font, the text
 /// // becomes red.
 /// NF_BgSetPalColor(0, 3, 1, 31, 0, 0);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -343,10 +344,10 @@ void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
 /// Use this function to make cool effect on your tiled backgrounds.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Set color 1 of the palette of layer 3 on top screen to red
 /// NF_BgSetPalColor(0, 3, 1, 31, 0, 0);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -359,10 +360,10 @@ void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
 /// Updates the palette of a background from RAM to VRAM.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Updates the palette of layer 2 of the bottom screen
 /// NF_BgUpdatePalette(1, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -372,14 +373,14 @@ void NF_BgUpdatePalette(u8 screen, u8 layer);
 /// which is loaded in RAM.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Gets the RGB value of color number 200 of layer 3 of the bottom screen,
 /// // stores it in the "red", "green" and "blue" variables.
 /// u8 red;
 /// u8 green;
 /// u8 blue;
 /// NF_BgGetPalColor(1, 3, 200, &red, &green, &blue);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -394,11 +395,11 @@ void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b);
 /// By default, all tiles use extended palette 0.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Returns the extended palette used by tile in position (20, 10) of layer 3
 /// // of the top screen
 /// palette = NF_GetTilePal(0, 3, 20, 10);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -414,11 +415,11 @@ u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// the map in RAM.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Sets tile on position (20, 10) of layer 3 on top screen to use the
 /// // extended palette 2
 /// NF_SetTilePal(0, 3, 20, 10, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -431,10 +432,10 @@ void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
 /// palette.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Loads the "bg/sunset.pal" file from the filesystem to RAM slot 3.
 /// NF_LoadExBgPal("bg/sunset", 3);
-/// </pre>
+/// ```
 ///
 /// @param file File (.pal extension).
 /// @param slot RAM slot (0 - 127)
@@ -443,11 +444,11 @@ void NF_LoadExBgPal(const char* file, u8 slot);
 /// Deletes a loaded palette from RAM.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Erase from RAM the palette loaded in slot 5. If the palette is already
 /// // transfered to VRAM, you can still use it until you update the palettes.
 /// NF_UnloadExBgPal(5);
-/// </pre>
+/// ```
 ///
 /// @param slot RAM slot (0 - 127)
 void NF_UnloadExBgPal(u8 slot);
@@ -455,11 +456,11 @@ void NF_UnloadExBgPal(u8 slot);
 /// Transfers a palette from RAM to VRAM to be used as extended palette.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Transfers the palette from RAM slot 100 to VRAM of layer 3 of the top
 /// // screen, to be used as extended palette 10.
 /// NF_VramExBgPal(0, 3, 100, 10);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -470,10 +471,10 @@ void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot);
 /// Sets the extended palette to be used in the specified background.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // The backgroun on layer 3 of top screen, uses the extended palette 5
 /// NF_SetExBgPal(0, 3, 5);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -486,11 +487,11 @@ void NF_SetExBgPal(u8 screen, u8 layer, u8 pal);
 /// visible until you update the copy in VRAM with NF_UpdateVramMap().
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Flips horizontaly the tile in the position (10, 20) of layer 1 of the top
 /// // screen
 /// NF_SetTileHflip(0, 1, 10, 20);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -504,11 +505,11 @@ void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// visible until you update the copy in VRAM with NF_UpdateVramMap().
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Flips vertically the tile in the position (10, 20) of layer 1 of the top
 /// // screen
 /// NF_SetTileVflip(0, 1, 10, 20);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -526,10 +527,10 @@ void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// 3 - 180 degrees
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Rotates 90 degrees counter-clockwise tile 76 of the buffer in slot 3
 /// NF_RotateTileGfx(3, 76, 2);
-/// </pre>
+/// ```
 ///
 /// @param slot RAM slot (0 - 127).
 /// @param tile Tile index.

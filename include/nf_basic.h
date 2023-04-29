@@ -59,10 +59,10 @@ void NF_Error(u16 code, const char* text, u32 value);
 /// the ROM if your flashcard doesn't support it.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Define "mygame" folder as root for your project using FAT
 /// NF_SetRootFolder("mygame");
-/// </pre>
+/// ```
 ///
 /// @param folder
 void NF_SetRootFolder(const char* folder);
@@ -73,10 +73,10 @@ void NF_SetRootFolder(const char* folder);
 /// the data is aligned for the DMA copy. If not, it uses memcpy() insead.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Copy to address 0x06000000 (VRAM_A) 128 KB of memory from "buffer"
 /// NF_DmaMemCopy((void*)0x06000000, buffer, 131072);
-/// </pre>
+/// ```
 ///
 /// @param destination Destination pointer.
 /// @param source Source pointer.
