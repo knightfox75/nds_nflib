@@ -15,77 +15,98 @@ extern "C" {
 
 #include <nds.h>
 
+/// Maximum number of slots of tiled background
+#define NF_SLOTS_TBG 64
 
+/// Maximum number of slots for extended palettes (max 16 per background)
+#define NF_SLOTS_EXBGPAL 128
 
-
-
-// Define los slots maximos para los fondos
-#define NF_SLOTS_TBG 64			// Datos de los fondos
-#define NF_SLOTS_EXBGPAL 128	// Paletas extendidas (maximo 16 paletas por fondo)
-
-// Define el numero maximo de bancos para tiles y mapas
+/// Maxmimum number of VRAM blocks used for tilesets
 #define NF_MAX_BANKS_TILES 8
+
+/// Maxmimum number of VRAM blocks used for maps
 #define NF_MAX_BANKS_MAPS 16
 
-// Define el numero de bancos de Mapas y Tiles
-extern u8 NF_BANKS_TILES[2];	// (1 banks = 16kb)	Cada banco de tiles puede alvergar 8 bancos de Mapas
-extern u8 NF_BANKS_MAPS[2];		// (1 bank = 2kb)	Usar multiplos de 8. Cada set de 8 bancos consume 1 banco de tiles
+/// Maxmimum number of tile banks.
+///
+/// 1 bank = 16 KB. One tile bank is equivalent to 8 map banks.
+extern u8 NF_BANKS_TILES[2];
 
-// Define los Buffers para almacenar los fondos
+/// Maxmimum number of map banks.
+///
+/// 1 bank = 2 KB. One tile bank is equivalent to 8 map banks.
+///
+/// Use multiples of 8 for those values.
+extern u8 NF_BANKS_MAPS[2];
+
+/// Buffers to hold background tiles.
 extern char* NF_BUFFER_BGTILES[NF_SLOTS_TBG];
+
+/// Buffers to hold background maps.
 extern char* NF_BUFFER_BGMAP[NF_SLOTS_TBG];
+
+/// Buffers to hold background palettes.
 extern char* NF_BUFFER_BGPAL[NF_SLOTS_TBG];
 
-
-// Define estructura para almacenar la info de los fondos
+/// Struct that holds information about backgrounds.
 typedef struct {
-	char name[32];		// Nombre del fondo
-	u32 tilesize;		// Tamaño del Tileset
-	u32 mapsize;		// Tamaño del Map
-	u32 palsize;		// Tamaño de la Paleta
-	u16 width;			// Ancho del fondo
-	u16 height;			// Altura del fondo
-	bool available;		// Disponibilidat del Slot
+	char name[32];		///< Background name
+	u32 tilesize;		///< Tileset size
+	u32 mapsize;		///< Map size
+	u32 palsize;		///< Palette size
+	u16 width;			///< Background width
+	u16 height;			///< Background height
+	bool available;		///< If the background is available it is true.
 } NF_TYPE_TBG_INFO;
-extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];	// Datos de los fondos
 
-// Define la estructura para almacenar la info y datos de las paletas extendidas
+/// Information of all backgrounds.
+extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];
+
+/// Struct that holds information about extended palettes.
 typedef struct {
-	char* buffer;	// Buffer para almacenar la paleta
-	u32 palsize;	// Tamaño de la paleta
-	bool inuse;		// Slot libre o en uso
+	char* buffer;	///< Buffer that holds the palette
+	u32 palsize;	///< Palette size
+	bool inuse;		///< True if the slot is in use.
 } NF_TYPE_EXBGPAL_INFO;
-extern NF_TYPE_EXBGPAL_INFO NF_EXBGPAL[NF_SLOTS_EXBGPAL];	// Datos de las paletas extendidas
 
-// Define estructura para almacenar la info de los fondos en pantalla
+/// Information of all extended palettes.
+extern NF_TYPE_EXBGPAL_INFO NF_EXBGPAL[NF_SLOTS_EXBGPAL];
+
+/// Struct that holds information about backgrounds loaded to the screen.
+///
+/// The hardware of the DS doesn't allow using maps bigger than 512x512 pixels.
+/// It is needed to keep a value that speficies if the hardware manages the
+/// background (if it's smaller or equal to 512x512), or if we use the tile
+/// swapping engine of NFLib (if it's bigger).
+///
+/// Background types:
+/// - 0: Normal (max is 512 x 512)
+/// - 1: Larger than 512 x 256
+/// - 2: 256 x Largen than 512
+/// - 3: Both dimensions are larger than 512
 typedef struct {
-	u8 tilebase;		// Bloque de inicio en VRAM del Tileset
-	u8 tileblocks;		// Bloques usados por el Tileset
-	u8 mapbase;			// Bloque de inicio en VRAM del Map
-	u8 mapblocks;		// Bloques usados por el Map
-	u16 bgwidth;		// Ancho del fondo
-	u16 bgheight;		// Altura del fondo
-	u16 mapwidth;		// Ancho del mapa
-	u16 mapheight;		// Altura del mapa
-	u8 bgtype;			// Tipo de mapa
-	u8 bgslot;			// Buffer de graficos usado (NF_BUFFER_BGMAP)
-	u8 blockx;			// Bloque de mapa (horizontal)
-	u8 blocky;			// bloque de mapa (vertical)
-	bool created;		// Flag de si esta creado
+	u8 tilebase;		///< Initial VRAM block used by the tile set
+	u8 tileblocks;		///< Number of blocks used by the tile set
+	u8 mapbase;			///< Initial VRAM block used by the map
+	u8 mapblocks;		///< Number of blocks used by the map
+	u16 bgwidth;		///< Background width
+	u16 bgheight;		///< Background height
+	u16 mapwidth;		///< Map width
+	u16 mapheight;		///< Map height
+	u8 bgtype;			///< Background type
+	u8 bgslot;			///< Graphics buffer used (NF_BUFFER_BGMAP)
+	u8 blockx;			///< Map block (horizontal)
+	u8 blocky;			///< Map block (vertical)
+	bool created;		///< True if the background has been created
 } NF_TYPE_TBGLAYERS_INFO;
-// El hardware de la DS no permite mapas mayores de 512x512
-// Asi que informaremos si nuestor mapa lo gestionara el hardware si es menor o 
-// igual a 512x512, o usaremos nuestro motor de Tile Swaping
-// bgtype 0: Normal (maximo 512 x 512)
-// bgtype 1: >512 x 256
-// bgtype 2: 256 x >512
-// bgtype 3: >512 x >512
-extern NF_TYPE_TBGLAYERS_INFO NF_TILEDBG_LAYERS[2][4];	//[screen][layer]
 
+/// Information of all backgrounds loaded to the screen
+extern NF_TYPE_TBGLAYERS_INFO NF_TILEDBG_LAYERS[2][4]; //[screen][layer]
 
-
-// Define el array de bloques libres
+/// Array of free blocks used for tiles
 extern u8 NF_TILEBLOCKS[2][NF_MAX_BANKS_TILES];
+
+/// Array of free blocks used for maps
 extern u8 NF_MAPBLOCKS[2][NF_MAX_BANKS_MAPS];
 
 /// Initialize library to load files from the filesystem to create tiled BGs.
@@ -314,121 +335,206 @@ void NF_UpdateVramMap(u8 screen, u8 layer);
 /// @param b Blue component (0 - 31).
 void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
 
-
-
-// Funcion NF_BgEditPalColor();
+/// Changes the value of one color of the palete of the specified background.
+///
+/// The change is made in the RAM copy of the palette, so you won't see any
+/// change until you update it on VRAM with NF_BgUpdatePalette().
+///
+/// Use this function to make cool effect on your tiled backgrounds.
+///
+/// Example:
+/// <pre>
+/// // Set color 1 of the palette of layer 3 on top screen to red
+/// NF_BgSetPalColor(0, 3, 1, 31, 0, 0);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param number Color number (0 - 255).
+/// @param r Red component (0 - 31).
+/// @param g Green component (0 - 31).
+/// @param b Blue component (0 - 31).
 void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
-// Edita un color de la paleta seleccionada.
-// El color se edita en el buffer de RAM, para que sea efectivo,
-// mandala a la VRAM con NF_UpdatePalette();
 
-
-
-
-
-// Funcion 	NF_BgUpdatePalette();
+/// Updates the palette of a background from RAM to VRAM.
+///
+/// Example:
+/// <pre>
+/// // Updates the palette of layer 2 of the bottom screen
+/// NF_BgUpdatePalette(1, 2);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
 void NF_BgUpdatePalette(u8 screen, u8 layer);
-// Actualiza la paleta en VRAM con la que se encuentra en el buffer de RAM
 
-
-
-
-
-// Funcion NF_BgGetPalColor();
+/// Gets the RGB value of a color of the palette of the selected background,
+/// which is loaded in RAM.
+///
+/// Example:
+/// <pre>
+/// // Gets the RGB value of color number 200 of layer 3 of the bottom screen,
+/// // stores it in the "red", "green" and "blue" variables.
+/// u8 red;
+/// u8 green;
+/// u8 blue;
+/// NF_BgGetPalColor(1, 3, 200, &red, &green, &blue);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param number Color number (0 - 255).
+/// @param r Red component result (0 - 31).
+/// @param g Green component result (0 - 31).
+/// @param b Blue component result (0 - 31).
 void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b);
-// Obtiene el valor de un color de la paleta que se encuentra en la RAM
 
-
-
-
-
-// Funcion NF_GetTilePal();
+/// Returns the number of extended palette used by specified tile.
+///
+/// By default, all tiles use extended palette 0.
+///
+/// Example:
+/// <pre>
+/// // Returns the extended palette used by tile in position (20, 10) of layer 3
+/// // of the top screen
+/// palette = NF_GetTilePal(0, 3, 20, 10);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param tile_x X coordinate.
+/// @param tile_y Y coordinate.
+/// @return Extended palette index (0 - 15).
 u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
-// Devuelve que numero de paleta (0 - 15) esta usando el tile del fondo especificado.
-// Por defecto, todos los tiles usan la paleta del Slot nº0
-// Los datos se obtienen de la compia en RAM del mapa del fondo.
 
-
-
-
-
-// Funcion NF_SetTilePal();
+/// Sets the extended palette to use for the tile especified.
+///
+/// The palette has to be loaded in VRAM, and the changes won't be visible until
+/// you use NF_UpdateVramMap() because all operations are done in the copy of
+/// the map in RAM.
+///
+/// Example:
+/// <pre>
+/// // Sets tile on position (20, 10) of layer 3 on top screen to use the
+/// // extended palette 2
+/// NF_SetTilePal(0, 3, 20, 10, 2);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param tile_x X coordinate.
+/// @param tile_y Y coordinate.
+/// @param pal Extended palette index (0 - 15).
 void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
-// Cambia el numero de paleta (0 - 15) que usara el tile del fondo especificado.
-// Por defecto, todos los tiles usan la paleta del Slot nº0
-// Los datos se escriben de la compia en RAM del mapa del fondo, por lo que no seran
-// visibles hasta que ejecutes la funcion NF_UpdateVramMap();
 
-
-
-
-
-// Funcion NF_LoadExBgPal();
+/// Load a palette from a file to RAM to use it as a background extended
+/// palette.
+///
+/// Example:
+/// <pre>
+/// // Loads the "bg/sunset.pal" file from the filesystem to RAM slot 3.
+/// NF_LoadExBgPal("bg/sunset", 3);
+/// </pre>
+///
+/// @param file File (.pal extension).
+/// @param slot RAM slot (0 - 127)
 void NF_LoadExBgPal(const char* file, u8 slot);
-// Carga en el buffer de RAM correspondiente una paleta de fondos, para poderla usar
-// mas tarde como paleta extendida.
 
-
-
-
-
-// Funcion NF_UnloadExBgPal();
+/// Deletes a loaded palette from RAM.
+///
+/// Example:
+/// <pre>
+/// // Erase from RAM the palette loaded in slot 5. If the palette is already
+/// // transfered to VRAM, you can still use it until you update the palettes.
+/// NF_UnloadExBgPal(5);
+/// </pre>
+///
+/// @param slot RAM slot (0 - 127)
 void NF_UnloadExBgPal(u8 slot);
-// Borra de la RAM la paleta del slot especificado.
 
-
-
-
-
-// Funcion NF_VramExBgPal();
+/// Transfers a palette from RAM to VRAM to be used as extended palette.
+///
+/// Example:
+/// <pre>
+/// // Transfers the palette from RAM slot 100 to VRAM of layer 3 of the top
+/// // screen, to be used as extended palette 10.
+/// NF_VramExBgPal(0, 3, 100, 10);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param id Slot of the palette in RAM.
+/// @param slot Slot of extended palette in VRAM.
 void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot);
-// Transfiere a la VRAM una paleta extendida en el slot de la pantalla y
-// fondo especificados.
 
-
-
-
-
-// Funcion NF_SetExBgPal();
+/// Sets the extended palette to be used in the specified background.
+///
+/// Example:
+/// <pre>
+/// // The backgroun on layer 3 of top screen, uses the extended palette 5
+/// NF_SetExBgPal(0, 3, 5);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param pal Extended palette index (0 - 15).
 void NF_SetExBgPal(u8 screen, u8 layer, u8 pal);
-// Cambia la paleta extendida que usara un fondo.
-// La paleta debe de estar transferida en la VRAM previamente
 
-
-
-
-
-// Funcion NF_SetTileHflip();
+/// Inverts the horizontal flip status of a tile in the specified map.
+///
+/// The changes are done to the copy of the map in RAM, so changes won't be
+/// visible until you update the copy in VRAM with NF_UpdateVramMap().
+///
+/// Example:
+/// <pre>
+/// // Flips horizontaly the tile in the position (10, 20) of layer 1 of the top
+/// // screen
+/// NF_SetTileHflip(0, 1, 10, 20);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param tile_x X coordinate.
+/// @param tile_y Y coordinate.
 void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
-// Invierte horizontalmente el estado actual del tile seleccionado
-// Los cambios no seran visibles hasta que actualices el mapa
-// con la funcion NF_UpdateVramMap();
 
-
-
-
-
-// Funcion NF_SetTileVflip();
+/// Inverts the vertical flip status of a tile in the specified map.
+///
+/// The changes are done to the copy of the map in RAM, so changes won't be
+/// visible until you update the copy in VRAM with NF_UpdateVramMap().
+///
+/// Example:
+/// <pre>
+/// // Flips vertically the tile in the position (10, 20) of layer 1 of the top
+/// // screen
+/// NF_SetTileVflip(0, 1, 10, 20);
+/// </pre>
+///
+/// @param screen Screen (0 - 1).
+/// @param layer Layer (0 - 3).
+/// @param tile_x X coordinate.
+/// @param tile_y Y coordinate.
 void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
-// Invierte verticalmente el estado actual del tile seleccionado
-// Los cambios no seran visibles hasta que actualices el mapa
-// con la funcion NF_UpdateVramMap();
 
-
-
-
-// Funcion NF_RotateTileGfx();
+/// Rotates the graphics of a tile in RAM by the specified angle.
+///
+/// The rotated graphics are stored int the same tile.
+///
+/// Rotation values:
+/// 1 - 90 degrees clockwise
+/// 2 - 90 degrees counter-clockwise
+/// 3 - 180 degrees
+///
+/// Example:
+/// <pre>
+/// // Rotates 90 degrees counter-clockwise tile 76 of the buffer in slot 3
+/// NF_RotateTileGfx(3, 76, 2);
+/// </pre>
+///
+/// @param slot RAM slot (0 - 127).
+/// @param tile Tile index.
+/// @param rotation Rotation value.
 void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation);
-// Rota el grafico de un tile especificado. Rota el tile almacenado en un buffer de fondos
-// que se encuentra en RAM. Debes especificar el SLOT del buffer, numero de tile en el buffer
-// y el angulo de la rotacion.
-// 1 - 90º a la derecha
-// 2 - 90º a la izquierda
-// 3 - 180º
-
-
-
-
 
 #endif
 
