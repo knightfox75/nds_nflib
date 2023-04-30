@@ -15,100 +15,221 @@ extern "C" {
 
 #include <nds.h>
 
+/// @file   nf_text.h
+/// @brief  Text support functions.
 
+/// @defgroup nf_text Text support functions.
+///
+/// Text support functions of NFLIb.
+///
+/// @{
 
-// Define el nº de caracteres que tiene la fuente
+/// Number of characters available in a font
 #define NF_TEXT_FONT_CHARS 127
+
+/// Last valid character in a font
 #define NF_TEXT_FONT_LAST_VALID_CHAR 113
 
-
-// Define la estructura de control de textos
+/// Struct that holds text layer information
 typedef struct {
-	u16 width;		// Ultimo tile de la fila (0 - x) 32 tiles serian 0 - 31
-	u16 height;		// Ultimo tile de la columna (0 - y)
-	u8 rotation;	// Rotacion del texto
-	u8 slot;		// Slot donde esta cargado el tileset de esta capa de texto
-	u8 pal;			// Paleta que usara el texto (0 por defecto)
-	bool exist;		// Existe la capa de texto?
-	bool update;	// Tienes que actualizar la capa?
+	u16 width;		///< Rightmost tile of a row (for 32 columns this is 31)
+	u16 height;		///< Bottom-most tile of a column (for 24 rows this is 23)
+	u8 rotation;	///< Text rotation
+	u8 slot;		///< Slot where the tileset of this text layer is loaded
+	u8 pal;			///< Palette used for the text (0 by default)
+	bool exist;		///< True if this layer has been loaded
+	bool update;	///< True if this layer needs to be updated
 } NF_TYPE_TEXT_INFO;
-extern NF_TYPE_TEXT_INFO NF_TEXT[2][4];		// Datos de las capas de texto
 
+/// Information of all text layers.
+extern NF_TYPE_TEXT_INFO NF_TEXT[2][4];
 
-
-// Funcion NF_InitTextSys();
+/// Initialize the text engine for the selected screen.
+///
+/// You must also initialize the tiled background system of that screen before
+/// using the text engine. You can get more information about it in
+/// NF_InitTiledBgBuffers() and NF_InitTiledBgSys().
+///
+/// Use this function also to reset text system.
+///
+/// Example:
+/// ```
+/// // Initialize text engine of screen 1
+/// NF_InitTextSys(1);
+/// ```
+///
+/// @param screen Screen (0 - 1).
 void NF_InitTextSys(u8 screen);
-// Inicializa el sistema de Texto para la pantalla dada
 
-
-
-// Funcion NF_LoadTextFont();
+/// Load font and palette files from the filesystem to RAM.
+///
+/// You must specify the filename without extension and the name you want to
+/// give to the font and the size of the text layer you want to create, in
+/// pixels.
+///
+/// If the font includes the characters for rotated text, the values are:
+/// - 0: No rotation
+/// - 1: Rotate clockwise
+/// - 2: Rotate counter-clockwise
+///
+/// The font uses two files, the tileset with extension ".fnt" and the palette
+/// with extension ".pal".
+///
+/// You must load the font for every text layer you want to create. Every font
+/// loaded uses a slot of tiled backgrounds of RAM.
+///
+/// There is a folder with font templates in the text examples folder.
+///
+/// Example:
+/// ```
+/// // Load the font with files "default" from folder "stage4" and call it
+/// // "titulo", rotated counter-clockwise. The text layer created is of 32x32
+/// // tiles (256x256 pixels).
+/// NF_LoadTextFont("stage4/default", "titulo", 256, 256, 2);
+/// ```
+///
+/// @param file File name
+/// @param name Font name
+/// @param width Map width (in pixels)
+/// @param height Map height (in pixels)
+/// @param rotation Rotation (0 - 2)
 void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, u8 rotation);
-// Carga una fuente para usar como texto
-// La fuente se cargara en un slot libre de fondos tileados
-// Debes especificar el archivos sin extension y un nombre para referenciarla
-// En caso de que la fuente tenga los sets de rotacion a izquierda y derecha,
-// especificar 1 o 2 en el parametro "rot". 0 carga la fuente sin rotacion
 
-
-
-// Funcion NF_UnloadTextFont();
+/// Delete from RAM the font with the specified name.
+///
+/// Example:
+/// ```
+/// // Delete from RAM the font with name "titulo".
+/// NF_UnloadTextFont("titulo");
+/// ```
+///
+/// @param name Font name
 void NF_UnloadTextFont(const char* name);
-// Borra un fuente cargada en RAM
-// Esta funcion simplemente llama a NF_UnloadTiledBg(); para su borrado
 
-
-
-// Funcion NF_CreateTextLayer();
+/// Create a special tiled background to write text on it.
+///
+/// You must select the screen and layer where the background will be created,
+/// the orientation of the text and the font you want to use.
+///
+/// Example:
+/// ```
+/// // Create a text layer on layer 0 of screen 1, using the font with name
+/// // "titulo" and with the text rotated to the left.
+/// NF_CreateTextLayer(1, 0, 2, "titulo");
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
+/// @param rotation Rotation (0 - 2)
+/// @param name Font name
 void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name);
-// Crea un fondo tileado para usarlo con texto
-// Esta funcion simplemente llama a NF_CreateTiledBg(); para su creacion
 
-
-
-// Funcion NF_DeleteTextLayer();
+/// Delete a text layer.
+///
+/// You must specify the layer and screen of the text layer you want to delete.
+///
+/// Example:
+/// ```
+/// // Delete the text layer of layer 0 of the bottom screen.
+/// NF_DeleteTextLayer(1, 0);
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
 void NF_DeleteTextLayer(u8 screen, u8 layer);
-// Borra un fondo usado como capa de texto y sus buffers y variables asociadas
 
-
-
-// Funcion NF_WriteText();
+/// Write text in a layer at the specified coordinates.
+///
+/// You must specify the screen and layer where you want to write the text. The
+/// text is not writen directly on the screen. It's stored in a temporary buffer
+/// and it's transferred to the screen when the function NF_UpdateTextLayers()
+/// is called. This is done to minimize the number of times VRAM is updated.
+///
+/// If you want to write variables or formated text, use snprintf().
+///
+/// Example 1:
+/// ```
+/// // Write "Hello World!" to layer 1 of the bottom screen
+/// NF_WriteText(1, 0, 1, 1, "Hello World!");
+/// ```
+///
+/// Example 2:
+/// ```
+/// // Write a formatted string to layer 1 of the bottom screen
+/// char buffer[32];
+/// int myvar = 10;
+/// snprintf(buffer, sizeof(buffer), “Hello world %d times”, myvar);
+/// NF_WriteText(1, 0, 1, 1, buffer);
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
+/// @param x X coordinate
+/// @param y Y coordinate
+/// @param text String to write to the screen
 void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text);
-// Escribe un texto en el buffer de texto de la pantalla y capa seleccionada
 
-
-
-// Funcion NF_UpdateTextLayers();
+/// Copy the temporary text buffers of both screens to VRAM.
+///
+/// Buffers are only copied if the copy in VRAM is outdated.
+///
+/// Example:
+/// ```
+/// // Update all text layers that require it
+/// NF_UpdateTextLayers();
+/// ```
 void NF_UpdateTextLayers(void);
-// Copia el buffer de texto a la VRAM en las capas que sea necesario
-// realizar una actualizacion
 
-
-
-
-// Funcion NF_ClearTextLayer();
+/// Clears the contents of a layer text, filling it with zeroes.
+///
+/// Example:
+/// ```
+/// // Clears the contents of text layer 2 of screen 0
+/// NF_ClearTextLayer(0, 2);
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
 void NF_ClearTextLayer(u8 screen, u8 layer);
-// Borra el contanido de la capa de texto seleccionada
 
-
-
-
-
-// Funcion NF_DefineTextColor();
+/// Defines a RGB color to be used later as a text color.
+///
+/// The color is stored in the specified slot. To make this function work, the
+/// font palette must be indexed and it must have 2 colors (Magenta/White). Only
+/// color index 1 is updated by this function, so any other color in higher
+/// indices won't be updated.
+///
+/// Example:
+/// ```
+/// // Defines color numer 13 of text layer 0 of the top screen as light green
+/// NF_DefineTextColor(0, 0, 13, 15, 31, 15);
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
+/// @param color Color number (0 - 15)
+/// @param r Red component (0 - 31)
+/// @param g Green component (0 - 31)
+/// @param b Blue component (0 - 31)
 void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b);
-// Define uno de los 16 colores disponibles para texto, en formato RGB
 
-
-
-
-
-// Function NF_SetTextColor();
+/// Sets the color to use in all text written after calling this function.
+///
+/// The text that is already on the screen won't be altered.
+//
+/// Example:
+/// ```
+/// // From now on, all text written in layer 0 of the top screen will use the
+/// // color stored in slot 3.
+/// NF_SetTextColor(0, 0, 3);
+/// ```
+///
+/// @param screen Screen (0 - 1)
+/// @param layer Background layer (0 - 3)
+/// @param color Color number (0 - 15)
 void NF_SetTextColor(u8 screen, u8 layer, u8 color);
-// Selecciona con que color definido se escribira el texto (no cambia el color del texto ya escrito)
 
-
-
-
+/// @}
 
 #endif
 
