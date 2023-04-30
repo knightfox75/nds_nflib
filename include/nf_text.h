@@ -180,7 +180,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text);
 /// ```
 void NF_UpdateTextLayers(void);
 
-/// Clears the contents of a layer text, filling it with zeroes.
+/// Clears the contents of a text layer filling it with zeroes.
 ///
 /// Example:
 /// ```
