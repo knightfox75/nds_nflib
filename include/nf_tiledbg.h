@@ -24,7 +24,7 @@ extern "C" {
 
 #include <nds.h>
 
-/// Maximum number of slots of tiled background
+/// Maximum number of slots of tiled backgrounds
 #define NF_SLOTS_TBG 64
 
 /// Maximum number of slots for extended palettes (max 16 per background)
@@ -57,7 +57,7 @@ extern char* NF_BUFFER_BGMAP[NF_SLOTS_TBG];
 /// Buffers to hold background palettes.
 extern char* NF_BUFFER_BGPAL[NF_SLOTS_TBG];
 
-/// Struct that holds information about backgrounds.
+/// Struct that holds information about regular tiled backgrounds.
 typedef struct {
 	char name[32];		///< Background name
 	u32 tilesize;		///< Tileset size

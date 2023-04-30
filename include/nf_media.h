@@ -15,19 +15,34 @@ extern "C" {
 
 #include <nds.h>
 
+/// @file   nf_media.h
+/// @brief  Functions to load files of common media formats.
 
+/// @defgroup nf_media Functions to load files of common media formats.
+///
+/// This module contains a function to load BMP files.
+///
+/// @{
 
-
-
-// Funcion NF_LoadBMP();
+/// Load a BMP image into a 16-bit background slot.
+///
+/// It supports 8, 16 and 24 bits BMP images. To load and show the image, you
+/// must initialize 16 bits mode, the backbuffers and to call
+/// NF_Draw16bitsImage() to send the image from the RAM slot to the backbuffer.
+///
+/// All pixels drawn out of bounds are ignored.
+///
+/// Example:
+/// ```
+/// // Load "lostend.bmp" to 16-bit slot 0
+/// NF_LoadBMP("bmp/lostend", 0);
+/// ```
+///
+/// @param file File path.
+/// @param slot Slot number (0 - 15).
 void NF_LoadBMP(const char* file, u8 slot);
-// Carga un archivo BMP de 8, 16 o 24 bits en un slot de imagenes de 16 bits.
-// Debes inicializar el modo 16 bits, el backbuffer y usar la funcion NF_Draw16bitsImage();
-// para mostrarlo.
 
-
-
-
+/// @}
 
 #endif
 

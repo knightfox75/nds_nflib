@@ -15,212 +15,309 @@ extern "C" {
 
 #include <nds.h>
 
+/// @file   nf_bitmapbg.h
+/// @brief  Bitmap background support.
 
+/// @defgroup nf_bitmapbg Bitmap background support.
+///
+/// Functions to load and manage bitmap backgrounds.
+///
+/// @{
 
-
-// Define los slots maximos para los fondos de 16 bits
+/// Maximum number of slots of 16-bit bitmap backgrounds
 #define NF_SLOTS_BG16B 16
 
-// Define los slots maximos para los fondos de 8 bits
+/// Maximum number of slots of 8-bit bitmap backgrounds
 #define NF_SLOTS_BG8B 16
 
-// Define los Buffers para almacenar datos de 16 bits
+/// Struct that holds information about 16-bit bitmap backgrounds.
 typedef struct {
-	u16* buffer;	// Buffer de datos
-	u32 size;		// Tamaño del buffer
-	u16 width;		// Ancho de la imagen (256 max)
-	u16 height;		// Altura de la imagen (256 max)
-	bool inuse;		// Esta en uso el buffer?
+	u16* buffer;	///< Data buffer
+	u32 size;		///< Size of the buffer
+	u16 width;		///< Width of the image (max 256 pixels)
+	u16 height;		///< Height of the image (max 256 pixels)
+	bool inuse;		///< True if the slot is in use
 } NF_TYPE_BG16B_INFO;
-extern NF_TYPE_BG16B_INFO NF_BG16B[NF_SLOTS_BG16B];		// Fondos RAW de 16 bits
 
-// BackBuffer de 16 bits de cada pantalla
+/// Information of all 16-bit bitmap backgrounds
+extern NF_TYPE_BG16B_INFO NF_BG16B[NF_SLOTS_BG16B];
+
+// Backbuffer of 16 bit of each screen
 extern u16* NF_16BITS_BACKBUFFER[2];
 
-// Define los Buffers para almacenar datos de 8 bits
+/// Struct that holds information about 8-bit bitmap backgrounds.
 typedef struct {
-	u8* data;			// Buffer de datos
-	u32 data_size;		// Tamaño del buffer de datos
-	u16* pal;			// Buffer para la paleta
-	u32 pal_size;		// Tamaño de la paleta
-	bool inuse;		// Esta en uso el buffer?
+	u8* data;			///< Data buffer
+	u32 data_size;		///< Data buffer size
+	u16* pal;			///< Palette buffer
+	u32 pal_size;		///< Palette buffer size
+	bool inuse;			///< True if the slot is in use
 } NF_TYPE_BG8B_INFO;
-extern NF_TYPE_BG8B_INFO NF_BG8B[NF_SLOTS_BG8B];	// Fondos indexados de 8 bits
 
-// BackBuffer de 8 bits de cada pantalla
+/// Information of all 8-bit bitmap backgrounds
+extern NF_TYPE_BG8B_INFO NF_BG8B[NF_SLOTS_BG8B];
+
+/// Information of a backbuffer of 8 bit
 typedef struct {
-	u8* data;
-	u16* pal;
+	u8* data;		///< Pointer to the bitmap
+	u16* pal;		///< Pointer to the bitmap palette
 } NF_TYPE_BB8B_INFO;
+
+/// Backbuffer of 8 bit of each screen
 extern NF_TYPE_BB8B_INFO NF_8BITS_BACKBUFFER[2];
 
-
-
-
-
-
-
-// Funcion NF_Init16bitsBgBuffers();
+/// Initialize buffers to store 16-bit bitmap backgrounds.
+///
+/// You must call this function once in you code before loading any 16-bit
+/// bitmap.
 void NF_Init16bitsBgBuffers(void);
-// Inicia los buffers para almacenar fondos de BITMAP 16 bits
-// Usalo UNA SOLA VEZ antes de usar los buffers
 
-
-
-// Funcion NF_Reset16bitsBgBuffers();
+/// Resets all 16 bit background buffers and clears them.
+///
+/// Useful when changing game levels, for example.
 void NF_Reset16bitsBgBuffers(void);
-// Reinicia los buffers para almacenar fondos de BITMAP 16 bits,
-// borrado su contenido
 
-
-
-// Funcion NF_Init16bitsBackBuffer();
+/// Initialize the 16 bit background backbuffer of the selected screen.
+///
+/// Use this function once before using the backbuffer.
+///
+/// @param screen Screen (0 - 1).
 void NF_Init16bitsBackBuffer(u8 screen);
-// Inicia el backbuffer de la pantalla dada.
-// Usalo UNA SOLA VEZ antes de usar el backbuffer
 
-
-
-// Funcion NF_Enable16bitsBackBuffer();
+/// Enables the 16-bit backbuffer of the selected screen.
+///
+/// If the backbuffer is already enabled, the contents are cleared.
+///
+/// @param screen Screen (0 - 1).
 void NF_Enable16bitsBackBuffer(u8 screen);
-// Habilita el backbuffer de la pantalla indicada.
-// Si el buffer ya existe, la funcion borrara el contenido del mismo,
-// poniendo a 0 todos los bytes del buffer.
 
-
-
-// Funcion NF_Disble16bitsBackBuffer();
+/// Disables the 16-bit backbuffer of selected screen.
+///
+/// It frees the RAM used by it (128 KB).
+///
+/// @param screen Screen (0 - 1).
 void NF_Disble16bitsBackBuffer(u8 screen);
-// Deshabilita el backbuffer de la pantalla indicada, liberando de la
-// RAM el espacio usado.
 
-
-
-// Funcion NF_Flip16bitsBackBuffer();
+/// Sends the 16-bit backbuffer to the VRAM of the selected screen.
+///
+/// Use it to edit the image in the backbuffer and to update the image displayed
+/// on the screen without showing the drawing process (which may be very slow).
+///
+/// @param screen Screen (0 - 1).
 void NF_Flip16bitsBackBuffer(u8 screen);
-// Copia el contenido del backbuffer a la VRAM de la pantalla indicada.
 
-
-
-// Funcion NF_InitBitmapBgSys();
+/// Initializes the selected screen in "bitmap" mode.
+///
+/// The color depth of the bitmap can be 8 or 16 bits.
+///
+/// The DS 2D engine must be set to video mode 5.
+///
+/// Example:
+/// ```
+/// // Setup the top screen to use 16-bit bitmaps
+/// NF_InitBitmapBgSys(0, 1);
+/// ```
+///
+/// @param screen Screen (0 - 1).
+/// @param mode Depth mode (0: 8 bits / 256 colors; 1: 16 bits)
 void NF_InitBitmapBgSys(u8 screen, u8 mode);
-// Inicia el modo BITMAP en la pantalla especificada, con la profundidad de color
-// especificada. (0 -> 256 colores, 1 -> 16 bits)
 
-
-
-// Funcion NF_Load16bitsBg();
+/// Loads a 16-bit bitmap from the filesystem.
+///
+/// The file must be in binary format ".img", and its max size is 256x256
+/// pixels (128 KB).
+///
+/// You can convert the file using this GRIT command line:
+///
+/// ```
+/// grit file.png -gb -gB16 -ftb
+/// ```
+///
+/// You can load as many files as defined in NF_SLOTS_BG16B.
+///
+/// Example:
+/// ```
+/// // Load "bitmap16.img" to slot 0
+/// NF_Load16bitsBg("bmp/bitmap16", 0);
+/// ```
+///
+/// @param file File name without extension.
+/// @param slot Slot number (0 - 15).
 void NF_Load16bitsBg(const char* file, u8 slot);
-// Carga un Fondo BITMAP (en formato RAW) en el slot indicado,
-// de un tamaño maximo de 256x256 pixeles.
-// Debes especificar el nombre de archivo sin extension.
-// El archivo debe ser un binario con extension .img
 
-
-
-// Funcion NF_Load16bitsImage();
+/// Loads a 16 bits image into a RAM slot.
+///
+/// The image must be in ".img" format, and it has a max size of 256x256 pixels 
+/// You must also specify the size of the image. The image will be loaded into
+/// the specified 16-bits bitmap background slot.
+///
+/// Use NF_Unload16bitsBg() to remove it from RAM.
+///
+/// Example:
+/// ```
+/// // Loads file "character" file to slot 1. The size is 64x128 pixels.
+/// NF_Load16bitsImage("bmp/character", 1, 64, 128);
+/// ```
+/// Any magenta pixel (0xFF00FF) will be transparent.
+///
+/// @param file File name without extension.
+/// @param slot Slot number (0 - 15).
+/// @param size_x Width in pixels.
+/// @param size_y Height in pixels.
 void NF_Load16bitsImage(const char* file, u8 slot, u16 size_x, u16 size_y);
-// Carga una imagen BITMAP (en formato RAW) en el slot indicado,
-// de un tamaño maximo de 256x256 pixeles.
-// Debes especificar el nombre de archivo sin extension.
-// El archivo debe ser un binario con extension .img
-// Todos los pixeles Magenta de la imagen (0xFF00FF) seran transparentes.
 
-
-
-// Funcion NF_Load16bImgData();
+// Internal use only. Generic loader of 16-bit data to RAM.
 void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type);
-// Funcion de uso interno, no documentar ni usar.
-// Cargador generico de datos de imagen de 16 bits a la RAM.
 
-
-
-// Funcion NF_Unload16bitsBg();
+/// Deletes from RAM the 16-bit image stored in the selected slot.
+///
+/// This is useful, for example, when the image has been copied to VRAM so it is
+/// no longer needed in RAM.
+///
+/// Example:
+/// ```
+/// // Delete from RAM the image stored in slot 0.
+/// NF_Unload16bitsBg(0);
+/// ```
+///
+/// @param slot Slot number (0 - 15).
 void NF_Unload16bitsBg(u8 slot);
-// Borra de la RAM los datos del buffer especificado
 
-
-
-// Funcion NF_Copy16bitsBuffer();
+/// Copy the selected 16-bit slot to VRAM or the backbuffer.
+///
+/// Example:
+/// ```
+/// // Copy the image of slot 0 to the backbuffer of the top screen
+/// NF_Copy16bitsBuffer(0, 1, 0);
+/// ```
+///
+/// @param screen Screen (0 - 1).
+/// @param destination Use 0 for VRAM or 1 for backbuffer.
+/// @param slot Slot number (0 - 15).
 void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot);
-// Copia los datos cargados en un Buffer de Bitmap a la VRAM o al BackBuffer
-// destination: 0 -> VRAM, 1 -> BackBuffer
 
-
-
-// Funcion NF_Draw16bitsImage();
+/// Draws the image in a slot into the backbuffer of the selected screen.
+///
+/// You can specify the coordinates where the image is drawn.
+///
+/// If "alpha" is set to true, all magenta pixels (0xFF00FF) won't be drawn.
+///
+/// Example:
+/// ```
+/// // Draws the image from Slot 1 to the backbuffer of the bottom screen, at
+/// // coordinates (100, 50).
+/// NF_ Draw16bitsImage(1, 1, 100, 50, true);
+/// ```
+///
+/// @param screen Screen (0 - 1).
+/// @param slot Slot number (0 - 15).
+/// @param x X coordinate.
+/// @param y Y coordinate.
+/// @param alpha True to make magenta pixels transparent.
 void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha);
-// Copia la imagen cargada en un Buffer de Bitmap al Backbuffer de la pantalla especificada
 
-
-
-// Funcion NF_Init8bitsBgBuffers();
+/// Initialize buffers to store 8-bit bitmap backgrounds.
+///
+/// You must call this function once in you code before loading any 8-bit
+/// bitmap.
 void NF_Init8bitsBgBuffers(void);
-// Inicializa los buffers necesarios para la carda de fondos en modo BITMAP de 8 bits.
-// Debes usar esta funcion antes de poder usar ninguno de los buffers.
 
-
-
-// Funcion NF_Reset8bitsBgBuffers();
+/// Resets all 8 bit background buffers and clears them.
+///
+/// Useful when changing game levels, for example.
 void NF_Reset8bitsBgBuffers(void);
-// Reinicia los buffers de fondos de 8 bits, borrando todo el contenido de los buffers.
 
-
-
-// Funcion NF_Load8bitsBg();
+/// Loads a 8-bit bitmap from the filesystem.
+///
+/// The file must be in binary format ".img", and its max size is 256x256
+/// pixels (64 KB). It will also load its palette in ".pal" format.
+///
+/// You can convert the file using this GRIT command line:
+///
+/// ```
+/// grit file.png -gb -gB8 -ftb
+/// ```
+///
+/// If you want to share the palette with a different background:
+/// ```
+/// grit file.png -gb -gu8 -gB8 -pu16 -pS -ftb -fh! -Omypal.pal -gTFF00FF
+/// ```
+///
+/// If you want to display 2 8-bit backgrounds on same screen they must share
+/// the palette.
+///
+/// You can load as many files as defined in NF_SLOTS_BG8B.
+///
+/// Example:
+/// ```
+/// // Loads "bitmap8.img" and "bitmap8.pal" to slot 0
+/// NF_Load8bitsBg("bmp/bitmap8", 0);
+/// ```
+///
+/// @param file File name without extension.
+/// @param slot Slot number (0 - 15).
 void NF_Load8bitsBg(const char* file, u8 slot);
-// Carga los archivos necesarios de un fondo de 8 bits en el Slot indicado.
-// Debes especificar el nombre de archivo sin extension.
-// El archivo debe ser un binario con extension .img
-// La paleta debe tener la extension .pal
 
-
-
-// Funcion NF_Unload8bitsBg();
+/// Deletes from RAM the 8-bit image stored in the selected slot.
+///
+/// This is useful, for example, when the image has been copied to VRAM so it is
+/// no longer needed in RAM.
+///
+/// Example:
+/// ```
+/// // Delete from RAM the image stored in slot 0.
+/// NF_Unload8bitsBg(0);
+/// ```
+///
+/// @param slot Slot number (0 - 15).
 void NF_Unload8bitsBg(u8 slot);
-// Borra de la RAM el fondo del slot indicado.
 
-
-
-// Funcion NF_Copy8bitsBuffer();
+/// Copy the selected 8-bit slot to VRAM or the backbuffer.
+///
+/// Example:
+/// ```
+/// // Copy the image of slot 0 to the backbuffer of the top screen
+/// NF_Copy8bitsBuffer(0, 1, 0);
+/// ```
+///
+/// @param screen Screen (0 - 1).
+/// @param destination Use 0 for VRAM or 1 for backbuffer.
+/// @param slot Slot number (0 - 15).
 void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot);
-// Transfiere la imagen del buffer seleccionado a la pantalla y capas indicado o
-// al backbuffer.
 
-
-
-// Funcion NF_Init8bitsBackBuffer();
+/// Initialize the 8 bit background backbuffer of the selected screen.
+///
+/// Use this function once before using the backbuffer.
+///
+/// @param screen Screen (0 - 1).
 void NF_Init8bitsBackBuffer(u8 screen);
-// Inicializa los buffers del backbuffer para la pantalla indicada.
-// Debes usar esta funcion una vez antes de usar el backbuffer
 
-
-
-// Funcion NF_Enable8bitsBackBuffer();
+/// Enables the 8-bit backbuffer of the selected screen.
+///
+/// If the backbuffer is already enabled, the contents are cleared.
+///
+/// @param screen Screen (0 - 1).
 void NF_Enable8bitsBackBuffer(u8 screen);
-// Habilita el backbuffer de la pantalla indicada.
-// Si el buffer ya existe, la funcion borrara el contenido del mismo,
-// poniendo a 0 todos los bytes del buffer.
 
-
-
-// Funcion NF_Disble8bitsBackBuffer();
+/// Disables the 8-bit backbuffer of selected screen.
+///
+/// It frees the RAM used by it (64 KB).
+///
+/// @param screen Screen (0 - 1).
 void NF_Disble8bitsBackBuffer(u8 screen);
-// Deshabilita el backbuffer de la pantalla indicada, liberando de la
-// RAM el espacio usado.
 
-
-
-// Funcion NF_Flip8bitsBackBuffer();
+/// Sends the 8-bit backbuffer to the VRAM of the selected screen.
+///
+/// Use it to edit the image in the backbuffer and to update the image displayed
+/// on the screen without showing the drawing process (which may be very slow).
+///
+/// You can send it to layer 2 (0) or layer 3 (1).
+///
+/// @param screen Screen (0 - 1).
+/// @param destination Destination layer (0: layer 2, 1: layer 3).
 void NF_Flip8bitsBackBuffer(u8 screen, u8 destination);
-// Copia el contenido del backbuffer a la VRAM de la pantalla indicada.
-// Debes especificar la capa de destino:
-// 0 -> Capa 2
-// 1 -> Capa 3
 
-
-
-
+/// @}
 
 #endif
 
