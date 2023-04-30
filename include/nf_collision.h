@@ -15,75 +15,119 @@ extern "C" {
 
 #include <nds.h>
 
+/// @file   nf_collision.h
+/// @brief  Collision map support.
 
+/// @defgroup nf_collision Collision map support.
+///
+/// Collision maps only have map information, so the collisions have a
+/// granularity of 8x8 pixels. This is useful for games where the map is simple
+/// and it doesn't have many details that affect collisions.
+///
+/// Collision backgrounds also have tile information, so they can have
+/// information at a pixel granularity.
+///
+/// @{
 
-
-
-// Define los slots maximos para los mapas de colisiones
+/// Maximum number of available collision maps
 #define NF_SLOTS_CMAP 32
 
-// Define la estructura de control de mapas de colisiones
+/// Struct that holds collision map information
 typedef struct {
-	char* tiles;		// Buffer para almacenar los tiles
-	char* map;			// Buffer para almacenar el mapa
-	char* pal;			// Buffer para almacenar la paleta
-	u32 tiles_size;		// Tamaño de los archivos
-	u32 map_size;
-	u32 pal_size;
-	u16 width;			// Ancho del mapa (en pixeles)
-	u16 height;			// Alto del mapa (en pixeles)
-	bool inuse;			// Esta en uso el slot?
+	char* tiles;		///< Tileset data
+	char* map;			///< Map data
+	char* pal;			///< Palette data (TODO: Remove, it looks unused)
+	u32 tiles_size;		///< Size of the tileset
+	u32 map_size;		///< Size of the map
+	u32 pal_size;		///< Size of the palette (TODO: Remove, it looks unused)
+	u16 width;			///< Width of map in pixels
+	u16 height;			///< Height of map in pixels
+	bool inuse;			///< True if the slot is in use
 } NF_TYPE_CMAP_INFO;
-extern NF_TYPE_CMAP_INFO NF_CMAP[NF_SLOTS_CMAP];		// Datos de los mapas de colision
 
+/// Information of all collision maps
+extern NF_TYPE_CMAP_INFO NF_CMAP[NF_SLOTS_CMAP];
 
-
-
-// Funcion NF_InitCmapBuffers();
+/// Initialize buffers to store collision map data.
+///
+/// You must call this function once in you code before loading any collision
+/// map.
 void NF_InitCmapBuffers(void);
-// Inicializa los buffers que almacenaran los mapas de colision
-// Debes usar esta funcion una unica vez antes de cargar ningun mapa de colision
 
-
-
-// Funcion NF_ResetCmapBuffers();
+/// Reset collision map buffers, clearing all data in RAM.
+///
+/// It's useful to use this function during game level changes, for example, to
+/// easily clear all data before loading the new level.
 void NF_ResetCmapBuffers(void);
-// Reinicia los buffers y variables de los mapas de colisiones.
 
-
+/// Load a collision map into RAM in the specified slot.
+///
+/// You must specify the width and height of the map in pixels. Remember to make
+/// your collision map 8 pixels taller than your background and to use this
+/// first row of tiles to define your tileset for the collision map.
+///
+/// Use the "Convert_CMaps.bat" script in the GRIT folder to convert your maps.
+/// You need to copy the ".cmp" file to your game data folder.
+///
+/// @param file File name
+/// @param id Slot number (0 - 31)
+/// @param width Map width (in pixels)
+/// @param height Map height (in pixels)
 void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height);
-// Carga un mapa de colisiones en el slot indicado.
 
-
+/// Unload from RAM the collision map at the specified slot.
+///
+/// @param id Slot number (0 - 31)
 void NF_UnloadCollisionMap(u8 id);
-// Borra de la RAM el mapa de colisiones con el nº de slot indicado.
 
+/// Return the tile number at the specified position.
+///
+/// You must place your tileset in the first row of the collision map image.
+///
+/// @param slot Slot number (0 - 31)
+/// @param x X coordinate in pixels.
+/// @param y Y coordinate in pixels.
+/// @return Tile index.
+u16 NF_GetTile(u8 slot, s32 x, s32 y);
 
-
-// Funcion NF_GetTile();
-extern u16 NF_GetTile(u8 slot, s32 x, s32 y);
-// Devuelve el numero de tile de la posicion especificada.
-
-
-
-// Funcion NF_SetTile();
+/// Set the value of the tile of a collision map at the specified position.
+///
+/// @param slot Slot number (0 - 31)
+/// @param x X coordinate in pixels.
+/// @param y Y coordinate in pixels.
+/// @param value New tile.
 void NF_SetTile(u8 slot, s32 x, s32 y, u16 value);
-// Cambia el valor del tile en la posicion especificada.
 
-
+/// Load a collision background to RAM at the specified slot.
+///
+/// You must specify the width and height of the background in pixels. Remember
+/// to make your colision background 8 pixels taller than your real background
+/// and to use this first row of tiles to define your color tileset for the
+/// collision background.
+///
+/// Use the "Convert_CMaps.bat" script in the GRIT folder to convert you maps.
+/// You need to copy the ".cmp" and ".dat" files to your game data folder.
+///
+/// @param file File name
+/// @param id Slot number (0 - 31)
+/// @param width Map width (in pixels)
+/// @param height Map height (in pixels)
 void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height);
-// Carga un fondo de colisiones para pixel perfect
 
-
+/// Unload from RAM the collision background at the specified slot.
+///
+/// @param id Slot number (0 - 31)
 void NF_UnloadCollisionBg(u8 id);
-// Descarga un fondo de colisiones para pixel perfect
 
-
-
-// Funcion NF_GetPoint();
-extern u8 NF_GetPoint(u8 slot, s32 x, s32 y);
-// Obten el color del pixel de las coordenadas dadas
-
+/// Returns the color number at the specified coordinates.
+///
+/// If the coordinates are outside of the background, it returns 0.
+///
+/// @param slot Slot number (0 - 31)
+/// @param x X coordinate in pixels.
+/// @param y Y coordinate in pixels.
+/// @return Tile index (0 - 255).
+u8 NF_GetPoint(u8 slot, s32 x, s32 y);
 
 // Defines for backwards compatibility
 #define NF_LoadColisionMap NF_LoadCollisionMap
@@ -91,6 +135,7 @@ extern u8 NF_GetPoint(u8 slot, s32 x, s32 y);
 #define NF_LoadColisionBg NF_LoadCollisionBg
 #define NF_UnloadColisionBg NF_UnloadCollisionBg
 
+/// @}
 
 #endif
 

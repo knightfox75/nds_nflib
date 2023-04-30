@@ -247,7 +247,7 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite);
 /// </pre>
 ///
 /// @param screen Screen (0 - 1).
-/// @param sprite Sprite ID (0 - 127).
+/// @param id Sprite ID (0 - 127).
 /// @param angle Angle (-512 to 512).
 /// @param sx X scale (0 to 512), 100% = 256.
 /// @param sy Y scale (0 to 512), 100% = 256.

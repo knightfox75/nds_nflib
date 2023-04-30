@@ -15,72 +15,92 @@ extern "C" {
 
 #include <nds.h>
 
+/// @file   nf_sound.h
+/// @brief  Sound support functions.
 
+/// @defgroup nf_sound Sound support functions.
+///
+/// Simple helpers to load and play raw PCM sound files.
+///
+/// @{
 
-
-
-// Define los Slots para archivos de audio
+/// Number of slot availables for raw sound effects
 #define NF_SLOTS_RAWSOUND 32
 
-// Define los Buffers para almacenar los archivos de audio
+/// Buffers of all loaded sound files
 extern char* NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 
-// Define la estructura de datos de los buffers (Audio)
+// Struct that holds information about the loaded sound files
 typedef struct {
-	bool available;		// Disponibilidat del Slot
-	u32 size;			// Tamaño (en bytes) del sonido
-	u16 freq;			// Frecuencia del sample
-	u8 format;			// Formato del sample
+	bool available;		///< True if this slot is available
+	u32 size;			///< Size of the sound effect in bytes
+	u16 freq;			///< Frecuency of the sample
+	u8 format;			///< Format of the sample
 } NF_TYPE_RAWSOUND_INFO;
-extern NF_TYPE_RAWSOUND_INFO NF_RAWSOUND[NF_SLOTS_RAWSOUND];	// Datos de los sonidos cargado
 
+/// Information of all sound effects.
+extern NF_TYPE_RAWSOUND_INFO NF_RAWSOUND[NF_SLOTS_RAWSOUND];
 
-
-
-
-// Funcion NF_InitRawSoundBuffers();
+/// Initialize all buffers and variables to load sound files.
+///
+/// You must use this function once before loading or using any sound file.
+/// Remember to initialize the DS sound engine using soundEnable().
 void NF_InitRawSoundBuffers(void);
-// Iniciliaza los buffers y estructuras de datos para cargar sonidos en 
-// formato RAW. Debes de ejecutar esta funcion una vez antes de cargar
-// ningun sonido en este formato
 
-
-
-// Funcion NF_ResetRawSoundBuffers();
+/// Resets all sound buffers and clears the data in them.
+///
+/// It's useful when you change a level in the game, for example.
 void NF_ResetRawSoundBuffers(void);
-// Reinicia todos los buffers de sonido. Esta funcion es util para vaciar todos los datos
-// en un cambio de pantalla, etc.
 
-
-
-// Funcion NF_LoadRawSound();
+/// Load a RAW file from the filesystem to RAM.
+///
+/// To convert sound files to "RAW" format you can use the free program "Switch"
+/// http://www.nch.com.au/switch/plus.html. The best parameters for "RAW" files
+/// on the DS are: 8 bits signed, mono, 11025 Hz or 22050 Hz.
+///
+/// Example:
+/// ```
+/// // Load "music.raw" to slot 1. This file is encoded as 8 bit at 22050 Hz
+/// NF_LoadRawSound("music", 1, 22050, 0);
+/// ```
+///
+/// @param file File name without extension
+/// @param id Destination slot number (0 - 31)
+/// @param freq Frequency of the sample in Hz (11025, 22050, etc)
+/// @param format Sample format (0 -> 8 bits, 1 -> 16 bits, 2 -> ADPCM).
 void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format);
-// Carga un archivo RAW a la RAM desde la FAT o EFS
-// Debes especificar el nombre del archivo sin extension, el slot
-// donde lo guardaras (0 - 31), la frecuencia del sample (en Hz, 
-// por ejemplo 11050) y el formato de datos
-// (0 - > 8 bits, 1 - > 16 bits, 2 -> ADPCM)
 
-
-
-// Funcion UnloadRawSound();
+/// Deletes from RAM the sound file stored in the specified slot.
+///
+/// @param id Slot number (0 - 31)
 void NF_UnloadRawSound(u8 id);
-// Borra de la RAM el archivo cargado en el slot indicado.
-// Debes especificar el slot a borrar (0 - 31)
 
+/// Play the sound file loaded in the specified slot.
+///
+/// If you want to loop the sound you must also set the sample number where the
+/// loop starts.
+///
+/// This fuction also returns the channel number asigned to the playback.
+///
+/// Example:
+/// ```
+/// // Play the sound stored in slot 1 with full volume (127), centered (64),
+/// // with looping enabled from the beginning.
+/// NF_PlayRawSound(1, 127, 64, true, 0);
+/// ```
+///
+/// You can use libnds functions to pause, stop and set the volume of the sound
+/// while it plays.
+///
+/// @param id Slot number (0 - 31)
+/// @param volume Volume (0 - 127)
+/// @param pan Panning. 0: left, 64: center, 127: right.
+/// @param loop True if you want the sound to loop.
+/// @param loopfrom Loop starting point
+/// @return Channel number that is playing the sound.
+u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom);
 
-
-// Funcion NF_PlayRawSound();
-extern u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom);
-// Reproduce un archivo de sonido cargado en RAM.
-// Debes especificar el slot donde se ha cargado el sonido, el volumen (0 - 127), 
-// el balance (0 Izquierda, 64 Centro, 127 Derecha), si se reproducira en bucle y
-// de ser asi, a partir de que sample se producira este.
-// Esta funcion devuelve el canal asignado a esta reproduccion
-
-
-
-
+/// @}
 
 #endif
 
