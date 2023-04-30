@@ -13,6 +13,16 @@ extern "C" {
 #ifndef __NF_2D_H__
 #define __NF_2D_H__
 
+/// @file   nf_2d.h
+/// @brief  Functions to setup 2D video options.
+
+/// @defgroup nf_2d 2D video setup
+///
+/// Functions to setup the 2D video modes of the NDS, as well as to activate or
+/// deactivate background layers or scroll them.
+///
+/// @{
+
 #include <nds.h>
 
 /// Init 2D mode for the selected screen.
@@ -242,6 +252,8 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite);
 /// @param sx X scale (0 to 512), 100% = 256.
 /// @param sy Y scale (0 to 512), 100% = 256.
 void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy);
+
+/// @}
 
 #endif
 
