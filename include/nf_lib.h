@@ -85,7 +85,7 @@ b = (3 << 11);
 #include "nf_text16.h"
 
 // Libreria de colisiones
-#include "nf_colision.h"
+#include "nf_collision.h"
 
 // Libreria de sonido
 #include "nf_sound.h"

@@ -6,7 +6,7 @@
 -------------------------------------------------
 
 	NightFox's Lib Template
-	Ejemplo de fondos de colisiones
+	Ejemplo de mapas de colisiones
 
 	Requiere DevkitARM
 	Requiere NightFox's Lib
@@ -63,39 +63,55 @@ int main(int argc, char **argv) {
 	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
 
 	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en la pantalla superior
+	NF_Set2D(0, 0);				// Modo 2D_0 en ambas pantallas
+	NF_Set2D(1, 0);
 
 	// Inicializa los fondos tileados
 	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
 	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
+	NF_InitTiledBgSys(1);		// Iniciliaza los fondos Tileados para la pantalla inferior
 
 	// Inicializa los Sprites
 	NF_InitSpriteBuffers();		// Inicializa los buffers para almacenar sprites y paletas
 	NF_InitSpriteSys(0);		// Inicializa los sprites para la pantalla superior
+	NF_InitSpriteSys(1);		// Inicializa los sprites para la pantalla inferior
+
+	// Inicializa el motor de texto
+	NF_InitTextSys(0);			// Inicializa el texto para la pantalla superior
 
 	// Inicializa los buffers de mapas de colisiones
 	NF_InitCmapBuffers();
 
-	// Carga los archivos de fondo
-	NF_LoadTiledBg("bg/ppc_bg", "bg3", 512, 512);		// Carga el fondo para la capa 3, pantalla superior
+	// Carga los archivos de fondo desde la FAT / NitroFS a la RAM
+	NF_LoadTiledBg("bg/layer3", "moon", 256, 256);		// Carga el fondo para la capa 3, pantalla inferior
+	NF_LoadTiledBg("bg/colmap", "boxes", 768, 512);		// Carga el fondo para la capa 2, pantalla inferior
 
-	// Carga los archivos de sprites
+	// Carga los archivos de sprites desde la FAT / NitroFS a la RAM
 	NF_LoadSpriteGfx("sprite/puntero", 0, 8, 8);	// Puntero
 	NF_LoadSpritePal("sprite/puntero", 0);
 
-	// Carga el fondo de colisiones
-	NF_LoadColisionBg("maps/ppc_cmap", 0, 512, 512);
+	// Carga la fuente por defecto para el texto
+	NF_LoadTextFont("fnt/default", "normal", 256, 256, 0);
+
+	// Carga el mapa de colisiones
+	NF_LoadCollisionMap("maps/cmap", 0, 768, 512);
 
 	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "bg3");
+	NF_CreateTiledBg(0, 3, "moon");
+	// Crea los fondos de la pantalla inferior
+	NF_CreateTiledBg(1, 3, "moon");
+	NF_CreateTiledBg(1, 2, "boxes");
+
+	// Crea una capa de texto
+	NF_CreateTextLayer(0, 2, 0,	"normal");
 
 	// Transfiere a la VRAM los sprites necesarios
-	NF_VramSpriteGfx(0, 0, 0, true);	// Puntero
-	NF_VramSpritePal(0, 0, 0);
+	NF_VramSpriteGfx(1, 0, 0, true);	// Puntero
+	NF_VramSpritePal(1, 0, 0);
 
 	// Crea el Sprite del puntero en la pantalla inferior
-	NF_CreateSprite(0, 0, 0, 0, 124, 92);	// Crea el puntero en la pantalla inferior
-	NF_SpriteLayer(0, 0, 3);				// Y la capa sobre la que se dibujara
+	NF_CreateSprite(1, 0, 0, 0, 124, 92);	// Crea el puntero en la pantalla inferior
+	NF_SpriteLayer(1, 0, 2);				// Y la capa sobre la que se dibujara
 	
 	// Variable para la lectura del keypad
 	u16 keys = 0;
@@ -107,7 +123,11 @@ int main(int argc, char **argv) {
 	s16 spr_y = 0;
 	s16 bg_x = 0;
 	s16 bg_y = 0;
-	u8 pixel = 0;
+
+	// Buffer de texto
+	char mytext[32];
+
+
 
 	// Bucle (repite para siempre)
 	while(1) {
@@ -122,14 +142,14 @@ int main(int argc, char **argv) {
 
 		// Limites del movimiento
 		if (x < 0) x = 0;
-		if (x > 511) x = 511;
+		if (x > 767) x = 767;
 		if (y < 0) y = 0;
 		if (y > 511) y = 511;
 
 		// Posicion del fondo
 		bg_x = (x - 128);
 		if (bg_x < 0) bg_x = 0;
-		if (bg_x > 256) bg_x = 256;
+		if (bg_x > 512) bg_x = 512;
 		bg_y = (y - 96);
 		if (bg_y < 0) bg_y = 0;
 		if (bg_y > 320) bg_y = 320;
@@ -137,39 +157,37 @@ int main(int argc, char **argv) {
 		// Posicion del Sprite
 		spr_x = (x - bg_x) - 4;
 		spr_y = (y - bg_y) - 4;
-		NF_MoveSprite(0, 0, spr_x, spr_y);
+		NF_MoveSprite(1, 0, spr_x, spr_y);
 
 		// Imprime la posicion del cursor
-		consoleClear();
-		printf("x:%03d  y:%03d \n\n", x, y);
+		sprintf(mytext,"x:%d  y:%d ", x, y);
+		NF_WriteText(0, 2, 1, 1, mytext);
 
-		// Imprime el color del pixel
-		pixel = NF_GetPoint(0, x, y);
-		switch (pixel) {
+		// Imprime el nº de tile
+		switch (NF_GetTile(0, x, y)) {
+			case 0:
+				sprintf(mytext,"Tile: Vacio / Void  ");
+				break;
 			case 1:
-				printf("Tile: Negro / Black");
+				sprintf(mytext,"Tile: Rojo / Red    ");
 				break;
 			case 2:
-				printf("Tile: Rojo / Red");
+				sprintf(mytext,"Tile: Verde / Green ");
 				break;
 			case 3:
-				printf("Tile: Verde / Green");
-				break;
-			case 4:
-				printf("Tile: Azul / Blue");
-				break;
-			default:
-				printf("Value: %03d", pixel); 
+				sprintf(mytext,"Tile: Azul / Blue   ");
 				break;
 		}
+		NF_WriteText(0, 2, 1, 3, mytext);
 
-		NF_SpriteOamSet(0);				// Actualiza el Array del OAM
+		NF_UpdateTextLayers();			// Actualiza las capas de texto
+		NF_SpriteOamSet(1);				// Actualiza el Array del OAM
 
 		swiWaitForVBlank();				// Espera al sincronismo vertical
 
-		oamUpdate(&oamMain);			// Actualiza a VRAM el OAM Secundario
+		oamUpdate(&oamSub);				// Actualiza a VRAM el OAM Secundario
 
-		NF_ScrollBg(0, 3, bg_x, bg_y);	// Actualiza el scroll 
+		NF_ScrollBg(1, 2, bg_x, bg_y);	// Actualiza el scroll 
 	
 	}
 

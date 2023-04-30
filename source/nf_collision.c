@@ -18,7 +18,7 @@
 
 // Includes propios
 #include "nf_basic.h"
-#include "nf_colision.h"
+#include "nf_collision.h"
 
 
 
@@ -56,17 +56,17 @@ void NF_ResetCmapBuffers(void) {
 
 
 
-// Funcion NF_LoadColisionMap();
-void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height) {
+// Funcion NF_LoadCollisionMap();
+void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
 	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
+		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 	}
 
 	// Verifica si la Id esta libre
 	if (NF_CMAP[id].inuse) {
-		NF_Error(109, "Colision Map", id);
+		NF_Error(109, "Collision Map", id);
 	}
 
 	// Vacia los buffers que se usaran
@@ -110,17 +110,17 @@ void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 
 
-// Funcion NF_UnloadColisionMap();
-void NF_UnloadColisionMap(u8 id) {
+// Funcion NF_UnloadCollisionMap();
+void NF_UnloadCollisionMap(u8 id) {
 
 	// Verifica el rango de Id's
 	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
+		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 	}
 
 	// Verifica si la Id esta libre
 	if (!NF_CMAP[id].inuse) {
-		NF_Error(110, "Colision Map", id);
+		NF_Error(110, "Collision Map", id);
 	}
 
 	// Vacia los buffers que se usaran
@@ -215,17 +215,17 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value) {
 
 
 
-// Funcion NF_LoadColisionBg();
-void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
+// Funcion NF_LoadCollisionBg();
+void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
 	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
+		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 	}
 
 	// Verifica si la Id esta libre
 	if (NF_CMAP[id].inuse) {
-		NF_Error(109, "Colision Map", id);
+		NF_Error(109, "Collision Map", id);
 	}
 
 	// Vacia los buffers que se usaran
@@ -291,17 +291,17 @@ void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 
 
-// Funcion NF_UnloadColisionBg();
-void NF_UnloadColisionBg(u8 id) {
+// Funcion NF_UnloadCollisionBg();
+void NF_UnloadCollisionBg(u8 id) {
 
 	// Verifica el rango de Id's
 	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Colision Map", NF_SLOTS_CMAP);
+		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 	}
 
 	// Verifica si la Id esta libre
 	if (!NF_CMAP[id].inuse) {
-		NF_Error(110, "Colision Map", id);
+		NF_Error(110, "Collision Map", id);
 	}
 
 	// Vacia los buffers que se usaran

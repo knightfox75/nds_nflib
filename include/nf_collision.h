@@ -10,8 +10,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_COLISION_H__
-#define __NF_COLISION_H__
+#ifndef __NF_COLLISION_H__
+#define __NF_COLLISION_H__
 
 #include <nds.h>
 
@@ -51,15 +51,11 @@ void NF_ResetCmapBuffers(void);
 // Reinicia los buffers y variables de los mapas de colisiones.
 
 
-
-// Funcion NF_LoadColisionMap();
-void NF_LoadColisionMap(const char* file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height);
 // Carga un mapa de colisiones en el slot indicado.
 
 
-
-// Funcion NF_UnloadColisionMap();
-void NF_UnloadColisionMap(u8 id);
+void NF_UnloadCollisionMap(u8 id);
 // Borra de la RAM el mapa de colisiones con el nº de slot indicado.
 
 
@@ -75,15 +71,11 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value);
 // Cambia el valor del tile en la posicion especificada.
 
 
-
-// Funcion NF_LoadColisionBg();
-void NF_LoadColisionBg(const char* file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height);
 // Carga un fondo de colisiones para pixel perfect
 
 
-
-// Funcion NF_UnloadColisionBg();
-void NF_UnloadColisionBg(u8 id);
+void NF_UnloadCollisionBg(u8 id);
 // Descarga un fondo de colisiones para pixel perfect
 
 
@@ -93,7 +85,11 @@ extern u8 NF_GetPoint(u8 slot, s32 x, s32 y);
 // Obten el color del pixel de las coordenadas dadas
 
 
-
+// Defines for backwards compatibility
+#define NF_LoadColisionMap NF_LoadCollisionMap
+#define NF_UnloadColisionMap NF_UnloadCollisionMap
+#define NF_LoadColisionBg NF_LoadCollisionBg
+#define NF_UnloadColisionBg NF_UnloadCollisionBg
 
 
 #endif

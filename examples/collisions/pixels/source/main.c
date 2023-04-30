@@ -6,8 +6,7 @@
 -------------------------------------------------
 
 	NightFox's Lib Template
-	Ejemplo de mapas de colisiones por pixels
-	en superficies inclinadas
+	Ejemplo de fondos de colisiones
 
 	Requiere DevkitARM
 	Requiere NightFox's Lib
@@ -78,14 +77,14 @@ int main(int argc, char **argv) {
 	NF_InitCmapBuffers();
 
 	// Carga los archivos de fondo
-	NF_LoadTiledBg("bg/pdemo_bg", "bg3", 256, 256);		// Carga el fondo para la capa 3, pantalla superior
+	NF_LoadTiledBg("bg/ppc_bg", "bg3", 512, 512);		// Carga el fondo para la capa 3, pantalla superior
 
 	// Carga los archivos de sprites
-	NF_LoadSpriteGfx("sprite/whiteball", 0, 16, 16);	// Pelota
-	NF_LoadSpritePal("sprite/whitepal", 0);
+	NF_LoadSpriteGfx("sprite/puntero", 0, 8, 8);	// Puntero
+	NF_LoadSpritePal("sprite/puntero", 0);
 
 	// Carga el fondo de colisiones
-	NF_LoadColisionBg("maps/pdemo_colmap", 0, 256, 256);
+	NF_LoadCollisionBg("maps/ppc_cmap", 0, 512, 512);
 
 	// Crea los fondos de la pantalla superior
 	NF_CreateTiledBg(0, 3, "bg3");
@@ -94,99 +93,74 @@ int main(int argc, char **argv) {
 	NF_VramSpriteGfx(0, 0, 0, true);	// Puntero
 	NF_VramSpritePal(0, 0, 0);
 
-	// Variables de uso genereal
-	u8 b = 0;
-	u8 n = 0;
-
 	// Crea el Sprite del puntero en la pantalla inferior
-	for (b = 0; b < 3; b ++) {
-		NF_CreateSprite(0, b, 0, 0, -16, -16);	// Crea el puntero en la pantalla inferior
-		NF_SpriteLayer(0, b, 3);				// Y la capa sobre la que se dibujara
-	}
+	NF_CreateSprite(0, 0, 0, 0, 124, 92);	// Crea el puntero en la pantalla inferior
+	NF_SpriteLayer(0, 0, 3);				// Y la capa sobre la que se dibujara
+	
+	// Variable para la lectura del keypad
+	u16 keys = 0;
 
 	// Variables para el control de movimiento
-	s16 x[3];
-	s16 y[3];
-	x[0] = 32;
-	y[0] = -16;
-	x[1] = 228;
-	y[1] = 32;
-	x[2] = 10;
-	y[2] = 100;
-
-
-	// Variables de control de colisiones, define todos los puntos de colision del sprite
-	s16 py[16];
-	py[0] = 11;
-	py[1] = 13;
-	py[2] = 14;
-	py[3] = 15;
-	py[4] = 15;
-	py[5] = 16;
-	py[6] = 16;
-	py[7] = 16;
-	py[8] = 16;
-	py[9] = 16;
-	py[10] = 16;
-	py[11] = 15;
-	py[12] = 15;
-	py[13] = 14;
-	py[14] = 13;
-	py[15] = 11;
-
-	// Control de movimiento
-	bool down = false;
-	bool left = false;
-	bool right = false;
+	s16 x = 128;
+	s16 y = 96;
+	s16 spr_x = 0;
+	s16 spr_y = 0;
+	s16 bg_x = 0;
+	s16 bg_y = 0;
+	u8 pixel = 0;
 
 	// Bucle (repite para siempre)
 	while(1) {
 
-		// Borra la pantalal de texto
+		// Lee el teclado
+		scanKeys();
+		keys = keysHeld();
+		if (keys & KEY_UP) y --;
+		if (keys & KEY_DOWN) y ++;
+		if (keys & KEY_LEFT) x --;
+		if (keys & KEY_RIGHT) x ++;
+
+		// Limites del movimiento
+		if (x < 0) x = 0;
+		if (x > 511) x = 511;
+		if (y < 0) y = 0;
+		if (y > 511) y = 511;
+
+		// Posicion del fondo
+		bg_x = (x - 128);
+		if (bg_x < 0) bg_x = 0;
+		if (bg_x > 256) bg_x = 256;
+		bg_y = (y - 96);
+		if (bg_y < 0) bg_y = 0;
+		if (bg_y > 320) bg_y = 320;
+
+		// Posicion del Sprite
+		spr_x = (x - bg_x) - 4;
+		spr_y = (y - bg_y) - 4;
+		NF_MoveSprite(0, 0, spr_x, spr_y);
+
+		// Imprime la posicion del cursor
 		consoleClear();
+		printf("x:%03d  y:%03d \n\n", x, y);
 
-		// Bola a bola
-		for (b = 0; b < 3; b ++) {
-
-			// Control de colisiones, caida
-			down = true;	// Flag de descenso arriba
-			// Busca pixel por pixel, si hay colisiones (pixel azul, nº4)
-			for (n = 0; n < 16; n ++) {
-				if (NF_GetPoint(0, (x[b] + n), (y[b] + py[n])) == 4) down = false;
-			}
-
-			// Control de colisiones, decide derecha o izquierda
-			right = true;	// Flag de movimiento lateral arriba
-			left = true;
-			// Caida a izquierda
-			if (NF_GetPoint(0, (x[b] - 1), (y[b] + 16)) == 4) left = false;
-			// Caida a derecha
-			if (NF_GetPoint(0, (x[b] + 16), (y[b] + 16)) == 4) right = false;
-			// Si hay caida libre, no te muevas en horizontal
-			if (left && right) {
-				right = false;
-				left = false;
-			}
-
-			// Si es necesario, caida libre
-			if (down) y[b] ++;
-			// Muevete a la derecha
-			if (right) x[b] ++;
-			// Muevete a la izquierda
-			if (left) x[b] --;
-
-			// Recoloca la pelota si sale de los limites de pantalla
-			if (y[b] > 192) {
-				x[b] = 32;
-				y[b] = -16;
-			}
-
-			// Posicion del Sprite
-			NF_MoveSprite(0, b, x[b], y[b]);
-
-			// Imprime la posicion de la pelota
-			printf("x:%03d  y:%03d\n", x[b], y[b]);
-
+		// Imprime el color del pixel
+		pixel = NF_GetPoint(0, x, y);
+		switch (pixel) {
+			case 1:
+				printf("Tile: Negro / Black");
+				break;
+			case 2:
+				printf("Tile: Rojo / Red");
+				break;
+			case 3:
+				printf("Tile: Verde / Green");
+				break;
+			case 4:
+				printf("Tile: Azul / Blue");
+				break;
+			default:
+				printf("Value: %03d", pixel); 
+				break;
 		}
 
 		NF_SpriteOamSet(0);				// Actualiza el Array del OAM
@@ -194,6 +168,8 @@ int main(int argc, char **argv) {
 		swiWaitForVBlank();				// Espera al sincronismo vertical
 
 		oamUpdate(&oamMain);			// Actualiza a VRAM el OAM Secundario
+
+		NF_ScrollBg(0, 3, bg_x, bg_y);	// Actualiza el scroll 
 	
 	}
 
