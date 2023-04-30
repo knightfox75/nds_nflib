@@ -13,6 +13,15 @@ extern "C" {
 #ifndef __NF_BASIC_H__
 #define __NF_BASIC_H__
 
+/// @file   nf_basic.h
+/// @brief  General functions of NFLib
+
+/// @defgroup nf_basic General functions of NFLib
+///
+/// Functions related to error handling and other general settings.
+///
+/// @{
+
 #include <nds.h>
 
 /// Root folder used by NFLib
@@ -95,6 +104,8 @@ void NF_DmaMemCopy(void* destination, const void* source, u32 size);
 ///
 /// @return The language ID.
 extern u8 NF_GetLanguage(void);
+
+/// @}
 
 #endif
 

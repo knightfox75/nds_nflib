@@ -13,6 +13,15 @@ extern "C" {
 #ifndef __NF_TILEDBG_H__
 #define __NF_TILEDBG_H__
 
+/// @file   nf_tiledbg.h
+/// @brief  Functions related to regular tiled backgrounds.
+
+/// @defgroup nf_tiledbg Functions related to regular tiled backgrounds.
+///
+/// Functions related to regular (non-affine) tiled backgrounds.
+///
+/// @{
+
 #include <nds.h>
 
 /// Maximum number of slots of tiled background
@@ -536,6 +545,8 @@ void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param tile Tile index.
 /// @param rotation Rotation value.
 void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation);
+
+/// @}
 
 #endif
 

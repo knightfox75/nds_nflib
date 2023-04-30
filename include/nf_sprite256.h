@@ -13,6 +13,15 @@ extern "C" {
 #ifndef __NF_SPRITE256_H__
 #define __NF_SPRITE256_H__
 
+/// @file   nf_sprite256.h
+/// @brief  Functions related to 256 color sprites.
+
+/// @defgroup nf_sprite256 256 color sprites
+///
+/// Functions to load and handle 256 color sprites.
+///
+/// @{
+
 #include <nds.h>
 
 /// Maximum number of slots of 256 color sprites
@@ -422,6 +431,8 @@ void NF_SpriteUpdatePalette(u8 screen, u8 pal);
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
 void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8* r, u8* g, u8* b);
+
+/// @}
 
 #endif
 
