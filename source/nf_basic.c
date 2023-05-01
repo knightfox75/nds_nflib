@@ -21,7 +21,6 @@
 
 // Includes propios
 #include "nf_basic.h"
-#include "nf_defines.h"
 
 
 
@@ -329,8 +328,6 @@ void NF_DmaMemCopy(void* destination, const void* source, u32 size) {
 // Funcion NF_GetLanguage();
 u8 NF_GetLanguage(void) {
 
-	// Asegurate que el valor devuelto corresponde a los
-	// contenidos en los BITS 0, 1 y 2 de la direccion de memoria
-	return (NF_UDATA_LANG & 0x07);
+	return PersonalData->language;
 
 }

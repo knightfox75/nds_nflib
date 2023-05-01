@@ -19,7 +19,6 @@ extern "C" {
 #include <nf_basic.h>
 #include <nf_bitmapbg.h>
 #include <nf_collision.h>
-#include <nf_defines.h>
 #include <nf_media.h>
 #include <nf_mixedbg.h>
 #include <nf_sound.h>
