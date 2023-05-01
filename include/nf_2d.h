@@ -33,10 +33,10 @@ extern "C" {
 /// 5 - Bitmap BGs at 8 or 16 bits.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Init 2D mode for tiled BGs and sprites on screen 1 (bottom)
 /// NF_Set2D(1, 0);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param mode Mode (0, 2, 5).
@@ -47,10 +47,10 @@ void NF_Set2D(u8 screen, u8 mode);
 /// Use this command to make visible a BG previously hidden with NF_HideBg().
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Makes the BG of layer 2 in screen 0 (top) visible
 /// NF_ShowBg(0, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -59,10 +59,10 @@ void NF_ShowBg(u8 screen, u8 layer);
 /// Makes the BG of the selected layer and screen invisible.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Makes the BG of layer 2 in screen 0 (top) invisible
 /// NF_HideBg(0, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -73,10 +73,10 @@ void NF_HideBg(u8 screen, u8 layer);
 /// If the map is taller or wider than 512, it must be kept in RAM all the time.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Move the BG of layer 1 and screen 0 to the coordinates (128, 96)
 /// NF_ScrollBg(0, 1, 128, 96);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
@@ -87,10 +87,10 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y);
 /// Moves the selected sprite of a screen to the specified coordinates.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Moves sprite 35 of screen 0 to the coordinates (100, 50).
 /// NF_MoveSprite(0, 35, 100, 50);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -103,10 +103,10 @@ void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y);
 /// Layer 0 is on top of the others, layer 3 is at the bottom.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Sprite 35 of screen 1 will be drawn over layer 2.
 /// NF_SpriteLayer(1, 35, 2);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -118,12 +118,12 @@ void NF_SpriteLayer(u8 screen, u8 id, u8 layer);
 /// If you hide a sprite, it becomes invisible, without deleting it.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Hides the sprite nº35 on screen 0.
 /// NF_ShowSprite(0, 35, false);
 /// // Makes visible the Sprite nº45 on screen 1.
 /// NF_ShowSprite(1, 45, true);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -133,10 +133,10 @@ void NF_ShowSprite(u8 screen, u8 id, bool show);
 /// Sets the horizontal flip state of a sprite.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Flips sprite 35 of screen 0 horizontally
 /// NF_HflipSprite(0, 35, true);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -146,10 +146,10 @@ void NF_HflipSprite(u8 screen, u8 id, bool hflip);
 /// Gets the horizontal flip state of a sprite.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Stores true in "state" if sprite 35 of screen 0 is flipped
 /// bool hflip = NF_GetSpriteHflip(0, 35);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -159,10 +159,10 @@ bool NF_GetSpriteHflip(u8 screen, u8 id);
 /// Sets the vertical flip state of a sprite.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Flips sprite 35 of screen 0 vertically
 /// NF_VflipSprite(0, 35, true);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -172,10 +172,10 @@ void NF_VflipSprite(u8 screen, u8 id, bool vflip);
 /// Gets the vertical flip state of a sprite.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Stores true in "state" if sprite 35 of screen 0 is flipped
 /// bool hflip = NF_GetSpriteVflip(0, 35);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -185,10 +185,10 @@ bool NF_GetSpriteVflip(u8 screen, u8 id);
 /// Selects which frame of the animation of a sprite is shown.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Sprite 20 of screen 0 shows frame 5.
 /// NF_SpriteFrame(0, 20, 5);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
@@ -205,11 +205,11 @@ void NF_SpriteFrame(u8 screen, u8 id, u16 frame);
 /// If you enable RotScale for a sprite the flip states will be ignored.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Enables the rotation and scalation for sprite 111 in screen 1, using the
 /// // RotSet 12, with “doublesize” disabled.
 /// NF_EnableSpriteRotScale(1, 111, 12, false);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param sprite Sprite ID (0 - 127).
@@ -220,10 +220,10 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize);
 /// Disables the rotation and scalation of sprite.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Disable rotation and scalation of sprite 46 of screen 0.
 /// NF_DisableSpriteRotScale(0, 46);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param sprite Sprite ID (0 - 127).
@@ -237,14 +237,14 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite);
 /// 100% scale is 256.
 ///
 /// Example:
-/// <pre>
+/// ```
 /// // Rotate all sprites with RotSet 16 by 90 degrees to the right, with 100%
 /// // scale in both directions, on screen 0.
 /// NF_SpriteRotScale(0, 16, 128, 256, 256);
 /// // Rotate all sprites with RotSet 10 by 180 degrees to the left, scaling the
 /// // X size by 200% and the Y size by 100%, on screen 1.
 /// NF_SpriteRotScale(1, 10, -256, 512, 256);
-/// </pre>
+/// ```
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
