@@ -1089,8 +1089,8 @@ void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b) {
 }
 
 
-// Funcion NF_3dSpriteSetDeep();
-void NF_3dSpriteSetDeep(u8 id, s16 z) {
+// Funcion NF_3dSpriteSetDepth();
+void NF_3dSpriteSetDepth(u8 id, s16 z) {
 
 	// Asigna la profundidad
 	NF_3DSPRITE[id].z = z;

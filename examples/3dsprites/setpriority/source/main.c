@@ -164,11 +164,11 @@ int main(int argc, char **argv) {
 			NF_Set3dSpritePriority(TARGET, prio);
 		}
 		// Restaura la prioridad por defecto
-		if (keys & KEY_X) NF_3dSpriteSetDeep(TARGET, 0);
+		if (keys & KEY_X) NF_3dSpriteSetDepth(TARGET, 0);
 		// Fuerza estar al frente
-		if (keys & KEY_R) NF_3dSpriteSetDeep(TARGET, -512);
+		if (keys & KEY_R) NF_3dSpriteSetDepth(TARGET, -512);
 		// Fuerza estar al fondo
-		if (keys & KEY_L) NF_3dSpriteSetDeep(TARGET, 512);
+		if (keys & KEY_L) NF_3dSpriteSetDepth(TARGET, 512);
 
 		// Dibuja los 3D Sprites
 		NF_Draw3dSprites();
