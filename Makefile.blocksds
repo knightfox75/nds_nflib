@@ -115,7 +115,7 @@ DEPS		:= $(OBJS:.o=.d)
 # Targets
 # -------
 
-.PHONY: all clean install
+.PHONY: all clean docs install
 
 all: $(ARCHIVE)
 
@@ -133,6 +133,9 @@ install: all
 	$(V)$(RM) $(BLOCKSDSEXT)/$(INSTALLNAME)/
 	$(V)$(INSTALL) -d $(BLOCKSDSEXT)/$(INSTALLNAME)/
 	$(V)$(CP) -r include lib $(BLOCKSDSEXT)/$(INSTALLNAME)/
+
+docs:
+	$(V)doxygen Doxyfile
 
 # Rules
 # -----
