@@ -68,7 +68,7 @@ typedef struct {
 	bool available;		///< If the background is available it is true.
 } NF_TYPE_TBG_INFO;
 
-/// Information of all backgrounds.
+/// Information of all tiled backgrounds.
 extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];
 
 /// Struct that holds information about extended palettes.
