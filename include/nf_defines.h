@@ -13,6 +13,8 @@ extern "C" {
 #ifndef __NF_DEFINES_H__
 #define __NF_DEFINES_H__
 
+// TODO: This can probably be replaced by libnds now
+
 // Definicion de los datos del usuario
 // Informacion obtenida de PALIB source code
 // Referencias usadas de http://nds.metawiki.com/Firmware

@@ -242,6 +242,9 @@ void NF_UnloadSpritePal(u8 id);
 /// Copy a graphics object from RAM to VRAM of the selected screen to be used as
 /// a sprite.
 ///
+/// You must specify if you want to copy all frames to VRAM (false) or just the
+/// first one (true).
+///
 /// Example:
 /// ```
 /// // Copy the graphics object stored in slot 160 of RAM to slot 23 of VRAM of
