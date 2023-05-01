@@ -18,7 +18,7 @@ extern "C" {
 /// @file   nf_3d.h
 /// @brief  Functions to setup 3D video options.
 
-/// @defgroup nf_2d 3D video setup
+/// @defgroup nf_3d 3D video setup
 ///
 /// Functions to setup 2D the video modes of the NDS and enable 3D.
 ///

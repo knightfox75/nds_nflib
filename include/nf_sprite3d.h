@@ -403,6 +403,9 @@ void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b);
 ///
 /// Change the sprite depth to prevent it from intersecting with other sprites
 /// when rotation or zoom are applied.
+///
+/// @param id Sprite ID (0 - 255).
+/// @param z Depth (-512 - 512)
 void NF_3dSpriteSetDepth(u8 id, s16 z);
 
 // Defines for backwards compatibility
