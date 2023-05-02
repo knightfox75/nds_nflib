@@ -21,7 +21,7 @@ DEFINES		:= -DBLOCKSDS
 # Libraries
 # ---------
 
-LIBDIRS		:= $(BLOCKSDS)/libs/libnds
+LIBDIRS		:= $(BLOCKSDS)/libs/libnds $(BLOCKSDS)/libs/dswifi
 
 # Build artifacts
 # ---------------
