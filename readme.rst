@@ -77,7 +77,6 @@ Features:
 
   - Basic WiFi support.
   - Functions for basic UDP communications.
-  - They aren't part of the base lib (check the ``extras`` folder).
 
 - Examples:
 
