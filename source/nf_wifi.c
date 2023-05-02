@@ -31,7 +31,7 @@ struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
 // Estructura del socket
 s32 NF_SOCKET;			// Id del socket (servidor)
 s32 NF_CONNECTED;		// Resultado de la conexion
-s32 NF_SINSIZE;			// Tamaño de la Struct .SIN
+int NF_SINSIZE;			// Tamaño de la Struct .SIN
 s32 NF_BYTES_RECIEVED;	// Bytes recibidos
 
 struct sockaddr_in NF_SA_SERVER;		// Estructura Socket Adress In (Servidor)
