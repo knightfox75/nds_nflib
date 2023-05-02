@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
 	// Inicializa las pantallas
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	swiWaitForVBlank();
 
@@ -87,9 +87,9 @@ int main(int argc, char **argv) {
 	while(1) {
 
 		swiWaitForVBlank();			// Espera al sincronismo vertical
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }

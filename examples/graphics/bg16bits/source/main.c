@@ -102,9 +102,9 @@ int main(int argc, char **argv) {
 	while(1) {
 
 		swiWaitForVBlank();			// Espera al sincronismo vertical
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }

@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
 
 		// Lectura de posicion del stylus
 		scanKeys();				// Lee el touchpad via Libnds
-		touchRead(&touchscreen); 
+		touchRead(&touchscreen);
 		keys = keysHeld();		// Verifica el estado del touchscreen
 		if (keys & KEY_TOUCH) {
 			square_x = (touchscreen.px - 42);
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
 		// Resetea el control de zoom
 		zoom_x = 0;
 		zoom_y = 0;
-	
+
 		// Rellena el buffer
 		for (y = square_y; y < (square_y + 64); y ++) {
 			for (x = square_x; x < (square_x + 85); x ++) {
@@ -275,7 +275,7 @@ int main(int argc, char **argv) {
 					// La parte de la derecha tiene usa pixel doubling
 
 					rgb = NF_16BITS_BACKBUFFER[1][((y << 8) + x)];
-					// Escribe los pixeles en el Backbuffer de la pantalla superior 
+					// Escribe los pixeles en el Backbuffer de la pantalla superior
 					// Esto genera el Zoom x2 en la pantalla superior
 					NF_16BITS_BACKBUFFER[0][((zoom_y << 8) + zoom_x)] = rgb;		// 01
 					NF_16BITS_BACKBUFFER[0][((zoom_y << 8) + (zoom_x + 1))] = rgb;	// A1
@@ -329,6 +329,6 @@ int main(int argc, char **argv) {
 
 	}
 
-	return 0; 
+	return 0;
 
 }

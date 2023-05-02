@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
 	// Crea el Sprite del puntero en la pantalla inferior
 	NF_CreateSprite(0, 0, 0, 0, 124, 92);	// Crea el puntero en la pantalla inferior
 	NF_SpriteLayer(0, 0, 3);				// Y la capa sobre la que se dibujara
-	
+
 	// Variable para la lectura del keypad
 	u16 keys = 0;
 
@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 				printf("Tile: Azul / Blue");
 				break;
 			default:
-				printf("Value: %03d", pixel); 
+				printf("Value: %03d", pixel);
 				break;
 		}
 
@@ -169,10 +169,10 @@ int main(int argc, char **argv) {
 
 		oamUpdate(&oamMain);			// Actualiza a VRAM el OAM Secundario
 
-		NF_ScrollBg(0, 3, bg_x, bg_y);	// Actualiza el scroll 
-	
+		NF_ScrollBg(0, 3, bg_x, bg_y);	// Actualiza el scroll
+
 	}
 
-	return 0; 
+	return 0;
 
 }

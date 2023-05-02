@@ -442,7 +442,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 			}
 		}
 	}
-	
+
 	// Si hay algun bloque borrado libre del tamaño suficiente...
 	if (id != 255) {
 

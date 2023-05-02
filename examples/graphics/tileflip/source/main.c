@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -109,9 +109,9 @@ int main(int argc, char **argv) {
 	while(1) {
 
 		swiWaitForVBlank();		// Espera al sincronismo vertical
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }

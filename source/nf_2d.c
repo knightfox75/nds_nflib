@@ -31,10 +31,10 @@ void NF_Set2D(u8 screen, u8 mode) {
 	if (screen == 0) {		// Pantalla Superior
 
 		switch (mode) {		// Selecciona modo
-			case 0:		
+			case 0:
 				videoSetMode(MODE_0_2D);
 				break;
-			case 2:		
+			case 2:
 				videoSetMode(MODE_2_2D);
 				break;
 			case 5:
@@ -165,7 +165,7 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y) {
 		u32 mapmovex = 0;	// Desplazamiento de la copia de datos (block x 2048)
 		u32 mapmovey = 0;
 		u16 rowsize = 0;	// Calcula el espacio ocupado en RAM por cada fila
-		
+
 		// Calcula la direccion base del mapa
 		if (screen == 0) {	// (VRAM_A)
 			address = (0x6000000) + (NF_TILEDBG_LAYERS[screen][layer].mapbase << 11);
@@ -498,7 +498,7 @@ void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy) {
 
 	// Actualiza el RotScale del OAM
 	if (screen == 0) {
-		oamRotateScale(&oamMain, id, out, (512 - sx), (512 - sy)); 
+		oamRotateScale(&oamMain, id, out, (512 - sx), (512 - sy));
 	} else {
 		oamRotateScale(&oamSub, id, out, (512 - sx), (512 - sy));
 	}

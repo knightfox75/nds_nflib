@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
 
 		// Lectura de posicion del stylus
 		scanKeys();				// Lee el touchpad via Libnds
-		touchRead(&touchscreen); 
+		touchRead(&touchscreen);
 		keys = keysHeld();		// Verifica el estado del touchscreen
 		if (keys & KEY_TOUCH) {
 			square_x = (touchscreen.px - 32);
@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
 		if (square_x > 191) square_x = 191;
 		if (square_y < 0) square_y = 0;
 		if (square_y > 127) square_y = 127;
-	
+
 		// Rellena el buffer
 		for (y = square_y; y < (square_y + 64); y ++) {
 			for (x = square_x; x < (square_x + 64); x ++) {
@@ -161,6 +161,6 @@ int main(int argc, char **argv) {
 	}
 
 
-	return 0; 
+	return 0;
 
 }

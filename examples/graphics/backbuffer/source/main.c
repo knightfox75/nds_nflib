@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 	s16 y = 0;
 
 	while (1) {
-	
+
 		// Rellena el buffer
 		for (y = 0; y < 256; y ++) {
 			for (x = 0; x < 256; x ++) {
@@ -110,6 +110,6 @@ int main(int argc, char **argv) {
 
 	}
 
-	return 0; 
+	return 0;
 
 }

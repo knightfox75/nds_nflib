@@ -80,7 +80,7 @@ void NF_ResetTiledBgBuffers(void) {
 	for (n = 0; n < NF_SLOTS_TBG; n ++) {	// Inicializa todos los slots
 		free(NF_BUFFER_BGTILES[n]);			// Vacia el Buffer para los tiles
 		free(NF_BUFFER_BGMAP[n]);			// Vacia Buffer para el map
-		free(NF_BUFFER_BGPAL[n]);			// Vacia Buffer para la paleta			
+		free(NF_BUFFER_BGPAL[n]);			// Vacia Buffer para la paleta
 	}
 	for (n = 0; n < NF_SLOTS_EXBGPAL; n ++) {
 		NF_EXBGPAL[n].buffer = NULL;
@@ -348,7 +348,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 	fclose(file_id);		// Cierra el archivo
 
 
-	// Crea un archivo .MAP vacio en RAM 
+	// Crea un archivo .MAP vacio en RAM
 	// ((ancho / 8) * (alto / 8)) * 2
 	NF_TILEDBG[slot].mapsize = (((width >> 3) * (height >> 3)) << 1);
 	// Reserva el espacio en RAM
@@ -504,7 +504,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 			if (counter == 0) {						// Y el contador esta a 0
 				start = n;							// Marca la posicion de inicio
 			}
-			counter ++;								
+			counter ++;
 			if (counter == tilesblocks) {			// Si ya tienes suficientes bloques libres
 				n = NF_BANKS_TILES[screen];			// Termina de buscar
 			}
@@ -517,7 +517,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	// Si no se han encontrado bloques libres
 	if ((start == 255) || (counter < tilesblocks)) {
 		NF_Error(107, name, tilesblocks);
-	} else {	
+	} else {
 		basetiles = start;		// Guarda donde empiezan los bloques libres
 	}
 
@@ -548,7 +548,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 			if (counter == 0) {						// Y el contador esta a 0
 				start = n;							// Marca la posicion de inicio
 			}
-			counter ++;								
+			counter ++;
 			if (counter == mapblocks) {				// Si ya tienes suficientes bloques libres
 				n = NF_BANKS_MAPS[screen];					// Termina de buscar
 			}
@@ -561,7 +561,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 	// Si no se han encontrado bloques libres
 	if ((start == 255) || (counter < mapblocks)) {
 		NF_Error(108, name, mapblocks);
-	} else {	
+	} else {
 		basemap = start;							// Guarda donde empiezan los bloques libres
 	}
 
@@ -609,7 +609,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 			case 3:
 				REG_BG3CNT = BgType_Text8bpp | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap);
 				break;
-		} 
+		}
 	} else {
 		switch (layer) {
 			case 0:
@@ -624,7 +624,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 			case 3:
 				REG_BG3CNT_SUB = BgType_Text8bpp | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap);
 				break;
-		} 
+		}
 	}
 
 	u32 address;		// Variable de direccion de VRAM;
@@ -753,7 +753,7 @@ void NF_DeleteTiledBg(u8 screen, u8 layer) {
 		address = (0x6200000) + (basemap << 11);
 	}
 	memset((void*)address, 0, mapsize);		// Pon a 0 todos los bytes de la area de VRAM
-	
+
 
 	// Borra la Paleta a VRAM
 	if (screen == 0) {
@@ -831,7 +831,7 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 	u32 scr_x = (block_x << 11);		// Desplazamiento en memoria, bloques de pantallas (32x32) sobre X
 	u32 tls_y = ((tile_y - (block_y << 5)) << 5);	// Desplazamiento en memoria, tiles sobre X
 	u32 tls_x = (tile_x - (block_x << 5));			// Desplazamiento en memoria, tiles sobre Y
-	u32 address =  scr_y + scr_x + ((tls_y + tls_x) << 1); 
+	u32 address =  scr_y + scr_x + ((tls_y + tls_x) << 1);
 
 	// Devuelve el la direccion en el buffer del Tile
 	return address;
@@ -1310,7 +1310,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 	s16 ya = 0;
 	s16 yb = 0;
 	s16 pos_b = 0;
-	
+
 	// Copia el tile al buffer temporal A
 	memcpy(character_a, (NF_BUFFER_BGTILES[slot] + (tile << 6)), 64);
 
@@ -1371,7 +1371,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 			break;
 
 	}
-	
+
 	// Copia el tile desde buffer temporal B
 	memcpy((NF_BUFFER_BGTILES[slot] + (tile << 6)), character_b, 64);
 

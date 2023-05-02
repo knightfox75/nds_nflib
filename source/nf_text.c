@@ -45,7 +45,7 @@ void NF_InitTextSys(u8 screen) {
 		NF_TEXT[screen][n].exist = false;	// Marcalo como no existente
 		NF_TEXT[screen][n].update = false;	// No es necesario actualizarlo
 	}
-	
+
 }
 
 
@@ -111,7 +111,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 		}
 	}
 
-	// Crea un archivo .MAP vacio en RAM 
+	// Crea un archivo .MAP vacio en RAM
 	// ((ancho / 8) * (alto / 8)) * 2
 	NF_TILEDBG[slot].mapsize = (((width >> 3) * (height >> 3)) << 1);
 	// Reserva el espacio en RAM
@@ -315,7 +315,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 					string[n] = 113;
 					break;
 				// Caracter invalido
-				default:	
+				default:
 					string[n] = 0;
 					break;
 			}

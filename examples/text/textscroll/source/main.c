@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -154,9 +154,9 @@ int main(int argc, char **argv) {
 		// Mueve la capa de texto
 		NF_ScrollBg(0, 0, 0, y);
 		NF_ScrollBg(1, 0, x, 63);
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }

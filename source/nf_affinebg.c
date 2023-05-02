@@ -111,7 +111,7 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 		// Error de tamaño
 		NF_Error(117, name, 0);
 	}
-	
+
 	// Variable temporal del tamaño de la paleta
 	u32 pal_size = 0;
 
@@ -307,7 +307,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 			if (counter == 0) {						// Y el contador esta a 0
 				start = n;							// Marca la posicion de inicio
 			}
-			counter ++;								
+			counter ++;
 			if (counter == tilesblocks) {			// Si ya tienes suficientes bloques libres
 				n = NF_BANKS_TILES[screen];					// Termina de buscar
 			}
@@ -320,7 +320,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 	// Si no se han encontrado bloques libres
 	if ((start == 255) || (counter < tilesblocks)) {
 		NF_Error(107, name, tilesblocks);
-	} else {	
+	} else {
 		basetiles = start;		// Guarda donde empiezan los bloques libres
 	}
 
@@ -343,7 +343,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 			if (counter == 0) {						// Y el contador esta a 0
 				start = n;							// Marca la posicion de inicio
 			}
-			counter ++;								
+			counter ++;
 			if (counter == mapblocks) {				// Si ya tienes suficientes bloques libres
 				n = NF_BANKS_MAPS[screen];					// Termina de buscar
 			}
@@ -356,7 +356,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 	// Si no se han encontrado bloques libres
 	if ((start == 255) || (counter < mapblocks)) {
 		NF_Error(108, name, mapblocks);
-	} else {	
+	} else {
 		basemap = start;							// Guarda donde empiezan los bloques libres
 	}
 
@@ -396,7 +396,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 			case 3:
 				REG_BG3CNT = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
 				break;
-		} 
+		}
 	} else {
 		switch (layer) {
 			case 2:
@@ -405,7 +405,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 			case 3:
 				REG_BG3CNT_SUB = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
 				break;
-		} 
+		}
 	}
 
 	u32 address;		// Variable de direccion de VRAM;
@@ -601,7 +601,7 @@ void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle) {
 	if (in > 2048) {
 		in -= 2048;
 	}
-	
+
 	// Si es un numero negativo...
 	if (in < 0) {
 		in = -in;			// Pasa a positivo (para poder hacer el bitshift)

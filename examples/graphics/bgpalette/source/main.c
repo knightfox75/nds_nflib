@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
 	NF_BgSetPalColor(0, 0, 1, 31, 31, 0);		// Color del texto
 	NF_WriteText(0, 0, 1, 1, "Hola Mundo!\n Hello World!");	// Normal
 	NF_BgEditPalColor(0, 1, 1, 0, 31, 31);	// Color del texto
-	NF_BgUpdatePalette(0, 1);	
+	NF_BgUpdatePalette(0, 1);
 	NF_WriteText(0, 1, 1, 1, "Hola Mundo!\n Hello World!");	// Rotado derecha
 	NF_WriteText(0, 2, 1, 1, "Hola Mundo!\n Hello World!");	// Rotado izquierda
 
@@ -146,9 +146,9 @@ int main(int argc, char **argv) {
 		//
 
 		swiWaitForVBlank();			// Espera al sincronismo vertical
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }

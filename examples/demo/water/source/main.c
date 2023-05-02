@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 		// Calculos para la capa 1
 		if ((y >= 138) && (y <= 159)) {
 			bgx[y] = 32;
-			inc *= -1;	
+			inc *= -1;
 			i[y] = inc;
 		}
 		// Calculos para la capa 0
@@ -157,7 +157,7 @@ int main(int argc, char **argv) {
 
 	}
 
-	return 0; 
+	return 0;
 
 }
 

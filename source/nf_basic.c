@@ -4,7 +4,7 @@
 //
 // NightFox LIB - Funciones basicas y de Debug
 // http://www.nightfoxandco.com/
-// Version 
+// Version
 
 
 #ifdef BLOCKSDS

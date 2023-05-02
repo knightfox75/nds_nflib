@@ -175,7 +175,7 @@ int main(int argc, char **argv) {
 
 		}
 
-	} 
+	}
 
 	// Cierra el socket
 	close(NF_SOCKET);
@@ -223,7 +223,7 @@ bool _ConnectWIFI(void) {
 		printf("Mask   : %s\n", inet_ntoa(NF_MASK));
 		printf("Dns1   : %s\n", inet_ntoa(NF_DNS1));
 		printf("Dns2   : %s\n\n", inet_ntoa(NF_DNS2));
-		
+
 		// Marca como conectado
 		status = true;
 
@@ -396,7 +396,7 @@ s16 _LookForServer(void) {
 
 		// Si pulsas cancelar
 		if (keys & KEY_R) n = 255;
-		
+
 	}
 
 	return p;

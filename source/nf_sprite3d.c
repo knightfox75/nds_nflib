@@ -227,8 +227,8 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 				}
 			}
 		}
-	} 
-	
+	}
+
 	// Si hay algun bloque borrado libre del tamaño suficiente...
 	if (id != 255) {
 
@@ -529,7 +529,7 @@ void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 	// Ahora registra su creacion
 	NF_CREATED_3DSPRITE.id[NF_CREATED_3DSPRITE.total] = id;
 	NF_CREATED_3DSPRITE.total ++;
-	
+
 }
 
 
@@ -600,7 +600,7 @@ void NF_Delete3dSprite(u16 id) {
 		NF_CREATED_3DSPRITE.id[0] = 0;
 		NF_CREATED_3DSPRITE.total = 0;
 	}
-	
+
 }
 
 

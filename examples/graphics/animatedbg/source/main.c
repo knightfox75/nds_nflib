@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
 	// Pantalla de espera inicializando NitroFS
 	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);	
+	NF_Set2D(1, 0);
 	consoleDemoInit();
 	printf("\n NitroFS init. Please wait.\n\n");
 	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
@@ -143,16 +143,16 @@ int main(int argc, char **argv) {
 		}
 
 		// Anima el fondo
-		AnimateWater();	
+		AnimateWater();
 
 		swiWaitForVBlank();		// Espera al sincronismo vertical
 
 		// Actualiza la posicion de los fondos
 		NF_ScrollBg(1, 3, bg_x, bg_y);
-	
+
 	}
 
-	return 0; 
+	return 0;
 
 }
 
@@ -200,7 +200,7 @@ void InitAnimatedBg(void) {
 					NF_SetTileOfMap(1, 3, tile_x, tile_y, ((frame << 4) + n));
 					n ++;
 				}
-			}				
+			}
 		}
 	}
 
@@ -261,7 +261,7 @@ void AnimateWater(void) {
 
 		// Actualiza el mapa en la VRAM
 		NF_UpdateVramMap(1, 3);
-				
+
 	}
 
 }

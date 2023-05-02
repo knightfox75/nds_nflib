@@ -36,10 +36,10 @@ void NF_Set3D(u8 screen, u8 mode) {
 
 	// Selecciona modo 3D
 	switch (mode) {
-		case 0:		
+		case 0:
 			videoSetMode(MODE_0_3D);
 			break;
-		case 2:		
+		case 2:
 			videoSetMode(MODE_2_3D);
 			break;
 		case 5:

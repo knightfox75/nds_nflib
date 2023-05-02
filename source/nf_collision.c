@@ -344,7 +344,7 @@ u8 NF_GetPoint(u8 slot, s32 x, s32 y) {
 
 		// Calcula los pixeles relativos
 		u16 pixel_x = x - (tile_x << 3);
-		u16 pixel_y = (y + 8) - (tile_y << 3); 
+		u16 pixel_y = (y + 8) - (tile_y << 3);
 
 		// Calcula la posicion de tile dentro del archivo de mapa
 		s32 address = (((tile_y * columns) + tile_x) << 1);

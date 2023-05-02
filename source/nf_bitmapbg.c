@@ -71,7 +71,7 @@ void NF_Reset16bitsBgBuffers(void) {
 // Funcion NF_Init16bitsBackBuffer();
 void NF_Init16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	NF_16BITS_BACKBUFFER[scr] = NULL;
 }
 
@@ -79,7 +79,7 @@ void NF_Init16bitsBackBuffer(u8 screen) {
 // Funcion NF_Enable16bitsBackBuffer();
 void NF_Enable16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	// Resetea el buffer
 	free(NF_16BITS_BACKBUFFER[scr]);
 	NF_16BITS_BACKBUFFER[scr] = NULL;
@@ -94,7 +94,7 @@ void NF_Enable16bitsBackBuffer(u8 screen) {
 // Funcion NF_Disble16bitsBackBuffer();
 void NF_Disble16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	// Resetea el buffer
 	free(NF_16BITS_BACKBUFFER[scr]);
 	NF_16BITS_BACKBUFFER[scr] = NULL;
@@ -274,7 +274,7 @@ void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type) {
 
 // Funcion NF_Unload16bitsBg();
 void NF_Unload16bitsBg(u8 slot) {
-	
+
 	// Verifica si el buffer contiene datos
 	if (!NF_BG16B[slot].inuse) NF_Error(110, "16 Bits Bg", slot);
 
@@ -352,7 +352,7 @@ void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha) {
 				// Calcula el offset dentro del buffer
 				buff_idx = ((buff_y << 8) + buff_x);
 				// Valor del Pixel
-				data = NF_BG16B[slot].buffer[((img_y * NF_BG16B[slot].width) + img_x)]; 
+				data = NF_BG16B[slot].buffer[((img_y * NF_BG16B[slot].width) + img_x)];
 				// Si el pixel NO es magenta !(RGB15(31, 0, 31) | BIT(15))
 				if ((data != 0xFC1F) || (!alpha)) {
 					// Escribe el pixel en el BackBuffer
@@ -473,7 +473,7 @@ void NF_Load8bitsBg(const char* file, u8 slot) {
 
 // Funcion NF_Unload8bitsBg();
 void NF_Unload8bitsBg(u8 slot) {
-	
+
 	// Verifica si el buffer contiene datos
 	if (!NF_BG8B[slot].inuse) NF_Error(110, "8 Bits Bg", slot);
 
@@ -534,7 +534,7 @@ void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot) {
 // Funcion NF_Init8bitsBackBuffer();
 void NF_Init8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	NF_8BITS_BACKBUFFER[scr].data = NULL;
 	NF_8BITS_BACKBUFFER[scr].pal = NULL;
 }
@@ -544,7 +544,7 @@ void NF_Init8bitsBackBuffer(u8 screen) {
 // Funcion NF_Enable8bitsBackBuffer();
 void NF_Enable8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	// Resetea el buffer
 	free(NF_8BITS_BACKBUFFER[scr].data);
 	free(NF_8BITS_BACKBUFFER[scr].pal);
@@ -563,7 +563,7 @@ void NF_Enable8bitsBackBuffer(u8 screen) {
 // Funcion NF_Disble8bitsBackBuffer();
 void NF_Disble8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 	// Resetea el buffer
 	free(NF_8BITS_BACKBUFFER[scr].data);
 	free(NF_8BITS_BACKBUFFER[scr].pal);
@@ -579,7 +579,7 @@ void NF_Flip8bitsBackBuffer(u8 screen, u8 destination) {
 	// Copia el contenido del Backbuffer a la VRAM
 	// de la pantalla solicitada
 	u8 scr = screen;
-	if (scr > 1) scr = 1; 
+	if (scr > 1) scr = 1;
 
 	// Segun la pantalla...
 	u32 data = 0;

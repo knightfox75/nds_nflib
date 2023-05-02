@@ -97,8 +97,8 @@ bool NF_WIFI_CreateUdpSender(const char* address, u16 port) {
 	memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
 	memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
 	// *** Tipo de conexion *** "  .sin_family = AF_INET" especifica que el tipo de socket IPv4 Internet.
-	NF_SA_SERVER.sin_family = AF_INET;	
-	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order" 
+	NF_SA_SERVER.sin_family = AF_INET;
+	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order"
 	NF_SA_SERVER.sin_port = htons(port);
 	// *** Direccion IP de la conexion ***
 	// "inet_addr()" convierte una direccion IPv4 en formato texto ("192.168.0.1") al formato IN_ADDR
@@ -128,8 +128,8 @@ bool NF_WIFI_CreateUdpListener(u16 port) {
 	memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
 	memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
 	// *** Tipo de conexion *** "  .sin_family = AF_INET" especifica que el tipo de socket IPv4 Internet.
-	NF_SA_SERVER.sin_family = AF_INET;	
-	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order" 
+	NF_SA_SERVER.sin_family = AF_INET;
+	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order"
 	NF_SA_SERVER.sin_port = htons(port);
 	// *** Direccion IP de la conexion ***
 	// "inet_addr()" convierte una direccion IPv4 en formato texto ("192.168.0.1") al formato IN_ADDR
