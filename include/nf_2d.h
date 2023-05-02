@@ -119,9 +119,9 @@ void NF_SpriteLayer(u8 screen, u8 id, u8 layer);
 ///
 /// Example:
 /// ```
-/// // Hides the sprite nº35 on screen 0.
+/// // Hides sprite 35 of screen 0
 /// NF_ShowSprite(0, 35, false);
-/// // Makes visible the Sprite nº45 on screen 1.
+/// // Makes sprite 45 of screen 1 visible
 /// NF_ShowSprite(1, 45, true);
 /// ```
 ///
