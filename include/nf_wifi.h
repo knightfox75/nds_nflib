@@ -13,88 +13,156 @@ extern "C" {
 #ifndef __NF_WIFI_H__
 #define __NF_WIFI_H__
 
+/// @file   nf_wifi.h
+/// @brief  Basic WiFi helpers
+
+/// @defgroup nf_wifi Basic WiFi helpers
+///
+/// Basic functions to initialize WiFi, setup a UDP socket, and send and receive
+/// data.
+///
+/// @{
+
 #include <nds.h>
 #include <dswifi9.h>
 
-// Includes C
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+/// Maxmimum number of connection requests in the queue
+#define NF_MAX_INCOMMING_PENDING 1
+
+/// Size of communications buffer
+#define NF_WIFI_BUFFER_SIZE 256
+
+/// Current IP address
+extern struct in_addr NF_IP;
+
+/// Current gateway
+extern struct in_addr NF_GATEWAY;
+
+/// Current netmask
+extern struct in_addr NF_MASK;
+
+/// Current DNS 1
+extern struct in_addr NF_DNS1;
+
+/// Current DNS 2
+extern struct in_addr NF_DNS2;
 
 
+/// Server socket ID
+extern s32 NF_SOCKET;
+
+/// Connection result
+extern s32 NF_CONNECTED;
+
+/// Size of struct .SIN
+extern s32 NF_SINSIZE;
+
+/// Received bytes
+extern s32 NF_BYTES_RECIEVED;
 
 
-// Defines de la red
-#define NF_MAX_INCOMMING_PENDING 1		// Peticiones de conexion maximas en cola
-#define NF_WIFI_BUFFER_SIZE 256			// Tamaño del buffer de comunicaciones
-
-// Parametros de la RED
-extern struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
-
-// Estructura del socket
-extern s32 NF_SOCKET;			// Id del socket (servidor)
-extern s32 NF_CONNECTED;		// Resultado de la conexion
-extern s32 NF_SINSIZE;			// Tamaño de la Struct .SIN
-extern s32 NF_BYTES_RECIEVED;	// Bytes recibidos
-
-extern struct sockaddr_in NF_SA_SERVER;		// Estructura Socket Adress In (Servidor)
-extern struct sockaddr_in NF_SA_CLIENT;		// Estructura Socket Adress In (Cliente)
-
-extern char NF_SEND_BUFFER[NF_WIFI_BUFFER_SIZE];	// Buffer de envio
-extern char NF_RECV_BUFFER[NF_WIFI_BUFFER_SIZE];	// Buffer de recepcion
-
-extern bool NF_WIFI_IS_SERVER;	// Almacena si eres servidor o cliente
-
-extern s32 NF_MAXFD;				// Numero maximo de sockets a examinar por select();
-extern fd_set NF_READFDS;			// Estructura donde se almacenaran los datos de los sockets para select();
-extern struct timeval NF_TIMEOUT;	// Almacena el valor del time out
+/// Server socket address
+extern struct sockaddr_in NF_SA_SERVER;
+/// Client socket address
+extern struct sockaddr_in NF_SA_CLIENT;
 
 
+/// Send buffer
+extern char NF_SEND_BUFFER[NF_WIFI_BUFFER_SIZE];
+/// Reception buffer
+extern char NF_RECV_BUFFER[NF_WIFI_BUFFER_SIZE];
 
 
+/// This is set to true if this console is in server mode, false in client mode
+extern bool NF_WIFI_IS_SERVER;
 
 
-// Funcion NF_WiFiConnectDefaultAp();
-extern bool NF_WiFiConnectDefaultAp(void);
-// Intenta conectarte al punto de acceso WI-FI definido por defecto en la WFC de la DS
-// Devuelve si se ha conseguido la conexion
+/// Maximum number of sockets to examine by select().
+extern s32 NF_MAXFD;
+
+/// Struct to save data used by select() sockets.
+extern fd_set NF_READFDS;
+
+/// Current timeout in microseconds
+extern struct timeval NF_TIMEOUT;
 
 
+/// Try to connect to the default access point in the DS user configuration.
+///
+/// @return True if the connection has succeeded.
+bool NF_WiFiConnectDefaultAp(void);
 
-// Funcion NF_WiFiDisconnectAp();
+/// Disconnect from the access point and shutdown WiFi.
 void NF_WiFiDisconnectAp(void);
-// Desconectate del punto de acceso y cierra la conexion WI-FI
 
+/// Creates a socket in client mode using UDP.
+///
+/// Example:
+/// ```
+/// // Create a UDP socket with address 192.168.1.201 and port 12345
+/// NF_WIFI_CreateUdpSender("192.168.1.201", 12345);
+/// ```
+///
+/// @param address IP address.
+/// @param port Port.
+/// @return True if it has been created successfully
+bool NF_WIFI_CreateUdpSender(const char* address, u16 port);
 
+/// Creates a socket in server mode using UDP.
+///
+/// It accepts data from any UP address.
+///
+/// Example:
+/// ```
+/// // Create a UDP socket at port 12345
+/// NF_WIFI_CreateUdpListener(12345);
+/// ```
+///
+/// @param port Port.
+/// @return True if it has been created successfully
+bool NF_WIFI_CreateUdpListener(u16 port);
 
-// Function NF_WIFI_CreateUdpSender();
-extern bool NF_WIFI_CreateUdpSender(const char* address, u16 port);
-// Crea un socket UDP en el puerto especificado para mandar datos
-// a la direccion IP especificada
-
-
-
-// Function NF_WIFI_CreateUdpListener();
-extern bool NF_WIFI_CreateUdpListener(u16 port);
-// Crea un socket UDP en el puerto especificado y dejalo
-// a la escucha
-
-
-
-// Funcion NF_WIFI_UdpSend();
+/// Sends a text string over the currenty open UDP socket.
+///
+/// A socket must have been opened by NF_WIFI_CreateUdpSender(), which will be
+/// used by this function.
+///
+/// Sent data is saved in NF_SEND_BUFFER as well so that you can run a checksum
+/// function on it, for example.
+///
+/// Example:
+/// ```
+/// // Sends string "This is a test" over the currently open socket
+/// NF_WIFI_UdpSend("This is a test");
+/// ```
+///
+/// @param data Text string to be sent.
+/// @return True on success.
 bool NF_WIFI_UdpSend(const char* data);
-// Envia una cadena de datos por el puerto UDP previamente abierto
-// por NF_WIFI_CreateUdpSender();
 
-
-
-// Funcion NF_WIFI_UdpListen();
+/// Listens to data from the currently open socket.
+///
+/// If any data is received it is saved in the global variable NF_RECV_BUFFER.
+/// It saves the number of received bytes in NF_BYTES_RECIEVED.
+///
+/// The function returns a positive value if any data is received. If there is a
+/// timeout (specified in microseconds), it returns a negative value.
+///
+/// Example:
+/// ```
+/// // Listen for data for with a timeout of 300000 microseconds (300 ms)
+/// NF_WIFI_UdpListen(300000);
+/// ```
+///
+/// @param timeout
+/// @return Positive number on success, negative number on error.
 s32 NF_WIFI_UdpListen(u32 timeout);
-// Lee los datos del puerto UDP y ponlos en el buffer.
 
-
-
+/// @}
 
 #endif
 
