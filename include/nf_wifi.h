@@ -6,6 +6,10 @@
 // http://www.nightfoxandco.com/
 // Version 20110502
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __NF_WIFI_H__
 #define __NF_WIFI_H__
 
@@ -92,5 +96,8 @@ s32 NF_WIFI_UdpListen(u32 timeout);
 
 
 
+#endif
 
+#ifdef __cplusplus
+}
 #endif
