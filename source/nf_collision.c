@@ -20,8 +20,7 @@ NF_TYPE_CMAP_INFO NF_CMAP[NF_SLOTS_CMAP];
 
 
 void NF_InitCmapBuffers(void) {
-	u8 n = 0;
-	for (n = 0; n < NF_SLOTS_CMAP; n ++) {
+	for (int n = 0; n < NF_SLOTS_CMAP; n ++) {
 		NF_CMAP[n].tiles = NULL;		// Inicializa los punteros de los buffers
 		NF_CMAP[n].map = NULL;
 		NF_CMAP[n].tiles_size = 0;		// Tamaño de archivo
@@ -33,8 +32,7 @@ void NF_InitCmapBuffers(void) {
 }
 
 void NF_ResetCmapBuffers(void) {
-	u8 n = 0;
-	for (n = 0; n < NF_SLOTS_CMAP; n ++) {
+	for (int n = 0; n < NF_SLOTS_CMAP; n ++) {
 		free(NF_CMAP[n].tiles);		// Vacia los buffers
 		free(NF_CMAP[n].map);
 	}

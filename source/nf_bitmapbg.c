@@ -30,8 +30,7 @@ NF_TYPE_BB8B_INFO NF_8BITS_BACKBUFFER[2];
 
 
 void NF_Init16bitsBgBuffers(void) {
-	u8 n = 0;
-	for (n = 0; n < NF_SLOTS_BG16B; n ++) {
+	for (int n = 0; n < NF_SLOTS_BG16B; n ++) {
 		NF_BG16B[n].buffer = NULL;
 		NF_BG16B[n].size = 0;
 		NF_BG16B[n].inuse = false;
@@ -41,9 +40,8 @@ void NF_Init16bitsBgBuffers(void) {
 }
 
 void NF_Reset16bitsBgBuffers(void) {
-	u8 n = 0;
 	// Libera la RAM
-	for (n = 0; n < NF_SLOTS_BG16B; n ++) {
+	for (int n = 0; n < NF_SLOTS_BG16B; n ++) {
 		free(NF_BG16B[n].buffer);
 	}
 	// Reinicia los datos
@@ -316,8 +314,7 @@ void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha) {
 }
 
 void NF_Init8bitsBgBuffers(void) {
-	u8 n = 0;
-	for (n = 0; n < NF_SLOTS_BG8B; n ++) {
+	for (int n = 0; n < NF_SLOTS_BG8B; n ++) {
 		NF_BG8B[n].data = NULL;
 		NF_BG8B[n].pal = NULL;
 		NF_BG8B[n].data_size = 0;
@@ -327,9 +324,8 @@ void NF_Init8bitsBgBuffers(void) {
 }
 
 void NF_Reset8bitsBgBuffers(void) {
-	u8 n = 0;
 	// Libera la RAM usada
-	for (n = 0; n < NF_SLOTS_BG8B; n ++) {
+	for (int n = 0; n < NF_SLOTS_BG8B; n ++) {
 		free(NF_BG8B[n].data);
 		free(NF_BG8B[n].pal);
 	}

@@ -34,11 +34,8 @@ NF_TYPE_CREATED_3DSPRITE_INFO NF_CREATED_3DSPRITE;
 
 void NF_Init3dSpriteSys(void) {
 
-	// Variables locales
-	u16 n = 0;
-
 	// Inicializaciones
-	for (n = 0; n < NF_3DSPRITES; n ++) {
+	for (int n = 0; n < NF_3DSPRITES; n ++) {
 
 		// Inicializa las estructuras de control de los sprites
 		NF_3DSPRITE[n].x = 0;				// Coordenada X
@@ -92,13 +89,13 @@ void NF_Init3dSpriteSys(void) {
 	NF_TEXVRAM.deleted = 0;			// Ningun Gfx borrado
 	NF_TEXVRAM.fragmented = 0;		// Memoria VRAM fragmentada
 	NF_TEXVRAM.inarow = 131072;		// Memoria VRAM contigua
-	for (n = 0; n < NF_3DSPRITES; n ++) {
+	for (int n = 0; n < NF_3DSPRITES; n ++) {
 		NF_TEXVRAM.pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
 		NF_TEXVRAM.size[n] = 0;		// Tamaño del bloque libre para reusar
 	}
 
 	// Inicializa los datos de las paletas
-	for (n = 0; n < 32; n ++) {
+	for (int n = 0; n < 32; n ++) {
 		NF_TEXPALSLOT[n].inuse = false;
 		NF_TEXPALSLOT[n].ramslot = 0;
 	}

@@ -23,10 +23,8 @@ NF_TYPE_TEXT_INFO NF_TEXT[2][4];
 
 void NF_InitTextSys(u8 screen) {
 
-	u8 n = 0;
-
 	// Reinicia las variables
-	for (n = 0; n < 4; n ++) {
+	for (int n = 0; n < 4; n ++) {
 		NF_TEXT[screen][n].width = 0;		// Ancho del mapa de texto
 		NF_TEXT[screen][n].height = 0;		// Alto del mapa de texto
 		NF_TEXT[screen][n].rotation = 0;	// Rotacion a 0 (ninguna)
@@ -144,7 +142,6 @@ void NF_UnloadTextFont(const char* name) {
 
 void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name) {
 
-	u8 n = 0;			// Bucle
 	u8 slot = 255;		// Slot seleccionado
 	char bg[32];		// Nombre
 
@@ -153,7 +150,7 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 	// Busca el numero de slot donde esta cargada la fuente
 	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
+	for (int n = 0; n < NF_SLOTS_TBG; n ++) {			// Busca en todos los slots
 		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
 			slot = n;									// Guarda el slot a usar
 			n = NF_SLOTS_TBG;							// Deja de buscar

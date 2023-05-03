@@ -40,10 +40,8 @@ NF_TYPE_SPRVRAM_INFO NF_SPRVRAM[2];		// Informacion VRAM de Sprites en ambas pan
 
 void NF_InitSpriteBuffers(void) {
 
-	u16 n = 0;	// Variable comun
-
 	// Inicializa Buffers de GFX
-	for (n = 0; n < NF_SLOTS_SPR256GFX; n ++) {
+	for (int n = 0; n < NF_SLOTS_SPR256GFX; n ++) {
 		NF_BUFFER_SPR256GFX[n] = NULL;			// Inicializa puntero
 		NF_SPR256GFX[n].size = 0;				// Tamaño (en bytes) del grafico (GFX)
 		NF_SPR256GFX[n].width = 0;				// Ancho del Gfx
@@ -52,7 +50,7 @@ void NF_InitSpriteBuffers(void) {
 	}
 
 	// Inicializa Buffers de PAL
-	for (n = 0; n < NF_SLOTS_SPR256PAL; n ++) {
+	for (int n = 0; n < NF_SLOTS_SPR256PAL; n ++) {
 		NF_BUFFER_SPR256PAL[n] = NULL;		// Inicializa puntero
 		NF_SPR256PAL[n].size = 0;			// Tamaño (en bytes) de la paleta (PAL)
 		NF_SPR256PAL[n].available = true;	// Disponibilidat del Slot
@@ -62,15 +60,13 @@ void NF_InitSpriteBuffers(void) {
 
 void NF_ResetSpriteBuffers(void) {
 
-	u16 n = 0;	// Variable comun
-
 	// Borra los Buffers de GFX
-	for (n = 0; n < NF_SLOTS_SPR256GFX; n ++) {
+	for (int n = 0; n < NF_SLOTS_SPR256GFX; n ++) {
 		free(NF_BUFFER_SPR256GFX[n]);
 	}
 
 	// Borra los Buffers de PAL
-	for (n = 0; n < NF_SLOTS_SPR256PAL; n ++) {
+	for (int n = 0; n < NF_SLOTS_SPR256PAL; n ++) {
 		free(NF_BUFFER_SPR256PAL[n]);
 	}
 
@@ -781,11 +777,9 @@ void NF_DeleteSprite(u8 screen, u8 id) {
 
 void NF_SpriteOamSet(u8 screen) {
 
-	u8 n  = 0;	// Variable de uso general
-
 	if (screen == 0) {
 
-		for (n = 0; n < 128; n ++) {
+		for (int n = 0; n < 128; n ++) {
 			oamSet(&oamMain,							// OAM pantalla superior (Main, 0)
 				NF_SPRITEOAM[screen][n].index,			// Numero de Sprite
 				NF_SPRITEOAM[screen][n].x,				// Coordenada X del Sprite
@@ -805,7 +799,7 @@ void NF_SpriteOamSet(u8 screen) {
 
 	} else {
 
-		for (n = 0; n < 128; n ++) {
+		for (int n = 0; n < 128; n ++) {
 			oamSet(&oamSub,								// OAM pantalla superior (Main, 0)
 				NF_SPRITEOAM[screen][n].index,			// Numero de Sprite
 				NF_SPRITEOAM[screen][n].x,				// Coordenada X del Sprite

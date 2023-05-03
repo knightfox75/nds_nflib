@@ -127,7 +127,6 @@ void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height
 
 void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name) {
 
-	u8 n = 0;			// Bucle
 	u8 slot = 255;		// Slot seleccionado
 	char bg[32];		// Nombre
 
@@ -136,7 +135,7 @@ void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 	// Busca el numero de slot donde esta cargada la fuente
 	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
+	for (int n = 0; n < NF_SLOTS_TBG; n ++) {			// Busca en todos los slots
 		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
 			slot = n;									// Guarda el slot a usar
 			n = NF_SLOTS_TBG;							// Deja de buscar

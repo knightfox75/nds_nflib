@@ -39,9 +39,8 @@ u8 NF_MAPBLOCKS[2][NF_MAX_BANKS_MAPS];
 
 
 void NF_InitTiledBgBuffers(void) {
-	u8 n = 0;
 	// Buffers de fondos tileados
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {	// Inicializa todos los slots
+	for (int n = 0; n < NF_SLOTS_TBG; n ++) {	// Inicializa todos los slots
 		NF_BUFFER_BGTILES[n] = NULL;		// Buffer para los tiles
 		NF_BUFFER_BGMAP[n] = NULL;			// Buffer para el map
 		NF_BUFFER_BGPAL[n] = NULL;			// Buffer para la paleta
@@ -54,7 +53,7 @@ void NF_InitTiledBgBuffers(void) {
 		NF_TILEDBG[n].available = true;		// Disponibilidad
 	}
 	// Buffers de paletas extendidas
-	for (n = 0; n < NF_SLOTS_EXBGPAL; n ++) {
+	for (int n = 0; n < NF_SLOTS_EXBGPAL; n ++) {
 		NF_EXBGPAL[n].buffer = NULL;
 		NF_EXBGPAL[n].palsize = 0;
 		NF_EXBGPAL[n].inuse = false;
@@ -63,13 +62,13 @@ void NF_InitTiledBgBuffers(void) {
 }
 
 void NF_ResetTiledBgBuffers(void) {
-	u8 n = 0;
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {	// Inicializa todos los slots
+	// Inicializa todos los slots
+	for (int n = 0; n < NF_SLOTS_TBG; n ++) {
 		free(NF_BUFFER_BGTILES[n]);			// Vacia el Buffer para los tiles
 		free(NF_BUFFER_BGMAP[n]);			// Vacia Buffer para el map
 		free(NF_BUFFER_BGPAL[n]);			// Vacia Buffer para la paleta
 	}
-	for (n = 0; n < NF_SLOTS_EXBGPAL; n ++) {
+	for (int n = 0; n < NF_SLOTS_EXBGPAL; n ++) {
 		NF_EXBGPAL[n].buffer = NULL;
 	}
 	NF_InitTiledBgBuffers();				// Reinicia el resto de variables

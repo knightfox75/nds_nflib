@@ -24,10 +24,8 @@ NF_TYPE_RAWSOUND_INFO NF_RAWSOUND[NF_SLOTS_RAWSOUND];
 
 void NF_InitRawSoundBuffers(void) {
 
-	u8 n = 0;	// Variable comun
-
 	// Inicializa Buffers de sonido en RAW
-	for (n = 0; n < NF_SLOTS_RAWSOUND; n ++) {
+	for (int n = 0; n < NF_SLOTS_RAWSOUND; n ++) {
 		NF_BUFFER_RAWSOUND[n] = NULL;			// Inicializa puntero
 		NF_RAWSOUND[n].available = true;		// Disponibilidad del slot
 		NF_RAWSOUND[n].size = 0;				// Tamaño del archivo
@@ -38,10 +36,8 @@ void NF_InitRawSoundBuffers(void) {
 }
 
 void NF_ResetRawSoundBuffers(void) {
-	u8 n = 0;	// Variable comun
-
 	// Borra los datos de los buffers de sonido en RAW
-	for (n = 0; n < NF_SLOTS_RAWSOUND; n ++) {
+	for (int n = 0; n < NF_SLOTS_RAWSOUND; n ++) {
 		free(NF_BUFFER_RAWSOUND[n]);			// Borra el contenido puntero
 	}
 
