@@ -16,11 +16,6 @@
 #include "nf_sprite256.h"
 #include "nf_tiledbg.h"
 
-
-
-
-
-// Funcion NF_Set2D();
 void NF_Set2D(u8 screen, u8 mode) {
 
 	if (screen == 0) {		// Pantalla Superior
@@ -55,9 +50,6 @@ void NF_Set2D(u8 screen, u8 mode) {
 
 }
 
-
-
-// Funcion NF_ShowBg();
 void NF_ShowBg(u8 screen, u8 layer) {
 
 	if (screen == 0) {		// Pantalla Superior
@@ -98,9 +90,6 @@ void NF_ShowBg(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_HideBg();
 void NF_HideBg(u8 screen, u8 layer) {
 
 	if (screen == 0) {		// Pantalla Superior
@@ -141,9 +130,6 @@ void NF_HideBg(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_ScrollBg();
 void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y) {
 
 	// Variables temporales
@@ -294,9 +280,6 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y) {
 
 }
 
-
-
-// Funcion NF_MoveSprite();
 void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y) {
 
 	NF_SPRITEOAM[screen][id].x = x;		// Coordenada X
@@ -304,43 +287,29 @@ void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y) {
 
 }
 
-
-
-// Funcion NF_SpriteLayer();
 void NF_SpriteLayer(u8 screen, u8 id, u8 layer) {
 
 	NF_SPRITEOAM[screen][id].layer = layer;		// Capa sobre la que esta el sprite
 
 }
 
-
-
-// Funcion NF_ShowSprite();
 void NF_ShowSprite(u8 screen, u8 id, bool show) {
 
 	NF_SPRITEOAM[screen][id].hide = !show;		// Muestra o oculta el sprite
 
 }
 
-
-
-// Funcion NF_HflipSprite();
 void NF_HflipSprite(u8 screen, u8 id, bool hflip) {
 
 	NF_SPRITEOAM[screen][id].hflip = hflip;		// Volteado horizontal;
 
 }
 
-
-
-// Funcion NF_GetSpriteHflip();
 bool NF_GetSpriteHflip(u8 screen, u8 id) {
 	return NF_SPRITEOAM[screen][id].hflip;
 }
 
 
-
-// Funcion NF_VflipSprite();
 void NF_VflipSprite(u8 screen, u8 id, bool vflip) {
 
 	NF_SPRITEOAM[screen][id].vflip = vflip;		// Volteado vertical;
@@ -348,15 +317,10 @@ void NF_VflipSprite(u8 screen, u8 id, bool vflip) {
 }
 
 
-
-// Funcion NF_GetSpriteVflip();
 bool NF_GetSpriteVflip(u8 screen, u8 id) {
 	return NF_SPRITEOAM[screen][id].vflip;
 }
 
-
-
-// Funcion NF_SpriteFrame();
 void NF_SpriteFrame(u8 screen, u8 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites
@@ -405,9 +369,6 @@ void NF_SpriteFrame(u8 screen, u8 id, u16 frame) {
 
 }
 
-
-
-// Funcion NF_EnableSpriteRotScale();
 void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize) {
 
 	// Verifica el rango de Id's de Sprites
@@ -432,9 +393,6 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize) {
 
 }
 
-
-
-// Funcion NF_DisableSpriteRotScale();
 void NF_DisableSpriteRotScale(u8 screen, u8 sprite) {
 
 	// Verifica el rango de Id's de Sprites
@@ -454,9 +412,6 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite) {
 
 }
 
-
-
-// Funcion NF_SpriteRotScale();
 void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy) {
 
 	// Variables temporales

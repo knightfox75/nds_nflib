@@ -18,11 +18,6 @@
 #include "nf_text.h"
 #include "nf_tiledbg.h"
 
-
-
-
-
-// Funcion NF_LoadTextFont16();
 void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height, u8 rotation) {
 
 	// Variable temporal del tamaño de la paleta
@@ -130,11 +125,6 @@ void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height
 
 }
 
-
-
-
-
-// Funcion NF_CreateTextLayer16();
 void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 	u8 n = 0;			// Bucle
@@ -180,11 +170,6 @@ void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 }
 
-
-
-
-
-// Funcion NF_WriteText16();
 void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 
 	// Verifica si la capa de texto de destino existe
@@ -389,11 +374,6 @@ void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 
 }
 
-
-
-
-
-// Funcion NF_ClearTextLayer16();
 void NF_ClearTextLayer16(u8 screen, u8 layer) {
 
 	// Verifica si la capa de texto de destino existe

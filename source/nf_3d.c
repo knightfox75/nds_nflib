@@ -15,7 +15,6 @@
 #include "nf_3d.h"
 #include "nf_basic.h"
 
-// Funcion NF_Set3D();
 void NF_Set3D(u8 screen, u8 mode) {
 
 	// Especifica en que pantalla estara el main engine (unico que puede usar 3D)
@@ -40,9 +39,6 @@ void NF_Set3D(u8 screen, u8 mode) {
 
 }
 
-
-
-// Funcion NF_InitOpenGL();
 void NF_InitOpenGL(void) {
 
 	// Inicializa el OpenGL de Libnds
@@ -80,9 +76,6 @@ void NF_InitOpenGL(void) {
 
 }
 
-
-
-// Funcion NF_GetTextureSize();
 u16 NF_GetTextureSize(u16 textel) {
 
 	// Variables

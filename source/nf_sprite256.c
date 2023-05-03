@@ -17,8 +17,6 @@
 #include "nf_basic.h"
 #include "nf_sprite256.h"
 
-
-
 // Define los Buffers para almacenar los Sprites
 char* NF_BUFFER_SPR256GFX[NF_SLOTS_SPR256GFX];
 char* NF_BUFFER_SPR256PAL[NF_SLOTS_SPR256PAL];
@@ -40,10 +38,6 @@ NF_TYPE_SPRITEOAM_INFO NF_SPRITEOAM[2][128];		// 2 pantallas, 128 sprites
 NF_TYPE_SPRVRAM_INFO NF_SPRVRAM[2];		// Informacion VRAM de Sprites en ambas pantallas
 
 
-
-
-
-// Funcion NF_InitSpriteBuffers()
 void NF_InitSpriteBuffers(void) {
 
 	u16 n = 0;	// Variable comun
@@ -66,9 +60,6 @@ void NF_InitSpriteBuffers(void) {
 
 }
 
-
-
-// Funcion NF_ResetSpriteBuffers()
 void NF_ResetSpriteBuffers(void) {
 
 	u16 n = 0;	// Variable comun
@@ -88,9 +79,6 @@ void NF_ResetSpriteBuffers(void) {
 
 }
 
-
-
-// Funcion NF_InitSpriteSys();
 void NF_InitSpriteSys(int screen, ...) {
 
 	// Analiza los parametros variables de la funcion
@@ -195,9 +183,6 @@ void NF_InitSpriteSys(int screen, ...) {
 
 }
 
-
-
-// Funcion NF_LoadSpriteGfx();
 void NF_LoadSpriteGfx(const char *file, u16 id,  u16 width, u16 height) {
 
 	// Verifica el rango de Id's
@@ -249,9 +234,6 @@ void NF_LoadSpriteGfx(const char *file, u16 id,  u16 width, u16 height) {
 
 }
 
-
-
-// Funcion NF_UnloadSpriteGfx();
 void NF_UnloadSpriteGfx(u16 id) {
 
 	// Verifica el rango de Id's
@@ -276,9 +258,6 @@ void NF_UnloadSpriteGfx(u16 id) {
 
 }
 
-
-
-// Funcion NF_LoadSpritePal();
 void NF_LoadSpritePal(const char* file, u8 id) {
 
 	// Variable temporal del tamaño de la paleta
@@ -332,9 +311,6 @@ void NF_LoadSpritePal(const char* file, u8 id) {
 
 }
 
-
-
-// Funcion NF_UnloadSpritePal();
 void NF_UnloadSpritePal(u8 id) {
 
 	// Verifica el rango de Id's
@@ -357,9 +333,6 @@ void NF_UnloadSpritePal(u8 id) {
 
 }
 
-
-
-// Funcion NF_VramSpriteGfx();
 void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 
 	// Verifica el rango de Id's de RAM
@@ -506,9 +479,6 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes) {
 
 }
 
-
-
-// Funcion NF_FreeSpriteGfx();
 void NF_FreeSpriteGfx(u8 screen, u16 id) {
 
 	// Verifica si hay un grafico cargado en esa Id.
@@ -548,9 +518,6 @@ void NF_FreeSpriteGfx(u8 screen, u16 id) {
 
 }
 
-
-
-// Funcion NF_VramSpriteGfxDefrag();
 void NF_VramSpriteGfxDefrag(u8 screen) {
 
 	// Calcula la VRAM en uso y crea un buffer para guardarla
@@ -632,9 +599,6 @@ void NF_VramSpriteGfxDefrag(u8 screen) {
 
 }
 
-
-
-// Funcion NF_VramSpritePal();
 void NF_VramSpritePal(u8 screen, u8 id, u8 slot) {
 
 	// Verifica el rango de Id's
@@ -671,9 +635,6 @@ void NF_VramSpritePal(u8 screen, u8 id, u8 slot) {
 
 }
 
-
-
-// Funcion NF_CreateSprite();
 void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 
 	// Verifica el rango de Id's de Sprites
@@ -781,9 +742,6 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y) {
 
 }
 
-
-
-// Funcion NF_DeleteSprite();
 void NF_DeleteSprite(u8 screen, u8 id) {
 
 	// Verifica el rango de Id's de Sprites
@@ -821,9 +779,6 @@ void NF_DeleteSprite(u8 screen, u8 id) {
 
 }
 
-
-
-// Funcion NF_SpriteOamSet();
 void NF_SpriteOamSet(u8 screen) {
 
 	u8 n  = 0;	// Variable de uso general
@@ -872,9 +827,6 @@ void NF_SpriteOamSet(u8 screen) {
 
 }
 
-
-
-// Funcion NF_SpriteSetPalColor();
 void NF_SpriteSetPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 	// Verifica si esta la paleta en VRAM
@@ -902,9 +854,6 @@ void NF_SpriteSetPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Funcion NF_SpriteEditPalColor();
 void NF_SpriteEditPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 	// Verifica si esta la paleta en VRAM
@@ -925,9 +874,6 @@ void NF_SpriteEditPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Funcion 	NF_SpriteUpdatePalette();
 void NF_SpriteUpdatePalette(u8 screen, u8 pal) {
 
 	// Verifica si esta la paleta en VRAM
@@ -956,9 +902,6 @@ void NF_SpriteUpdatePalette(u8 screen, u8 pal) {
 
 }
 
-
-
-// Funcion NF_SpriteGetPalColor();
 void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8* r, u8* g, u8* b) {
 
 	// Verifica si esta la paleta en VRAM

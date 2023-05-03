@@ -21,8 +21,6 @@
 NF_TYPE_TEXT_INFO NF_TEXT[2][4];
 
 
-
-// Funcion NF_InitTextSys();
 void NF_InitTextSys(u8 screen) {
 
 	u8 n = 0;
@@ -40,9 +38,6 @@ void NF_InitTextSys(u8 screen) {
 
 }
 
-
-
-// Funcion NF_LoadTextFont();
 void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, u8 rotation) {
 
 	// Busca un slot libre
@@ -143,16 +138,10 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 
 }
 
-
-
-// Funcion NF_UnloadTestFont();
 void NF_UnloadTextFont(const char* name) {
 	NF_UnloadTiledBg(name);
 }
 
-
-
-// Funcion NF_CreateTextLayer();
 void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 	u8 n = 0;			// Bucle
@@ -186,9 +175,6 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name) {
 
 }
 
-
-
-// Funcion NF_DeleteTextLayer();
 void NF_DeleteTextLayer(u8 screen, u8 layer) {
 
 	// Verifica si la capa de texto de destino existe
@@ -211,9 +197,6 @@ void NF_DeleteTextLayer(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_WriteText();
 void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 
 	// Verifica si la capa de texto de destino existe
@@ -402,9 +385,6 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text) {
 
 }
 
-
-
-// Funcion NF_UpdateTextLayers();
 void NF_UpdateTextLayers(void) {
 
 	// Variables
@@ -424,9 +404,6 @@ void NF_UpdateTextLayers(void) {
 	}
 }
 
-
-
-// Funcion NF_ClearTextLayer();
 void NF_ClearTextLayer(u8 screen, u8 layer) {
 
 	// Verifica si la capa de texto de destino existe
@@ -445,9 +422,6 @@ void NF_ClearTextLayer(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_DefineTextColor();
 void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b) {
 
 	// Verifica si la capa de texto de destino existe
@@ -483,9 +457,6 @@ void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Function NF_SetTextColor();
 void NF_SetTextColor(u8 screen, u8 layer, u8 color) {
 
 	NF_TEXT[screen][layer].pal = color;

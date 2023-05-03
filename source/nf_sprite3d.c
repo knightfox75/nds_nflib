@@ -32,10 +32,6 @@ NF_TYPE_TEXVRAM_INFO NF_TEXVRAM;
 NF_TYPE_CREATED_3DSPRITE_INFO NF_CREATED_3DSPRITE;
 
 
-
-
-
-// Funcion NF_Init3dSpriteSys();
 void NF_Init3dSpriteSys(void) {
 
 	// Variables locales
@@ -126,9 +122,6 @@ void NF_Init3dSpriteSys(void) {
 
 }
 
-
-
-// Funcion NF_Vram3dSpriteGfx();
 void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 
 	// Verifica el rango de Id's de RAM
@@ -289,9 +282,6 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
 
 }
 
-
-
-// Funcion NF_Free3dSpriteGfx();
 void NF_Free3dSpriteGfx(u16 id) {
 
 	// Verifica si hay un grafico cargado en esa Id.
@@ -335,9 +325,6 @@ void NF_Free3dSpriteGfx(u16 id) {
 
 }
 
-
-
-// Funcion NF_Vram3dSpriteGfxDefrag();
 void NF_Vram3dSpriteGfxDefrag(void) {
 
 	// Bloquea el banco de VRAM (modo LCD) para permitir la escritura
@@ -423,9 +410,6 @@ void NF_Vram3dSpriteGfxDefrag(void) {
 
 }
 
-
-
-// Funcion NF_Vram3dSpritePal();
 void NF_Vram3dSpritePal(u8 id, u8 slot) {
 
 	// Verifica el rango de Id's
@@ -455,9 +439,6 @@ void NF_Vram3dSpritePal(u8 id, u8 slot) {
 
 }
 
-
-
-// Funcion NF_Create3dSprite();
 void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 
 	// Verifica el rango de Id's de Sprites
@@ -519,9 +500,6 @@ void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
 
 }
 
-
-
-// Funcion NF_Delete3dSprite();
 void NF_Delete3dSprite(u16 id) {
 
 	// Verifica el rango de Id's de Sprites
@@ -590,9 +568,6 @@ void NF_Delete3dSprite(u16 id) {
 
 }
 
-
-
-// Funcion NF_Sort3dSprites();
 void NF_Sort3dSprites(void) {
 
 	// Variables
@@ -625,9 +600,6 @@ void NF_Sort3dSprites(void) {
 
 }
 
-
-
-// Funcion NF_Set3dSpritePriority();
 void NF_Set3dSpritePriority(u16 id, u16 prio) {
 
 	// Variables
@@ -664,9 +636,6 @@ void NF_Set3dSpritePriority(u16 id, u16 prio) {
 
 }
 
-
-
-// Funcion NF_Swap3dSpritePriority();
 void NF_Swap3dSpritePriority(u16 id_a, u16 id_b) {
 
 	// Variables, obten las prioridades a cambiar
@@ -683,9 +652,6 @@ void NF_Swap3dSpritePriority(u16 id_a, u16 id_b) {
 
 }
 
-
-
-// Funcion NF_Move3dSprite();
 void NF_Move3dSprite(u16 id, s16 x, s16 y) {
 
 	// Actualiza las coordenadas del Sprite
@@ -694,9 +660,6 @@ void NF_Move3dSprite(u16 id, s16 x, s16 y) {
 
 }
 
-
-
-// Funcion NF_Show3dSprite();
 void NF_Show3dSprite(u16 id, bool show) {
 
 	// Actualiza el flag de visibilidad
@@ -704,9 +667,6 @@ void NF_Show3dSprite(u16 id, bool show) {
 
 }
 
-
-
-// Funcion NF_Set3dSpriteFrame();
 void NF_Set3dSpriteFrame(u16 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites
@@ -745,9 +705,6 @@ void NF_Set3dSpriteFrame(u16 id, u16 frame) {
 
 }
 
-
-
-// Funcion NF_Draw3dSprites();
 void NF_Draw3dSprites(void) {
 
 	// Variables
@@ -828,9 +785,6 @@ void NF_Draw3dSprites(void) {
 
 }
 
-
-
-// Funcion NF_Update3dSpritesGfx();
 void NF_Update3dSpritesGfx(void) {
 
 	// Variables
@@ -875,9 +829,6 @@ void NF_Update3dSpritesGfx(void) {
 
 }
 
-
-
-// Funcion NF_Rotate3dSprite();
 void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z) {
 
 	// Variables locales
@@ -925,9 +876,6 @@ void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z) {
 
 }
 
-
-
-// Funcion NF_Scale3dSprite();
 void NF_Scale3dSprite(u16 id, u16 x, u16 y) {
 
 	// Calcula la rotacion eje X
@@ -945,9 +893,6 @@ void NF_Scale3dSprite(u16 id, u16 x, u16 y) {
 
 }
 
-
-
-// Funcion NF_Blend3dSprite();
 void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha) {
 	// Si el nivel de alpha es opaco o el ID es 0...
 	if ((poly_id == 0) || (alpha == 31)) {
@@ -960,9 +905,6 @@ void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha) {
 	}
 }
 
-
-
-// Funcion NF_3dSpritesLayer();
 void NF_3dSpritesLayer(u8 layer) {
 
 	// Resetea los BITS de control de prioridad en todos los fondos
@@ -1007,9 +949,6 @@ void NF_3dSpritesLayer(u8 layer) {
 
 }
 
-
-
-// Funcion NF_3dSpriteEditPalColor();
 void NF_3dSpriteEditPalColor(u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 	// Verifica si esta la paleta en VRAM
@@ -1030,9 +969,6 @@ void NF_3dSpriteEditPalColor(u8 pal, u8 number, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Funcion 	NF_3dSpriteUpdatePalette();
 void NF_3dSpriteUpdatePalette(u8 pal) {
 
 	// Verifica si esta la paleta en VRAM
@@ -1051,9 +987,6 @@ void NF_3dSpriteUpdatePalette(u8 pal) {
 
 }
 
-
-
-// Funcion NF_3dSpriteGetPalColor();
 void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b) {
 
 	// Verifica si esta la paleta en VRAM
@@ -1075,8 +1008,6 @@ void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b) {
 
 }
 
-
-// Funcion NF_3dSpriteSetDepth();
 void NF_3dSpriteSetDepth(u8 id, s16 z) {
 
 	// Asigna la profundidad

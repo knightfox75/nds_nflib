@@ -18,10 +18,6 @@
 
 #include "nf_wifi.h"
 
-
-
-
-
 // Parametros de la RED
 struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
 
@@ -44,10 +40,6 @@ fd_set NF_READFDS;			// Estructura donde se almacenaran los datos de los sockets
 struct timeval NF_TIMEOUT;	// Almacena el valor del time out
 
 
-
-
-
-// Funcion NF_WiFiConnectDefaultAp();
 bool NF_WiFiConnectDefaultAp(void) {
 
 	// Variables locales
@@ -65,9 +57,6 @@ bool NF_WiFiConnectDefaultAp(void) {
 
 }
 
-
-
-// Funcion NF_WiFiDisconnectAp();
 void NF_WiFiDisconnectAp(void) {
 
 	// Desconectate del punto de acceso
@@ -77,9 +66,6 @@ void NF_WiFiDisconnectAp(void) {
 
 }
 
-
-
-// Function NF_WIFI_CreateUdpSender();
 bool NF_WIFI_CreateUdpSender(const char* address, u16 port) {
 
 	// Variables locales
@@ -113,9 +99,6 @@ bool NF_WIFI_CreateUdpSender(const char* address, u16 port) {
 
 }
 
-
-
-// Function NF_WIFI_CreateUdpListener();
 bool NF_WIFI_CreateUdpListener(u16 port) {
 
 	// Variables locales
@@ -150,9 +133,6 @@ bool NF_WIFI_CreateUdpListener(u16 port) {
 
 }
 
-
-
-// Funcion NF_WIFI_UdpSend();
 bool NF_WIFI_UdpSend(const char* data) {
 
 	// Borra el buffer de envio
@@ -175,9 +155,6 @@ bool NF_WIFI_UdpSend(const char* data) {
 
 }
 
-
-
-// Funcion NF_WIFI_UdpListen();
 s32 NF_WIFI_UdpListen(u32 timeout) {
 
 	s32 status = 0;

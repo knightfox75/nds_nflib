@@ -16,7 +16,6 @@
 #include "nf_bitmapbg.h"
 #include "nf_media.h"
 
-// Funcion NF_LoadBMP();
 void NF_LoadBMP(const char* file, u8 slot) {
 
 	// Buffers locales

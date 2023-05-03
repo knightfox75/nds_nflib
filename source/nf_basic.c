@@ -22,9 +22,6 @@
 // Define la variable global NF_ROOTFOLDER
 char NF_ROOTFOLDER[64];
 
-
-
-// Funcion NF_Error();
 void NF_Error(u16 code, const char* text, u32 value) {
 
 	consoleDemoInit();		// Inicializa la consola de texto
@@ -168,9 +165,6 @@ void NF_Error(u16 code, const char* text, u32 value) {
 
 }
 
-
-
-// Funcion NF_SetRootFolder();
 void NF_SetRootFolder(const char* folder) {
 
 	if (strcmp(folder, "NITROFS") == 0) {	// Si se debe iniciar el modo NitroFS y FAT
@@ -272,10 +266,6 @@ void NF_SetRootFolder(const char* folder) {
 	}
 }
 
-
-
-
-// Funcion NF_DmaMemCopy();
 void NF_DmaMemCopy(void* destination, const void* source, u32 size) {
 
 	// Funcion basada en la documentacion de Coranac
@@ -318,9 +308,6 @@ void NF_DmaMemCopy(void* destination, const void* source, u32 size) {
 
 }
 
-
-
-// Funcion NF_GetLanguage();
 u8 NF_GetLanguage(void) {
 
 	return PersonalData->language;

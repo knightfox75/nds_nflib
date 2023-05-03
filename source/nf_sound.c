@@ -15,10 +15,6 @@
 #include "nf_basic.h"
 #include "nf_sound.h"
 
-
-
-
-
 // Define los Buffers para almacenar los archivos de audio
 char* NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 
@@ -26,10 +22,6 @@ char* NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 NF_TYPE_RAWSOUND_INFO NF_RAWSOUND[NF_SLOTS_RAWSOUND];
 
 
-
-
-
-// Funcion NF_InitRawSoundBuffers();
 void NF_InitRawSoundBuffers(void) {
 
 	u8 n = 0;	// Variable comun
@@ -45,13 +37,7 @@ void NF_InitRawSoundBuffers(void) {
 
 }
 
-
-
-
-
-// Funcion NF_ResetRawSoundBuffers();
 void NF_ResetRawSoundBuffers(void) {
-
 	u8 n = 0;	// Variable comun
 
 	// Borra los datos de los buffers de sonido en RAW
@@ -64,11 +50,6 @@ void NF_ResetRawSoundBuffers(void) {
 
 }
 
-
-
-
-
-// Funcion NF_LoadRawSound();
 void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 
 	// Verifica el rango de Id's
@@ -123,11 +104,6 @@ void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format) {
 
 }
 
-
-
-
-
-// Funcion UnloadRawSound();
 void NF_UnloadRawSound(u8 id) {
 
 	// Verifica el rango de Id's
@@ -151,11 +127,6 @@ void NF_UnloadRawSound(u8 id) {
 
 }
 
-
-
-
-
-// Funcion NF_PlayRawSound();
 u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom) {
 
 	// Verifica el rango de Id's

@@ -29,12 +29,7 @@ NF_TYPE_BG8B_INFO NF_BG8B[NF_SLOTS_BG8B];	// Fondos indexados de 8 bits
 NF_TYPE_BB8B_INFO NF_8BITS_BACKBUFFER[2];
 
 
-
-
-
-// Funcion NF_Init16bitsBgBuffers();
 void NF_Init16bitsBgBuffers(void) {
-	// Variables locales
 	u8 n = 0;
 	for (n = 0; n < NF_SLOTS_BG16B; n ++) {
 		NF_BG16B[n].buffer = NULL;
@@ -45,11 +40,7 @@ void NF_Init16bitsBgBuffers(void) {
 	}
 }
 
-
-
-// Funcion NF_Reset16bitsBgBuffers();
 void NF_Reset16bitsBgBuffers(void) {
-	// Variables locales
 	u8 n = 0;
 	// Libera la RAM
 	for (n = 0; n < NF_SLOTS_BG16B; n ++) {
@@ -59,17 +50,12 @@ void NF_Reset16bitsBgBuffers(void) {
 	NF_Init16bitsBgBuffers();
 }
 
-
-
-// Funcion NF_Init16bitsBackBuffer();
 void NF_Init16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
 	NF_16BITS_BACKBUFFER[scr] = NULL;
 }
 
-
-// Funcion NF_Enable16bitsBackBuffer();
 void NF_Enable16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
@@ -82,9 +68,6 @@ void NF_Enable16bitsBackBuffer(u8 screen) {
 	if (NF_16BITS_BACKBUFFER[scr] == NULL) NF_Error(102, NULL, 131072);
 }
 
-
-
-// Funcion NF_Disble16bitsBackBuffer();
 void NF_Disble16bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
@@ -93,9 +76,6 @@ void NF_Disble16bitsBackBuffer(u8 screen) {
 	NF_16BITS_BACKBUFFER[scr] = NULL;
 }
 
-
-
-// Funcion NF_Flip16bitsBackBuffer();
 void NF_Flip16bitsBackBuffer(u8 screen) {
 	// Copia el contenido del Backbuffer a la VRAM
 	// de la pantalla solicitada
@@ -106,14 +86,10 @@ void NF_Flip16bitsBackBuffer(u8 screen) {
 	}
 }
 
-
-
-// Funcion NF_InitBitmapBgSys();
 void NF_InitBitmapBgSys(u8 screen, u8 mode) {
 
 	// Habilita la capa 3 de la pantalla indicada en modo BITMAP
 
-	// Variables locales
 	u8 n = 0;
 
 	// Inicializa la VRAM
@@ -184,25 +160,16 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode) {
 
 }
 
-
-
-// Funcion NF_Load16bitsBg();
 void NF_Load16bitsBg(const char* file, u8 slot) {
 	// Llama a la funcion de carga de datos de imagen de 16bits
 	NF_Load16bImgData(file, slot, 256, 256, 0);
 }
 
-
-
-// Funcion NF_Load16bitsImage();
 void NF_Load16bitsImage(const char* file, u8 slot, u16 size_x, u16 size_y) {
 	// Llama a la funcion de carga de datos de imagen de 16bits
 	NF_Load16bImgData(file, slot, size_x, size_y, 1);
 }
 
-
-
-// Funcion NF_Load16bImgData();
 void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type) {
 
 	// Verifica el rango de Id's
@@ -263,9 +230,6 @@ void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type) {
 
 }
 
-
-
-// Funcion NF_Unload16bitsBg();
 void NF_Unload16bitsBg(u8 slot) {
 
 	// Verifica si el buffer contiene datos
@@ -280,9 +244,6 @@ void NF_Unload16bitsBg(u8 slot) {
 
 }
 
-
-
-// Funcion NF_Copy16bitsBuffer();
 void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot) {
 
 	// Verifica si el buffer contiene datos
@@ -306,9 +267,6 @@ void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot) {
 
 }
 
-
-
-// Funcion NF_Draw16bitsImage();
 void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha) {
 
 	// Verifica si el buffer contiene datos
@@ -357,11 +315,7 @@ void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha) {
 
 }
 
-
-
-// Funcion NF_Init8bitsBgBuffers();
 void NF_Init8bitsBgBuffers(void) {
-	// Variables locales
 	u8 n = 0;
 	for (n = 0; n < NF_SLOTS_BG8B; n ++) {
 		NF_BG8B[n].data = NULL;
@@ -372,11 +326,7 @@ void NF_Init8bitsBgBuffers(void) {
 	}
 }
 
-
-
-// Funcion NF_Reset8bitsBgBuffers();
 void NF_Reset8bitsBgBuffers(void) {
-	// Variables locales
 	u8 n = 0;
 	// Libera la RAM usada
 	for (n = 0; n < NF_SLOTS_BG8B; n ++) {
@@ -387,8 +337,6 @@ void NF_Reset8bitsBgBuffers(void) {
 	NF_Init8bitsBgBuffers();
 }
 
-
-// Funcion NF_Load8bitsBg();
 void NF_Load8bitsBg(const char* file, u8 slot) {
 
 	// Verifica el rango de Id's
@@ -462,9 +410,6 @@ void NF_Load8bitsBg(const char* file, u8 slot) {
 
 }
 
-
-
-// Funcion NF_Unload8bitsBg();
 void NF_Unload8bitsBg(u8 slot) {
 
 	// Verifica si el buffer contiene datos
@@ -482,9 +427,6 @@ void NF_Unload8bitsBg(u8 slot) {
 
 }
 
-
-
-// Funcion NF_Copy8bitsBuffer();
 void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot) {
 
 	// Verifica si el buffer contiene datos
@@ -522,9 +464,6 @@ void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot) {
 
 }
 
-
-
-// Funcion NF_Init8bitsBackBuffer();
 void NF_Init8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
@@ -532,9 +471,6 @@ void NF_Init8bitsBackBuffer(u8 screen) {
 	NF_8BITS_BACKBUFFER[scr].pal = NULL;
 }
 
-
-
-// Funcion NF_Enable8bitsBackBuffer();
 void NF_Enable8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
@@ -551,9 +487,6 @@ void NF_Enable8bitsBackBuffer(u8 screen) {
 	if (NF_8BITS_BACKBUFFER[scr].pal == NULL) NF_Error(102, NULL, 512);
 }
 
-
-
-// Funcion NF_Disble8bitsBackBuffer();
 void NF_Disble8bitsBackBuffer(u8 screen) {
 	u8 scr = screen;
 	if (scr > 1) scr = 1;
@@ -564,9 +497,6 @@ void NF_Disble8bitsBackBuffer(u8 screen) {
 	NF_8BITS_BACKBUFFER[scr].pal = NULL;
 }
 
-
-
-// Funcion NF_Flip8bitsBackBuffer();
 void NF_Flip8bitsBackBuffer(u8 screen, u8 destination) {
 
 	// Copia el contenido del Backbuffer a la VRAM

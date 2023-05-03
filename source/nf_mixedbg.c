@@ -18,14 +18,8 @@
 #include "nf_mixedbg.h"
 #include "nf_tiledbg.h"
 
-
-
-
-
-// Funcion NF_InitMixedBgSys();
 void NF_InitMixedBgSys(u8 screen) {
 
-	// Variables
 	u8 n = 0;
 
 	// Define el numero de bancos de Mapas y Tiles

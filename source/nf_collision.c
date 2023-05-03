@@ -15,15 +15,10 @@
 #include "nf_basic.h"
 #include "nf_collision.h"
 
-
-
-
 // Define los buffers y estructuras de control de los mapas de colision
 NF_TYPE_CMAP_INFO NF_CMAP[NF_SLOTS_CMAP];
 
 
-
-// Funcion NF_InitCmapBuffers();
 void NF_InitCmapBuffers(void) {
 	u8 n = 0;
 	for (n = 0; n < NF_SLOTS_CMAP; n ++) {
@@ -37,9 +32,6 @@ void NF_InitCmapBuffers(void) {
 	}
 }
 
-
-
-// Funcion NF_ResetCmapBuffers();
 void NF_ResetCmapBuffers(void) {
 	u8 n = 0;
 	for (n = 0; n < NF_SLOTS_CMAP; n ++) {
@@ -49,9 +41,6 @@ void NF_ResetCmapBuffers(void) {
 	NF_InitCmapBuffers();			// Y reinicia todas las variables
 }
 
-
-
-// Funcion NF_LoadCollisionMap();
 void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
@@ -103,9 +92,6 @@ void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height) {
 
 }
 
-
-
-// Funcion NF_UnloadCollisionMap();
 void NF_UnloadCollisionMap(u8 id) {
 
 	// Verifica el rango de Id's
@@ -127,9 +113,6 @@ void NF_UnloadCollisionMap(u8 id) {
 
 }
 
-
-
-// Funcion NF_GetTile();
 u16 NF_GetTile(u8 slot, s32 x, s32 y) {
 
 	// Si la coordenada esta fuera de rango, devuelve 0
@@ -168,9 +151,6 @@ u16 NF_GetTile(u8 slot, s32 x, s32 y) {
 
 }
 
-
-
-// Funcion NF_SetTile();
 void NF_SetTile(u8 slot, s32 x, s32 y, u16 value) {
 
 	// Si la coordenada esta dentro del rango...
@@ -208,9 +188,6 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value) {
 
 }
 
-
-
-// Funcion NF_LoadCollisionBg();
 void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 	// Verifica el rango de Id's
@@ -284,9 +261,6 @@ void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height) {
 
 }
 
-
-
-// Funcion NF_UnloadCollisionBg();
 void NF_UnloadCollisionBg(u8 id) {
 
 	// Verifica el rango de Id's
@@ -310,9 +284,6 @@ void NF_UnloadCollisionBg(u8 id) {
 
 }
 
-
-
-// Funcion NF_GetPoint();
 u8 NF_GetPoint(u8 slot, s32 x, s32 y) {
 
 	// Si la coordenada esta fuera de rango, devuelve 0

@@ -17,7 +17,6 @@
 #include "nf_tiledbg.h"
 
 
-
 // Define los bancos de Mapas y Tiles
 u8 NF_BANKS_TILES[2];	// (1 banks = 16kb)	Cada banco de tiles puede alvergar 8 bancos de Mapas
 u8 NF_BANKS_MAPS[2];	// (1 bank = 2kb)	Usar multiplos de 8. Cada set de 8 bancos consume 1 banco de tiles
@@ -39,8 +38,6 @@ u8 NF_TILEBLOCKS[2][NF_MAX_BANKS_TILES];
 u8 NF_MAPBLOCKS[2][NF_MAX_BANKS_MAPS];
 
 
-
-// Funcion NF_InitTiledBgBuffers();
 void NF_InitTiledBgBuffers(void) {
 	u8 n = 0;
 	// Buffers de fondos tileados
@@ -65,9 +62,6 @@ void NF_InitTiledBgBuffers(void) {
 
 }
 
-
-
-// Funcion NF_ResetTiledBgBuffers();
 void NF_ResetTiledBgBuffers(void) {
 	u8 n = 0;
 	for (n = 0; n < NF_SLOTS_TBG; n ++) {	// Inicializa todos los slots
@@ -81,9 +75,6 @@ void NF_ResetTiledBgBuffers(void) {
 	NF_InitTiledBgBuffers();				// Reinicia el resto de variables
 }
 
-
-
-// Funcion NF_InitTiledBgSys();
 void NF_InitTiledBgSys(u8 screen) {
 
 	// Variables
@@ -155,9 +146,6 @@ void NF_InitTiledBgSys(u8 screen) {
 
 }
 
-
-
-// Funcion NF_LoadTiledBg();
 void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 
 	// Variable temporal del tamaño de la paleta
@@ -269,9 +257,6 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height) {
 
 }
 
-
-
-// Funcion NF_LoadTilesForBg();
 void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height, u16 tile_start, u16 tile_end) {
 
 	// Variable temporal del tamaño de los datos
@@ -385,9 +370,6 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 
 }
 
-
-
-// Funcion NF_UnloadTiledBg();
 void NF_UnloadTiledBg(const char* name) {
 
 	// Busca el fondo solicitado
@@ -427,9 +409,6 @@ void NF_UnloadTiledBg(const char* name) {
 
 }
 
-
-
-// Funcion NF_CreateTiledBg();
 void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 
 	// Variables
@@ -704,9 +683,6 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char* name) {
 
 }
 
-
-
-// Funcion NF_DeleteTiledBg();
 void NF_DeleteTiledBg(u8 screen, u8 layer) {
 
 	// Verifica que el fondo esta creado
@@ -795,9 +771,6 @@ void NF_DeleteTiledBg(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_GetTileMapAddress();
 u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 	// Verifica que el fondo esta creado
@@ -831,9 +804,6 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 }
 
-
-
-// Funcion NF_GetTileOfMap();
 u16 NF_GetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 	// Obten la direccion en el buffer del Tile
@@ -848,9 +818,6 @@ u16 NF_GetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 }
 
-
-
-// Funcion NF_SetTileOfMap();
 void NF_SetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u16 tile) {
 
 	// Obten la direccion en el buffer del Tile
@@ -866,9 +833,6 @@ void NF_SetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u16 tile) {
 
 }
 
-
-
-// Funcion NF_UpdateVramMap();
 void NF_UpdateVramMap(u8 screen, u8 layer) {
 
 	// Verifica que el fondo esta creado
@@ -930,10 +894,6 @@ void NF_UpdateVramMap(u8 screen, u8 layer) {
 
 }
 
-
-
-
-// Funcion NF_BgSetPalColor();
 void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 
 	// Verifica que el fondo esta creado
@@ -967,9 +927,6 @@ void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Funcion NF_BgEditPalColor();
 void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 
 	// Verifica que el fondo esta creado
@@ -992,9 +949,6 @@ void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b) {
 
 }
 
-
-
-// Funcion 	NF_BgUpdatePalette();
 void NF_BgUpdatePalette(u8 screen, u8 layer) {
 
 	// Verifica que el fondo esta creado
@@ -1029,9 +983,6 @@ void NF_BgUpdatePalette(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_BgGetPalColor();
 void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b) {
 
 	// Verifica que el fondo esta creado
@@ -1055,9 +1006,6 @@ void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b) {
 
 }
 
-
-
-// Funcion NF_GetTilePal();
 u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 	// Obten la direccion en el buffer del Tile
@@ -1071,9 +1019,6 @@ u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 }
 
-
-
-// Funcion NF_SetTilePal();
 void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal) {
 
 	// Obten la direccion en el buffer del Tile
@@ -1090,9 +1035,6 @@ void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal) {
 
 }
 
-
-
-// Funcion NF_LoadExBgPal();
 void NF_LoadExBgPal(const char* file, u8 slot) {
 
 	// Verifica el rango de Id's de Gfx
@@ -1141,9 +1083,6 @@ void NF_LoadExBgPal(const char* file, u8 slot) {
 
 }
 
-
-
-// Funcion NF_UnloadExBgPal();
 void NF_UnloadExBgPal(u8 slot) {
 
 	// Verifica el rango de Id's de Gfx
@@ -1168,9 +1107,6 @@ void NF_UnloadExBgPal(u8 slot) {
 
 }
 
-
-
-// Funcion NF_VramExBgPal();
 void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot) {
 
 	// Verifica el rango de Id's de Gfx
@@ -1199,9 +1135,6 @@ void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot) {
 
 }
 
-
-
-// Funcion NF_SetExBgPal();
 void NF_SetExBgPal(u8 screen, u8 layer, u8 pal) {
 
 	// Verifica el rango de Id's de Gfx
@@ -1237,9 +1170,6 @@ void NF_SetExBgPal(u8 screen, u8 layer, u8 pal) {
 
 }
 
-
-
-// Funcion NF_SetTileHflip();
 void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 	// Obten la direccion en el buffer del Tile
@@ -1256,9 +1186,6 @@ void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 }
 
-
-
-// Funcion NF_SetTileVflip();
 void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 	// Obten la direccion en el buffer del Tile
@@ -1275,11 +1202,6 @@ void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y) {
 
 }
 
-
-
-
-
-// Funcion NF_RotateTileGfx();
 void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation) {
 
 	// Buffers temporales

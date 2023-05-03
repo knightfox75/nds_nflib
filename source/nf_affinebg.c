@@ -20,14 +20,8 @@
 // Estructura para almacenar los parametros de los fondos Affine
 NF_TYPE_AFFINE_BG NF_AFFINE_BG[2][4];
 
-
-
-
-
-// Funcion NF_InitTiledBgSys();
 void NF_InitAffineBgSys(u8 screen) {
 
-	// Variables
 	u8 n = 0;
 
 	// Define los bancos de Mapas y Tiles
@@ -90,9 +84,6 @@ void NF_InitAffineBgSys(u8 screen) {
 
 }
 
-
-
-// Funcion NF_LoadAffineBg();
 void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) {
 
 	// Verifica si el fondo cumple las medidas correctas
@@ -213,18 +204,10 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 
 }
 
-
-
-// Funcion NF_UnloadAffineBg();
 void NF_UnloadAffineBg(const char* name) {
 	NF_UnloadTiledBg(name);
 }
 
-
-
-
-
-// Funcion NF_CreateAffineBg();
 void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 
 	// Variables
@@ -444,9 +427,6 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 
 }
 
-
-
-// Funcion NF_DeleteAffineBg();
 void NF_DeleteAffineBg(u8 screen, u8 layer) {
 
 	// Verifica que el fondo esta creado
@@ -516,9 +496,6 @@ void NF_DeleteAffineBg(u8 screen, u8 layer) {
 
 }
 
-
-
-// Funcion NF_AffineBgTransform();
 void NF_AffineBgTransform(u8 screen, u8 layer, s32 x_scale, s32 y_scale, s32 x_tilt, s32 y_tilt) {
 
 	if (screen == 0) {
@@ -561,11 +538,6 @@ void NF_AffineBgTransform(u8 screen, u8 layer, s32 x_scale, s32 y_scale, s32 x_t
 
 }
 
-
-
-
-
-// Funcion NF_AffineBgMove();
 void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle) {
 
 	// Funcion de rotacion basada en la original de Libnds
@@ -652,13 +624,9 @@ void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle) {
 
 }
 
-
-
-// Funcion NF_AffineBgCenter();
 void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y) {
 
 	NF_AFFINE_BG[screen][layer].x_center = x;
 	NF_AFFINE_BG[screen][layer].y_center = y;
 
 }
-
