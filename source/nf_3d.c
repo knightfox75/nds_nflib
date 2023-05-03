@@ -6,23 +6,14 @@
 // http://www.nightfoxandco.com/
 // Version 20140413
 
-
-
-// Includes devKitPro
-#include <nds.h>
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 
-// Includes propios
-#include "nf_basic.h"
-#include "nf_3d.h"
+#include <nds.h>
+
 #include "nf_2d.h"
-
-
-
-
+#include "nf_3d.h"
+#include "nf_basic.h"
 
 // Funcion NF_Set3D();
 void NF_Set3D(u8 screen, u8 mode) {

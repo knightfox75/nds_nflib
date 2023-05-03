@@ -6,28 +6,15 @@
 // http://www.nightfoxandco.com/
 // Version 20140413
 
-
-
-// Includes devKitPro
-#include <nds.h>
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 
-// Includes propios
-#include "nf_basic.h"
+#include <nds.h>
+
 #include "nf_3d.h"
-#include "nf_sprite3d.h"
+#include "nf_basic.h"
 #include "nf_sprite256.h"
-
-
-
-
-
-//////////////////////////////////
-// Defines y variables globales //
-//////////////////////////////////
+#include "nf_sprite3d.h"
 
 // Estructura de control de los sprites 3d
 NF_TYPE_3DSPRITE_INFO NF_3DSPRITE[NF_3DSPRITES];

@@ -11,18 +11,13 @@
 #define iprintf printf
 #endif
 
-// Includes devKitPro
-#include <nds.h>
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-// Includes propios
+#include <nds.h>
+
 #include "nf_basic.h"
-
-
 
 // Define la variable global NF_ROOTFOLDER
 char NF_ROOTFOLDER[64];

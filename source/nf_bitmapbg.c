@@ -6,22 +6,15 @@
 // http://www.nightfoxandco.com/
 // Version 20140413
 
-
-
-// Includes devKitPro
-#include <nds.h>
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-// Includes propios
-#include "nf_bitmapbg.h"
-#include "nf_basic.h"
+#include <nds.h>
+
 #include "nf_2d.h"
-
-
+#include "nf_basic.h"
+#include "nf_bitmapbg.h"
 
 // Define los Buffers para almacenar datos de 16 bits
 NF_TYPE_BG16B_INFO NF_BG16B[NF_SLOTS_BG16B];		// Fondos RAW de 16 bits

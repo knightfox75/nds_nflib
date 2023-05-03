@@ -6,24 +6,15 @@
 // http://www.nightfoxandco.com/
 // Version 20140413
 
-
-
-// Includes devKitPro
-#include <nds.h>
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-// Includes propios
-#include "nf_media.h"
-#include "nf_bitmapbg.h"
+#include <nds.h>
+
 #include "nf_basic.h"
-
-
-
-
+#include "nf_bitmapbg.h"
+#include "nf_media.h"
 
 // Funcion NF_LoadBMP();
 void NF_LoadBMP(const char* file, u8 slot) {

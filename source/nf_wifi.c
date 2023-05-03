@@ -6,19 +6,16 @@
 // http://www.nightfoxandco.com/
 // Version 20110502
 
+#include <netinet/in.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 #include <nds.h>
 #include <dswifi9.h>
 
-// Includes C
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-
-
-// Includes propios
 #include "nf_wifi.h"
 
 
