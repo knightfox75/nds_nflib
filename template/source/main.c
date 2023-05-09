@@ -52,15 +52,14 @@ int main(int argc, char **argv) {
 	consoleClear();			// Borra la pantalla
 	setBrightness(3, 0);	// Restaura el brillo
 
-	iprintf("\n Hello World!");
+	printf("\n Hello World!");
 
 	// Bucle (repite para siempre)
-	while(1) {
+	while (1) {
 
 		swiWaitForVBlank();		// Espera al sincronismo vertical
 
 	}
 
 	return 0;
-
 }
