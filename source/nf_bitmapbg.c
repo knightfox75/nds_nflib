@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Include de funciones de fondos en modo Bitmap
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #include <stdio.h>
 #include <string.h>

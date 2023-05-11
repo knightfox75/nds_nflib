@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Funciones de WI-FI
 // http://www.nightfoxandco.com/
-// Version 20110502
 
 #include <netinet/in.h>
 #include <stdio.h>

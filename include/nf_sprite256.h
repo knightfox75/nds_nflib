@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Include de Sprites a 256 colores
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #ifdef __cplusplus
 extern "C" {

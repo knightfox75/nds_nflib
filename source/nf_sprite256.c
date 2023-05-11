@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Funciones de Sprites a 256 colores
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #include <stdarg.h>
 #include <stdio.h>

@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Include de funciones de WI-FI
 // http://www.nightfoxandco.com/
-// Version 20110502
 
 #ifdef __cplusplus
 extern "C" {

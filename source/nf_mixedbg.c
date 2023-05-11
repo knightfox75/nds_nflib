@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Include de Fondos mixtos (Tiled / Bitmap 8 bits)
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #include <stdio.h>
 #include <string.h>

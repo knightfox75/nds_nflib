@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Include de Textos de 16 pixels
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #ifdef __cplusplus
 extern "C" {

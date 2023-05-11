@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Funciones de Fondos Affine
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #include <stdio.h>
 #include <string.h>

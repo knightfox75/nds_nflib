@@ -4,8 +4,6 @@
 //
 // NightFox LIB - Funciones basicas y de Debug
 // http://www.nightfoxandco.com/
-// Version
-
 
 #ifdef BLOCKSDS
 #define iprintf printf

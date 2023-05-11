@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Includes de Fondos Affine
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #ifdef __cplusplus
 extern "C" {

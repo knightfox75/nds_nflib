@@ -4,7 +4,6 @@
 //
 // NightFox LIB - Funciones de Colisiones
 // http://www.nightfoxandco.com/
-// Version 20140413
 
 #include <stdio.h>
 #include <string.h>
