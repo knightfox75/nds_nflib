@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_MEDIA_H__
-#define __NF_MEDIA_H__
+#ifndef NF_MEDIA_H__
+#define NF_MEDIA_H__
 
 #include <nds.h>
 
@@ -43,7 +43,7 @@ void NF_LoadBMP(const char *file, u8 slot);
 
 /// @}
 
-#endif
+#endif // NF_MEDIA_H__
 
 #ifdef __cplusplus
 }

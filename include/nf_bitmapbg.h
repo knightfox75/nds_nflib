@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_BITMAPBG_H__
-#define __NF_BITMAPBG_H__
+#ifndef NF_BITMAPBG_H__
+#define NF_BITMAPBG_H__
 
 #include <nds.h>
 
@@ -318,7 +318,7 @@ void NF_Flip8bitsBackBuffer(u8 screen, u8 destination);
 
 /// @}
 
-#endif
+#endif // NF_BITMAPBG_H__
 
 #ifdef __cplusplus
 }

@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_LIB_H__
-#define __NF_LIB_H__
+#ifndef NF_LIB_H__
+#define NF_LIB_H__
 
 #include <nf_2d.h>
 #include <nf_3d.h>
@@ -27,7 +27,7 @@ extern "C" {
 #include <nf_text.h>
 #include <nf_tiledbg.h>
 
-#endif
+#endif // NF_LIB_H__
 
 #ifdef __cplusplus
 }

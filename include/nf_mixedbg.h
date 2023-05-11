@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_MIXEDBG_H__
-#define __NF_MIXEDBG_H__
+#ifndef NF_MIXEDBG_H__
+#define NF_MIXEDBG_H__
 
 #include <nds.h>
 
@@ -35,7 +35,7 @@ void NF_InitMixedBgSys(u8 screen);
 
 /// @}
 
-#endif
+#endif // NF_MIXEDBG_H__
 
 #ifdef __cplusplus
 }

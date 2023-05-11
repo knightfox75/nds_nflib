@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_COLLISION_H__
-#define __NF_COLLISION_H__
+#ifndef NF_COLLISION_H__
+#define NF_COLLISION_H__
 
 #include <nds.h>
 
@@ -136,7 +136,7 @@ u8 NF_GetPoint(u8 slot, s32 x, s32 y);
 
 /// @}
 
-#endif
+#endif // NF_COLLISION_H__
 
 #ifdef __cplusplus
 }

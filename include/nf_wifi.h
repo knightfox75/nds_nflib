@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_WIFI_H__
-#define __NF_WIFI_H__
+#ifndef NF_WIFI_H__
+#define NF_WIFI_H__
 
 /// @file   nf_wifi.h
 /// @brief  Basic WiFi helpers
@@ -163,7 +163,7 @@ s32 NF_WIFI_UdpListen(u32 timeout);
 
 /// @}
 
-#endif
+#endif // NF_WIFI_H__
 
 #ifdef __cplusplus
 }

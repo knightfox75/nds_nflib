@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_SPRITE256_H__
-#define __NF_SPRITE256_H__
+#ifndef NF_SPRITE256_H__
+#define NF_SPRITE256_H__
 
 /// @file   nf_sprite256.h
 /// @brief  Functions related to 256 color sprites.
@@ -436,7 +436,7 @@ void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
 
 /// @}
 
-#endif
+#endif // NF_SPRITE256_H__
 
 #ifdef __cplusplus
 }

@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_TEXT16_H__
-#define __NF_TEXT16_H__
+#ifndef NF_TEXT16_H__
+#define NF_TEXT16_H__
 
 #include <nds.h>
 
@@ -127,7 +127,7 @@ void NF_ClearTextLayer16(u8 screen, u8 layer);
 
 /// @}
 
-#endif
+#endif // NF_TEXT16_H__
 
 #ifdef __cplusplus
 }

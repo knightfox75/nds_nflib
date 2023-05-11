@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_SOUND_H__
-#define __NF_SOUND_H__
+#ifndef NF_SOUND_H__
+#define NF_SOUND_H__
 
 #include <nds.h>
 
@@ -101,7 +101,7 @@ u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom);
 
 /// @}
 
-#endif
+#endif // NF_SOUND_H__
 
 #ifdef __cplusplus
 }

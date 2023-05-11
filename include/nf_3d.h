@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_3D_H__
-#define __NF_3D_H__
+#ifndef NF_3D_H__
+#define NF_3D_H__
 
 #include <nds.h>
 
@@ -59,7 +59,7 @@ u16 NF_GetTextureSize(u16 textel);
 
 /// @}
 
-#endif
+#endif // NF_3D_H__
 
 #ifdef __cplusplus
 }

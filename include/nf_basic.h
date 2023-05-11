@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_BASIC_H__
-#define __NF_BASIC_H__
+#ifndef NF_BASIC_H__
+#define NF_BASIC_H__
 
 /// @file   nf_basic.h
 /// @brief  General functions of NFLib
@@ -106,7 +106,7 @@ u8 NF_GetLanguage(void);
 
 /// @}
 
-#endif
+#endif // NF_BASIC_H__
 
 #ifdef __cplusplus
 }

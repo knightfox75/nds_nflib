@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_TILEDBG_H__
-#define __NF_TILEDBG_H__
+#ifndef NF_TILEDBG_H__
+#define NF_TILEDBG_H__
 
 /// @file   nf_tiledbg.h
 /// @brief  Functions related to regular tiled backgrounds.
@@ -548,7 +548,7 @@ void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation);
 
 /// @}
 
-#endif
+#endif // NF_TILEDBG_H__
 
 #ifdef __cplusplus
 }

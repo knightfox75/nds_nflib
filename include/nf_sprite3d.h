@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_SPRITE3D_H__
-#define __NF_SPRITE3D_H__
+#ifndef NF_SPRITE3D_H__
+#define NF_SPRITE3D_H__
 
 #include <nds.h>
 
@@ -412,7 +412,7 @@ void NF_3dSpriteSetDepth(u8 id, s16 z);
 
 /// @}
 
-#endif
+#endif // NF_SPRITE3D_H__
 
 #ifdef __cplusplus
 }

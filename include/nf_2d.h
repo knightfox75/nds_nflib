@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_2D_H__
-#define __NF_2D_H__
+#ifndef NF_2D_H__
+#define NF_2D_H__
 
 /// @file   nf_2d.h
 /// @brief  Functions to setup 2D video options.
@@ -254,7 +254,7 @@ void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy);
 
 /// @}
 
-#endif
+#endif // NF_2D_H__
 
 #ifdef __cplusplus
 }

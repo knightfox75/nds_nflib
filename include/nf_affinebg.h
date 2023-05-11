@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_AFFINEBG_H__
-#define __NF_AFFINEBG_H__
+#ifndef NF_AFFINEBG_H__
+#define NF_AFFINEBG_H__
 
 #include <nds.h>
 
@@ -174,7 +174,7 @@ void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y);
 
 /// @}
 
-#endif
+#endif // NF_AFFINEBG_H__
 
 #ifdef __cplusplus
 }

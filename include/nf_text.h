@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-#ifndef __NF_TEXT_H__
-#define __NF_TEXT_H__
+#ifndef NF_TEXT_H__
+#define NF_TEXT_H__
 
 #include <nds.h>
 
@@ -230,7 +230,7 @@ void NF_SetTextColor(u8 screen, u8 layer, u8 color);
 
 /// @}
 
-#endif
+#endif // NF_TEXT_H__
 
 #ifdef __cplusplus
 }
