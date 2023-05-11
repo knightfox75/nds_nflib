@@ -32,11 +32,11 @@ extern "C" {
 
 /// Struct that holds information about 16-bit bitmap backgrounds.
 typedef struct {
-	u16* buffer;	///< Data buffer
-	u32 size;		///< Size of the buffer
-	u16 width;		///< Width of the image (max 256 pixels)
-	u16 height;		///< Height of the image (max 256 pixels)
-	bool inuse;		///< True if the slot is in use
+    u16 *buffer;    ///< Data buffer
+    u32 size;       ///< Size of the buffer
+    u16 width;      ///< Width of the image (max 256 pixels)
+    u16 height;     ///< Height of the image (max 256 pixels)
+    bool inuse;     ///< True if the slot is in use
 } NF_TYPE_BG16B_INFO;
 
 /// Information of all 16-bit bitmap backgrounds
@@ -47,11 +47,11 @@ extern u16* NF_16BITS_BACKBUFFER[2];
 
 /// Struct that holds information about 8-bit bitmap backgrounds.
 typedef struct {
-	u8* data;			///< Data buffer
-	u32 data_size;		///< Data buffer size
-	u16* pal;			///< Palette buffer
-	u32 pal_size;		///< Palette buffer size
-	bool inuse;			///< True if the slot is in use
+    u8 *data;           ///< Data buffer
+    u32 data_size;      ///< Data buffer size
+    u16 *pal;           ///< Palette buffer
+    u32 pal_size;       ///< Palette buffer size
+    bool inuse;         ///< True if the slot is in use
 } NF_TYPE_BG8B_INFO;
 
 /// Information of all 8-bit bitmap backgrounds
@@ -59,8 +59,8 @@ extern NF_TYPE_BG8B_INFO NF_BG8B[NF_SLOTS_BG8B];
 
 /// Information of a backbuffer of 8 bit
 typedef struct {
-	u8* data;		///< Pointer to the bitmap
-	u16* pal;		///< Pointer to the bitmap palette
+    u8 *data;       ///< Pointer to the bitmap
+    u16 *pal;       ///< Pointer to the bitmap palette
 } NF_TYPE_BB8B_INFO;
 
 /// Backbuffer of 8 bit of each screen
@@ -143,7 +143,7 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode);
 ///
 /// @param file File name without extension.
 /// @param slot Slot number (0 - 15).
-void NF_Load16bitsBg(const char* file, u8 slot);
+void NF_Load16bitsBg(const char *file, u8 slot);
 
 /// Loads a 16 bits image into a RAM slot.
 ///
@@ -164,10 +164,10 @@ void NF_Load16bitsBg(const char* file, u8 slot);
 /// @param slot Slot number (0 - 15).
 /// @param size_x Width in pixels.
 /// @param size_y Height in pixels.
-void NF_Load16bitsImage(const char* file, u8 slot, u16 size_x, u16 size_y);
+void NF_Load16bitsImage(const char *file, u8 slot, u16 size_x, u16 size_y);
 
 // Internal use only. Generic loader of 16-bit data to RAM.
-void NF_Load16bImgData(const char* file, u8 slot, u16 x, u16 y, u8 type);
+void NF_Load16bImgData(const char *file, u8 slot, u16 x, u16 y, u8 type);
 
 /// Deletes from RAM the 16-bit image stored in the selected slot.
 ///
@@ -256,7 +256,7 @@ void NF_Reset8bitsBgBuffers(void);
 ///
 /// @param file File name without extension.
 /// @param slot Slot number (0 - 15).
-void NF_Load8bitsBg(const char* file, u8 slot);
+void NF_Load8bitsBg(const char *file, u8 slot);
 
 /// Deletes from RAM the 8-bit image stored in the selected slot.
 ///

@@ -28,14 +28,14 @@ extern "C" {
 #define NF_SLOTS_RAWSOUND 32
 
 /// Buffers of all loaded sound files
-extern char* NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
+extern char *NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 
 /// Struct that holds information about the loaded sound files
 typedef struct {
-	bool available;		///< True if this slot is available
-	u32 size;			///< Size of the sound effect in bytes
-	u16 freq;			///< Frecuency of the sample
-	u8 format;			///< Format of the sample
+    bool available;     ///< True if this slot is available
+    u32 size;           ///< Size of the sound effect in bytes
+    u16 freq;           ///< Frecuency of the sample
+    u8 format;          ///< Format of the sample
 } NF_TYPE_RAWSOUND_INFO;
 
 /// Information of all sound effects.
@@ -68,7 +68,7 @@ void NF_ResetRawSoundBuffers(void);
 /// @param id Destination slot number (0 - 31)
 /// @param freq Frequency of the sample in Hz (11025, 22050, etc)
 /// @param format Sample format (0 -> 8 bits, 1 -> 16 bits, 2 -> ADPCM).
-void NF_LoadRawSound(const char* file, u16 id,  u16 freq, u8 format);
+void NF_LoadRawSound(const char *file, u16 id,  u16 freq, u8 format);
 
 /// Deletes from RAM the sound file stored in the specified slot.
 ///

@@ -44,33 +44,33 @@ extern "C" {
 
 /// Struct that holds information about 3D sprites
 typedef struct {
-	s16 x;					///< X coordinate
-	s16 y;					///< Y coordinate
-	s16 z;					///< Z coordinate
-	s16 rx;					///< X axis rotation (-512 << 6 to 512 << 6)
-	s16 ry;					///< Y axis rotation (-512 << 6 to 512 << 6)
-	s16 rz;					///< Z axis rotation (-512 << 6 to 512 << 6)
-	bool rot;				///< True if the sprite is being rotated
-	u16 sx;					///< X scale (0 to 64 << 6 to more than 512 << 6)
-	u16 sy;					///< Y scale (0 to 64 << 6 to more than 512 << 6)
-	bool scale;				///< True if the sprite is being scaled
-	s16 width;				///< Sprite width
-	s16 height;				///< Sprite height
-	bool inuse;				///< True if the sprite is being used
-	bool show;				///< True if the sprite has to be drawn
-	u32 gfx_tex_format;		///< Texture format
-	u32 gfx;				///< Address of the texture in VRAM
-	u16 gfxid;				///< ID of the texture/graphics being used by the sprite
-	u16 frame;				///< Current frame
-	u16 newframe;			///< Next frame
-	u16 framesize;			///< Frame size in bytes
-	u16 lastframe;			///< Last frame
-	u32 gfx_pal_format;		///< Palette format
-	u32 pal;				///< Address of the palette in VRAM
-	u16 palid;				///< ID of the palette being used by the sprite
-	u16 prio;				///< Sprite priority (lower values are higher priorities)
-	u8 poly_id;				///< Polygon ID (0 by default, don't use 63)
-	u8 alpha;				///< Alpha value (0 - 31) (31 by default)
+    s16 x;                  ///< X coordinate
+    s16 y;                  ///< Y coordinate
+    s16 z;                  ///< Z coordinate
+    s16 rx;                 ///< X axis rotation (-512 << 6 to 512 << 6)
+    s16 ry;                 ///< Y axis rotation (-512 << 6 to 512 << 6)
+    s16 rz;                 ///< Z axis rotation (-512 << 6 to 512 << 6)
+    bool rot;               ///< True if the sprite is being rotated
+    u16 sx;                 ///< X scale (0 to 64 << 6 to more than 512 << 6)
+    u16 sy;                 ///< Y scale (0 to 64 << 6 to more than 512 << 6)
+    bool scale;             ///< True if the sprite is being scaled
+    s16 width;              ///< Sprite width
+    s16 height;             ///< Sprite height
+    bool inuse;             ///< True if the sprite is being used
+    bool show;              ///< True if the sprite has to be drawn
+    u32 gfx_tex_format;     ///< Texture format
+    u32 gfx;                ///< Address of the texture in VRAM
+    u16 gfxid;              ///< ID of the texture/graphics being used by the sprite
+    u16 frame;              ///< Current frame
+    u16 newframe;           ///< Next frame
+    u16 framesize;          ///< Frame size in bytes
+    u16 lastframe;          ///< Last frame
+    u32 gfx_pal_format;     ///< Palette format
+    u32 pal;                ///< Address of the palette in VRAM
+    u16 palid;              ///< ID of the palette being used by the sprite
+    u16 prio;               ///< Sprite priority (lower values are higher priorities)
+    u8 poly_id;             ///< Polygon ID (0 by default, don't use 63)
+    u8 alpha;               ///< Alpha value (0 - 31) (31 by default)
 } NF_TYPE_3DSPRITE_INFO;
 
 /// Information of all 3D sprites
@@ -78,15 +78,15 @@ extern NF_TYPE_3DSPRITE_INFO NF_3DSPRITE[NF_3DSPRITES];
 
 /// Struct that holds information about 3D sprite textures in VRAM
 typedef struct {
-	u32 size;			///< Size of the texture in bytes
-	u16 width;			///< Width
-	u16 height;			///< Height
-	u32 address;		///< Address in VRAM
-	u16 ramid;			///< RAM slot where it comes from
-	u16 framesize;		///< Frame size in bytes
-	u16 lastframe;		///< Last frame
-	bool keepframes;	///< For animated sprites, keep all frames in RAM
-	bool inuse;			///< True if this slot is in use
+    u32 size;               ///< Size of the texture in bytes
+    u16 width;              ///< Width
+    u16 height;             ///< Height
+    u32 address;            ///< Address in VRAM
+    u16 ramid;              ///< RAM slot where it comes from
+    u16 framesize;          ///< Frame size in bytes
+    u16 lastframe;          ///< Last frame
+    bool keepframes;        ///< For animated sprites, keep all frames in RAM
+    bool inuse;             ///< True if this slot is in use
 } NF_TYPE_TEX256VRAM_INFO;
 
 /// Information of all 3D sprite textures in VRAM
@@ -94,8 +94,8 @@ extern NF_TYPE_TEX256VRAM_INFO NF_TEX256VRAM[NF_3DSPRITES];
 
 /// Struct that holds information about 3D sprite palettes in VRAM
 typedef struct {
-	bool inuse;		///< True if this slot is in use
-	u8 ramslot;		///< Slot index of the original palette in RAM
+    bool inuse;     ///< True if this slot is in use
+    u8 ramslot;     ///< Slot index of the original palette in RAM
 } NF_TYPE_3DSPRPALSLOT_INFO;
 
 /// Information of all 3D sprite palettes in VRAM
@@ -103,14 +103,14 @@ extern NF_TYPE_3DSPRPALSLOT_INFO NF_TEXPALSLOT[32];
 
 /// Struct with information of 3D sprite allocation in VRAM
 typedef struct {
-	s32 free;					///< Free VRAM
-	u32 next;					///< Next free location
-	u32 last;					///< Last used location
-	u32 pos[NF_3DSPRITES];		///< Location in VRAM to reuse after a free
-	u32 size[NF_3DSPRITES];		///< Size of the block to reuse
-	u16 deleted;				///< Number of free'd blocks
-	s32 fragmented;				///< Fragmented VRAM
-	s32 inarow;					///< Contiguous VRAM
+    s32 free;                   ///< Free VRAM
+    u32 next;                   ///< Next free location
+    u32 last;                   ///< Last used location
+    u32 pos[NF_3DSPRITES];      ///< Location in VRAM to reuse after a free
+    u32 size[NF_3DSPRITES];     ///< Size of the block to reuse
+    u16 deleted;                ///< Number of free'd blocks
+    s32 fragmented;             ///< Fragmented VRAM
+    s32 inarow;                 ///< Contiguous VRAM
 } NF_TYPE_TEXVRAM_INFO;
 
 /// Information of 3D sprite allocation in VRAM
@@ -118,9 +118,9 @@ extern NF_TYPE_TEXVRAM_INFO NF_TEXVRAM;
 
 /// Struct with information about created 3D sprites
 typedef struct {
-	s16 total;					///< Total number of 3D sprites created
-	u16 id[NF_3DSPRITES];		///< Sprite IDs
-	u16 bck[NF_3DSPRITES];		///< Backup IDs
+    s16 total;                  ///< Total number of 3D sprites created
+    u16 id[NF_3DSPRITES];       ///< Sprite IDs
+    u16 bck[NF_3DSPRITES];      ///< Backup IDs
 } NF_TYPE_CREATED_3DSPRITE_INFO;
 
 /// Information of created 3D sprites
@@ -394,7 +394,7 @@ void NF_3dSpriteUpdatePalette(u8 pal);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b);
+void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
 
 /// Sets the depth of the selected 3D sprite.
 ///

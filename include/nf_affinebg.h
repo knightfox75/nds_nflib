@@ -27,15 +27,15 @@ extern "C" {
 
 /// Struct that holds information about affine tiled backgrounds.
 typedef struct {
-	s32 x;			///< X position
-	s32 y;			///< Y position
-	s32 x_center;	///< X center
-	s32 y_center;	///< Y center
-	s32 x_scale;	///< X zoom (PA)
-	s32 y_scale;	///< Y zoom (PD)
-	s32 x_tilt;		///< X shear (PB)
-	s32 y_tilt;		///< Y shear (PC)
-	s32 angle;		///< Rotation angle
+    s32 x;          ///< X position
+    s32 y;          ///< Y position
+    s32 x_center;   ///< X center
+    s32 y_center;   ///< Y center
+    s32 x_scale;    ///< X zoom (PA)
+    s32 y_scale;    ///< Y zoom (PD)
+    s32 x_tilt;     ///< X shear (PB)
+    s32 y_tilt;     ///< Y shear (PC)
+    s32 angle;      ///< Rotation angle
 } NF_TYPE_AFFINE_BG;
 
 /// Information of all affine backgrounds.
@@ -79,7 +79,7 @@ void NF_InitAffineBgSys(u8 screen);
 /// @param name Name used for the BG for other functions.
 /// @param width BG width.
 /// @param height BG height.
-void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height);
+void NF_LoadAffineBg(const char *file, const char *name, u16 width, u16 height);
 
 /// Deletes the specified affine background from RAM.
 ///
@@ -90,7 +90,7 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height);
 /// ```
 ///
 /// @param name Name of the background.
-void NF_UnloadAffineBg(const char* name);
+void NF_UnloadAffineBg(const char *name);
 
 /// Create an affine background in a layer using graphics preloaded in RAM.
 ///
@@ -107,7 +107,7 @@ void NF_UnloadAffineBg(const char* name);
 /// @param layer Layer (2 - 3).
 /// @param name Name of the background.
 /// @param wrap True to enable wrap around mode.
-void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap);
+void NF_CreateAffineBg(u8 screen, u8 layer, const char *name, u8 wrap);
 
 /// Deletes from VRAM the background of the specified screen and layer.
 ///

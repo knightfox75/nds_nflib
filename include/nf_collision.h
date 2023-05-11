@@ -34,15 +34,15 @@ extern "C" {
 
 /// Struct that holds collision map information
 typedef struct {
-	char* tiles;		///< Tileset data
-	char* map;			///< Map data
-	char* pal;			///< Palette data (TODO: Remove, it looks unused)
-	u32 tiles_size;		///< Size of the tileset
-	u32 map_size;		///< Size of the map
-	u32 pal_size;		///< Size of the palette (TODO: Remove, it looks unused)
-	u16 width;			///< Width of map in pixels
-	u16 height;			///< Height of map in pixels
-	bool inuse;			///< True if the slot is in use
+    char *tiles;        ///< Tileset data
+    char *map;          ///< Map data
+    char *pal;          ///< Palette data (TODO: Remove, it looks unused)
+    u32 tiles_size;     ///< Size of the tileset
+    u32 map_size;       ///< Size of the map
+    u32 pal_size;       ///< Size of the palette (TODO: Remove, it looks unused)
+    u16 width;          ///< Width of map in pixels
+    u16 height;         ///< Height of map in pixels
+    bool inuse;         ///< True if the slot is in use
 } NF_TYPE_CMAP_INFO;
 
 /// Information of all collision maps
@@ -73,7 +73,7 @@ void NF_ResetCmapBuffers(void);
 /// @param id Slot number (0 - 31)
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
-void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionMap(const char *file, u8 id, u16 width, u16 height);
 
 /// Unload from RAM the collision map at the specified slot.
 ///
@@ -112,7 +112,7 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value);
 /// @param id Slot number (0 - 31)
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
-void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionBg(const char *file, u8 id, u16 width, u16 height);
 
 /// Unload from RAM the collision background at the specified slot.
 ///

@@ -40,7 +40,7 @@ extern "C" {
 ///
 /// @param file File path.
 /// @param slot Slot number (0 - 15).
-void NF_LoadBMP(const char* file, u8 slot);
+void NF_LoadBMP(const char *file, u8 slot);
 
 /// @}
 

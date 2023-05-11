@@ -54,7 +54,7 @@ extern char NF_ROOTFOLDER[64];
 /// @param code Error code.
 /// @param text Description.
 /// @param value Additional info.
-void NF_Error(u16 code, const char* text, u32 value);
+void NF_Error(u16 code, const char *text, u32 value);
 
 /// Defines the root folder of your project (FAT or NitroFS).
 ///
@@ -74,7 +74,7 @@ void NF_Error(u16 code, const char* text, u32 value);
 /// ```
 ///
 /// @param folder
-void NF_SetRootFolder(const char* folder);
+void NF_SetRootFolder(const char *folder);
 
 /// Function copy blocks of memory from RAM to VRAM fast.
 ///
@@ -90,7 +90,7 @@ void NF_SetRootFolder(const char* folder);
 /// @param destination Destination pointer.
 /// @param source Source pointer.
 /// @param size Number of bytes to copy.
-void NF_DmaMemCopy(void* destination, const void* source, u32 size);
+void NF_DmaMemCopy(void *destination, const void *source, u32 size);
 
 /// Returns the language ID set by the user in the firmware.
 ///
@@ -103,7 +103,7 @@ void NF_DmaMemCopy(void* destination, const void* source, u32 size);
 /// 6 : Chinese
 ///
 /// @return The language ID.
-extern u8 NF_GetLanguage(void);
+u8 NF_GetLanguage(void);
 
 /// @}
 

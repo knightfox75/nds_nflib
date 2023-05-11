@@ -63,7 +63,7 @@ extern "C" {
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
 /// @param rotation Rotation (0 - 2)
-void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height, u8 rotation);
+void NF_LoadTextFont16(const char *file, const char *name, u16 width, u16 height, u8 rotation);
 
 /// Create a special tiled background to write text on it with a 8x16 font.
 ///
@@ -81,7 +81,7 @@ void NF_LoadTextFont16(const char* file, const char* name, u16 width, u16 height
 /// @param layer Background layer (0 - 3)
 /// @param rotation Rotation (0 - 2)
 /// @param name Font name
-void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name);
+void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char *name);
 
 /// Write text in a layer with a 8x16 font at the specified coordinates.
 ///
@@ -112,7 +112,7 @@ void NF_CreateTextLayer16(u8 screen, u8 layer, u8 rotation, const char* name);
 /// @param x X coordinate
 /// @param y Y coordinate
 /// @param text String to write to the screen
-void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char* text);
+void NF_WriteText16(u8 screen, u8 layer, u16 x, u16 y, const char *text);
 
 /// Clears the contents of a text layer with a 8x16 font filling it with zeroes.
 ///

@@ -32,13 +32,13 @@ extern "C" {
 
 /// Struct that holds text layer information
 typedef struct {
-	u16 width;		///< Rightmost tile of a row (for 32 columns this is 31)
-	u16 height;		///< Bottom-most tile of a column (for 24 rows this is 23)
-	u8 rotation;	///< Text rotation
-	u8 slot;		///< Slot where the tileset of this text layer is loaded
-	u8 pal;			///< Palette used for the text (0 by default)
-	bool exist;		///< True if this layer has been loaded
-	bool update;	///< True if this layer needs to be updated
+    u16 width;      ///< Rightmost tile of a row (for 32 columns this is 31)
+    u16 height;     ///< Bottom-most tile of a column (for 24 rows this is 23)
+    u8 rotation;    ///< Text rotation
+    u8 slot;        ///< Slot where the tileset of this text layer is loaded
+    u8 pal;         ///< Palette used for the text (0 by default)
+    bool exist;     ///< True if this layer has been loaded
+    bool update;    ///< True if this layer needs to be updated
 } NF_TYPE_TEXT_INFO;
 
 /// Information of all text layers.
@@ -93,7 +93,7 @@ void NF_InitTextSys(u8 screen);
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
 /// @param rotation Rotation (0 - 2)
-void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, u8 rotation);
+void NF_LoadTextFont(const char *file, const char *name, u16 width, u16 height, u8 rotation);
 
 /// Delete from RAM the font with the specified name.
 ///
@@ -104,7 +104,7 @@ void NF_LoadTextFont(const char* file, const char* name, u16 width, u16 height, 
 /// ```
 ///
 /// @param name Font name
-void NF_UnloadTextFont(const char* name);
+void NF_UnloadTextFont(const char *name);
 
 /// Create a special tiled background to write text on it.
 ///
@@ -122,7 +122,7 @@ void NF_UnloadTextFont(const char* name);
 /// @param layer Background layer (0 - 3)
 /// @param rotation Rotation (0 - 2)
 /// @param name Font name
-void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char* name);
+void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name);
 
 /// Delete a text layer.
 ///
@@ -167,7 +167,7 @@ void NF_DeleteTextLayer(u8 screen, u8 layer);
 /// @param x X coordinate
 /// @param y Y coordinate
 /// @param text String to write to the screen
-void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char* text);
+void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text);
 
 /// Copy the temporary text buffers of both screens to VRAM.
 ///

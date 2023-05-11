@@ -31,17 +31,17 @@ extern "C" {
 #define NF_SLOTS_SPR256PAL 64
 
 /// Buffers to hold 256 color sprite graphics
-extern char* NF_BUFFER_SPR256GFX[NF_SLOTS_SPR256GFX];
+extern char *NF_BUFFER_SPR256GFX[NF_SLOTS_SPR256GFX];
 
 /// Buffers to hold 256 color sprite palettes
-extern char* NF_BUFFER_SPR256PAL[NF_SLOTS_SPR256PAL];
+extern char *NF_BUFFER_SPR256PAL[NF_SLOTS_SPR256PAL];
 
 /// Struct that holds information about sprite graphics in RAM
 typedef struct {
-	u32 size;			///< Size in bytes of the graphics data
-	u16 width;			///< Width of graphics data
-	u16 height;			///< Height of graphics data
-	bool available;		///< True if this slot is free, false otherwise
+    u32 size;           ///< Size in bytes of the graphics data
+    u16 width;          ///< Width of graphics data
+    u16 height;         ///< Height of graphics data
+    bool available;     ///< True if this slot is free, false otherwise
 } NF_TYPE_SPR256GFX_INFO;
 
 /// Information of all sprite graphics in RAM
@@ -49,8 +49,8 @@ extern NF_TYPE_SPR256GFX_INFO NF_SPR256GFX[NF_SLOTS_SPR256GFX];
 
 /// Struct that holds information about sprite palettes in RAM
 typedef struct {
-	u32 size;			///< Size in bytes of the palette
-	bool available;		///< True if this slot is free, false otherwise
+    u32 size;           ///< Size in bytes of the palette
+    bool available;     ///< True if this slot is free, false otherwise
 } NF_TYPE_SPR256PAL_INFO;
 
 /// Information of all palettes in RAM
@@ -58,15 +58,15 @@ extern NF_TYPE_SPR256PAL_INFO NF_SPR256PAL[NF_SLOTS_SPR256PAL];
 
 /// Struct that holds information about sprite graphics in VRAM
 typedef struct {
-	u32 size;			///< Size in bytes of the graphics data
-	u16 width;			///< Width of graphics data
-	u16 height;			///< Height of graphics data
-	u32 address;		///< Address of the graphics in VRAM
-	u16 ramid;			///< RAM slot with the original copy of the graphics
-	u16 framesize;		///< Size of a frame in bytes
-	u16 lastframe;		///< Last frame index
-	bool keepframes;	///< For animated sprites, keep all frames in RAM
-	bool inuse;			///< True if this slot is in use
+    u32 size;           ///< Size in bytes of the graphics data
+    u16 width;          ///< Width of graphics data
+    u16 height;         ///< Height of graphics data
+    u32 address;        ///< Address of the graphics in VRAM
+    u16 ramid;          ///< RAM slot with the original copy of the graphics
+    u16 framesize;      ///< Size of a frame in bytes
+    u16 lastframe;      ///< Last frame index
+    bool keepframes;    ///< For animated sprites, keep all frames in RAM
+    bool inuse;         ///< True if this slot is in use
 } NF_TYPE_SPR256VRAM_INFO;
 
 /// Information of all sprite graphics in VRAM
@@ -74,8 +74,8 @@ extern NF_TYPE_SPR256VRAM_INFO NF_SPR256VRAM[2][128];
 
 /// Struct that holds information about sprite palettes in VRAM
 typedef struct {
-	bool inuse;		///< True if this slot is in use
-	u8 ramslot;		///< Slot index of the original palette in RAM
+    bool inuse;         ///< True if this slot is in use
+    u8 ramslot;         ///< Slot index of the original palette in RAM
 } NF_TYPE_SPRPALSLOT_INFO;
 
 /// Information of all palettes in VRAM
@@ -83,25 +83,25 @@ extern NF_TYPE_SPRPALSLOT_INFO NF_SPRPALSLOT[2][16];
 
 /// Struct that defines OAM information
 typedef struct {
-	u8 index;			///< Sprite number
-	s16 x;				///< X coordinate
-	s16 y;				///< Y coordinate
-	u8 layer;			///< Layer priority
-	u8 pal;				///< Palette index
-	u32 size;			///< Sprite of the sprite (macro)
-	u32 color;			///< Color mode (macro)
-	u32* gfx;			///< Pointer to the graphics data
-	s8 rot;				///< Rotation matrix index (0 - 31, -1 = none)
-	bool doublesize;	///< Enable double size mode when rotating
-	bool hide;			///< Hide the sprite
-	bool vflip;			///< Vertical flip
-	bool hflip;			///< Horizontal flip
-	bool mosaic;		///< Enable mosaic effect
-	u16 gfxid;			///< Graphics object ID
-	u16 frame;			///< Current frame
-	u16 framesize;		///< Size of the frame in bytes
-	u16 lastframe;		///< Last frame
-	bool created;		///< True if this sprite has been created
+    u8 index;           ///< Sprite number
+    s16 x;              ///< X coordinate
+    s16 y;              ///< Y coordinate
+    u8 layer;           ///< Layer priority
+    u8 pal;             ///< Palette index
+    u32 size;           ///< Sprite of the sprite (macro)
+    u32 color;          ///< Color mode (macro)
+    u32 *gfx;           ///< Pointer to the graphics data
+    s8 rot;             ///< Rotation matrix index (0 - 31, -1 = none)
+    bool doublesize;    ///< Enable double size mode when rotating
+    bool hide;          ///< Hide the sprite
+    bool vflip;         ///< Vertical flip
+    bool hflip;         ///< Horizontal flip
+    bool mosaic;        ///< Enable mosaic effect
+    u16 gfxid;          ///< Graphics object ID
+    u16 frame;          ///< Current frame
+    u16 framesize;      ///< Size of the frame in bytes
+    u16 lastframe;      ///< Last frame
+    bool created;       ///< True if this sprite has been created
 } NF_TYPE_SPRITEOAM_INFO;
 
 /// OAM information of all sprites
@@ -109,15 +109,15 @@ extern NF_TYPE_SPRITEOAM_INFO NF_SPRITEOAM[2][128];
 
 /// Struct with information of sprite allocation in VRAM
 typedef struct {
-	s32 free;			///< Free VRAM
-	u32 next;			///< Next free location
-	u32 last;			///< Last used location
-	u32 pos[128];		///< Location in VRAM to reuse after a free
-	u32 size[128];		///< Size of the block to reuse
-	u16 deleted;		///< Number of free'd blocks
-	s32 fragmented;		///< Fragmented VRAM
-	s32 inarow;			///< Contiguous VRAM
-	s32 max;			///< Maxmimum addressable VRAM
+    s32 free;           ///< Free VRAM
+    u32 next;           ///< Next free location
+    u32 last;           ///< Last used location
+    u32 pos[128];       ///< Location in VRAM to reuse after a free
+    u32 size[128];      ///< Size of the block to reuse
+    u16 deleted;        ///< Number of free'd blocks
+    s32 fragmented;     ///< Fragmented VRAM
+    s32 inarow;         ///< Contiguous VRAM
+    s32 max;            ///< Maxmimum addressable VRAM
 } NF_TYPE_SPRVRAM_INFO;
 
 /// Information of sprite allocation in VRAM of both screens
@@ -196,7 +196,7 @@ void NF_InitSpriteSys(int screen, ...);
 /// @param id Slot number (0 - 255).
 /// @param width Width of the graphics object (in pixels).
 /// @param height Height of the graphics object (in pixels).
-void NF_LoadSpriteGfx(const char* file, u16 id, u16 width, u16 height);
+void NF_LoadSpriteGfx(const char *file, u16 id, u16 width, u16 height);
 
 /// Delete from RAM the graphics of the selected slot and mark it as free.
 ///
@@ -230,7 +230,7 @@ void NF_UnloadSpriteGfx(u16 id);
 ///
 /// @param file File name without extension.
 /// @param id Slot number (0 - 63).
-void NF_LoadSpritePal(const char* file, u8 id);
+void NF_LoadSpritePal(const char *file, u8 id);
 
 /// Delete the selected palette from RAM and mark it as free.
 ///
@@ -433,7 +433,7 @@ void NF_SpriteUpdatePalette(u8 screen, u8 pal);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8* r, u8* g, u8* b);
+void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
 
 /// @}
 

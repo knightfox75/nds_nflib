@@ -110,7 +110,7 @@ void NF_WiFiDisconnectAp(void);
 /// @param address IP address.
 /// @param port Port.
 /// @return True if it has been created successfully
-bool NF_WIFI_CreateUdpSender(const char* address, u16 port);
+bool NF_WIFI_CreateUdpSender(const char *address, u16 port);
 
 /// Creates a socket in server mode using UDP.
 ///
@@ -142,7 +142,7 @@ bool NF_WIFI_CreateUdpListener(u16 port);
 ///
 /// @param data Text string to be sent.
 /// @return True on success.
-bool NF_WIFI_UdpSend(const char* data);
+bool NF_WIFI_UdpSend(const char *data);
 
 /// Listens to data from the currently open socket.
 ///

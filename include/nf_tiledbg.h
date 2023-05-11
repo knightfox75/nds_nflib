@@ -49,23 +49,23 @@ extern u8 NF_BANKS_TILES[2];
 extern u8 NF_BANKS_MAPS[2];
 
 /// Buffers to hold background tiles.
-extern char* NF_BUFFER_BGTILES[NF_SLOTS_TBG];
+extern char *NF_BUFFER_BGTILES[NF_SLOTS_TBG];
 
 /// Buffers to hold background maps.
-extern char* NF_BUFFER_BGMAP[NF_SLOTS_TBG];
+extern char *NF_BUFFER_BGMAP[NF_SLOTS_TBG];
 
 /// Buffers to hold background palettes.
-extern char* NF_BUFFER_BGPAL[NF_SLOTS_TBG];
+extern char *NF_BUFFER_BGPAL[NF_SLOTS_TBG];
 
 /// Struct that holds information about regular tiled backgrounds.
 typedef struct {
-	char name[32];		///< Background name
-	u32 tilesize;		///< Tileset size
-	u32 mapsize;		///< Map size
-	u32 palsize;		///< Palette size
-	u16 width;			///< Background width
-	u16 height;			///< Background height
-	bool available;		///< If the background is available it is true.
+    char name[32];      ///< Background name
+    u32 tilesize;       ///< Tileset size
+    u32 mapsize;        ///< Map size
+    u32 palsize;        ///< Palette size
+    u16 width;          ///< Background width
+    u16 height;         ///< Background height
+    bool available;     ///< If the background is available it is true.
 } NF_TYPE_TBG_INFO;
 
 /// Information of all tiled backgrounds.
@@ -73,9 +73,9 @@ extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];
 
 /// Struct that holds information about extended palettes.
 typedef struct {
-	char* buffer;	///< Buffer that holds the palette
-	u32 palsize;	///< Palette size
-	bool inuse;		///< True if the slot is in use.
+    char *buffer;   ///< Buffer that holds the palette
+    u32 palsize;    ///< Palette size
+    bool inuse;     ///< True if the slot is in use.
 } NF_TYPE_EXBGPAL_INFO;
 
 /// Information of all extended palettes.
@@ -94,19 +94,19 @@ extern NF_TYPE_EXBGPAL_INFO NF_EXBGPAL[NF_SLOTS_EXBGPAL];
 /// - 2: 256 x Largen than 512
 /// - 3: Both dimensions are larger than 512
 typedef struct {
-	u8 tilebase;		///< Initial VRAM block used by the tile set
-	u8 tileblocks;		///< Number of blocks used by the tile set
-	u8 mapbase;			///< Initial VRAM block used by the map
-	u8 mapblocks;		///< Number of blocks used by the map
-	u16 bgwidth;		///< Background width
-	u16 bgheight;		///< Background height
-	u16 mapwidth;		///< Map width
-	u16 mapheight;		///< Map height
-	u8 bgtype;			///< Background type
-	u8 bgslot;			///< Graphics buffer used (NF_BUFFER_BGMAP)
-	u8 blockx;			///< Map block (horizontal)
-	u8 blocky;			///< Map block (vertical)
-	bool created;		///< True if the background has been created
+    u8 tilebase;        ///< Initial VRAM block used by the tile set
+    u8 tileblocks;      ///< Number of blocks used by the tile set
+    u8 mapbase;         ///< Initial VRAM block used by the map
+    u8 mapblocks;       ///< Number of blocks used by the map
+    u16 bgwidth;        ///< Background width
+    u16 bgheight;       ///< Background height
+    u16 mapwidth;       ///< Map width
+    u16 mapheight;      ///< Map height
+    u8 bgtype;          ///< Background type
+    u8 bgslot;          ///< Graphics buffer used (NF_BUFFER_BGMAP)
+    u8 blockx;          ///< Map block (horizontal)
+    u8 blocky;          ///< Map block (vertical)
+    bool created;       ///< True if the background has been created
 } NF_TYPE_TBGLAYERS_INFO;
 
 /// Information of all backgrounds loaded to the screen
@@ -195,7 +195,7 @@ void NF_InitTiledBgSys(u8 screen);
 /// @param name Name used for the BG for other functions.
 /// @param width BG width.
 /// @param height BG height.
-void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height);
+void NF_LoadTiledBg(const char *file, const char *name, u16 width, u16 height);
 
 /// Load a tilesed and palette from FAT to RAM.
 ///
@@ -218,7 +218,8 @@ void NF_LoadTiledBg(const char* file, const char* name, u16 width, u16 height);
 /// @param height Height of the BG in pixels.
 /// @param tile_start First tile to load.
 /// @param tile_end Last tile to load.
-void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height, u16 tile_start, u16 tile_end);
+void NF_LoadTilesForBg(const char *file, const char *name, u16 width, u16 height,
+                       u16 tile_start, u16 tile_end);
 
 /// Delete from RAM the BG with the specified name.
 ///
@@ -234,7 +235,7 @@ void NF_LoadTilesForBg(const char* file, const char* name, u16 width, u16 height
 /// ```
 ///
 /// @param name Name used for the BG.
-void NF_UnloadTiledBg(const char* name);
+void NF_UnloadTiledBg(const char *name);
 
 /// Create a BG on the screen, using data loaded in RAM.
 ///
@@ -251,7 +252,7 @@ void NF_UnloadTiledBg(const char* name);
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
 /// @param name Name used for the BG.
-void NF_CreateTiledBg(u8 screen, u8 layer, const char* name);
+void NF_CreateTiledBg(u8 screen, u8 layer, const char *name);
 
 /// Delete the BG of the specified screen and layer.
 ///
@@ -397,7 +398,7 @@ void NF_BgUpdatePalette(u8 screen, u8 layer);
 /// @param r Red component result (0 - 31).
 /// @param g Green component result (0 - 31).
 /// @param b Blue component result (0 - 31).
-void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8* r, u8* g, u8* b);
+void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8 *r, u8 *g, u8 *b);
 
 /// Returns the number of extended palette used by specified tile.
 ///
@@ -448,7 +449,7 @@ void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
 ///
 /// @param file File (.pal extension).
 /// @param slot RAM slot (0 - 127)
-void NF_LoadExBgPal(const char* file, u8 slot);
+void NF_LoadExBgPal(const char *file, u8 slot);
 
 /// Deletes a loaded palette from RAM.
 ///
