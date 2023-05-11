@@ -27,6 +27,19 @@ extern "C" {
 #include <nf_text.h>
 #include <nf_tiledbg.h>
 
+/// Major version of NightFox's Lib
+#define NF_LIB_MAJOR (1)
+/// Minor version of NightFox's Lib
+#define NF_LIB_MINOR (0)
+/// Patch version of NightFox's Lib
+#define NF_LIB_PATCH (0)
+
+/// Full version of NightFox's Lib
+#define NF_LIB_VERSION ((NF_LIB_MAJOR << 16) | (NF_LIB_MINOR << 8) | (NF_LIB_PATCH))
+
+/// String with the version of NightFox's Lib
+#define NF_LIB_VERSION_STRING "1.0.0"
+
 #endif // NF_LIB_H__
 
 #ifdef __cplusplus
