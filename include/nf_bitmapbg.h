@@ -129,7 +129,7 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode);
 /// You can convert the file using this GRIT command line:
 ///
 /// ```
-/// grit file.png -gb -gB16 -ftb
+/// grit file.png -ftb -fh! -gb -gB16
 /// ```
 ///
 /// You can load as many files as defined in NF_SLOTS_BG16B.
@@ -234,12 +234,13 @@ void NF_Reset8bitsBgBuffers(void);
 /// You can convert the file using this GRIT command line:
 ///
 /// ```
-/// grit file.png -gb -gB8 -ftb
+/// grit file.png -ftb -fh! -gb -gB8
 /// ```
 ///
 /// If you want to share the palette with a different background:
 /// ```
-/// grit file.png -gb -gu8 -gB8 -pu16 -pS -ftb -fh! -Omypal.pal -gTFF00FF
+/// grit file1.png file2.png -ftb -fh! -gb -gu8 -gB8 -pu16 -pS -Ofile1.pal -gTFF00FF
+/// cp file1.pal.bin file2.pal.bin
 /// ```
 ///
 /// If you want to display 2 8-bit backgrounds on same screen they must share

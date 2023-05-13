@@ -31,7 +31,7 @@ extern "C" {
 /// 3D sprites with the following grit command:
 ///
 /// ```
-/// grit image.png -gb -gu8 -gB8 -pu8 -ftb -fh! -gTFF00FF
+/// grit image.png -ftb -fh! -gb -gu8 -gB8 -pu8 -gTFF00FF
 /// ```
 ///
 /// You can also use the same bat scripts as for 8 bit backgrounds.
