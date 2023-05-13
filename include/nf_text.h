@@ -77,7 +77,7 @@ void NF_InitTextSys(u8 screen);
 /// You must load the font for every text layer you want to create. Every font
 /// loaded uses a slot of tiled backgrounds of RAM.
 ///
-/// There is a folder with font templates in the text examples folder.
+/// There are many examples with custom fonts in the examples folder.
 ///
 /// Example:
 /// ```
