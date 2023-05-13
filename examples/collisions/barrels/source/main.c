@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 
 	// Carga los archivos de sprites
 	NF_LoadSpriteGfx("sprite/whiteball", 0, 16, 16);	// Pelota
-	NF_LoadSpritePal("sprite/whitepal", 0);
+	NF_LoadSpritePal("sprite/whiteball", 0);
 
 	// Carga el fondo de colisiones
 	NF_LoadCollisionBg("maps/pdemo_colmap", 0, 256, 256);
