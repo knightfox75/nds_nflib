@@ -1,3 +1,13 @@
+NightFox's Lib Ver. 1.0.0
+--------------------------------------------------------------------------------
+- Add original assets and conversion scripts to all examples.
+- Start using semver for the version number of the library.
+- Big cleanup of the library headers.
+- Switch documentation to Doxygen.
+- Move WiFi functions to the main library.
+- Added support for BlocksDS.
+
+
 NightFox's Lib Ver. 20140413
 --------------------------------------------------------------------------------
 - Recompilada con las ultimas versiones de Libnds.
