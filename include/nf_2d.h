@@ -24,6 +24,8 @@ extern "C" {
 
 #include <nds.h>
 
+#include "nf_sprite256.h"
+
 /// Init 2D mode for the selected screen.
 ///
 /// Modes:
@@ -95,7 +97,11 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y);
 /// @param id Sprite ID (0 - 127).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y);
+static inline void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y)
+{
+    NF_SPRITEOAM[screen][id].x = x;
+    NF_SPRITEOAM[screen][id].y = y;
+}
 
 /// Selects the layer where a sprite will be drawn.
 ///
@@ -110,7 +116,10 @@ void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param layer Layer (0 - 3).
-void NF_SpriteLayer(u8 screen, u8 id, u8 layer);
+static inline void NF_SpriteLayer(u8 screen, u8 id, u8 layer)
+{
+    NF_SPRITEOAM[screen][id].layer = layer;
+}
 
 /// Shows or hides a sprite.
 ///
@@ -127,7 +136,10 @@ void NF_SpriteLayer(u8 screen, u8 id, u8 layer);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param show Set to true to show the sprite, false otherwise.
-void NF_ShowSprite(u8 screen, u8 id, bool show);
+static inline void NF_ShowSprite(u8 screen, u8 id, bool show)
+{
+    NF_SPRITEOAM[screen][id].hide = !show;
+}
 
 /// Sets the horizontal flip state of a sprite.
 ///
@@ -140,7 +152,10 @@ void NF_ShowSprite(u8 screen, u8 id, bool show);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param hflip Set to true to flip the sprite, false otherwise.
-void NF_HflipSprite(u8 screen, u8 id, bool hflip);
+static inline void NF_HflipSprite(u8 screen, u8 id, bool hflip)
+{
+    NF_SPRITEOAM[screen][id].hflip = hflip;
+}
 
 /// Gets the horizontal flip state of a sprite.
 ///
@@ -153,7 +168,10 @@ void NF_HflipSprite(u8 screen, u8 id, bool hflip);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @return hflip Returns true if the sprite is flipped, false otherwise.
-bool NF_GetSpriteHflip(u8 screen, u8 id);
+static inline bool NF_GetSpriteHflip(u8 screen, u8 id)
+{
+    return NF_SPRITEOAM[screen][id].hflip;
+}
 
 /// Sets the vertical flip state of a sprite.
 ///
@@ -166,7 +184,10 @@ bool NF_GetSpriteHflip(u8 screen, u8 id);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param vflip Set to true to flip the sprite, false otherwise.
-void NF_VflipSprite(u8 screen, u8 id, bool vflip);
+static inline void NF_VflipSprite(u8 screen, u8 id, bool vflip)
+{
+    NF_SPRITEOAM[screen][id].vflip = vflip;
+}
 
 /// Gets the vertical flip state of a sprite.
 ///
@@ -179,7 +200,10 @@ void NF_VflipSprite(u8 screen, u8 id, bool vflip);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @return vflip Returns true if the sprite is flipped, false otherwise.
-bool NF_GetSpriteVflip(u8 screen, u8 id);
+static inline bool NF_GetSpriteVflip(u8 screen, u8 id)
+{
+    return NF_SPRITEOAM[screen][id].vflip;
+}
 
 /// Selects which frame of the animation of a sprite is shown.
 ///

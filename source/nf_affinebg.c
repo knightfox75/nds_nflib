@@ -203,10 +203,6 @@ void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) 
 
 }
 
-void NF_UnloadAffineBg(const char* name) {
-	NF_UnloadTiledBg(name);
-}
-
 void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
 
 	// Variables
@@ -620,12 +616,5 @@ void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle) {
 	NF_AFFINE_BG[screen][layer].angle = out;
 	NF_AFFINE_BG[screen][layer].x = x;
 	NF_AFFINE_BG[screen][layer].y = y;
-
-}
-
-void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y) {
-
-	NF_AFFINE_BG[screen][layer].x_center = x;
-	NF_AFFINE_BG[screen][layer].y_center = y;
 
 }

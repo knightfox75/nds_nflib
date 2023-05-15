@@ -255,7 +255,11 @@ void NF_Swap3dSpritePriority(u16 id_a, u16 id_b);
 /// @param id Sprite ID (0 - 255).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_Move3dSprite(u16 id, s16 x, s16 y);
+static inline void NF_Move3dSprite(u16 id, s16 x, s16 y)
+{
+    NF_3DSPRITE[id].x = x;
+    NF_3DSPRITE[id].y = y;
+}
 
 /// Show or hide a 3D sprite.
 ///
@@ -271,7 +275,10 @@ void NF_Move3dSprite(u16 id, s16 x, s16 y);
 ///
 /// @param id Sprite ID (0 - 255).
 /// @param show True to show the sprite, false to hide it.
-void NF_Show3dSprite(u16 id, bool show);
+static inline void NF_Show3dSprite(u16 id, bool show)
+{
+    NF_3DSPRITE[id].show = show;
+}
 
 /// Select the frame of an animation to display in the 3D sprite.
 ///

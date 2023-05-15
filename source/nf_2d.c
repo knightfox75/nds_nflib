@@ -279,47 +279,6 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y) {
 
 }
 
-void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y) {
-
-	NF_SPRITEOAM[screen][id].x = x;		// Coordenada X
-	NF_SPRITEOAM[screen][id].y = y;		// Coordenada Y
-
-}
-
-void NF_SpriteLayer(u8 screen, u8 id, u8 layer) {
-
-	NF_SPRITEOAM[screen][id].layer = layer;		// Capa sobre la que esta el sprite
-
-}
-
-void NF_ShowSprite(u8 screen, u8 id, bool show) {
-
-	NF_SPRITEOAM[screen][id].hide = !show;		// Muestra o oculta el sprite
-
-}
-
-void NF_HflipSprite(u8 screen, u8 id, bool hflip) {
-
-	NF_SPRITEOAM[screen][id].hflip = hflip;		// Volteado horizontal;
-
-}
-
-bool NF_GetSpriteHflip(u8 screen, u8 id) {
-	return NF_SPRITEOAM[screen][id].hflip;
-}
-
-
-void NF_VflipSprite(u8 screen, u8 id, bool vflip) {
-
-	NF_SPRITEOAM[screen][id].vflip = vflip;		// Volteado vertical;
-
-}
-
-
-bool NF_GetSpriteVflip(u8 screen, u8 id) {
-	return NF_SPRITEOAM[screen][id].vflip;
-}
-
 void NF_SpriteFrame(u8 screen, u8 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites

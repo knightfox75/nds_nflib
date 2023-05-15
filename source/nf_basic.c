@@ -305,9 +305,3 @@ void NF_DmaMemCopy(void* destination, const void* source, u32 size) {
 	}
 
 }
-
-u8 NF_GetLanguage(void) {
-
-	return PersonalData->language;
-
-}

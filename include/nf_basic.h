@@ -102,7 +102,10 @@ void NF_DmaMemCopy(void *destination, const void *source, u32 size);
 /// 6 : Chinese
 ///
 /// @return The language ID.
-u8 NF_GetLanguage(void);
+static inline u8 NF_GetLanguage(void)
+{
+    return PersonalData->language;
+}
 
 /// @}
 

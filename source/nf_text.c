@@ -452,9 +452,3 @@ void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b) {
 	}
 
 }
-
-void NF_SetTextColor(u8 screen, u8 layer, u8 color) {
-
-	NF_TEXT[screen][layer].pal = color;
-
-}

@@ -648,21 +648,6 @@ void NF_Swap3dSpritePriority(u16 id_a, u16 id_b) {
 
 }
 
-void NF_Move3dSprite(u16 id, s16 x, s16 y) {
-
-	// Actualiza las coordenadas del Sprite
-	NF_3DSPRITE[id].x = x;
-	NF_3DSPRITE[id].y = y;
-
-}
-
-void NF_Show3dSprite(u16 id, bool show) {
-
-	// Actualiza el flag de visibilidad
-	NF_3DSPRITE[id].show = show;
-
-}
-
 void NF_Set3dSpriteFrame(u16 id, u16 frame) {
 
 	// Verifica el rango de Id's de Sprites

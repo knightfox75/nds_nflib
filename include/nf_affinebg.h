@@ -14,6 +14,8 @@ extern "C" {
 
 #include <nds.h>
 
+#include "nf_tiledbg.h"
+
 /// @file   nf_affinebg.h
 /// @brief  Affine background support.
 
@@ -89,7 +91,10 @@ void NF_LoadAffineBg(const char *file, const char *name, u16 width, u16 height);
 /// ```
 ///
 /// @param name Name of the background.
-void NF_UnloadAffineBg(const char *name);
+static inline void NF_UnloadAffineBg(const char *name)
+{
+    NF_UnloadTiledBg(name);
+}
 
 /// Create an affine background in a layer using graphics preloaded in RAM.
 ///
@@ -170,7 +175,11 @@ void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle);
 /// @param layer Layer (2 - 3).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y);
+static inline void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y)
+{
+    NF_AFFINE_BG[screen][layer].x_center = x;
+    NF_AFFINE_BG[screen][layer].y_center = y;
+}
 
 /// @}
 
