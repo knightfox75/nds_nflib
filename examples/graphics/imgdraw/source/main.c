@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     nitroFSInit(NULL);
     NF_SetRootFolder("NITROFS");
 
-    // Initialize 2D engine in both screens and use bitmap mode
+    // Initialize 2D engine in both screens and use mode 5
     NF_Set2D(0, 5);
     NF_Set2D(1, 5);
 
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 
         swiWaitForVBlank(); // Wait for the screen refresh
 
-        // Send backbuffer to the screen
+        // Send backbuffers to the screen
         NF_Flip16bitsBackBuffer(0);
         NF_Flip16bitsBackBuffer(1);
     }

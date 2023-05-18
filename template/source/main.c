@@ -4,7 +4,6 @@
 //
 // NightFox's Lib Template
 // http://www.nightfoxandco.com
-// Inicio 10 de Octubre del 2009
 
 #include <stdio.h>
 

@@ -1,141 +1,99 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of using RAW sounds
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo de sonidos en formato RAW
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 0
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
 
+    // Initialize DS audio hardware
+    soundEnable();
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
+    NF_InitTiledBgSys(1);       // Bottom screen
 
-int main(int argc, char **argv) {
+    // Initialize top screen text engine
+    NF_InitTextSys(0);
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Initialize audio buffers
+    NF_InitRawSoundBuffers();
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/layer3", "moon", 256, 256);
 
-	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en ambas pantallas
-	NF_Set2D(1, 0);
+    // Load font files from NitroFS
+    NF_LoadTextFont("fnt/default", "normal", 256, 256, 0);
 
-	// Inicializa el engine de audio de la DS
-	soundEnable();
+    // Load audio files from NitroFS
+    NF_LoadRawSound("sfx/sample", 0, 11025, 0);
+    NF_LoadRawSound("sfx/music", 1, 22050, 0);
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
-	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
-	NF_InitTiledBgSys(1);		// Iniciliaza los fondos Tileados para la pantalla inferior
+    // Create backgrounds
+    NF_CreateTiledBg(0, 3, "moon");
+    NF_CreateTiledBg(1, 3, "moon");
 
-	// Inicializa el motor de texto
-	NF_InitTextSys(0);			// Inicializa el texto para la pantalla superior
+    // Create text layer
+    NF_CreateTextLayer(0, 0, 0, "normal");
 
-	// Inicializa los buffers de sonido
-	NF_InitRawSoundBuffers();
+    // Write some text in each text layer
+    NF_WriteText(0, 0, 1, 1, "L or R play voice.");
+    NF_WriteText(0, 0, 1, 2, "A or B STOP/PLAY music.");
+    NF_WriteText(0, 0, 1, 4, "L o R reproducir una voz.");
+    NF_WriteText(0, 0, 1, 5, "A or B musica STOP/PLAY");
 
-	// Carga los archivos de fondo desde la FAT / NitroFS a la RAM
-	NF_LoadTiledBg("bg/layer3", "moon", 256, 256);		// Carga el fondo para la capa 3, pantalla inferior
+    // Update text layers
+    NF_UpdateTextLayers();
 
-	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont("fnt/default", "normal", 256, 256, 0);	// Carga la seccion "normal" de la fuente
+    // Start background music
+    u8 sound_id = NF_PlayRawSound(1, 127, 64, true, 0);
 
-	// Carga los samples de sonido en formato RAW
-	NF_LoadRawSound("sfx/sample", 0, 11025, 0);
-	NF_LoadRawSound("sfx/music", 1, 22050, 0);
+    while (1)
+    {
+        scanKeys(); // Read keypad
+        u16 newpress = keysDown(); // Keys just pressed
 
-	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "moon");
-	// Crea los fondos de la pantalla inferior
-	NF_CreateTiledBg(1, 3, "moon");
+        // Pause music, but don't remove it from memory
+        if (newpress & KEY_A)
+            soundPause(sound_id);
 
-	// Crea una capa de texto
-	NF_CreateTextLayer(0, 0, 0,	"normal");
+        // Resume music from the start of the file
+        if (newpress & KEY_B)
+            soundResume(sound_id);
 
-	// Escribe un texto en cada capa de texto
-	NF_WriteText(0, 0, 1, 1, "L or R play voice.");
-	NF_WriteText(0, 0, 1, 2, "A or B STOP/PLAY music.");
-	NF_WriteText(0, 0, 1, 4, "L o R reproducir una voz.");
-	NF_WriteText(0, 0, 1, 5, "A or B musica STOP/PLAY");
+        // Play a different sound effect on top of the music
+        if (newpress & KEY_R)
+            NF_PlayRawSound(0, 127, 127, false, 0);
+        if (newpress & KEY_L)
+            NF_PlayRawSound(0, 127, 0, false, 0);
 
-	// Actualiza las capas de texto
-	NF_UpdateTextLayers();
+        swiWaitForVBlank(); // Wait for the screen refresh
+    }
 
-	// Variables
-	u16 newpress = 0;
-	u8 sound_id = 0;
-
-	// Inicia la musica de fondo
-	sound_id = NF_PlayRawSound(1, 127, 64, true, 0);
-
-	// Bucle (repite para siempre)
-	while(1) {
-
-		// Lee el teclado
-		scanKeys();
-		newpress = keysDown();
-
-		// Detiene el sonido, pero no la borra de la memoria de sonido
-		if (newpress & KEY_A) soundPause(sound_id);
-		// Vuelve a reproducir el sonido, pero desde el principio
-		if (newpress & KEY_B) soundResume(sound_id);
-		// Para eliminar el sonido de la memoria de sonido (no del buffer de la libreria)
-		// usa la funcion soundKill();
-
-		// Reproduce el sonido
-		if (newpress & KEY_R) NF_PlayRawSound(0, 127, 127, false, 0);
-		if (newpress & KEY_L) NF_PlayRawSound(0, 127, 0, false, 0);
-
-		swiWaitForVBlank();			// Espera al sincronismo vertical
-
-	}
-
-	return 0;
-
+    return 0;
 }
