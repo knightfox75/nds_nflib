@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     while (1)
     {
         scanKeys(); // Read keypad
-        uint16_t keys = keysHeld(); // Keys currently pressed
+        u16 keys = keysHeld(); // Keys currently pressed
 
         // If pressing left
         if (keys & KEY_LEFT)
@@ -82,7 +82,8 @@ int main(int argc, char **argv)
         bg_x[1] = (int)(bg_x[0] / 1.5);
         bg_x[2] = (int)(bg_x[1] / 1.5);
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
         // Update background scroll during vertical blanking to avoid tearing
         for (int n = 0; n < 4; n ++)

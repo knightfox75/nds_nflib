@@ -19,7 +19,8 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
     }
 
     // If this is reached, the program will return to the loader if the loader

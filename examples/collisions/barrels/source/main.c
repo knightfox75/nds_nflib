@@ -1,202 +1,156 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of per-pixel collisions.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo de mapas de colisiones por pixels
-	en superficies inclinadas
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in the top screen and use mode 0
+    NF_Set2D(0, 0);
 
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize sprite system
+    NF_InitSpriteBuffers();
+    NF_InitSpriteSys(0);        // Top screen
 
-int main(int argc, char **argv) {
+    // Initialize collision map buffers
+    NF_InitCmapBuffers();
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/pdemo_bg", "bg3", 256, 256);
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Load sprite files from NitroFS
+    NF_LoadSpriteGfx("sprite/whiteball", 0, 16, 16);
+    NF_LoadSpritePal("sprite/whiteball", 0);
 
-	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en la pantalla superior
+    // Load collision map files from NitroFS
+    NF_LoadCollisionBg("maps/pdemo_colmap", 0, 256, 256);
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
-	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
+    // Create top screen background
+    NF_CreateTiledBg(0, 3, "bg3");
 
-	// Inicializa los Sprites
-	NF_InitSpriteBuffers();		// Inicializa los buffers para almacenar sprites y paletas
-	NF_InitSpriteSys(0);		// Inicializa los sprites para la pantalla superior
+    // Transfer the required sprites to VRAM
+    NF_VramSpriteGfx(0, 0, 0, true);
+    NF_VramSpritePal(0, 0, 0);
 
-	// Inicializa los buffers de mapas de colisiones
-	NF_InitCmapBuffers();
+    // Create sprites and set their priority layer
+    for (int b = 0; b < 3; b ++)
+    {
+        NF_CreateSprite(0, b, 0, 0, -16, -16);
+        NF_SpriteLayer(0, b, 3);
+    }
 
-	// Carga los archivos de fondo
-	NF_LoadTiledBg("bg/pdemo_bg", "bg3", 256, 256);		// Carga el fondo para la capa 3, pantalla superior
+    // Location of the sprites
+    s16 x[3] = { 32, 228, 10 };
+    s16 y[3] = { -16, 32, 100 };
 
-	// Carga los archivos de sprites
-	NF_LoadSpriteGfx("sprite/whiteball", 0, 16, 16);	// Pelota
-	NF_LoadSpritePal("sprite/whiteball", 0);
+    // Coordinates of the sprite that have to be used as collision points
+    s16 py[16] = {
+        11, 13, 14, 15, 15, 16, 16, 16, 16, 16, 16, 15, 15, 14, 13, 11
+    };
 
-	// Carga el fondo de colisiones
-	NF_LoadCollisionBg("maps/pdemo_colmap", 0, 256, 256);
+    while (1)
+    {
+        // Clear text console
+        consoleClear();
 
-	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "bg3");
+        bool down = false;
+        bool left = false;
+        bool right = false;
 
-	// Transfiere a la VRAM los sprites necesarios
-	NF_VramSpriteGfx(0, 0, 0, true);	// Puntero
-	NF_VramSpritePal(0, 0, 0);
+        // Handle collisions and fall of all balls
+        for (int b = 0; b < 3; b ++)
+        {
+            down = true; // If this remains true, there is no collision
 
-	// Variables de uso genereal
-	u8 b = 0;
-	u8 n = 0;
+            // Check all pixels of the lower half of the ball to see if there is
+            // a collision.
+            for (int n = 0; n < 16; n ++)
+            {
+                // Blue pixels are index 4
+                if (NF_GetPoint(0, (x[b] + n), (y[b] + py[n])) == 4)
+                    down = false;
+            }
 
-	// Crea el Sprite del puntero en la pantalla inferior
-	for (b = 0; b < 3; b ++) {
-		NF_CreateSprite(0, b, 0, 0, -16, -16);	// Crea el puntero en la pantalla inferior
-		NF_SpriteLayer(0, b, 3);				// Y la capa sobre la que se dibujara
-	}
+            // Check for collisions left and right of the ball
+            right = true;
+            left = true;
 
-	// Variables para el control de movimiento
-	s16 x[3];
-	s16 y[3];
-	x[0] = 32;
-	y[0] = -16;
-	x[1] = 228;
-	y[1] = 32;
-	x[2] = 10;
-	y[2] = 100;
+            // Falling to the left
+            if (NF_GetPoint(0, (x[b] - 1), (y[b] + 16)) == 4)
+                left = false;
 
+            // Falling to the right
+            if (NF_GetPoint(0, (x[b] + 16), (y[b] + 16)) == 4)
+                right = false;
 
-	// Variables de control de colisiones, define todos los puntos de colision del sprite
-	s16 py[16];
-	py[0] = 11;
-	py[1] = 13;
-	py[2] = 14;
-	py[3] = 15;
-	py[4] = 15;
-	py[5] = 16;
-	py[6] = 16;
-	py[7] = 16;
-	py[8] = 16;
-	py[9] = 16;
-	py[10] = 16;
-	py[11] = 15;
-	py[12] = 15;
-	py[13] = 14;
-	py[14] = 13;
-	py[15] = 11;
+            // On free fall, don't move on the X axis
+            if (left && right)
+            {
+                right = false;
+                left = false;
+            }
 
-	// Control de movimiento
-	bool down = false;
-	bool left = false;
-	bool right = false;
+            // Free fall
+            if (down)
+                y[b] ++;
 
-	// Bucle (repite para siempre)
-	while(1) {
+            // Move right
+            if (right)
+                x[b] ++;
 
-		// Borra la pantalal de texto
-		consoleClear();
+            // Move left
+            if (left)
+                x[b] --;
 
-		// Bola a bola
-		for (b = 0; b < 3; b ++) {
+            // If the ball exits the screen from the bottom move it to the top
+            if (y[b] > 192)
+            {
+                x[b] = 32;
+                y[b] = -16;
+            }
 
-			// Control de colisiones, caida
-			down = true;	// Flag de descenso arriba
-			// Busca pixel por pixel, si hay colisiones (pixel azul, nº4)
-			for (n = 0; n < 16; n ++) {
-				if (NF_GetPoint(0, (x[b] + n), (y[b] + py[n])) == 4) down = false;
-			}
+            // Set the sprite position
+            NF_MoveSprite(0, b, x[b], y[b]);
 
-			// Control de colisiones, decide derecha o izquierda
-			right = true;	// Flag de movimiento lateral arriba
-			left = true;
-			// Caida a izquierda
-			if (NF_GetPoint(0, (x[b] - 1), (y[b] + 16)) == 4) left = false;
-			// Caida a derecha
-			if (NF_GetPoint(0, (x[b] + 16), (y[b] + 16)) == 4) right = false;
-			// Si hay caida libre, no te muevas en horizontal
-			if (left && right) {
-				right = false;
-				left = false;
-			}
+            // Print sprite coordinates
+            printf("x:%03d  y:%03d\n", x[b], y[b]);
 
-			// Si es necesario, caida libre
-			if (down) y[b] ++;
-			// Muevete a la derecha
-			if (right) x[b] ++;
-			// Muevete a la izquierda
-			if (left) x[b] --;
+        }
 
-			// Recoloca la pelota si sale de los limites de pantalla
-			if (y[b] > 192) {
-				x[b] = 32;
-				y[b] = -16;
-			}
+        // Update OAM array
+        NF_SpriteOamSet(0);
 
-			// Posicion del Sprite
-			NF_MoveSprite(0, b, x[b], y[b]);
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
-			// Imprime la posicion de la pelota
-			printf("x:%03d  y:%03d\n", x[b], y[b]);
+        // Update OAM
+        oamUpdate(&oamMain);
+    }
 
-		}
-
-		NF_SpriteOamSet(0);				// Actualiza el Array del OAM
-
-		swiWaitForVBlank();				// Espera al sincronismo vertical
-
-		oamUpdate(&oamMain);			// Actualiza a VRAM el OAM Secundario
-
-	}
-
-	return 0;
-
+    return 0;
 }

@@ -137,7 +137,8 @@ int main(int argc, char **argv)
                 angle -= 2048;
         }
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
         // Update parameters of the affine backgrounds
         for (int n = 0; n < 2; n ++)

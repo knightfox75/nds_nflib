@@ -155,7 +155,8 @@ int main(int argc, char **argv)
             }
         }
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
         // Send backbuffer to the screen
         NF_Flip16bitsBackBuffer(0);

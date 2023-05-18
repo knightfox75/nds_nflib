@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     NF_InitTiledBgSys(0);       // Top screen
     NF_InitTiledBgSys(1);       // Bottom screen
 
-    // Initialize sprite backgrounds system
+    // Initialize sprite system
     NF_InitSpriteBuffers();     // Initialize storage buffers
     NF_InitSpriteSys(0);        // Top screen
     NF_InitSpriteSys(1);        // Bottom screen
@@ -134,7 +134,8 @@ int main(int argc, char **argv)
         NF_SpriteOamSet(0);
         NF_SpriteOamSet(1);
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
         // Update OAM
         oamUpdate(&oamMain);

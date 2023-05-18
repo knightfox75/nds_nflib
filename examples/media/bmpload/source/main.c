@@ -93,7 +93,8 @@ int main(int argc, char **argv)
             NF_Draw16bitsImage(1, img2, 0, 0, false);
         }
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
         // Send backbuffers to the screen
         NF_Flip16bitsBackBuffer(0);

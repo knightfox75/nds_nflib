@@ -92,7 +92,8 @@ int main(int argc, char **argv)
         if (newpress & KEY_L)
             NF_PlayRawSound(0, 127, 0, false, 0);
 
-        swiWaitForVBlank(); // Wait for the screen refresh
+        // Wait for the screen refresh
+        swiWaitForVBlank();
     }
 
     return 0;
