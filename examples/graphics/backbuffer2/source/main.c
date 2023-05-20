@@ -114,11 +114,11 @@ int main(int argc, char **argv)
             }
         }
 
-        // Swap backbuffer and visible buffers
-        NF_Flip16bitsBackBuffer(1);
-
         // Wait for the screen refresh
         swiWaitForVBlank();
+
+        // Swap backbuffer and visible buffers
+        NF_Flip16bitsBackBuffer(1);
     }
 
     return 0;
