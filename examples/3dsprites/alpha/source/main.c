@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     NF_SetRootFolder("NITROFS");
     consoleClear();
 
-    // Initialize 3D engine in the top screen in mode 0
+    // Initialize 3D engine in the bottom screen in mode 0
     NF_Set3D(1, 0);
 
     // Initialize tiled backgrounds system
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     s16 ix = 4;
     s16 iy = 4;
 
-    // Create sprites
+    // Initialize sprite variables and create the sprites
     for (int n = 0; n < MAXSPRITES; n ++)
     {
         x[n] = 128 - 32;
