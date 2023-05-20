@@ -56,7 +56,9 @@ int main(int argc, char **argv)
     NF_CreateTiledBg(0, 3, "bg3");
 
     // Enable alpha blending between 3D sprites over 3D backgrounds
-    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG0 | BLEND_DST_BG1 | BLEND_DST_BG2 | BLEND_DST_BG3;
+    REG_BLDCNT = BLEND_ALPHA
+               | BLEND_SRC_BG0
+               | BLEND_DST_BG1 | BLEND_DST_BG2 | BLEND_DST_BG3 | BLEND_DST_BACKDROP;
 
     // Variables
     s16 x[MAXSPRITES];
