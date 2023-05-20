@@ -16,11 +16,13 @@
 // fade registers it's possible to add a shading effect.
 void hblank_handler(void)
 {
+    u32 vline = REG_VCOUNT; // Get the current line
+
     // If the current line is inside the screen
-    if (REG_VCOUNT < 192)
+    if (vline < 192)
     {
         // Calculate fade value based on the line
-        int fade = (0x0F - (((REG_VCOUNT + 1) * 16) / 192));
+        int fade = 0x0F - (((vline + 1) * 16) / 192);
 
         REG_BLDY = fade >> 1;   // Top screen
         REG_BLDY_SUB = fade;    // Bottom screen
@@ -81,7 +83,7 @@ int main(int argc, char **argv)
     while (1)
     {
         scanKeys(); // Read keypad
-        uint16_t keys = keysHeld(); // Keys currently pressed
+        u16 keys = keysHeld(); // Keys currently pressed
 
         // Move center of the backgrounds
         if (keys & KEY_UP)

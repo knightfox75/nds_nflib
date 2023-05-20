@@ -1,128 +1,94 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Basic 8x16 text example.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo basico de texto 8x16 en pantalla
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 0
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
 
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
+    NF_InitTiledBgSys(1);       // Bottom screen
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize text system
+    NF_InitTextSys(0);          // Top screen
 
-int main(int argc, char **argv) {
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/layer3", "moon", 256, 256);
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Load text font files from NitroFS
+    NF_LoadTextFont16("fnt/font16", "normal", 256, 256, 0); // Load normal text
+    NF_LoadTextFont16("fnt/font16", "right", 256, 256, 1);  // Load rotated text
+    NF_LoadTextFont16("fnt/font16", "left", 256, 256, 2);   // Load rotated text
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Create top screen background
+    NF_CreateTiledBg(0, 3, "moon");
 
-	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en ambas pantallas
-	NF_Set2D(1, 0);
+    // Create bottom screen background
+    NF_CreateTiledBg(1, 3, "moon");
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
-	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
-	NF_InitTiledBgSys(1);		// Iniciliaza los fondos Tileados para la pantalla inferior
+    // Create a text layer
+    NF_CreateTextLayer16(0, 0, 0, "normal");
+    NF_CreateTextLayer16(1, 1, 1, "right");
+    NF_CreateTextLayer16(1, 2, 2, "left");
 
-	// Inicializa el motor de texto (requiere tener los fondos tileados inicializados)
-	NF_InitTextSys(0);			// Inicializa el texto para la pantalla superior
+    // Scroll text background to offset the unused space in the background
+    // that uses text rotated to the left.
+    NF_ScrollBg(1, 2, 0, 63);
 
-	// Carga los archivos de fondo desde la FAT / NitroFS a la RAM
-	NF_LoadTiledBg("bg/layer3", "moon", 256, 256);		// Carga el fondo para la capa 3, pantalla inferior
+    // Print text in all layers
+    NF_WriteText16(0, 0, 1, 1, "Hola Mundo!\n Hello World!");
+    NF_WriteText16(1, 1, 1, 1, "Hola Mundo!\n Hello World!");
+    NF_WriteText16(1, 2, 1, 1, "Hola Mundo!\n Hello World!");
 
-	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont16("fnt/font16", "normal", 256, 256, 0);		// Carga la seccion "normal" de la fuente, tamaño del mapa 256x256
-	NF_LoadTextFont16("fnt/font16", "right", 256, 256, 1);		// Carga la seccion "rotar derecha" de la fuente, tamaño del mapa 256x256
-	NF_LoadTextFont16("fnt/font16", "left", 256, 256, 2);		// Carga la seccion "rotar izquierda· de la fuente, tamaño del mapa 256x256
+    // Update text layers
+    NF_UpdateTextLayers();
 
-	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "moon");
-	// Crea los fondos de la pantalla inferior
-	NF_CreateTiledBg(1, 3, "moon");
+    // Variables
+    u32 myvar = 0;
 
-	// Crea una capa de texto
-	NF_CreateTextLayer16(0, 0, 0, "normal");
-	NF_CreateTextLayer16(1, 1, 1, "right");
-	NF_CreateTextLayer16(1, 2, 2, "left");
+    while (1)
+    {
+        myvar++;
 
-	// Compensa el espacio "muerto" de la pantalla al rotar el texto a la izquierda
-	// Desplazandolo 64 pixeles en vertical
-	NF_ScrollBg(1, 2, 0, 63);
+        char mytext[32];
+        snprintf(mytext, sizeof(mytext), "Contador: %lu", myvar);
 
-	// Escribe un texto en cada capa de texto
-	NF_WriteText16(0, 0, 1, 1, "Hola Mundo!\n Hello World!");	// Normal
-	NF_WriteText16(1, 1, 1, 1, "Hola Mundo!\n Hello World!");	// Rotado derecha
-	NF_WriteText16(1, 2, 1, 1, "Hola Mundo!\n Hello World!");	// Rotado izquierda
+        NF_WriteText16(0, 0, 1, 4, mytext);
+        NF_WriteText16(1, 1, 1, 4, mytext);
+        NF_WriteText16(1, 2, 1, 4, mytext);
 
-	// Actualiza las capas de texto
-	NF_UpdateTextLayers();
+        // Update text layers
+        NF_UpdateTextLayers();
 
-	// Variables
-	char mytext[32];
-	u32 myvar = 0;
+        // Wait for the screen refresh
+        swiWaitForVBlank();
+    }
 
-	// Bucle (repite para siempre)
-	while(1) {
-
-		myvar ++;
-		snprintf(mytext, sizeof(mytext), "Contador: %lu", myvar);
-		NF_WriteText16(0, 0, 1, 4, mytext);
-		NF_WriteText16(1, 1, 1, 4, mytext);
-		NF_WriteText16(1, 2, 1, 4, mytext);
-
-		NF_UpdateTextLayers();		// Actualiza las capas de texto
-
-		swiWaitForVBlank();			// Espera al sincronismo vertical
-
-	}
-
-	return 0;
-
+    return 0;
 }
