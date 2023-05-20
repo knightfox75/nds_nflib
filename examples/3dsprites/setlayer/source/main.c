@@ -32,10 +32,10 @@ int main(int argc, char **argv)
     nitroFSInit(NULL);
     NF_SetRootFolder("NITROFS");
 
-    // Initialize 3D engine in bottom screens in mode 0
+    // Initialize 3D engine in the top screen in mode 0
     NF_Set3D(0, 0);
 
-    // Initialize 2D engine in bottom screens in mode 0
+    // Initialize 2D engine in the bottom screen in mode 0
     NF_Set2D(1, 0);
 
     // Initialize tiled backgrounds system
