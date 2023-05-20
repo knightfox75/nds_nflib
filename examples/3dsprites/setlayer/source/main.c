@@ -167,12 +167,12 @@ int main(int argc, char **argv)
         // Wait for the screen refresh
         swiWaitForVBlank();
 
-        // Update textures of any 3D sprite with "keepframes == true"
-        NF_Update3dSpritesGfx();
-
         // Update background scroll during vertical blanking to avoid tearing
         NF_ScrollBg(0, 1, bg_x, 0);
         NF_ScrollBg(0, 2, bg_x / 1.5, 0);
+
+        // Update textures of any 3D sprite with "keepframes == true"
+        NF_Update3dSpritesGfx();
     }
 
     return 0;
