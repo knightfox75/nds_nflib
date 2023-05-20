@@ -15,6 +15,9 @@
 
 int main(int argc, char **argv)
 {
+    // Set random seed based on the current time
+    srand(time(NULL));
+
     // Prepare a NitroFS initialization screen
     NF_Set2D(0, 0);
     NF_Set2D(1, 0);
@@ -27,7 +30,7 @@ int main(int argc, char **argv)
     nitroFSInit(NULL);
     NF_SetRootFolder("NITROFS");
 
-    // Inicialize 2D engine in both screens and use mode 0
+    // Initialize 2D engine in both screens and use mode 0
     NF_Set2D(0, 0);
     NF_Set2D(1, 0);
 
@@ -61,14 +64,11 @@ int main(int argc, char **argv)
     NF_CreateTiledBg(1, 2, "capa_2");
 
     // Transfer the required sprites to VRAM
-    NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep unused frames in RAM
+    NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep all frames in VRAM
     NF_VramSpritePal(1, 0, 0);
 
-    NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in VRAM
+    NF_VramSpriteGfx(0, 1, 0, false); // Character: Keep unused frames in RAM
     NF_VramSpritePal(0, 1, 0);
-
-    // Set random seed based on the current time
-    srand(time(NULL));
 
     // Setup character sprite
     s16 pj_x = 0;
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
         NF_MoveSprite(1, 0, pj_x, pj_y);
 
         // Animate character
-        pj_anim ++;
+        pj_anim++;
         if (pj_anim > 5)
         {
             pj_anim = 0;
