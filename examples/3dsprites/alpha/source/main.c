@@ -6,7 +6,6 @@
 // http://www.nightfoxandco.com
 
 #include <stdio.h>
-#include <time.h>
 
 #include <nds.h>
 #include <filesystem.h>
