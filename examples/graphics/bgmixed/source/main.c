@@ -1,184 +1,157 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of mixing bitmap and tiled backgrounds.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo basico modo mixto para fondos (tiled + bitmap)
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Set random seed based on the current time
+    srand(time(NULL));
 
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 5. Layers 0 to 2 are
+    // tiled backgrounds, layer 3 is an 8-bit bitmap background.
+    NF_Set2D(0, 5);
+    NF_Set2D(1, 5);
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize mixed background system
+    NF_InitMixedBgSys(0);
+    NF_InitMixedBgSys(1);
 
-int main(int argc, char **argv) {
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Initialize text system
+    NF_InitTextSys(0);          // Top screen
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Initialize storage buffers
+    NF_Init8bitsBgBuffers();
 
-	// Inicializa el motor 2D en modo BITMAP
-	NF_Set2D(0, 5);				// Modo 2D_5 en ambas pantallas
-	NF_Set2D(1, 5);
+    // Initialize sprite system
+    NF_InitSpriteBuffers();     // Initialize storage buffers
+    NF_InitSpriteSys(0);        // Top screen
+    NF_InitSpriteSys(1);        // Bottom screen
 
-	// Inicializa los fondos en modo Mixto
-	// Capas 0 - 2 tiled // Capa 3 bitmap 8 bits
-	NF_InitMixedBgSys(0);
-	NF_InitMixedBgSys(1);
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/bg0", "tiled_bg", 1024, 256);
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
+    // Load text font files from NitroFS
+    NF_LoadTextFont16("fnt/font16", "text_bg0", 256, 256, 0);
+    NF_LoadTextFont16("fnt/font16", "text_bg1", 256, 256, 0);
 
-	// Inicializa el motor de texto (requiere tener los fondos tileados inicializados)
-	NF_InitTextSys(0);			// Inicializa el texto para la pantalla inferior
+    // Load bitmap files from NitroFS
+    NF_Load8bitsBg("bmp/img8b_1", 0);
+    NF_Load8bitsBg("bmp/img8b_2", 1);
 
-	// Inicializa los buffers para guardar fondos en formato BITMAP
-	NF_Init8bitsBgBuffers();
+    // Load sprite files from NitroFS
+    NF_LoadSpriteGfx("sprite/bola", 0, 32, 32);
+    NF_LoadSpritePal("sprite/bola", 0);
 
-	// Inicializa los Sprites
-	NF_InitSpriteBuffers();		// Inicializa los buffers para almacenar sprites y paletas
-	NF_InitSpriteSys(0);		// Inicializa los sprites para la pantalla superior
-	NF_InitSpriteSys(1);		// Inicializa los sprites para la pantalla inferior
+    // Create bottom screen background
+    NF_CreateTiledBg(1, 0, "tiled_bg");
 
-	// Carga el fondo para la capa 0, pantalla inferior
-	NF_LoadTiledBg("bg/bg0", "tiled_bg", 1024, 256);
+    // Create text layers
+    NF_CreateTextLayer16(0, 0, 0, "text_bg0");
+    NF_CreateTextLayer16(0, 1, 0, "text_bg1");
 
-	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont16("fnt/font16", "text_bg0", 256, 256, 0);
-	NF_LoadTextFont16("fnt/font16", "text_bg1", 256, 256, 0);
+    // Write some text in the top screen in white
+    NF_WriteText16(0, 0, 1, 1, "Text over bitmap");
+    NF_WriteText16(0, 0, 1, 3, "Text on layers 0 & 1");
+    NF_WriteText16(0, 0, 1, 4, "Bitmap on layer 3");
 
-	// Carga el archivo BITMAP de imagen en formato RAW a la RAM
-	NF_Load8bitsBg("bmp/img8b_1", 0);
-	NF_Load8bitsBg("bmp/img8b_2", 1);
+    // Write the same text in another layer in black, this will be the shadow
+    NF_DefineTextColor(0, 1, 1, 0, 0, 0); // Black
+    NF_SetTextColor(0, 1, 1);
+    NF_WriteText16(0, 1, 1, 1, "Text over bitmap");
+    NF_WriteText16(0, 1, 1, 3, "Text on layers 0 & 1");
+    NF_WriteText16(0, 1, 1, 4, "Bitmap on layer 3");
 
-	NF_LoadSpriteGfx("sprite/bola", 0, 32, 32);			// Bola azul
-	NF_LoadSpritePal("sprite/bola", 0);
+    // Small scroll for the black background to simulate the shadow
+    NF_ScrollBg(0, 0, 1, 1);
 
-	// Crea el fondo tileado en la capa inferior
-	NF_CreateTiledBg(1, 0, "tiled_bg");
+    // Update text layers
+    NF_UpdateTextLayers();
 
-	// Crea las capas de texto
-	NF_CreateTextLayer16(0, 0, 0, "text_bg0");
-	NF_CreateTextLayer16(0, 1, 0, "text_bg1");
-	// Define el color negro para texto de la capa 1
-	NF_DefineTextColor(0, 1, 1, 0, 0, 0);		// Negro
-	// Escribe un texto en la pantalla superior
-	NF_WriteText16(0, 0, 1, 1, "Text over bitmap");
-	NF_WriteText16(0, 0, 1, 3, "Text on layers 0 & 1");
-	NF_WriteText16(0, 0, 1, 4, "Bitmap on layer 3");
-	NF_ScrollBg(0, 0, 1, 1);
-	// Y escribe un texto a modo de sombra
-	NF_SetTextColor(0, 1, 1);
-	NF_WriteText16(0, 1, 1, 1, "Text over bitmap");
-	NF_WriteText16(0, 1, 1, 3, "Text on layers 0 & 1");
-	NF_WriteText16(0, 1, 1, 4, "Bitmap on layer 3");
-	// Actualiza las capas de texto
-	NF_UpdateTextLayers();
+    // Transfer image to layer 3 of the top screen
+    NF_Copy8bitsBuffer(0, 1, 0);
 
-	// Tranfiere las imagenes a la pantalla superior, capa 3
-	NF_Copy8bitsBuffer(0, 1, 0);
-	// Transfiere la imagen a la pantalla inferior, capa 3
-	NF_Copy8bitsBuffer(1, 1, 1);
+    // Transfer image to layer 3 of the bottom screen
+    NF_Copy8bitsBuffer(1, 1, 1);
 
-	// Transfiere a la VRAM los sprites necesarios
-	NF_VramSpriteGfx(0, 0, 0, true);	// Bola, manten los frames adicionales en RAM
-	NF_VramSpritePal(0, 0, 0);
-	NF_VramSpriteGfx(1, 0, 0, true);
-	NF_VramSpritePal(1, 0, 0);
+    // Transfer the required sprites to VRAM
+    NF_VramSpriteGfx(0, 0, 0, true); // Ball: Keep all frames in VRAM
+    NF_VramSpritePal(0, 0, 0);
+    NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep all frames in VRAM
+    NF_VramSpritePal(1, 0, 0);
 
-	// Variables generales y inicializacion del random
-	u8 n = 0;
-	srand(time(NULL));
+    // Setup and create ball sprites
+    s16 bola_x[32];
+    s16 bola_y[32];
+    s8 bola_spx[32];
+    s8 bola_spy[32];
 
-	// Crea las bolas en ambas pantallas
-	s16 bola_x[32];
-	s16 bola_y[32];
-	s8 bola_spx[32];
-	s8 bola_spy[32];
-	for (n = 0; n < 32; n ++) {
-		bola_x[n] = (rand() % 223);			// Calcula posiciones
-		bola_y[n] = (rand() % 159);
-		bola_spx[n] = (rand() % 3) + 1;
-		bola_spy[n] = (rand() % 3) + 1;
-		NF_CreateSprite(0, n, 0, 0, bola_x[n], bola_y[n]);	// Crea sprites
-		NF_CreateSprite(1, n, 0, 0, bola_x[n], bola_y[n]);
-		NF_SpriteLayer(0, n, 3);		// Se dibujaran sobre la capa 3
-		NF_SpriteLayer(1, n, 3);
-	}
+    for (int n = 0; n < 32; n++)
+    {
+        bola_x[n] = rand() % 223;
+        bola_y[n] = rand() % 159;
+        bola_spx[n] = (rand() % 3) + 1;
+        bola_spy[n] = (rand() % 3) + 1;
+        NF_CreateSprite(0, n, 0, 0, bola_x[n], bola_y[n]);
+        NF_CreateSprite(1, n, 0, 0, bola_x[n], bola_y[n]);
+        NF_SpriteLayer(0, n, 3);
+        NF_SpriteLayer(1, n, 3);
+    }
 
-	// Repite para siempre
-	while (1) {
+    while (1)
+    {
+        // Move balls
+        for (int n = 0; n < 32; n++)
+        {
+            bola_x[n] += bola_spx[n];
+            if ((bola_x[n] < 0) || (bola_x[n] > 223))
+                bola_spx[n] *= -1;
 
-		// Mueve las bolas
-		for (n = 0; n < 32; n ++) {
-			bola_x[n] += bola_spx[n];
-			if ((bola_x[n] < 0) || (bola_x[n] > 223)) bola_spx[n] *= -1;
-			bola_y[n] += bola_spy[n];
-			if ((bola_y[n] < 0) || (bola_y[n] > 159)) bola_spy[n] *= -1;
-			NF_MoveSprite(0, n, bola_x[n], bola_y[n]);
-			NF_MoveSprite(1, n, bola_x[n], bola_y[n]);
-		}
+            bola_y[n] += bola_spy[n];
+            if ((bola_y[n] < 0) || (bola_y[n] > 159))
+                bola_spy[n] *= -1;
 
-		// Actualiza el array de OAM
-		NF_SpriteOamSet(0);
-		NF_SpriteOamSet(1);
+            NF_MoveSprite(0, n, bola_x[n], bola_y[n]);
+            NF_MoveSprite(1, n, bola_x[n], bola_y[n]);
+        }
 
-		swiWaitForVBlank();		// Espera al sincronismo vertical
+        // Update OAM array
+        NF_SpriteOamSet(0);
+        NF_SpriteOamSet(1);
 
-		// Actualiza el OAM
-		oamUpdate(&oamMain);
-		oamUpdate(&oamSub);
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
-	}
+        // Update OAM
+        oamUpdate(&oamMain);
+        oamUpdate(&oamSub);
+    }
 
-	return 0;
-
+    return 0;
 }

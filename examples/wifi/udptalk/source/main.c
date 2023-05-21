@@ -142,7 +142,7 @@ s16 LookForServer(void)
 
     // Get the local IP and extract its range (for example, "192.168.0.")
     sprintf(temp, "%s", inet_ntoa(NF_IP));
-    for (int n = 0; n < strlen(temp); n ++)
+    for (int n = 0; n < strlen(temp); n++)
     {
         myip[n] = temp[n];
         char c = temp[n];
@@ -163,7 +163,7 @@ s16 LookForServer(void)
     // Scan all possible IPs
     p = 0;
 
-    for (int n = 1; n < 255; n ++)
+    for (int n = 1; n < 255; n++)
     {
         scanKeys();
         u16 keys = keysDown();

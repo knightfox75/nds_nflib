@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     s16 iy = 4;
 
     // Initialize sprite variables and create the sprites
-    for (int n = 0; n < MAXSPRITES; n ++)
+    for (int n = 0; n < MAXSPRITES; n++)
     {
         x[n] = 128 - 32;
         y[n] = 96 - 32;
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
         u16 keys = keysHeld(); // Keys currently pressed
 
         // Move sprites that follow the main one
-        for (int n = MAXSPRITES - 1; n > 0; n --)
+        for (int n = MAXSPRITES - 1; n > 0; n--)
         {
             x[n] = x[n - 1];
             y[n] = y[n - 1];

@@ -52,13 +52,13 @@ int main(int argc, char **argv)
     NF_LoadTiledBg("bg/bg3", "bg3", 256, 256);
 
     // Load sprite files from NitroFS
-    for (int n = 0; n < SPRITEMAXNUM; n ++)
+    for (int n = 0; n < SPRITEMAXNUM; n++)
         NF_LoadSpriteGfx("sprite/numbers", n, 16, 16);
 
     NF_LoadSpritePal("sprite/numbers", 0);
 
     // Transfer the required sprites to VRAM
-    for (int n = 0; n < SPRITEMAXNUM; n ++)
+    for (int n = 0; n < SPRITEMAXNUM; n++)
         NF_Vram3dSpriteGfx(n, n, true);
 
     NF_Vram3dSpritePal(0, 0);
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     while (1)
     {
         // Move sprites
-        for (int n = 0; n < SPRITEMAXNUM; n ++)
+        for (int n = 0; n < SPRITEMAXNUM; n++)
         {
             x[n] += ix[n];
             if ((x[n] < 0) || (x[n] > (255 - NF_3DSPRITE[n].width)))
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
             if ((y[n] < 0) || (y[n] > (191 - NF_3DSPRITE[n].height)))
                 iy[n] = -iy[n];
 
-            timer[n] ++;
+            timer[n]++;
             if (timer[n] > 19)
             {
                 timer[n] = 0;

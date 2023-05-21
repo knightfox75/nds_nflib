@@ -71,8 +71,8 @@ int main(int argc, char **argv)
         {
             if (keys & KEY_UP)
             {
-                img1 --;
-                img2 --;
+                img1--;
+                img2--;
                 if (img1 < 0)
                     img1 = (MAX_BMP_FILES - 1);
                 if (img2 < 0)
@@ -80,8 +80,8 @@ int main(int argc, char **argv)
             }
             if (keys & KEY_DOWN)
             {
-                img1 ++;
-                img2 ++;
+                img1++;
+                img2++;
                 if (img1 > (MAX_BMP_FILES - 1))
                     img1 = 0;
                 if (img2 > (MAX_BMP_FILES - 1))

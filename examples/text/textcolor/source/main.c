@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
     // Generate a few colors randomly
     srand(time(NULL));
-    for (int n = 4; n < 16; n ++)
+    for (int n = 4; n < 16; n++)
     {
         NF_DefineTextColor(1, 0, n,
                            (rand() % 31) + 1,
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     NF_WriteText(1, 0, 1, 4, "Azul / Blue");
 
     // Print text with random colors
-    for (int n = 4; n < 16; n ++)
+    for (int n = 4; n < 16; n++)
     {
         NF_SetTextColor(1, 0, n);
         NF_WriteText(1, 0, 1, n + 1, "Random color");
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
             speed = 0;
 
             // Generate new colors randomly
-            for (int n = 4; n < 16; n ++)
+            for (int n = 4; n < 16; n++)
             {
                 NF_DefineTextColor(1, 0, n,
                                    (rand() % 31) + 1,
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
             }
 
             // Print text with the new random colors
-            for (int n = 4; n < 16; n ++)
+            for (int n = 4; n < 16; n++)
             {
                 NF_SetTextColor(1, 0, n);
                 NF_WriteText(1, 0, 1, n + 1, "Random color");

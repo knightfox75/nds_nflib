@@ -1,161 +1,124 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of extended palettes for backgrounds.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo de paletas extendidas para fondos
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 #include <time.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
-
-
-// Algunos defines interesantes
 #define RED 1
 #define GREEN 2
 #define BLUE 3
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 0
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
 
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
+    NF_InitTiledBgSys(1);       // Bottom screen
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize text system
+    NF_InitTextSys(0);          // Top screen
+    NF_InitTextSys(1);          // Bottom screen
 
-int main(int argc, char **argv) {
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/blue", "top", 256, 256);
+    NF_LoadTiledBg("bg/blue", "bottom", 256, 256);
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Load extended background palette files from NitroFS
+    NF_LoadExBgPal("bg/red", RED);
+    NF_LoadExBgPal("bg/green", GREEN);
+    NF_LoadExBgPal("bg/blue", BLUE);
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Load text font files from NitroFS
+    NF_LoadTextFont("fnt/default", "up", 256, 256, 0);
+    NF_LoadTextFont("fnt/default", "down", 256, 256, 0);
 
-	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en ambas pantallas
-	NF_Set2D(1, 0);
+    // Transfer all palettes for background 3
+    for (int n = 1; n < 4; n++)
+    {
+        NF_VramExBgPal(0, 3, n, n);
+        NF_VramExBgPal(1, 3, n, n);
+    }
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
-	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
-	NF_InitTiledBgSys(1);		// Iniciliaza los fondos Tileados para la pantalla inferior
+    // Create top screen background
+    NF_CreateTiledBg(0, 3, "top");
 
-	// Inicializa el motor de texto (requiere tener los fondos tileados inicializados)
-	NF_InitTextSys(0);			// Inicializa el texto para la pantalla superior
-	NF_InitTextSys(1);			// Inicializa el texto para la pantalla inferior
+    // Create bottom screen backgrounds
+    NF_CreateTiledBg(1, 3, "bottom");
 
-	// Carga los archivos de fondo desde la FAT / NitroFS a la RAM
-	NF_LoadTiledBg("bg/blue", "top", 256, 256);			// Carga el fondo para la pantalla inferior
-	NF_LoadTiledBg("bg/blue", "bottom", 256, 256);			// Carga el fondo para la pantalla inferior
-	// Carga las paletas extendidas
-	NF_LoadExBgPal("bg/red", RED);
-	NF_LoadExBgPal("bg/green", GREEN);
-	NF_LoadExBgPal("bg/blue", BLUE);
+    // Create text layers
+    NF_CreateTextLayer(0, 0, 0, "up");
+    NF_CreateTextLayer(1, 0, 0, "down");
 
-	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont("fnt/default", "up", 256, 256, 0);	// Carga la seccion "normal" de la fuente, tamaño del mapa 256x256
-	NF_LoadTextFont("fnt/default", "down", 256, 256, 0);
+    // Variables
+    int color = RED;
+    int x = 0;
+    int y = 0;
 
-	// Tranfiere las paletas del fondo 3
-	u8 n = 0;
-	for (n = 1; n < 4; n ++) {
-		NF_VramExBgPal(0, 3, n, n);
-		NF_VramExBgPal(1, 3, n, n);
-	}
+    while (1)
+    {
+        // Change the pakette used by this tile
+        NF_SetTilePal(0, 3, x, y, color);
 
-	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "top");
-	// Crea los fondos de la pantalla inferior
-	NF_CreateTiledBg(1, 3, "bottom");
+        // Print debug information
+        char text[50];
+        sprintf(text, "X:%02d  Y:%02d   ExPal:%02d  ", x, y, color);
+        NF_WriteText(0, 0, 1, 1, text);
 
-	// Crea una capa de texto
-	NF_CreateTextLayer(0, 0, 0,	"up");
-	NF_CreateTextLayer(1, 0, 0,	"down");
+        // Calculate the next tile
+        x++;
+        if (x > 31)
+        {
+            x = 0;
+            y++;
+            if (y > 23)
+            {
+                y = 0;
 
-	// Variables
-	u8 color = RED;
-	u8 x = 0;
-	u8 y = 0;
-	char text[32];
+                // When the bottom of the screen is reached, change to the next
+                // extended palette.
 
+                NF_SetExBgPal(1, 3, color);
 
-	// Bucle (repite para siempre)
-	while(1) {
+                color++;
+                if (color > BLUE)
+                    color = RED;
+            }
+        }
 
-		// Cambia el la paleta que usara este tile
-		NF_SetTilePal(0, 3, x, y, color);
+        // Update copy of the map in VRAM from the copy in RAM
+        NF_UpdateVramMap(0, 3);
 
-		// Texto
-		sprintf(text, "X:%02d  Y:%02d   ExPal:%02d  ", x, y, color);
-		NF_WriteText(0, 0, 1, 1, text);
+        // Update text layers
+        NF_UpdateTextLayers();
 
-		// Calcula el siguiente tile
-		x ++;
-		if (x > 31) {
-			x = 0;
-			y ++;
-			if (y > 23) {
-				y = 0;
-				// Cambia la paleta extendida del fondo inferior
-				NF_SetExBgPal(1, 3, color);
-				// Texto
-				sprintf(text, "ExPal:%02d  ", color);
-				NF_WriteText(1, 0, 1, 1, text);
-				// Y realiza un cambio de paleta si toca
-				color ++;
-				if (color > BLUE) color = RED;
-			}
-		}
+        // Wait for the screen refresh
+        swiWaitForVBlank();
+    }
 
-		// Ahora actualiza el mapa en la VRAM
-		NF_UpdateVramMap(0, 3);
-
-		// Actualiza las capas de texto
-		NF_UpdateTextLayers();
-
-		swiWaitForVBlank();		// Espera al sincronismo vertical
-
-	}
-
-	return 0;
-
+    return 0;
 }

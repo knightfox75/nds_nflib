@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     s16 iy[MAXSPRITES];
 
     // Initialize sprite variables and create the sprites
-    for (int n = 0; n < MAXSPRITES; n ++)
+    for (int n = 0; n < MAXSPRITES; n++)
     {
         int r = n % 2;
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
         u16 keys = keysDown();
 
         // Move sprites
-        for (int n = 0; n < MAXSPRITES; n ++)
+        for (int n = 0; n < MAXSPRITES; n++)
         {
             x[n] += ix[n];
             if ((x[n] < 0) || (x[n] > (255 - NF_3DSPRITE[n].width)))

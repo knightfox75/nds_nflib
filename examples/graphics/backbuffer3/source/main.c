@@ -118,7 +118,7 @@ int main(int argc, char **argv)
                 }
 
                 // Draw the window
-                for (int y = sqr_ya; y < sqr_yb; y ++)
+                for (int y = sqr_ya; y < sqr_yb; y++)
                 {
                     u32 offset = (y << 8) + sqr_xa;
 

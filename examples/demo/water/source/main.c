@@ -122,14 +122,14 @@ int main(int argc, char **argv)
 
         // Move background
         if ((keys & KEY_LEFT) && (bg_x[0] > 8))
-            bg_x[0] --;
+            bg_x[0]--;
         if ((keys & KEY_RIGHT) && (bg_x[0] < 247))
-            bg_x[0] ++;
+            bg_x[0]++;
 
         // Calculate parallax
-        bg_x[1] = (int)(bg_x[0] / 1.5);
-        bg_x[2] = (int)(bg_x[1] / 1.5);
-        bg_x[3] = (int)(bg_x[2] / 1.5);
+        bg_x[1] = bg_x[0] / 1.5;
+        bg_x[2] = bg_x[1] / 1.5;
+        bg_x[3] = bg_x[2] / 1.5;
 
         // Wait for the screen refresh
         swiWaitForVBlank();

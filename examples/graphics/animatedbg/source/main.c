@@ -34,9 +34,9 @@ void InitAnimatedBg(void)
     }
 
     // Generate map of water background
-    for (int y = 0; y < MAP_Y; y ++)
+    for (int y = 0; y < MAP_Y; y++)
     {
-        for (int x = 0; x < MAP_X; x ++)
+        for (int x = 0; x < MAP_X; x++)
         {
             // Calculate the map 4x4 region to fill
             int start_x = x << 2;
@@ -81,9 +81,9 @@ void AnimateWater(void)
     WATER_SPEED = 0;
 
     // Change the required tiles for the animation
-    for (int y = 0; y < MAP_Y; y ++)
+    for (int y = 0; y < MAP_Y; y++)
     {
-        for (int x = 0; x < MAP_X; x ++)
+        for (int x = 0; x < MAP_X; x++)
         {
             // Calculate the map 4x4 region to fill
             int start_x = x << 2;

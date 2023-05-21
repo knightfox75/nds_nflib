@@ -137,7 +137,7 @@ int main(int argc, char **argv)
         }
 
         // Move balls
-        for (int n = 0; n < 32; n ++)
+        for (int n = 0; n < 32; n++)
         {
             bola_x[n] += bola_spx[n];
             if ((bola_x[n] < 0) || (bola_x[n] > 223))
@@ -164,7 +164,7 @@ int main(int argc, char **argv)
         blink ^= 1;
 
         // "Dissolve" background effect
-        alpha_timer ++;
+        alpha_timer++;
         if (alpha_timer > 5)
         {
             alpha_timer = 0;

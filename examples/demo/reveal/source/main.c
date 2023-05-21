@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     s8 bola_spx[32];
     s8 bola_spy[32];
 
-    for (int n = 0; n < 32; n ++)
+    for (int n = 0; n < 32; n++)
     {
         bola_x[n] = rand() % 223;
         bola_y[n] = rand() % 159;
@@ -118,9 +118,9 @@ int main(int argc, char **argv)
 
             // Draw a 16x16 block around the touchscreen coordinates in the
             // bottom screen.
-            for (int dy = 0; dy < 16; dy ++)
+            for (int dy = 0; dy < 16; dy++)
             {
-                for (int dx = 0; dx < 16; dx ++)
+                for (int dx = 0; dx < 16; dx++)
                 {
                     u16 idx = ((y + dy) << 8) + (x + dx);
                     NF_8BITS_BACKBUFFER[1].data[idx] = 0;
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
         NF_Flip8bitsBackBuffer(1, 0);
 
         // Move the sprites
-        for (int n = 0; n < 32; n ++)
+        for (int n = 0; n < 32; n++)
         {
             bola_x[n] += bola_spx[n];
             if ((bola_x[n] < 0) || (bola_x[n] > 223))

@@ -1,199 +1,178 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of changing tiles in a tiled background.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo de cambio de tiles
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 0
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
 
+    // Initialize tiled backgrounds system
+    NF_InitTiledBgBuffers();    // Initialize storage buffers
+    NF_InitTiledBgSys(0);       // Top screen
+    NF_InitTiledBgSys(1);       // Bottom screen
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize sprite system
+    NF_InitSpriteBuffers();     // Initialize storage buffers
+    NF_InitSpriteSys(0);        // Top screen
+    NF_InitSpriteSys(1);        // Bottom screen
 
-int main(int argc, char **argv) {
+    // Initialize text system
+    NF_InitTextSys(0);          // Top screen
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Load background files from NitroFS
+    NF_LoadTiledBg("bg/layer3", "moon", 256, 256);
+    NF_LoadTiledBg("bg/colmap", "boxes", 768, 512);
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Load sprite files from NitroFS
+    NF_LoadSpriteGfx("sprite/puntero", 0, 8, 8);
+    NF_LoadSpritePal("sprite/puntero", 0);
 
-	// Inicializa el motor 2D
-	NF_Set2D(0, 0);				// Modo 2D_0 en ambas pantallas
-	NF_Set2D(1, 0);
+    // Load text font files from NitroFS
+    NF_LoadTextFont("fnt/default", "normal", 256, 256, 0);
 
-	// Inicializa los fondos tileados
-	NF_InitTiledBgBuffers();	// Inicializa los buffers para almacenar fondos
-	NF_InitTiledBgSys(0);		// Inicializa los fondos Tileados para la pantalla superior
-	NF_InitTiledBgSys(1);		// Iniciliaza los fondos Tileados para la pantalla inferior
+    // Create top screen background
+    NF_CreateTiledBg(0, 3, "moon");
 
-	// Inicializa los Sprites
-	NF_InitSpriteBuffers();		// Inicializa los buffers para almacenar sprites y paletas
-	NF_InitSpriteSys(0);		// Inicializa los sprites para la pantalla superior
-	NF_InitSpriteSys(1);		// Inicializa los sprites para la pantalla inferior
+    // Create bottom screen backgrounds
+    NF_CreateTiledBg(1, 3, "moon");
+    NF_CreateTiledBg(1, 2, "boxes");
 
-	// Inicializa el motor de texto
-	NF_InitTextSys(0);			// Inicializa el texto para la pantalla superior
+    // Create a text layer
+    NF_CreateTextLayer(0, 2, 0, "normal");
 
-	// Carga los archivos de fondo desde la FAT / NitroFS a la RAM
-	NF_LoadTiledBg("bg/layer3", "moon", 256, 256);		// Carga el fondo para la capa 3, pantalla inferior
-	NF_LoadTiledBg("bg/colmap", "boxes", 768, 512);		// Carga el fondo para la capa 2, pantalla inferior
+    // Transfer the required sprites to VRAM
+    NF_VramSpriteGfx(1, 0, 0, true);
+    NF_VramSpritePal(1, 0, 0);
 
-	// Carga los archivos de sprites desde la FAT / NitroFS a la RAM
-	NF_LoadSpriteGfx("sprite/puntero", 0, 8, 8);	// Puntero
-	NF_LoadSpritePal("sprite/puntero", 0);
+    // Create sprite and set its priority layer
+    NF_CreateSprite(1, 0, 0, 0, 124, 92);
+    NF_SpriteLayer(1, 0, 2);
 
-	// Carga la fuente por defecto para el texto
-	NF_LoadTextFont("fnt/default", "normal", 256, 256, 0);
+    // Background scroll variables
+    s16 x = 128;
+    s16 y = 96;
 
-	// Crea los fondos de la pantalla superior
-	NF_CreateTiledBg(0, 3, "moon");
-	// Crea los fondos de la pantalla inferior
-	NF_CreateTiledBg(1, 3, "moon");
-	NF_CreateTiledBg(1, 2, "boxes");
+    while (1)
+    {
+        // Read keys
+        scanKeys();
+        u16 keys = keysHeld();
 
-	// Crea una capa de texto
-	NF_CreateTextLayer(0, 2, 0,	"normal");
+        if (keys & KEY_UP)
+            y--;
+        if (keys & KEY_DOWN)
+            y++;
 
-	// Transfiere a la VRAM los sprites necesarios
-	NF_VramSpriteGfx(1, 0, 0, true);	// Puntero
-	NF_VramSpritePal(1, 0, 0);
+        if (keys & KEY_LEFT)
+            x--;
+        if (keys & KEY_RIGHT)
+            x++;
 
-	// Crea el Sprite del puntero en la pantalla inferior
-	NF_CreateSprite(1, 0, 0, 0, 124, 92);	// Crea el puntero en la pantalla inferior
-	NF_SpriteLayer(1, 0, 2);				// Y la capa sobre la que se dibujara
+        // Movement limits
+        if (x < 0)
+            x = 0;
+        if (x > 767)
+            x = 767;
 
-	// Variable para la lectura del keypad
-	u16 keys = 0;
+        if (y < 0)
+            y = 0;
+        if (y > 511)
+            y = 511;
 
-	// Variables para el control de movimiento
-	s16 x = 128;
-	s16 y = 96;
-	s16 spr_x = 0;
-	s16 spr_y = 0;
-	s16 bg_x = 0;
-	s16 bg_y = 0;
-	s16 tilenum = 0;
+        // Calculate background scroll from the coordinates of the pointer
+        int bg_x = x - 128;
+        if (bg_x < 0)
+            bg_x = 0;
+        if (bg_x > 512)
+            bg_x = 512;
 
-	// Buffer de texto
-	char mytext[32];
+        int bg_y = y - 96;
+        if (bg_y < 0)
+            bg_y = 0;
+        if (bg_y > 320)
+            bg_y = 320;
 
+        // Pointer sprite position
+        int spr_x = (x - bg_x) - 4;
+        int spr_y = (y - bg_y) - 4;
+        NF_MoveSprite(1, 0, spr_x, spr_y);
 
+        // Print pointer position
+        char mytext[32];
+        sprintf(mytext,"x:%d  y:%d ", x, y);
+        NF_WriteText(0, 2, 1, 1, mytext);
 
-	// Bucle (repite para siempre)
-	while(1) {
+        // Change the tile under the pointer if the user presses a button
+        if (keys & KEY_B)
+            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 0);
+        if (keys & KEY_A)
+            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 1);
+        if (keys & KEY_Y)
+            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 2);
+        if (keys & KEY_X)
+            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 3);
 
-		// Lee el teclado
-		scanKeys();
-		keys = keysHeld();
-		if (keys & KEY_UP) y --;
-		if (keys & KEY_DOWN) y ++;
-		if (keys & KEY_LEFT) x --;
-		if (keys & KEY_RIGHT) x ++;
+        NF_UpdateVramMap(1, 2);
 
-		// Limites del movimiento
-		if (x < 0) x = 0;
-		if (x > 767) x = 767;
-		if (y < 0) y = 0;
-		if (y > 511) y = 511;
+        // Print the color of the tile under the pointer
+        int tilenum = NF_GetTileOfMap(1, 2, x >> 3, y >> 3);
+        switch (tilenum)
+        {
+            case 0:
+                sprintf(mytext,"Tile: Vacio / Void / %d   ", tilenum);
+                break;
+            case 1:
+                sprintf(mytext,"Tile: Azul / Blue / %d   ", tilenum);
+                break;
+            case 2:
+                sprintf(mytext,"Tile: Verde / Green / %d   ", tilenum);
+                break;
+            case 3:
+                sprintf(mytext,"Tile: Rojo / Red / %d   ", tilenum);
+                break;
+        }
 
-		// Posicion del fondo
-		bg_x = (x - 128);
-		if (bg_x < 0) bg_x = 0;
-		if (bg_x > 512) bg_x = 512;
-		bg_y = (y - 96);
-		if (bg_y < 0) bg_y = 0;
-		if (bg_y > 320) bg_y = 320;
+        NF_WriteText(0, 2, 1, 3, mytext);
 
-		// Posicion del Sprite
-		spr_x = (x - bg_x) - 4;
-		spr_y = (y - bg_y) - 4;
-		NF_MoveSprite(1, 0, spr_x, spr_y);
+        // Update text layers
+        NF_UpdateTextLayers();
 
-		// Imprime la posicion del cursor
-		sprintf(mytext,"x:%d  y:%d ", x, y);
-		NF_WriteText(0, 2, 1, 1, mytext);
+        // Update OAM array
+        NF_SpriteOamSet(1);
 
-		if (keys & KEY_B) NF_SetTileOfMap(1, 2, (x >> 3), (y >> 3), 0);
-		if (keys & KEY_A) NF_SetTileOfMap(1, 2, (x >> 3), (y >> 3), 1);
-		if (keys & KEY_Y) NF_SetTileOfMap(1, 2, (x >> 3), (y >> 3), 2);
-		if (keys & KEY_X) NF_SetTileOfMap(1, 2, (x >> 3), (y >> 3), 3);
-		NF_UpdateVramMap(1, 2);
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
-		// Imprime el nº de tile
-		tilenum = NF_GetTileOfMap(1, 2, (x >> 3),(y >> 3));
-		switch (tilenum) {
-			case 0:
-				sprintf(mytext,"Tile: Vacio / Void / %d   ", tilenum);
-				break;
-			case 1:
-				sprintf(mytext,"Tile: Azul / Blue / %d   ", tilenum);
-				break;
-			case 2:
-				sprintf(mytext,"Tile: Verde / Green / %d   ", tilenum);
-				break;
-			case 3:
-				sprintf(mytext,"Tile: Rojo / Red / %d   ", tilenum);
-				break;
-		}
+        // Update OAM
+        oamUpdate(&oamSub);
 
-		NF_WriteText(0, 2, 1, 3, mytext);
+        // Update scroll
+        NF_ScrollBg(1, 2, bg_x, bg_y);
+    }
 
-		NF_UpdateTextLayers();			// Actualiza las capas de texto
-		NF_SpriteOamSet(1);				// Actualiza el Array del OAM
-
-		swiWaitForVBlank();				// Espera al sincronismo vertical
-
-		oamUpdate(&oamSub);				// Actualiza a VRAM el OAM Secundario
-
-		NF_ScrollBg(1, 2, bg_x, bg_y);	// Actualiza el scroll
-
-	}
-
-	return 0;
-
+    return 0;
 }

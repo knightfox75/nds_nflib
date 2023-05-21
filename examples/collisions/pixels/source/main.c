@@ -75,13 +75,13 @@ int main(int argc, char **argv)
         u16 keys = keysHeld(); // Keys currently pressed
 
         if (keys & KEY_UP)
-            y --;
+            y--;
         if (keys & KEY_DOWN)
-            y ++;
+            y++;
         if (keys & KEY_LEFT)
-            x --;
+            x--;
         if (keys & KEY_RIGHT)
-            x ++;
+            x++;
 
         // Movement limits
         if (x < 0)

@@ -123,12 +123,12 @@ int main(int argc, char **argv)
         // Change the priority of the sprite
         if ((keys & KEY_A) && (prio > 0))
         {
-            prio --;
+            prio--;
             NF_Set3dSpritePriority(TARGET, prio);
         }
         if ((keys & KEY_B) && (prio < (MAXSPRITES - 1)))
         {
-            prio ++;
+            prio++;
             NF_Set3dSpritePriority(TARGET, prio);
         }
 

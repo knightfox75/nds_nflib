@@ -38,9 +38,9 @@ int main(int argc, char **argv)
     while (1)
     {
         // Fill buffer
-        for (int y = 0; y < 256; y ++)
+        for (int y = 0; y < 256; y++)
         {
-            for (int x = 0; x < 256; x ++)
+            for (int x = 0; x < 256; x++)
             {
                 // Calculate new color
                 r++;

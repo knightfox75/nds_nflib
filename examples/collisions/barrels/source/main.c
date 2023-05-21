@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     NF_VramSpritePal(0, 0, 0);
 
     // Create sprites and set their priority layer
-    for (int b = 0; b < 3; b ++)
+    for (int b = 0; b < 3; b++)
     {
         NF_CreateSprite(0, b, 0, 0, -16, -16);
         NF_SpriteLayer(0, b, 3);
@@ -83,13 +83,13 @@ int main(int argc, char **argv)
         bool right = false;
 
         // Handle collisions and fall of all balls
-        for (int b = 0; b < 3; b ++)
+        for (int b = 0; b < 3; b++)
         {
             down = true; // If this remains true, there is no collision
 
             // Check all pixels of the lower half of the ball to see if there is
             // a collision.
-            for (int n = 0; n < 16; n ++)
+            for (int n = 0; n < 16; n++)
             {
                 // Blue pixels are index 4
                 if (NF_GetPoint(0, (x[b] + n), (y[b] + py[n])) == 4)
@@ -117,15 +117,15 @@ int main(int argc, char **argv)
 
             // Free fall
             if (down)
-                y[b] ++;
+                y[b]++;
 
             // Move right
             if (right)
-                x[b] ++;
+                x[b]++;
 
             // Move left
             if (left)
-                x[b] --;
+                x[b]--;
 
             // If the ball exits the screen from the bottom move it to the top
             if (y[b] > 192)

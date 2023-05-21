@@ -86,7 +86,7 @@ int main(int argc, char **argv)
         swiWaitForVBlank();
 
         // Update background scroll during vertical blanking to avoid tearing
-        for (int n = 0; n < 4; n ++)
+        for (int n = 0; n < 4; n++)
             NF_ScrollBg(1, n, bg_x[n], bg_y[n]);
     }
 

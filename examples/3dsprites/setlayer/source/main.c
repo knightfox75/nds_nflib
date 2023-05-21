@@ -54,13 +54,13 @@ int main(int argc, char **argv)
     NF_LoadTiledBg("bg/bg1", "bg1", 2048, 256);
 
     // Load sprite files from NitroFS
-    for (int n = 0; n < SPRITEMAXNUM; n ++)
+    for (int n = 0; n < SPRITEMAXNUM; n++)
         NF_LoadSpriteGfx("sprite/numbers", n, 16, 16);
 
     NF_LoadSpritePal("sprite/numbers", 0);
 
     // Transfer the required sprites to VRAM
-    for (int n = 0; n < SPRITEMAXNUM; n ++)
+    for (int n = 0; n < SPRITEMAXNUM; n++)
         NF_Vram3dSpriteGfx(n, n, true);
 
     NF_Vram3dSpritePal(0, 0);
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     int layer = 0;
 
     // Inicializa las variables
-    for (int n = 0; n < SPRITEMAXNUM; n ++)
+    for (int n = 0; n < SPRITEMAXNUM; n++)
     {
         x[n] = rand() % 239;
         y[n] = rand() % 175;
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
         u16 keys = keysHeld(); // Keys currently pressed
 
         // Move all sprites
-        for (int n = 0; n < SPRITEMAXNUM; n ++)
+        for (int n = 0; n < SPRITEMAXNUM; n++)
         {
             x[n] += ix[n];
             if ((x[n] < 0) || (x[n] > (255 - NF_3DSPRITE[n].width)))

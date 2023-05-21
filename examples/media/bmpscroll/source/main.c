@@ -90,9 +90,9 @@ int main(int argc, char **argv)
     }
 
     // Generate thumbnail
-    for (int scr_y = 0; scr_y < mini_y; scr_y ++)
+    for (int scr_y = 0; scr_y < mini_y; scr_y++)
     {
-        for (int scr_x = 0; scr_x < mini_x; scr_x ++)
+        for (int scr_x = 0; scr_x < mini_x; scr_x++)
         {
             // Calculate source and destination offsets
             scr_idx = ((scr_y + desp_y) << 8) + (scr_x + desp_x);
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
             {
                 x += SPEED;
                 if (x > (NF_BG16B[0].width - 256))
-                    x = (NF_BG16B[0].width - 256);
+                    x = NF_BG16B[0].width - 256;
             }
         }
         if (NF_BG16B[0].height > 192)
@@ -138,18 +138,18 @@ int main(int argc, char **argv)
             {
                 y += SPEED;
                 if (y > (NF_BG16B[0].height - 192))
-                    y = (NF_BG16B[0].height - 192);
+                    y = NF_BG16B[0].height - 192;
             }
         }
 
         // Draw image on the framebuffer
-        for (int scr_y = 0; scr_y < bottom; scr_y ++)
+        for (int scr_y = 0; scr_y < bottom; scr_y++)
         {
-            for (int scr_x = 0; scr_x < right; scr_x ++ )
+            for (int scr_x = 0; scr_x < right; scr_x++)
             {
                 // Calculate source and destination offsets
                 scr_idx = (scr_y << 8) + scr_x;
-                img_idx = (((scr_y + y) * NF_BG16B[0].width) + (scr_x + x));
+                img_idx = ((scr_y + y) * NF_BG16B[0].width) + (scr_x + x);
 
                 *(NF_16BITS_BACKBUFFER[0] + scr_idx) = NF_BG16B[0].buffer[img_idx];
             }

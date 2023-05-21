@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     s8 delay = 0;
 
     // Print 96 text lines
-    for (int n = 0; n < 96; n ++)
+    for (int n = 0; n < 96; n++)
     {
         sprintf(mytext," Linea: %02d", n);
         NF_WriteText(0, 0, 0, n, mytext);
@@ -76,13 +76,13 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        delay ++;
+        delay++;
         if (delay > 10) {
 
             delay = 0;
 
             // Print 96 text lines
-            for (int n = 0; n < 96; n ++)
+            for (int n = 0; n < 96; n++)
             {
                 sprintf(mytext,"%04d", contador);
                 NF_WriteText(0, 0, 26, n, mytext);

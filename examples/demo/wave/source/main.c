@@ -69,9 +69,9 @@ int main(int argc, char **argv)
 
     // Flip vertically all the tiles in the map of the bottom screen, and copy
     // them to a temporary buffer
-    for (int y = 0; y < 24; y ++)
+    for (int y = 0; y < 24; y++)
     {
-        for (int x = 0; x < 32; x ++)
+        for (int x = 0; x < 32; x++)
         {
             NF_SetTileVflip(1, 3, x, y);
             mapa[x][y] = NF_GetTileOfMap(1, 3, x, y);
@@ -79,9 +79,9 @@ int main(int argc, char **argv)
     }
 
     // Now copy the tiles in reverse order to flip the image correctly
-    for (int y = 0; y < 24; y ++)
+    for (int y = 0; y < 24; y++)
     {
-        for (int x = 0; x < 32; x ++)
+        for (int x = 0; x < 32; x++)
         {
             NF_SetTileOfMap(1, 3, x, (23 - y), mapa[x][y]);
         }
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     s8 inc = 1;
     int x = 0;
 
-    for (int y = 0; y < 192; y ++)
+    for (int y = 0; y < 192; y++)
     {
         x += inc;
         bgx[y] = x;

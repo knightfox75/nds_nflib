@@ -143,7 +143,7 @@ int main(int argc, char **argv)
         swiWaitForVBlank();
 
         // Update parameters of the affine backgrounds
-        for (int n = 0; n < 2; n ++)
+        for (int n = 0; n < 2; n++)
         {
             NF_AffineBgTransform(n, 3, zoom, zoom, 0, 0);
             NF_AffineBgCenter(n, 3, x, y);

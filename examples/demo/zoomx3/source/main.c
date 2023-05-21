@@ -90,9 +90,9 @@ int main(int argc, char **argv)
         int zoom_y = 0;
 
         // Fill buffer
-        for (int y = square_y; y < (square_y + 64); y ++)
+        for (int y = square_y; y < (square_y + 64); y++)
         {
-            for (int x = square_x; x < (square_x + 85); x ++)
+            for (int x = square_x; x < (square_x + 85); x++)
             {
                 u32 rgb;
                 u32 red, green, blue;
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
                     // Draw the vertical line that splits both halves
                     if (zoom_x == 126)
                     {
-                        for (int i = 1; i < 5; i ++)
+                        for (int i = 1; i < 5; i++)
                         {
                             r[i] = 5;
                             g[i] = 10;

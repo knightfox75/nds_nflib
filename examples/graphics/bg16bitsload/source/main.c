@@ -1,97 +1,57 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Example of loading 16-bit bitmap backgrounds.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo carga de fondos en 16bits (modo BITMAP)
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
-#include <string.h>
-#include <unistd.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 5
+    NF_Set2D(0, 5);
+    NF_Set2D(1, 5);
 
+    // Initialize bitmap backgrounds system
+    NF_InitBitmapBgSys(0, 1);
+    NF_InitBitmapBgSys(1, 1);
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize storage buffers
+    NF_Init16bitsBgBuffers();
 
-int main(int argc, char **argv) {
+    // Load bitmap background files from NitroFS
+    NF_Load16bitsBg("bmp/bitmap16", 0);
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Tranfer image to VRAM of both screens
+    NF_Copy16bitsBuffer(0, 0, 0);
+    NF_Copy16bitsBuffer(1, 0, 0);
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // It's not needed to use it any longer, so remove it from RAM
+    NF_Unload16bitsBg(0);
 
-	// Inicializa el motor 2D en modo BITMAP
-	NF_Set2D(0, 5);				// Modo 2D_5 en ambas pantallas
-	NF_Set2D(1, 5);
+    while (1)
+    {
+        // Wait for the screen refresh
+        swiWaitForVBlank();
+    }
 
-	// Inicializa los fondos en modo "BITMAP"
-	NF_InitBitmapBgSys(0, 1);
-	NF_InitBitmapBgSys(1, 1);
-
-	// Inicializa los buffers para guardar fondos en formato BITMAP
-	NF_Init16bitsBgBuffers();
-
-	// Carga el archivo BITMAP de imagen en formato RAW a la RAM
-	NF_Load16bitsBg("bmp/bitmap16", 0);
-
-	// Tranfiere la imagen a la VRAM de ambas pantallas
-	NF_Copy16bitsBuffer(0, 0, 0);
-	NF_Copy16bitsBuffer(1, 0, 0);
-
-	// Si no es necesario usarla mas, borrala de la RAM
-	NF_Unload16bitsBg(0);
-
-	// Repite para siempre
-	while (1) {
-		// Sincronismo Vertical
-		swiWaitForVBlank();
-	}
-
-
-	return 0;
-
+    return 0;
 }

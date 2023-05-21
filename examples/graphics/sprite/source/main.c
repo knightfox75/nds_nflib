@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     s8 bola_spx[32];
     s8 bola_spy[32];
 
-    for (int n = 0; n < 32; n ++)
+    for (int n = 0; n < 32; n++)
     {
         bola_x[n] = rand() % 223;
         bola_y[n] = rand() % 159;
@@ -112,14 +112,14 @@ int main(int argc, char **argv)
         if (pj_anim > 5)
         {
             pj_anim = 0;
-            pj_frame ++;
+            pj_frame++;
             if (pj_frame > 11)
                 pj_frame = 0;
             NF_SpriteFrame(1, 0, pj_frame);
         }
 
         // Move balls
-        for (int n = 0; n < 32; n ++)
+        for (int n = 0; n < 32; n++)
         {
             bola_x[n] += bola_spx[n];
             if ((bola_x[n] < 0) || (bola_x[n] > 223))
