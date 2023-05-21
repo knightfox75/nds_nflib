@@ -124,9 +124,11 @@ int main(int argc, char **argv)
             bola_x[n] += bola_spx[n];
             if ((bola_x[n] < 0) || (bola_x[n] > 223))
                 bola_spx[n] *= -1;
+
             bola_y[n] += bola_spy[n];
             if ((bola_y[n] < 0) || (bola_y[n] > 159))
                 bola_spy[n] *= -1;
+
             NF_MoveSprite(0, n, bola_x[n], bola_y[n]);
         }
 

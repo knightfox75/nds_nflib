@@ -85,9 +85,9 @@ int main(int argc, char **argv)
             square_y = 127;
 
         // Fill buffer
-        for (int y = square_y; y < (square_y + 64); y ++)
+        for (int y = square_y; y < square_y + 64; y++)
         {
-            for (int x = square_x; x < (square_x + 64); x ++)
+            for (int x = square_x; x < square_x + 64; x++)
             {
                 // Get current color
                 u32 rgb = NF_16BITS_BACKBUFFER[1][(y << 8) + x];
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
                 b = composite;
 
                 // Pack the components as a RGB value
-                rgb = r | (g << 5)| (b << 10) | BIT(15);
+                rgb = r | (g << 5) | (b << 10) | BIT(15);
 
                 // Write RGB value in the backbuffer
                 NF_16BITS_BACKBUFFER[1][(y << 8) + x] = rgb;

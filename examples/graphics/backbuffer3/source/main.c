@@ -1,175 +1,140 @@
 // SPDX-License-Identifier: CC0-1.0
 //
 // SPDX-FileContributor: NightFox & Co., 2009-2011
+//
+// Basic example of using a 16-bit bitmap with a backbuffer and loading images.
+// It shows two images with a window effect.
+// http://www.nightfoxandco.com
 
-/*
--------------------------------------------------
-
-	NightFox's Lib Template
-	Ejemplo basico de BackBuffer en 16bits (modo BITMAP)
-	con carga de archivos de imagen.
-	Efecto de visualizar dos imagenes con efecto ventana.
-
-	Requiere DevkitARM
-	Requiere NightFox's Lib
-
-	Codigo por NightFox
-	http://www.nightfoxandco.com
-	Inicio 10 de Octubre del 2009
-
--------------------------------------------------
-*/
-
-
-
-
-
-/*
--------------------------------------------------
-	Includes
--------------------------------------------------
-*/
-
-// Includes C
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-// Includes propietarios NDS
 #include <nds.h>
 #include <filesystem.h>
 
-// Includes librerias propias
 #include <nf_lib.h>
 
+int main(int argc, char **argv)
+{
+    // Prepare a NitroFS initialization screen
+    NF_Set2D(0, 0);
+    NF_Set2D(1, 0);
+    consoleDemoInit();
+    printf("\n NitroFS init. Please wait.\n\n");
+    printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
+    swiWaitForVBlank();
 
+    // Initialize NitroFS and set it as the root folder of the filesystem
+    nitroFSInit(NULL);
+    NF_SetRootFolder("NITROFS");
 
+    // Initialize 2D engine in both screens and use mode 5
+    NF_Set2D(0, 5);
+    NF_Set2D(1, 5);
 
+    // Initialize bitmap backgrounds system
+    NF_InitBitmapBgSys(0, 1);
+    NF_InitBitmapBgSys(1, 1);
 
-/*
--------------------------------------------------
-	Main() - Bloque general del programa
--------------------------------------------------
-*/
+    // Initialize storage buffers
+    NF_Init16bitsBgBuffers();
 
-int main(int argc, char **argv) {
+    // Initialize backbuffer
+    NF_Init16bitsBackBuffer(1);
 
-	// Pantalla de espera inicializando NitroFS
-	NF_Set2D(0, 0);
-	NF_Set2D(1, 0);
-	consoleDemoInit();
-	printf("\n NitroFS init. Please wait.\n\n");
-	printf(" Iniciando NitroFS,\n por favor, espere.\n\n");
-	swiWaitForVBlank();
+    // Enable backbuffer
+    NF_Enable16bitsBackBuffer(1);
 
-	// Define el ROOT e inicializa el sistema de archivos
-	nitroFSInit(NULL);
-	NF_SetRootFolder("NITROFS");	// Define la carpeta ROOT para usar NITROFS
+    // Load bitmap background files from NitroFS
+    NF_Load16bitsBg("bmp/bitmap16", 0);
+    NF_Load16bitsBg("bmp/img16_a", 1);
+    NF_Load16bitsBg("bmp/img16_b", 2);
 
-	// Inicializa el motor 2D en modo BITMAP
-	NF_Set2D(0, 5);				// Modo 2D_5 en ambas pantallas
-	NF_Set2D(1, 5);
+    // Tranfer image to VRAM of both screens
+    NF_Copy16bitsBuffer(0, 0, 0);
+    NF_Copy16bitsBuffer(1, 1, 2);
 
-	// Inicializa los fondos en modo "BITMAP"
-	NF_InitBitmapBgSys(0, 1);
-	NF_InitBitmapBgSys(1, 1);
+    // It's not needed to use it any longer, so remove it from RAM
+    NF_Unload16bitsBg(0);
 
-	// Inicializa los buffers para guardar fondos en formato BITMAP
-	NF_Init16bitsBgBuffers();
+    // Variables to control the window
+    s16 xa = 0;
+    s16 xb = 0;
+    s16 ya = 0;
+    s16 yb = 0;
 
-	// Inicializa el BackBuffer de 16 bits
-	// Usalo solo una vez antes de habilitarlo
-	NF_Init16bitsBackBuffer(1);
+    while (1)
+    {
+        // Copy original image to the backbuffer of the top screen
+        NF_Copy16bitsBuffer(1, 1, 2);
 
-	// Habilita el backbuffer en la pantalla superior
-	NF_Enable16bitsBackBuffer(1);
+        // Read keys and touchscreen
+        scanKeys();
+        touchPosition touchscreen;
+        touchRead(&touchscreen);
+        u16 keys_held = keysHeld();
+        u16 keys_down = keysDown();
 
-	// Carga el archivo BITMAP de imagen en formato RAW a la RAM
-	NF_Load16bitsBg("bmp/bitmap16", 0);
-	NF_Load16bitsBg("bmp/img16_a", 1);
-	NF_Load16bitsBg("bmp/img16_b", 2);
+        if (keys_down & KEY_TOUCH)
+        {
+            // If this is the first time the user presses the screen, save that
+            // point as one corner of the window.
+            xa = touchscreen.px;
+            ya = touchscreen.py;
+        }
+        else if (keys_held & KEY_TOUCH)
+        {
+            // Save the other corner of the window
+            xb = touchscreen.px;
+            yb = touchscreen.py;
 
-	// Tranfiere la imagen a la VRAM de ambas pantallas
-	NF_Copy16bitsBuffer(0, 0, 0);
-	NF_Copy16bitsBuffer(1, 1, 2);
+            // If the two points aren't the same
+            if ((xa != xb) && (ya != yb))
+            {
+                int sqr_xa, sqr_xb, sqr_ya, sqr_yb;
 
-	// Si no es necesario usarla mas, borrala de la RAM
-	NF_Unload16bitsBg(0);
+                // Calculate window bounds
+                if (xa < xb)
+                {
+                    sqr_xa = xa;
+                    sqr_xb = xb;
+                }
+                else
+                {
+                    sqr_xa = xb;
+                    sqr_xb = xa;
+                }
 
-	// Variables del control del touchpad
-	u16 keys = 0;
-	touchPosition touchscreen;
+                if (ya < yb)
+                {
+                    sqr_ya = ya;
+                    sqr_yb = yb;
+                }
+                else
+                {
+                    sqr_ya = yb;
+                    sqr_yb = ya;
+                }
 
-	// Variables del control de la ventana
-	u32 move = 0;
-	s16 y = 0;
-	s16 xa = 0;
-	s16 xb = 0;
-	s16 ya = 0;
-	s16 yb = 0;
-	s16 sqr_xa = 0;
-	s16 sqr_xb = 0;
-	s16 sqr_ya = 0;
-	s16 sqr_yb = 0;
-	bool in_touch = false;
+                // Draw the window
+                for (int y = sqr_ya; y < sqr_yb; y ++)
+                {
+                    u32 offset = (y << 8) + sqr_xa;
 
-	// Repite para siempre
-	while (1) {
+                    memcpy(NF_16BITS_BACKBUFFER[1] + offset,
+                           NF_BG16B[1].buffer + offset,
+                           (sqr_xb - sqr_xa) << 1);
+                }
+            }
+        }
 
-		// Copia al backbuffer la imagen de arriba
-		NF_Copy16bitsBuffer(1, 1, 2);
+        // Wait for the screen refresh
+        swiWaitForVBlank();
 
-		// Lectura de posicion del stylus
-		scanKeys();					// Lee el touchpad via Libnds
-		touchRead(&touchscreen);
-		keys = keysHeld();			// Verifica el estado del touchscreen
-		if (keys & KEY_TOUCH) {		// Si se toca el touchpad
-			if (!in_touch) {		// Y es el primer toque
-				xa = touchscreen.px;	// Guarda el punto
-				ya = touchscreen.py;
-				in_touch = true;		// e indicalo
-			}
-				xb = touchscreen.px;	// Guarda el segundo punto
-				yb = touchscreen.py;
-		} else {
-			in_touch = false;			// Ya no se esta tocando el touchpad
-		}
+        // Swap backbuffer and visible buffers
+        NF_Flip16bitsBackBuffer(1);
+    }
 
-		// Si se ha tocado el touchpad y la ventana es del tamaño suficiente...
-		if (in_touch && (xa != xb) && (ya != yb)) {
-			// Calcula los limites de la ventana
-			if (xa < xb) {
-				sqr_xa = xa;
-				sqr_xb = xb;
-			} else {
-				sqr_xa = xb;
-				sqr_xb = xa;
-			}
-			if (ya < yb) {
-				sqr_ya = ya;
-				sqr_yb = yb;
-			} else {
-				sqr_ya = yb;
-				sqr_yb = ya;
-			}
-			// Ahora dibuja la ventana linea a linea
-			for (y = sqr_ya; y < sqr_yb; y ++) {
-				// Calcula donde se escribira la linea
-				move = ((y << 8) + sqr_xa);
-				// Copia la linea de la Imagen A sobre la B
-				memcpy((NF_16BITS_BACKBUFFER[1] + move), (NF_BG16B[1].buffer + move), ((sqr_xb - sqr_xa) << 1));
-			}
-		}
-
-		// Sincronismo Vertical
-		swiWaitForVBlank();
-
-		// Manda el backbuffer a la pantalla
-		NF_Flip16bitsBackBuffer(1);
-
-	}
-
-
-	return 0;
-
+    return 0;
 }
