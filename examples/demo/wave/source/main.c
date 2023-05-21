@@ -13,9 +13,9 @@
 #include <nf_lib.h>
 
 // Variables
-u16 mapa[32][24];    // Almacena el mapa
-s16 bgx[192];        // Posicion X de cada linea
-s8 i[192];            // Control de movimiento de cada linea
+u16 mapa[32][24];   // Holds the map
+s16 bgx[192];       // Horizontal scroll of each line
+s8 i[192];          // Scroll speed of each line
 
 // Function that runs after a scanline is drawn. By modifying the values of the
 // scroll registers it's possible to add a wave effect.

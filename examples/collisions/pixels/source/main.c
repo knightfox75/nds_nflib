@@ -44,8 +44,8 @@ int main(int argc, char **argv)
     NF_LoadTiledBg("bg/ppc_bg", "bg3", 512, 512);
 
     // Load sprite files from NitroFS
-    NF_LoadSpriteGfx("sprite/puntero", 0, 8, 8);
-    NF_LoadSpritePal("sprite/puntero", 0);
+    NF_LoadSpriteGfx("sprite/pointer", 0, 8, 8);
+    NF_LoadSpritePal("sprite/pointer", 0);
 
     // Load collision map files from NitroFS
     NF_LoadCollisionBg("maps/ppc_cmap", 0, 512, 512);

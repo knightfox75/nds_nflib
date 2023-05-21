@@ -215,7 +215,7 @@ int main(int argc, char **argv)
 {
     u8 modo = 0;    // Client (1) - Server (2)
 
-    u32 contador = 0;
+    u32 counter = 0;
     char temp[256];
     bool loop = true;
     bool senddata = true;
@@ -267,7 +267,7 @@ int main(int argc, char **argv)
 
                 // Reset counter when the user presses X
                 if (keys & KEY_X)
-                    contador = 0;
+                    counter = 0;
 
                 // Exit if R is pressed
                 if (keys & KEY_R)
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
                     if (loop)
                     {
                         // Send data if the loop is active
-                        sprintf(temp, "%05lu", contador);
+                        sprintf(temp, "%05lu", counter);
                     }
                     else
                     {
@@ -293,9 +293,9 @@ int main(int argc, char **argv)
                         // Print the received data
                         printf("Verificado: %s\n\n", NF_RECV_BUFFER);
                         // Increment counter
-                        contador++;
-                        if (contador > 9999)
-                            contador = 0;
+                        counter++;
+                        if (counter > 9999)
+                            counter = 0;
                     }
                     else
                     {

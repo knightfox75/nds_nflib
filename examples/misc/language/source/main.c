@@ -47,7 +47,7 @@ int main(int argc, char **argv)
             break;
     }
 
-    while(1)
+    while (1)
     {
         swiWaitForVBlank();
     }

@@ -1,0 +1,17 @@
+You must place the tiles of each frame of the animation from left to right, and
+from up to down, placing them in an image one after the other.
+
+If the size of each frame is 4x4 tiles in a 32x256 pixel image, for example:
+
+[01][02][03][04]
+[05][05][07][07]
+[09][10][11][12]
+[13][14][15][16]
+
+[..][..][..][..]
+
+In the final image for the animation, of size 256x256 pixels, they would be
+placed this way:
+
+[01][02][03][04][05][05][07][07][09][10][11][12][13][14][15][16][..][..][..][..]
+

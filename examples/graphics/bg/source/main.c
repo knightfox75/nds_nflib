@@ -39,19 +39,19 @@ int main(int argc, char **argv)
 
     // Load background files from NitroFS
     NF_LoadTiledBg("bg/nfl", "nfl", 256, 256);
-    NF_LoadTiledBg("bg/bg3", "capa_3", 256, 256);
-    NF_LoadTiledBg("bg/bg2", "capa_2", 1024, 256);
-    NF_LoadTiledBg("bg/bg1", "capa_1", 1536, 256);
-    NF_LoadTiledBg("bg/bg0", "capa_0", 2048, 256);
+    NF_LoadTiledBg("bg/bg3", "layer_3", 256, 256);
+    NF_LoadTiledBg("bg/bg2", "layer_2", 1024, 256);
+    NF_LoadTiledBg("bg/bg1", "layer_1", 1536, 256);
+    NF_LoadTiledBg("bg/bg0", "layer_0", 2048, 256);
 
     // Create top screen background
     NF_CreateTiledBg(0, 3, "nfl");
 
     // Create bottom screen backgrounds
-    NF_CreateTiledBg(1, 3, "capa_3");
-    NF_CreateTiledBg(1, 2, "capa_2");
-    NF_CreateTiledBg(1, 1, "capa_1");
-    NF_CreateTiledBg(1, 0, "capa_0");
+    NF_CreateTiledBg(1, 3, "layer_3");
+    NF_CreateTiledBg(1, 2, "layer_2");
+    NF_CreateTiledBg(1, 1, "layer_1");
+    NF_CreateTiledBg(1, 0, "layer_0");
 
     // Variables
     s16 bg_x[4] = { 0, 0, 0, 0 };

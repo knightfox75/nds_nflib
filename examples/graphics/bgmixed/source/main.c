@@ -66,8 +66,8 @@ int main(int argc, char **argv)
     NF_Load8bitsBg("bmp/img8b_2", 1);
 
     // Load sprite files from NitroFS
-    NF_LoadSpriteGfx("sprite/bola", 0, 32, 32);
-    NF_LoadSpritePal("sprite/bola", 0);
+    NF_LoadSpriteGfx("sprite/ball", 0, 32, 32);
+    NF_LoadSpritePal("sprite/ball", 0);
 
     // Create bottom screen background
     NF_CreateTiledBg(1, 0, "tiled_bg");
@@ -107,19 +107,19 @@ int main(int argc, char **argv)
     NF_VramSpritePal(1, 0, 0);
 
     // Setup and create ball sprites
-    s16 bola_x[32];
-    s16 bola_y[32];
-    s8 bola_spx[32];
-    s8 bola_spy[32];
+    s16 ball_x[32];
+    s16 ball_y[32];
+    s8 ball_spx[32];
+    s8 ball_spy[32];
 
     for (int n = 0; n < 32; n++)
     {
-        bola_x[n] = rand() % 223;
-        bola_y[n] = rand() % 159;
-        bola_spx[n] = (rand() % 3) + 1;
-        bola_spy[n] = (rand() % 3) + 1;
-        NF_CreateSprite(0, n, 0, 0, bola_x[n], bola_y[n]);
-        NF_CreateSprite(1, n, 0, 0, bola_x[n], bola_y[n]);
+        ball_x[n] = rand() % 223;
+        ball_y[n] = rand() % 159;
+        ball_spx[n] = (rand() % 3) + 1;
+        ball_spy[n] = (rand() % 3) + 1;
+        NF_CreateSprite(0, n, 0, 0, ball_x[n], ball_y[n]);
+        NF_CreateSprite(1, n, 0, 0, ball_x[n], ball_y[n]);
         NF_SpriteLayer(0, n, 3);
         NF_SpriteLayer(1, n, 3);
     }
@@ -129,16 +129,16 @@ int main(int argc, char **argv)
         // Move balls
         for (int n = 0; n < 32; n++)
         {
-            bola_x[n] += bola_spx[n];
-            if ((bola_x[n] < 0) || (bola_x[n] > 223))
-                bola_spx[n] *= -1;
+            ball_x[n] += ball_spx[n];
+            if ((ball_x[n] < 0) || (ball_x[n] > 223))
+                ball_spx[n] *= -1;
 
-            bola_y[n] += bola_spy[n];
-            if ((bola_y[n] < 0) || (bola_y[n] > 159))
-                bola_spy[n] *= -1;
+            ball_y[n] += ball_spy[n];
+            if ((ball_y[n] < 0) || (ball_y[n] > 159))
+                ball_spy[n] *= -1;
 
-            NF_MoveSprite(0, n, bola_x[n], bola_y[n]);
-            NF_MoveSprite(1, n, bola_x[n], bola_y[n]);
+            NF_MoveSprite(0, n, ball_x[n], ball_y[n]);
+            NF_MoveSprite(1, n, ball_x[n], ball_y[n]);
         }
 
         // Update OAM array

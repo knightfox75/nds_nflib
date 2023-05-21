@@ -46,22 +46,22 @@ int main(int argc, char **argv)
 
     // Load background files from NitroFS
     NF_LoadTiledBg("bg/nfl", "nfl", 256, 256);
-    NF_LoadTiledBg("bg/bg3", "capa_3", 256, 256);
-    NF_LoadTiledBg("bg/bg2", "capa_2", 1024, 256);
+    NF_LoadTiledBg("bg/bg3", "layer_3", 256, 256);
+    NF_LoadTiledBg("bg/bg2", "layer_2", 1024, 256);
 
     // Load sprite files from NitroFS
-    NF_LoadSpriteGfx("sprite/personaje", 0, 64, 64);
-    NF_LoadSpritePal("sprite/personaje", 0);
+    NF_LoadSpriteGfx("sprite/character", 0, 64, 64);
+    NF_LoadSpritePal("sprite/character", 0);
 
-    NF_LoadSpriteGfx("sprite/bola", 1, 32, 32);
-    NF_LoadSpritePal("sprite/bola", 1);
+    NF_LoadSpriteGfx("sprite/ball", 1, 32, 32);
+    NF_LoadSpritePal("sprite/ball", 1);
 
     // Create top screen background
     NF_CreateTiledBg(0, 3, "nfl");
 
     // Create bottom screen backgrounds
-    NF_CreateTiledBg(1, 3, "capa_3");
-    NF_CreateTiledBg(1, 2, "capa_2");
+    NF_CreateTiledBg(1, 3, "layer_3");
+    NF_CreateTiledBg(1, 2, "layer_2");
 
     // Transfer the required sprites to VRAM
     NF_VramSpriteGfx(1, 0, 0, true); // Ball: Keep all frames in VRAM
@@ -71,65 +71,65 @@ int main(int argc, char **argv)
     NF_VramSpritePal(0, 1, 0);
 
     // Setup character sprite
-    s16 pj_x = 0;
-    s16 pj_y = 127;
-    u8 pj_frame = 0;
-    u8 pj_anim = 0;
-    s8 pj_speed = 1;
-    NF_CreateSprite(1, 0, 0, 0, pj_x, pj_y);
+    s16 char_x = 0;
+    s16 char_y = 127;
+    u8 char_frame = 0;
+    u8 char_anim = 0;
+    s8 char_speed = 1;
+    NF_CreateSprite(1, 0, 0, 0, char_x, char_y);
 
     // Setup ball sprites
-    s16 bola_x[32];
-    s16 bola_y[32];
-    s8 bola_spx[32];
-    s8 bola_spy[32];
+    s16 ball_x[32];
+    s16 ball_y[32];
+    s8 ball_spx[32];
+    s8 ball_spy[32];
 
     for (int n = 0; n < 32; n++)
     {
-        bola_x[n] = rand() % 223;
-        bola_y[n] = rand() % 159;
-        bola_spx[n] = (rand() % 3) + 1;
-        bola_spy[n] = (rand() % 3) + 1;
-        NF_CreateSprite(0, n, 0, 0, bola_x[n], bola_y[n]);
+        ball_x[n] = rand() % 223;
+        ball_y[n] = rand() % 159;
+        ball_spx[n] = (rand() % 3) + 1;
+        ball_spy[n] = (rand() % 3) + 1;
+        NF_CreateSprite(0, n, 0, 0, ball_x[n], ball_y[n]);
     }
 
     while (1)
     {
         // Move character
-        pj_x += pj_speed;
-        if ((pj_x < 0) || (pj_x > 191))
+        char_x += char_speed;
+        if ((char_x < 0) || (char_x > 191))
         {
-            pj_speed *= -1;
-            if (pj_speed > 0)
+            char_speed *= -1;
+            if (char_speed > 0)
                 NF_HflipSprite(1, 0, false);
             else
                 NF_HflipSprite(1, 0, true);
         }
-        NF_MoveSprite(1, 0, pj_x, pj_y);
+        NF_MoveSprite(1, 0, char_x, char_y);
 
         // Animate character
-        pj_anim++;
-        if (pj_anim > 5)
+        char_anim++;
+        if (char_anim > 5)
         {
-            pj_anim = 0;
-            pj_frame++;
-            if (pj_frame > 11)
-                pj_frame = 0;
-            NF_SpriteFrame(1, 0, pj_frame);
+            char_anim = 0;
+            char_frame++;
+            if (char_frame > 11)
+                char_frame = 0;
+            NF_SpriteFrame(1, 0, char_frame);
         }
 
         // Move balls
         for (int n = 0; n < 32; n++)
         {
-            bola_x[n] += bola_spx[n];
-            if ((bola_x[n] < 0) || (bola_x[n] > 223))
-                bola_spx[n] *= -1;
+            ball_x[n] += ball_spx[n];
+            if ((ball_x[n] < 0) || (ball_x[n] > 223))
+                ball_spx[n] *= -1;
 
-            bola_y[n] += bola_spy[n];
-            if ((bola_y[n] < 0) || (bola_y[n] > 159))
-                bola_spy[n] *= -1;
+            ball_y[n] += ball_spy[n];
+            if ((ball_y[n] < 0) || (ball_y[n] > 159))
+                ball_spy[n] *= -1;
 
-            NF_MoveSprite(0, n, bola_x[n], bola_y[n]);
+            NF_MoveSprite(0, n, ball_x[n], ball_y[n]);
         }
 
         // Update OAM array

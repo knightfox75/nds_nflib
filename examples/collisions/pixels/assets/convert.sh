@@ -1,6 +1,6 @@
 #!/bin/sh
 
-grit puntero.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
+grit pointer.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
 
 for file in *.bin; do
     mv -- "$file" "${file%.bin}"

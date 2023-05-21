@@ -77,7 +77,7 @@ int main(int argc, char **argv)
         myvar++;
 
         char mytext[32];
-        snprintf(mytext, sizeof(mytext), "Contador: %lu", myvar);
+        snprintf(mytext, sizeof(mytext), "Counter: %lu", myvar);
 
         NF_WriteText(0, 0, 1, 5, mytext);
         NF_WriteText(0, 1, 1, 5, mytext);

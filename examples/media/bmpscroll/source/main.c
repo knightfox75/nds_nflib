@@ -59,8 +59,8 @@ int main(int argc, char **argv)
     s16 bottom = 0;
     u16 mini_x = 0;
     u16 mini_y = 0;
-    u16 desp_x = 0;
-    u16 desp_y = 0;
+    u16 disp_x = 0;
+    u16 disp_y = 0;
     u32 scr_idx = 0;
     u32 img_idx = 0;
 
@@ -80,13 +80,13 @@ int main(int argc, char **argv)
     {
         mini_x = right;
         mini_y = (NF_BG16B[0].height * right) / NF_BG16B[0].width;
-        desp_y = (192 - mini_y) >> 1;
+        disp_y = (192 - mini_y) >> 1;
     }
     else
     {
         mini_x = (NF_BG16B[0].width * bottom) / NF_BG16B[0].height;
         mini_y = bottom;
-        desp_x = (256 - mini_x) >> 1;
+        disp_x = (256 - mini_x) >> 1;
     }
 
     // Generate thumbnail
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
         for (int scr_x = 0; scr_x < mini_x; scr_x++)
         {
             // Calculate source and destination offsets
-            scr_idx = ((scr_y + desp_y) << 8) + (scr_x + desp_x);
+            scr_idx = ((scr_y + disp_y) << 8) + (scr_x + disp_x);
             img_idx = (((scr_y * NF_BG16B[0].height) / mini_y) * NF_BG16B[0].width)
                     + ((scr_x * NF_BG16B[0].width) / mini_x);
 
