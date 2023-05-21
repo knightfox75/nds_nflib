@@ -34,7 +34,7 @@ typedef struct {
     bool available;     ///< True if this slot is available
     u32 size;           ///< Size of the sound effect in bytes
     u16 freq;           ///< Frecuency of the sample
-    u8 format;          ///< Format of the sample
+    u8 format;          ///< Format of the sample (0: 8 bits, 1: 16 bits, 2: ADPCM)
 } NF_TYPE_RAWSOUND_INFO;
 
 /// Information of all sound effects.

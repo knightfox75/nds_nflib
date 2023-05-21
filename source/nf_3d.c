@@ -5,113 +5,92 @@
 // NightFox LIB - Funciones 2D comunes
 // http://www.nightfoxandco.com/
 
-#include <stdio.h>
-#include <string.h>
-
 #include <nds.h>
 
 #include "nf_2d.h"
 #include "nf_3d.h"
 #include "nf_basic.h"
 
-void NF_Set3D(u8 screen, u8 mode) {
+void NF_Set3D(u8 screen, u8 mode)
+{
+    // Only the main engine can use 3D, so we need to swap the screens if the
+    // user wants the 3D output to be in the screen that isn't the main one.
+    if (screen == 0)
+        lcdMainOnTop();
+    else
+        lcdMainOnBottom();
 
-	// Especifica en que pantalla estara el main engine (unico que puede usar 3D)
-	if (screen == 0) {
-		lcdMainOnTop();
-	} else {
-		lcdMainOnBottom();
-	}
-
-	// Selecciona modo 3D
-	switch (mode) {
-		case 0:
-			videoSetMode(MODE_0_3D);
-			break;
-		case 2:
-			videoSetMode(MODE_2_3D);
-			break;
-		case 5:
-			videoSetMode(MODE_5_3D);
-			break;
-	}
-
+    // Use the selected 3D mode
+    switch (mode)
+    {
+        case 0:
+            videoSetMode(MODE_0_3D);
+            break;
+        case 2:
+            videoSetMode(MODE_2_3D);
+            break;
+        case 5:
+            videoSetMode(MODE_5_3D);
+            break;
+    }
 }
 
-void NF_InitOpenGL(void) {
+void NF_InitOpenGL(void)
+{
+    // Initialize internal OpenGL state
+    glInit();
 
-	// Inicializa el OpenGL de Libnds
-	glInit();
+    // Define viewport to the complete screen
+    glViewport(0, 0, 255, 191);
 
-	// Define el tamaño de la ventana 3D (toda la pantalla)
-	glViewport(0, 0, 255, 191);
+    // Setup projection matrix as an orthographic projection
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrthof32(0, 256, 192, 0, 1024, -1024);
 
-	// Configura la matriz de proyeccion
-	glMatrixMode(GL_PROJECTION);	// Selecciona la matriz
-	glLoadIdentity();				// Y reseteala
+    // Setup modelview matrix as an identity matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-	// Ajusta OpenGL para proyeccion Ortografica
-	glOrthof32(0, 256, 192, 0, 1024, -1024);
+    // Disable transparency and culling for new polygons
+    glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 
-	// Configura la matriz de visualizacion de modelos
-	glMatrixMode(GL_MODELVIEW);		// Selecciona la matriz
-	glLoadIdentity();				// Y reseteala
+    // Setup background as transparent, and set it at the maximum distance
+    glClearColor(0, 0, 0, 0);
+    glClearDepth(0x7FFF);
 
-	// Por defecto, todos los poligonos son opacos
-	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
+    // Set the default vertex color as white
+    glColor(RGB15(31, 31, 31));
 
-	// Configura el fondo
-	glClearColor(0, 0, 0, 0);		// Fondo transparente
-	glClearDepth(0x7FFF);			// Define la distancia de vision
+    // Enable textures and alpha blending
+    glEnable(GL_TEXTURE_2D | GL_BLEND);
 
-	// Configura la iluminacion global
-	glColor(RGB15(31, 31, 31));
-
-	// Habilita las texturas
-	glEnable(GL_TEXTURE_2D | GL_BLEND);
-
-	// Habilita la capa de dibujado
-	NF_ShowBg(0, 0);
-
+    // 3D output is sent to layer 0, so enable it
+    NF_ShowBg(0, 0);
 }
 
-u16 NF_GetTextureSize(u16 textel) {
-
-	// Variables
-	u16 size = 0;
-
-	// Devuelve el tamaño del textel, segun su base2
-	switch (textel) {
-		case 8:
-			size = 0;
-			break;
-		case 16:
-			size = 1;
-			break;
-		case 32:
-			size = 2;
-			break;
-		case 64:
-			size = 3;
-			break;
-		case 128:
-			size = 4;
-			break;
-		case 256:
-			size = 5;
-			break;
-		case 512:
-			size = 6;
-			break;
-		case 1024:
-			size = 7;
-			break;
-		default:
-			size = 255;
-			break;
-	}
-
-	// Devuelve el valor
-	return size;
-
+u16 NF_GetTextureSize(u16 textel)
+{
+    // Return the texel size as a base 2 log: Real size = 8 << Returned size
+    switch (textel)
+    {
+        case 8:
+            return 0;
+        case 16:
+            return 1;
+        case 32:
+            return 2;
+        case 64:
+            return 3;
+        case 128:
+            return 4;
+        case 256:
+            return 5;
+        case 512:
+            return 6;
+        case 1024:
+            return 7;
+        default:
+            return 255;
+    }
 }
