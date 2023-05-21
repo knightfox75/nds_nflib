@@ -96,12 +96,16 @@ Setup instructions for devkitPro
 ================================
 
 1. Clone this repository. Create a symbolic link to it inside the devkitPro
-   folder in your system. For example, in Linux, create a symlink so that
-   ``/opt/devkitpro/nflib`` points to the folder with NFlib:
+   folder in your system, and call it ``nflib``.
+
+   For example, in Linux, create a symlink so that ``/opt/devkitpro/nflib``
+   points to the folder with NFlib:
 
    .. code:: bash
 
        ln -sT /path/to/nds_nflib /opt/devkitpro/nflib
+
+   On Windows, the path should be ``C:\devkitpro\nflib``.
 
    If this doesn't work, copy the folder of NFlib to the devkitPro folder and
    rename it to ``nflib``.
