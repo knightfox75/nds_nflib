@@ -20,7 +20,7 @@
 // Define la variable global NF_ROOTFOLDER
 char NF_ROOTFOLDER[64];
 
-void NF_Error(u16 code, const char* text, u32 value) {
+__attribute__((noreturn)) void NF_Error(u16 code, const char *text, u32 value) {
 
 	consoleDemoInit();		// Inicializa la consola de texto
 	consoleClear();			// Borra la pantalla

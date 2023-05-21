@@ -53,7 +53,7 @@ extern char NF_ROOTFOLDER[64];
 /// @param code Error code.
 /// @param text Description.
 /// @param value Additional info.
-void NF_Error(u16 code, const char *text, u32 value);
+__attribute__((noreturn)) void NF_Error(u16 code, const char *text, u32 value);
 
 /// Defines the root folder of your project (FAT or NitroFS).
 ///
