@@ -5,11 +5,11 @@
 // Basic UDP communications example.
 // http://www.nightfoxandco.com
 
-#include <nds.h>
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <nds.h>
 
 #include <nf_lib.h>
 #include <nf_wifi.h>
@@ -23,13 +23,13 @@ bool ConnectWIFI(void)
 {
     bool status = false;
 
-    printf("Conectando via WFC...\n\n");
+    printf("Connecting to WFC...\n\n");
     swiWaitForVBlank();
 
     if (NF_WiFiConnectDefaultAp())
     {
         // Return connection parameters
-        printf("Conexion realizada.\n\n");
+        printf("Connected to access point\n\n");
         printf("IP     : %s\n", inet_ntoa(NF_IP));
         printf("Gateway: %s\n", inet_ntoa(NF_GATEWAY));
         printf("Mask   : %s\n", inet_ntoa(NF_MASK));
@@ -42,7 +42,7 @@ bool ConnectWIFI(void)
     else
     {
         // Error
-        printf("Conexion no establecida\n");
+        printf("Failed to connect\n");
     }
 
     swiWaitForVBlank();
@@ -54,7 +54,7 @@ u8 SelectMode(void)
 {
     u8 modo = 0;
 
-    printf("A - Cliente\nB - Servidor\n");
+    printf("A - Client\nB - Server\n");
     swiWaitForVBlank();
 
     while (modo == 0)
@@ -184,7 +184,7 @@ s16 LookForServer(void)
             if (status > 0)
             {
                 // Print received data
-                printf("Encontrado.\n");
+                printf("Found.\n");
 
                 // Save its value
                 sprintf(server_ip, temp);
@@ -287,11 +287,11 @@ int main(int argc, char **argv)
                     }
 
                     // Send it and verify that it has been received
-                    printf("Envio: %s\n", temp);
+                    printf("Sent: %s\n", temp);
                     if (SendData(temp) > 0)
                     {
                         // Print the received data
-                        printf("Verificado: %s\n\n", NF_RECV_BUFFER);
+                        printf("Verified: %s\n\n", NF_RECV_BUFFER);
                         // Increment counter
                         counter++;
                         if (counter > 9999)
@@ -299,7 +299,7 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        printf("Error de envio.\n");
+                        printf("Send error.\n");
                     }
                 }
             }
@@ -315,7 +315,7 @@ int main(int argc, char **argv)
                 if (GetData() > 0)
                 {
                     // Print received data
-                    printf("Recivido: %s\n", NF_RECV_BUFFER);
+                    printf("Received: %s\n", NF_RECV_BUFFER);
 
                     // If the exit signal has been received
                     if (strcmp(NF_RECV_BUFFER, "Exit") == 0)
@@ -324,7 +324,7 @@ int main(int argc, char **argv)
                 else
                 {
                     // If there is nothing available, wait for data
-                    printf("Esperando datos...\n");
+                    printf("Waiting for data...\n");
                 }
             }
 
@@ -339,7 +339,7 @@ int main(int argc, char **argv)
     // Stop WiFi
     NF_WiFiDisconnectAp();
 
-    printf("\nSesion finalizada\n");
+    printf("\nTest complete\n");
 
     while (1)
     {
