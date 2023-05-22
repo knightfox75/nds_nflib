@@ -10,298 +10,313 @@
 #endif
 
 #include <stdio.h>
-#include <string.h>
-#include <unistd.h>
 
 #include <nds.h>
 
 #include "nf_basic.h"
 
-// Define la variable global NF_ROOTFOLDER
+// Folder used as root by NFLib
 char NF_ROOTFOLDER[64];
 
-__attribute__((noreturn)) void NF_Error(u16 code, const char *text, u32 value) {
+__attribute__((noreturn)) void NF_Error(u16 code, const char *text, unsigned int value)
+{
+    consoleDemoInit();      // Initialize demo text console
+    setBrightness(3, 0);    // Set the brightness to the top
 
-	consoleDemoInit();		// Inicializa la consola de texto
-	consoleClear();			// Borra la pantalla
-	setBrightness(3, 0);	// Restaura el brillo
+    switch (code)
+    {
+        case 101: // File not found
+            iprintf("File %s not found.\n", text);
+            break;
 
-	u32 n = 0;	// Variables de uso general
+        case 102: // Not enough memory
+            iprintf("Out of memory.\n");
+            iprintf("%u bytes\n", value);
+            iprintf("can't be allocated.\n");
+            break;
 
-	// Captura el codigo de error
-	switch (code) {
+        case 103: // Not enough free slots
+            iprintf("Out of %s slots.\n", text);
+            iprintf("All %u slots are in use.\n", value);
+            break;
 
-		case 101:	// Fichero no encontrado
-			iprintf("File %s not found.\n", text);
-			break;
+        case 104: // Tiled background not found
+            iprintf("Tiled Bg %s\n", text);
+            iprintf("not found.\n");
+            break;
 
-		case 102:	// Memoria insuficiente
-			iprintf("Out of memory.\n");
-			iprintf("%d bytes\n", (int)value);
-			iprintf("can't be allocated.\n");
-			break;
+        case 105: // Background hasn't been created
+            iprintf("Background number %u\n", value);
+            iprintf("on screen %s is\n", text);
+            iprintf("not created.\n");
+            break;
 
-		case 103:	// No quedan Slots libres
-			iprintf("Out of %s slots.\n", text);
-			iprintf("All %d slots are in use.\n", (int)value);
-			break;
+        case 106: // Value out of range
+            iprintf("%s Id out\n", text);
+            iprintf("of range (%u max).\n", value);
+            break;
 
-		case 104:	// Fondo no encontrado
-			iprintf("Tiled Bg %s\n", text);
-			iprintf("not found.\n");
-			break;
+        case 107: // Not enough contiguous VRAM blocks (tiles)
+            iprintf("Can't allocate %d\n", (int)value);
+            iprintf("blocks of tiles for\n");
+            iprintf("%s background\n", text);
+            iprintf("Free %d KB of VRAM or try to\n", (value * 16384) / 1024);
+            iprintf("reload all BGs again\n");
+            break;
 
-		case 105:	// Fondo no creado
-			iprintf("Background number %d\n", (int)value);
-			iprintf("on screen %s is\n", text);
-			iprintf("not created.\n");
-			break;
+        case 108: // Not enough contiguous VRAM blocks (maps)
+            iprintf("Can't allocate %d\n", (int)value);
+            iprintf("blocks of maps for\n");
+            iprintf("%s background\n", text);
+            iprintf("Free %d KB of VRAM or try to\n", (value * 2048) / 1024);
+            iprintf("reload all BGs again\n");
+            break;
 
-		case 106:	// Fuera de rango
-			iprintf("%s Id out\n", text);
-			iprintf("of range (%d max).\n", (int)value);
-			break;
+        case 109: // ID in use
+            iprintf("%s ID %u\n", text, value);
+            iprintf("is already in use.\n");
+            break;
 
-		case 107:	// Insuficientes bloques contiguos en VRAM (Tiles)
-			n = (int)((value * 16384) / 1024);
-			iprintf("Can't allocate %d\n", (int)value);
-			iprintf("blocks of tiles for\n");
-			iprintf("%s background\n", text);
-			iprintf("Free %dkb of VRAM or try to\n", (int)n);
-			iprintf("reload all Bg's again\n");
-			break;
+        case 110: // ID not loaded
+            iprintf("%s\n", text);
+            iprintf("%u not loaded.\n", value);
+            break;
 
-		case 108:	// Insuficientes bloques contiguos en VRAM (Maps)
-			n = (int)((value * 2048) / 1024);
-			iprintf("Can't allocate %d\n", (int)value);
-			iprintf("blocks of maps for\n");
-			iprintf("%s background\n", text);
-			iprintf("Free %dkb of VRAM or try to\n", (int)n);
-			iprintf("reload all Bg's again\n");
-			break;
+        case 111: // ID not in VRAM
+            iprintf("%s\n", text);
+            iprintf("%u not in VRAM.\n", value);
+            break;
 
-		case 109:	// Id ocupada
-			iprintf("%s Id.%d\n", text, (int)value);
-			iprintf("is already in use.\n");
-			break;
+        case 112: // Sprite not created
+            iprintf("Sprite number %u\n", value);
+            iprintf("on screen %s is\n", text);
+            iprintf("not created.\n");
+            break;
 
-		case 110:	// Id no cargada
-			iprintf("%s\n", text);
-			iprintf("%d not loaded.\n", (int)value);
-			break;
+        case 113: // Not enough VRAM
+            iprintf("Out of VRAM.\n");
+            iprintf("%u bytes for %s\n", value, text);
+            iprintf("can't be allocated.\n");
+            break;
 
-		case 111:	// Id no en VRAM
-			iprintf("%s\n", text);
-			iprintf("%d not in VRAM.\n", (int)value);
-			break;
+        case 114: // Text layer doesn't exist
+            iprintf("Text layer on screen\n");
+            iprintf("%u layer don't exist.\n", value);
+            break;
 
-		case 112:	// Sprite no creado
-			iprintf("Sprite number %d\n", (int)value);
-			iprintf("on screen %s is\n", text);
-			iprintf("not created.\n");
-			break;
+        case 115: // Invalid tiled background size (not a multiple of 256)
+            iprintf("Tiled BG %s\n", text);
+            iprintf("has wrong size.\n");
+            iprintf("Your bg sizes must be\n");
+            iprintf("a multiple of 256 pixels.\n");
+            break;
 
-		case 113:	// Memoria VRAM insuficiente
-			iprintf("Out of VRAM.\n");
-			iprintf("%d bytes for %s\n", (int)value, text);
-			iprintf("can't be allocated.\n");
-			break;
+        case 116: // File is too big
+            iprintf("File %s\n", text);
+            iprintf("is too big.\n");
+            iprintf("Max size for\n");
+            iprintf("file is %u KB.\n", value >> 10);
+            break;
 
-		case 114:	// La capa de Texto no existe
-			iprintf("Text layer on screen\n");
-			iprintf("nº %d don't exist.\n", (int)value);
-			break;
+        case 117: // Invalid affine background size (only 256x256 and 512x512 allowed)
+            iprintf("Affine BG %s\n", text);
+            iprintf("has wrong size.\n");
+            iprintf("Your bg sizes must be\n");
+            iprintf("256x256 or 512x512 and\n");
+            iprintf("with 256 tiles or less.\n");
+            break;
 
-		case 115:	// Medidas del fondo no compatibles (no son multiplos de 256)
-			iprintf("Tiled Bg %s\n", text);
-			iprintf("has wrong size.\n");
-			iprintf("Your bg sizes must be\n");
-			iprintf("dividable by 256 pixels.\n");
-			break;
+        case 118: // Invalid affine background layer
+            iprintf("Affine Bg %s\n", text);
+            iprintf("only can be created\n");
+            iprintf("on layers 2 or 3.\n");
+            break;
 
-		case 116:	// Archivo demasiado grande
-			iprintf("File %s\n", text);
-			iprintf("is too big.\n");
-			iprintf("Max size for\n");
-			iprintf("file is %dkb.\n", (int)(value >> 10));
-			break;
+        case 119: // Invalid texture size
+            iprintf("Texture ID %u illegal size.\n", value);
+            iprintf("Only power of 2 sizes can\n");
+            iprintf("be used (8 to 1024).\n");
+            break;
 
-		case 117:	// Medidas del fondo affine no compatibles (Solo se admiten 256x256 y 512x512)
-			iprintf("Affine Bg %s\n", text);
-			iprintf("has wrong size.\n");
-			iprintf("Your bg sizes must be\n");
-			iprintf("256x256 or 512x512 and\n");
-			iprintf("with 256 tiles or less.\n");
-			break;
+        case 120: // Invalid sprite size
+            iprintf("Sprite ID %u illegal size.\n", value);
+            iprintf("8x8 Sprites can't be used\n");
+            iprintf("in 1D_128 mode.\n");
+            break;
+    }
 
-		case 118:	// Medidas del fondo affine no compatibles (Solo se admiten 256x256 y 512x512)
-			iprintf("Affine Bg %s\n", text);
-			iprintf("only can be created\n");
-			iprintf("on layers 2 or 3.\n");
-			break;
+    // Print error code
+    iprintf("Error code %d.\n", (int)code);
 
-		case 119:	// Tamaño de la textura ilegal.
-			iprintf("Texture id.%d illegal size.\n", (int)value);
-			iprintf("Only power of 2 sizes can\n");
-			iprintf("be used (8 to 1024).\n");
-			break;
-
-		case 120:	// Tamaño de la Sprite ilegal.
-			iprintf("Sprite id.%d illegal size.\n", (int)value);
-			iprintf("8x8 Sprites can't be used\n");
-			iprintf("in 1D_128 mode.\n");
-			break;
-
-	}
-
-	iprintf("Error code %d.\n", (int)code);		// Imprime el codigo de error
-
-	// Deten la ejecucion del programa
-	while (1) {
-		swiWaitForVBlank();
-	}
-
+    // Stop program
+    while (1)
+        swiWaitForVBlank();
 }
 
-void NF_SetRootFolder(const char* folder) {
+void NF_SetRootFolder(const char *folder)
+{
+    if (strcmp(folder, "NITROFS") == 0)
+    {
+        // Initialize both NitroFS and FAT
 
-	if (strcmp(folder, "NITROFS") == 0) {	// Si se debe iniciar el modo NitroFS y FAT
+        // Define NitroFS as the root folder
+        snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", "");
 
-		// Define NitroFS como la carpeta inicial
-		snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", "");
-		// Check if NitroFS exists.
-		// NitroFS must be mounted beforehand for this to work.
-		if(access("nitro:/", F_OK) == 0) {
-			// NitroFS ok
-			// Si es correcto, cambia al ROOT del NitroFS
-			chdir("nitro:/");
-		} else {
-			// Fallo. Deten el programa
-			consoleDemoInit();	// Inicializa la consola de texto
-			if (NF_GetLanguage() == 5) {
-				iprintf("Error iniciando NitroFS.\n");
-				iprintf("Programa detenido.\n\n");
-				iprintf("Verifica que tu flashcard\n");
-				iprintf("es compatible con Argv.\n");
-				iprintf("Si no lo es, intenta usar el\n");
-				iprintf("Homebrew Menu para ejecutarla.\n\n");
-			} else {
-				iprintf("NitroFS Init Error.\n");
-				iprintf("Abnormal termination.\n\n");
-				iprintf("Check if your flashcard is\n");
-				iprintf("Argv compatible.\n");
-				iprintf("If not, try to launch the ROM\n");
-				iprintf("using the Homebrew Menu.\n\n");
-			}
-			iprintf("http://sourceforge.net/projects/devkitpro/files/hbmenu/");
-			// Bucle infinito. Fin del programa
-			while(1) {
-				swiWaitForVBlank();
-			}
-		}
+        // Check if NitroFS exists. NitroFS must be mounted beforehand for this
+        // to work.
+        if (access("nitro:/", F_OK) == 0)
+        {
+            // NitroFS started ok. Set it as the NFLib root folder
+            chdir("nitro:/");
+        }
+        else
+        {
+            // NitroFS start error
 
-	} else {	// Si se debe iniciar solo la FAT
+            // Initialize text console
+            consoleDemoInit();
 
-		// Define la carpeta inicial de la FAT
-		snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", folder);
+            if (NF_GetLanguage() == 5)
+            {
+                iprintf("Error iniciando NitroFS.\n");
+                iprintf("Programa detenido.\n\n");
+                iprintf("Verifica que tu flashcard\n");
+                iprintf("es compatible con Argv.\n");
+                iprintf("Si no lo es, intenta usar el\n");
+                iprintf("Homebrew Menu para ejecutarla.\n\n");
+            }
+            else
+            {
+                iprintf("NitroFS Init Error.\n");
+                iprintf("Abnormal termination.\n\n");
+                iprintf("Check if your flashcard is\n");
+                iprintf("Argv compatible.\n");
+                iprintf("If not, try to launch the ROM\n");
+                iprintf("using the Homebrew Menu.\n\n");
+            }
+            iprintf("http://sourceforge.net/projects/devkitpro/files/hbmenu/");
 
-		// Check where the NDS is running from
-		bool init_ok = false;
+            // Stop program
+            while (1)
+                swiWaitForVBlank();
+        }
+    }
+    else
+    {
+        // Initialize FAT only
 
-		// First, try to detect the drive where the NDS ROM is. If argv has been
-		// provided by the loader, it will contain the drive and the path of the
-		// ROM.
-		if (__system_argv->argvMagic == ARGV_MAGIC && __system_argv->argc >= 1) {
-			if (strncmp(__system_argv->argv[0], "fat:", 4) == 0) {
-				// If argv starts by "fat:", try to setup "fat:" as root
-				if (access("fat:/", F_OK) == 0) {
-					chdir("fat:/");
-					init_ok = true;
-				}
-			} else if (strncmp(__system_argv->argv[0], "sd:", 3) == 0) {
-				// If argv starts by "sd:", try to setup "sd:" as root
-				if (access("sd:/", F_OK) == 0) {
-					chdir("sd:/");
-					init_ok = true;
-				}
-			}
-		}
+        // Define the root folder of NFLib
+        snprintf(NF_ROOTFOLDER, sizeof(NF_ROOTFOLDER), "%s", folder);
 
-		// Second, try to bruteforce the detection. Check if there is access to
-		// the SD card of the DSi first. If not, try with DLDI.
-		if (!init_ok) {
-			if (access("sd:/", F_OK) == 0) {
-				chdir("sd:/");
-				init_ok = true;
-			} else if (access("fat:/", F_OK) == 0) {
-				chdir("fat:/");
-				init_ok = true;
-			}
-		}
+        // Check where the NDS is running from
+        bool init_ok = false;
 
-		// If that didn't work, give up.
-		if (!init_ok) {
-			// Fallo. Deten el programa
-			consoleDemoInit();	// Inicializa la consola de texto
-			if (NF_GetLanguage() == 5) {
-				iprintf("Error iniciando FAT.\n");
-				iprintf("Programa detenido.\n\n");
-				iprintf("Verifica que tu flashcard es\n");
-				iprintf("compatible con DLDI y la ROM\n");
-				iprintf("este parcheada correctamente.\n");
-			} else {
-				iprintf("FAT Init Error.\n");
-				iprintf("Abnormal termination.\n\n");
-				iprintf("Check if your flashcard is\n");
-				iprintf("DLDI compatible and the ROM\n");
-				iprintf("is correctly patched.\n");
-			}
-			// Bucle infinito. Fin del programa
-			while(1) {
-				swiWaitForVBlank();
-			}
-		}
-	}
+        // First, try to detect the drive where the NDS ROM is. If argv has been
+        // provided by the loader, it will contain the drive and the path of the
+        // ROM.
+        if (__system_argv->argvMagic == ARGV_MAGIC && __system_argv->argc >= 1)
+        {
+            if (strncmp(__system_argv->argv[0], "fat:", 4) == 0)
+            {
+                // If argv starts by "fat:", try to setup "fat:" as root
+                if (access("fat:/", F_OK) == 0)
+                {
+                    chdir("fat:/");
+                    init_ok = true;
+                }
+            }
+            else if (strncmp(__system_argv->argv[0], "sd:", 3) == 0)
+            {
+                // If argv starts by "sd:", try to setup "sd:" as root
+                if (access("sd:/", F_OK) == 0)
+                {
+                    chdir("sd:/");
+                    init_ok = true;
+                }
+            }
+        }
+
+        // Second, try to bruteforce the detection. Check if there is access to
+        // the SD card of the DSi first. If not, try with DLDI.
+        if (!init_ok)
+        {
+            if (access("sd:/", F_OK) == 0)
+            {
+                chdir("sd:/");
+                init_ok = true;
+            }
+            else if (access("fat:/", F_OK) == 0)
+            {
+                chdir("fat:/");
+                init_ok = true;
+            }
+        }
+
+        // If that didn't work, give up.
+        if (!init_ok)
+        {
+            // NitroFS start error
+
+            // Initialize text console
+            consoleDemoInit();
+
+            if (NF_GetLanguage() == 5)
+            {
+                iprintf("Error iniciando FAT.\n");
+                iprintf("Programa detenido.\n\n");
+                iprintf("Verifica que tu flashcard es\n");
+                iprintf("compatible con DLDI y la ROM\n");
+                iprintf("este parcheada correctamente.\n");
+            }
+            else
+            {
+                iprintf("FAT Init Error.\n");
+                iprintf("Abnormal termination.\n\n");
+                iprintf("Check if your flashcard is\n");
+                iprintf("DLDI compatible and the ROM\n");
+                iprintf("is correctly patched.\n");
+            }
+
+            // Stop program
+            while (1)
+                swiWaitForVBlank();
+        }
+    }
 }
 
-void NF_DmaMemCopy(void* destination, const void* source, u32 size) {
+void NF_DmaMemCopy(void *destination, const void *source, u32 size)
+{
+    // Based on Coranac's function:
+    // http://www.coranac.com/2009/05/dma-vs-arm9-fight/
 
-	// Funcion basada en la documentacion de Coranac
-	// http://www.coranac.com/2009/05/dma-vs-arm9-fight/
+    // Source and destination addresses
+    u32 src = (u32)source;
+    u32 dst = (u32)destination;
 
-	// Datos de origen y destino
-	u32 src = (u32)source;
-	u32 dst = (u32)destination;
+    // Check if addresses are aligned to at least 16 bits
+    if ((src | dst) & 1)
+    {
+        // Not aligned. DMA can't be used, use memcpy()
+        memcpy(destination, source, size);
+    }
+    else
+    {
+        // Addresses are aligned, use DMA
 
-	// Verifica si los datos estan correctamente alineados
-	if ((src | dst) & 1) {
+        // Wait until channel 3 is available
+        while (dmaBusy(3));
 
-		// No estan alineados para un DMA copy
-		// Se realiza un copia con el memcpy();
-		memcpy(destination, source, size);
+        // Make sure that the data in the cache is sent to the main RAM
+        DC_FlushRange(source, size);
 
-	} else {
+        // Depending on the alignment use 32-bit or 16-bit copy modes
+        if ((src | dst | size) & 3)
+            dmaCopyHalfWords(3, source, destination, size);
+        else
+            dmaCopyWords(3, source, destination, size);
 
-		// Estan alineados correctamente
-
-		// Espera a que el canal 3 de DMA este libre
-		while (dmaBusy(3));
-
-		// Manda el cache a la memoria
-		DC_FlushRange(source, size);
-
-		// Dependiendo de la alineacion de datos, selecciona el metodo de copia
-		if ((src | dst | size) & 3) {
-			// Copia de 16 bits
-			 dmaCopyHalfWords(3, source, destination, size);
-		} else {
-			// Copia de 32 bits
-			dmaCopyWords(3, source, destination, size);
-		}
-
-		// Evita que el destino sea almacenado en cache
-		DC_InvalidateRange(destination, size);
-
-	}
-
+        // Prevent the destination from being in cache, it would corrupt the
+        // data when it is flushed
+        DC_InvalidateRange(destination, size);
+    }
 }

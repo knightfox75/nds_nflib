@@ -5,9 +5,7 @@
 // NightFox LIB - Include de Fondos mixtos (Tiled / Bitmap 8 bits)
 // http://www.nightfoxandco.com/
 
-#include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <nds.h>
 
@@ -17,95 +15,97 @@
 #include "nf_mixedbg.h"
 #include "nf_tiledbg.h"
 
-void NF_InitMixedBgSys(u8 screen) {
+void NF_InitMixedBgSys(u8 screen)
+{
+    // Define the number of banks of maps and tiles.
+    //
+    // Tile banks are 16 KB in size. Map banks are 2 KB in size. You can fit 8
+    // map banks in a tile bank. For that reason, the number of map banks must
+    // be a multiple of 8 banks.
+    //
+    // By default, use 4 tile banks and 8 map banks.
+    NF_BANKS_TILES[screen] = 4;
+    NF_BANKS_MAPS[screen] = 8;
 
-	u8 n = 0;
+    // Set all tile and map blocks as free
+    for (int n = 0; n < NF_BANKS_TILES[screen]; n++)
+        NF_TILEBLOCKS[screen][n] = 0;
 
-	// Define el numero de bancos de Mapas y Tiles
-	NF_BANKS_TILES[screen] = 4;		// (1 banks = 16kb)	Cada banco de tiles puede alvergar 8 bancos de Mapas
-	NF_BANKS_MAPS[screen] = 8;		// (1 bank = 2kb)	Usar multiplos de 8. Cada set de 8 bancos consume 1 banco de tiles
-	// Por defecto Tiles = 4, Mapas = 8
-	// Esto nos deja 3 bancos de 16kb para tiles
-	// y 8 bancos de 2kb para mapas
+    for (int n = 0; n < NF_BANKS_MAPS[screen]; n++)
+        NF_MAPBLOCKS[screen][n] = 0;
 
-	// Inicializa el array de bloques libres de Tiles
-	for (n = 0; n < NF_BANKS_TILES[screen]; n ++) {
-		NF_TILEBLOCKS[screen][n] = 0;
-	}
+    // Reset information of backgrounds
+    for (int n = 0; n < 4; n ++)
+    {
+        NF_TILEDBG_LAYERS[screen][n].tilebase = 0;      // Tileset base
+        NF_TILEDBG_LAYERS[screen][n].tileblocks = 0;    // Blocks used by the tileset
+        NF_TILEDBG_LAYERS[screen][n].mapbase = 0;       // Map base
+        NF_TILEDBG_LAYERS[screen][n].mapblocks = 0;     // Blocks used by the map
+        NF_TILEDBG_LAYERS[screen][n].bgwidth = 0;       // Background width
+        NF_TILEDBG_LAYERS[screen][n].bgheight = 0;      // Background height
+        NF_TILEDBG_LAYERS[screen][n].mapwidth = 0;      // Map width
+        NF_TILEDBG_LAYERS[screen][n].mapheight = 0;     // Map height
+        NF_TILEDBG_LAYERS[screen][n].bgtype = 0;        // Map type
+        NF_TILEDBG_LAYERS[screen][n].bgslot = 0;        // Graphics slot
+        NF_TILEDBG_LAYERS[screen][n].blockx = 0;        // Current horizontal map block
+        NF_TILEDBG_LAYERS[screen][n].blocky = 0;        // Current vertical map block
+        NF_TILEDBG_LAYERS[screen][n].created = false;   // Is the background created?
+    }
 
-	// Inicializa el array de bloques libres de Mapas
-	for (n = 0; n < NF_BANKS_MAPS[screen]; n ++) {
-		NF_MAPBLOCKS[screen][n] = 0;
-	}
+    // Now reserve as many VRAM banks as needed for maps. Each tile map is as
+    // big as 8 map banks.
 
-	// Inicializa el array de informacion de fondos en pantalla
-	for (n = 0; n < 4; n ++) {
-		NF_TILEDBG_LAYERS[screen][n].tilebase = 0;		// Base del Tileset
-		NF_TILEDBG_LAYERS[screen][n].tileblocks = 0;	// Bloques usados por el Tileset
-		NF_TILEDBG_LAYERS[screen][n].mapbase = 0;		// Base del Map
-		NF_TILEDBG_LAYERS[screen][n].mapblocks = 0;		// Bloques usados por el Map
-		NF_TILEDBG_LAYERS[screen][n].bgwidth = 0;		// Ancho del fondo
-		NF_TILEDBG_LAYERS[screen][n].bgheight = 0;		// Altura del fondo
-		NF_TILEDBG_LAYERS[screen][n].mapwidth = 0;		// Ancho del mapa
-		NF_TILEDBG_LAYERS[screen][n].mapheight = 0;		// Altura del mapa
-		NF_TILEDBG_LAYERS[screen][n].bgtype = 0;		// Tipo de mapa
-		NF_TILEDBG_LAYERS[screen][n].bgslot = 0;		// Buffer de graficos usado
-		NF_TILEDBG_LAYERS[screen][n].blockx = 0;		// Bloque de mapa actual (horizontal)
-		NF_TILEDBG_LAYERS[screen][n].blocky = 0;		// Bloque de mapa actual (vertical)
-		NF_TILEDBG_LAYERS[screen][n].created = false;	// Esta creado ?
-	}
+    // Number of required tile maps to reserve for maps
+    u8 r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;
+    for (int n = 0; n < r_banks; n ++)
+        NF_TILEBLOCKS[screen][n] = 128; // Flag them as "map" banks
 
-	// Ahora reserva los bancos necesarios de VRAM para mapas
-	// Cada bloque de 16kb (1 banco de tiles) permite 8 bancos de mapas (de 2kb cada uno)
-	u8 r_banks;
-	r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;		// Calcula los bancos de Tiles a reservar para Maps
-	for (n = 0; n < r_banks; n ++) {
-		NF_TILEBLOCKS[screen][n] = 128;				// Marca que bancos de VRAM son para MAPS
-	}
+    if (screen == 0)
+    {
+        // Top screen, main engine
+        REG_DISPCNT |= DISPLAY_BG_EXT_PALETTE;  // Enable extended palettes
+        vramSetBankA(VRAM_A_MAIN_BG);           // VRAM_A: Main engine backgrounds (128 KB)
+        memset((void *)0x06000000, 0, 131072);  // Clear VRAM_A
+        vramSetBankE(VRAM_E_LCD);               // VRAM_E: Extended palettes (32 / 64 KB)
+        memset((void *)0x06880000, 0, 32768);   // Clear VRAM_E
+        for (int n = 0; n < 4; n++)             // Hide all 4 layers
+            NF_HideBg(0, n);
+    }
+    else
+    {
+        // Bottom screen, sub engine
+        REG_DISPCNT_SUB |= DISPLAY_BG_EXT_PALETTE;  // Enable extended palettes
+        vramSetBankC(VRAM_C_SUB_BG);            // VRAM_C: Sub engine backgrounds (128 KB)
+        memset((void *)0x06200000, 0, 131072);  // Clear VRAM_C
+        vramSetBankH(VRAM_H_LCD);               // VRAM_H: Extended palettes (32 / 64 KB)
+        memset((void *)0x06898000, 0, 32768);   // Clear VRAM_H
+        for (int n = 0; n < 4; n++)             // Hide all 4 layers
+            NF_HideBg(1, n);
+    }
 
-	if (screen == 0) {
-		// Si es la pantalla 0 (Superior, Main engine)
-		REG_DISPCNT |= (DISPLAY_BG_EXT_PALETTE);	// Activa las paletas extendidas
-		vramSetBankA(VRAM_A_MAIN_BG);				// Banco A de la VRAM para fondos (128kb)
-		memset((void*)0x06000000, 0, 131072);		// Borra el contenido del banco A
-		vramSetBankE(VRAM_E_LCD);					// Reserva el banco E de la VRAM para Paletas Extendidas (0-3) (32kb de 64kb)
-		memset((void*)0x06880000, 0, 32768);		// Borra el contenido del banco E
-		for (n = 0; n < 4; n ++) {					// Oculta todas las 4 capas
-			NF_HideBg(0, n);
-		}
-	} else {
-		// Si es la pantalla 1 (Inferior, Sub engine)
-		REG_DISPCNT_SUB |= (DISPLAY_BG_EXT_PALETTE);	// Activa las paletas extendidas
-		vramSetBankC(VRAM_C_SUB_BG);					// Banco C de la VRAM para fondos (128kb)
-		memset((void*)0x06200000, 0, 131072);			// Borra el contenido del banco C
-		vramSetBankH(VRAM_H_LCD);						// Reserva el banco H de la VRAM para Paletas Extendidas (0-3) (32kb)
-		memset((void*)0x06898000, 0, 32768);			// Borra el contenido del banco H
-		for (n = 0; n < 4; n ++) {						// Oculta todas las 4 capas
-			NF_HideBg(1, n);
-		}
-	}
-
-	// Inicializa la capa de dibujado para bitmaps (capa 3 unicamente)
-	if (screen == 0) {
-		// Modo 8 bits (Capas 3)
-		REG_BG3CNT = BG_PRIORITY_3 | BG_BMP_BASE(4) | BG_BMP8_256x256;
-		// Resetea los registros de RotScale (Capa 3)
-		REG_BG3PA = (1 << 8);
-		REG_BG3PB = 0;
-		REG_BG3PC = 0;
-		REG_BG3PD = (1 << 8);
-		NF_ScrollBg(0, 3, 0, 0);					// Posicionala en 0, 0
-		NF_ShowBg(0, 3);							// Muestra la capa 3
-	} else {
-		// Modo 8 bits (Capas 2 y 3)
-		REG_BG3CNT_SUB = BG_PRIORITY_3 | BG_BMP_BASE(4) | BG_BMP8_256x256;
-		// Resetea los registros de RotScale (Capa 3)
-		REG_BG3PA_SUB = (1 << 8);
-		REG_BG3PB_SUB = 0;
-		REG_BG3PC_SUB = 0;
-		REG_BG3PD_SUB = (1 << 8);
-		NF_ScrollBg(1, 3, 0, 0);					// Posicionala en 0, 0
-		NF_ShowBg(1, 3);							// Muestra la capa 3
-	}
-
+    // Initialize the drawing layer for bitmaps (layer 3)
+    if (screen == 0)
+    {
+        // Set layer 3 to 8 bits mode
+        REG_BG3CNT = BG_PRIORITY_3 | BG_BMP_BASE(4) | BG_BMP8_256x256;
+        // Reset rotation/scaling
+        REG_BG3PA = 1 << 8;
+        REG_BG3PB = 0;
+        REG_BG3PC = 0;
+        REG_BG3PD = 1 << 8;
+        NF_ScrollBg(0, 3, 0, 0); // Reset scroll
+        NF_ShowBg(0, 3);         // Show layer 3
+    }
+    else
+    {
+        // Set layer 3 to 8 bits mode
+        REG_BG3CNT_SUB = BG_PRIORITY_3 | BG_BMP_BASE(4) | BG_BMP8_256x256;
+        // Reset rotation/scaling
+        REG_BG3PA_SUB = 1 << 8;
+        REG_BG3PB_SUB = 0;
+        REG_BG3PC_SUB = 0;
+        REG_BG3PD_SUB = 1 << 8;
+        NF_ScrollBg(1, 3, 0, 0); // Reset scroll
+        NF_ShowBg(1, 3);         // Show layer 3
+    }
 }
