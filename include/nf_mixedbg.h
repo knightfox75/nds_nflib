@@ -31,7 +31,7 @@ extern "C" {
 /// After using this function you can use functions of both background modes.
 ///
 /// @param screen Screen (0 - 1).
-void NF_InitMixedBgSys(u8 screen);
+void NF_InitMixedBgSys(int screen);
 
 /// @}
 

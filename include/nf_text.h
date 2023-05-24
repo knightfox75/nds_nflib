@@ -58,7 +58,7 @@ extern NF_TYPE_TEXT_INFO NF_TEXT[2][4];
 /// ```
 ///
 /// @param screen Screen (0 - 1).
-void NF_InitTextSys(u8 screen);
+void NF_InitTextSys(int screen);
 
 /// Load font and palette files from the filesystem to RAM.
 ///
@@ -92,7 +92,8 @@ void NF_InitTextSys(u8 screen);
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
 /// @param rotation Rotation (0 - 2)
-void NF_LoadTextFont(const char *file, const char *name, u16 width, u16 height, u8 rotation);
+void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
+                     u32 rotation);
 
 /// Delete from RAM the font with the specified name.
 ///
@@ -121,7 +122,7 @@ void NF_UnloadTextFont(const char *name);
 /// @param layer Background layer (0 - 3)
 /// @param rotation Rotation (0 - 2)
 /// @param name Font name
-void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name);
+void NF_CreateTextLayer(int screen, u32 layer, u32 rotation, const char *name);
 
 /// Delete a text layer.
 ///
@@ -135,7 +136,7 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name);
 ///
 /// @param screen Screen (0 - 1)
 /// @param layer Background layer (0 - 3)
-void NF_DeleteTextLayer(u8 screen, u8 layer);
+void NF_DeleteTextLayer(int screen, u32 layer);
 
 /// Write text in a layer at the specified coordinates.
 ///
@@ -166,7 +167,7 @@ void NF_DeleteTextLayer(u8 screen, u8 layer);
 /// @param x X coordinate
 /// @param y Y coordinate
 /// @param text String to write to the screen
-void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text);
+void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text);
 
 /// Copy the temporary text buffers of both screens to VRAM.
 ///
@@ -189,7 +190,7 @@ void NF_UpdateTextLayers(void);
 ///
 /// @param screen Screen (0 - 1)
 /// @param layer Background layer (0 - 3)
-void NF_ClearTextLayer(u8 screen, u8 layer);
+void NF_ClearTextLayer(int screen, u32 layer);
 
 /// Defines a RGB color to be used later as a text color.
 ///
@@ -210,7 +211,7 @@ void NF_ClearTextLayer(u8 screen, u8 layer);
 /// @param r Red component (0 - 31)
 /// @param g Green component (0 - 31)
 /// @param b Blue component (0 - 31)
-void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b);
+void NF_DefineTextColor(int screen, u32 layer, u32 color, u32 r, u32 g, u32 b);
 
 /// Sets the color to use in all text written after calling this function.
 ///
@@ -226,7 +227,7 @@ void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b);
 /// @param screen Screen (0 - 1)
 /// @param layer Background layer (0 - 3)
 /// @param color Color number (0 - 15)
-static inline void NF_SetTextColor(u8 screen, u8 layer, u8 color)
+static inline void NF_SetTextColor(int screen, u32 layer, u32 color)
 {
     NF_TEXT[screen][layer].pal = color;
 }

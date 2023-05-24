@@ -42,7 +42,7 @@ void NF_ResetRawSoundBuffers(void)
     NF_InitRawSoundBuffers();
 }
 
-void NF_LoadRawSound(const char *file, u16 id,  u16 freq, u8 format)
+void NF_LoadRawSound(const char *file, u32 id, u32 freq, u32 format)
 {
     // Verify that the ID is inside the valid range
     if (id >= NF_SLOTS_RAWSOUND)
@@ -96,7 +96,7 @@ void NF_LoadRawSound(const char *file, u16 id,  u16 freq, u8 format)
     NF_RAWSOUND[id].available = false;
 }
 
-void NF_UnloadRawSound(u8 id)
+void NF_UnloadRawSound(u32 id)
 {
     // Verify that the ID is inside the valid range
     if (id >= NF_SLOTS_RAWSOUND)
@@ -118,7 +118,7 @@ void NF_UnloadRawSound(u8 id)
     NF_RAWSOUND[id].available = true;
 }
 
-u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom)
+u32 NF_PlayRawSound(u32 id, u32 volume, u32 pan, bool loop, u32 loopfrom)
 {
     // Verify that the ID is inside the valid range
     if (id >= NF_SLOTS_RAWSOUND)

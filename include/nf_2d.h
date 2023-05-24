@@ -41,7 +41,7 @@ extern "C" {
 ///
 /// @param screen Screen (0 - 1).
 /// @param mode Mode (0, 2, 5).
-void NF_Set2D(u8 screen, u8 mode);
+void NF_Set2D(int screen, u32 mode);
 
 /// Makes the BG of the selected layer and screen visible.
 ///
@@ -55,7 +55,7 @@ void NF_Set2D(u8 screen, u8 mode);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
-void NF_ShowBg(u8 screen, u8 layer);
+void NF_ShowBg(int screen, u32 layer);
 
 /// Makes the BG of the selected layer and screen invisible.
 ///
@@ -67,7 +67,7 @@ void NF_ShowBg(u8 screen, u8 layer);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
-void NF_HideBg(u8 screen, u8 layer);
+void NF_HideBg(int screen, u32 layer);
 
 /// Moves the BG of the selected layer and screen to the specified coordinates.
 ///
@@ -83,7 +83,7 @@ void NF_HideBg(u8 screen, u8 layer);
 /// @param layer Layer (0 - 3).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y);
+void NF_ScrollBg(int screen, u32 layer, s32 x, s32 y);
 
 /// Moves the selected sprite of a screen to the specified coordinates.
 ///
@@ -97,7 +97,7 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y);
 /// @param id Sprite ID (0 - 127).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-static inline void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y)
+static inline void NF_MoveSprite(int screen, u32 id, s32 x, s32 y)
 {
     NF_SPRITEOAM[screen][id].x = x;
     NF_SPRITEOAM[screen][id].y = y;
@@ -116,7 +116,7 @@ static inline void NF_MoveSprite(u8 screen, u8 id, s16 x, s16 y)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param layer Layer (0 - 3).
-static inline void NF_SpriteLayer(u8 screen, u8 id, u8 layer)
+static inline void NF_SpriteLayer(int screen, u32 id, u32 layer)
 {
     NF_SPRITEOAM[screen][id].layer = layer;
 }
@@ -136,7 +136,7 @@ static inline void NF_SpriteLayer(u8 screen, u8 id, u8 layer)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param show Set to true to show the sprite, false otherwise.
-static inline void NF_ShowSprite(u8 screen, u8 id, bool show)
+static inline void NF_ShowSprite(int screen, u32 id, bool show)
 {
     NF_SPRITEOAM[screen][id].hide = !show;
 }
@@ -152,7 +152,7 @@ static inline void NF_ShowSprite(u8 screen, u8 id, bool show)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param hflip Set to true to flip the sprite, false otherwise.
-static inline void NF_HflipSprite(u8 screen, u8 id, bool hflip)
+static inline void NF_HflipSprite(int screen, u32 id, bool hflip)
 {
     NF_SPRITEOAM[screen][id].hflip = hflip;
 }
@@ -168,7 +168,7 @@ static inline void NF_HflipSprite(u8 screen, u8 id, bool hflip)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @return hflip Returns true if the sprite is flipped, false otherwise.
-static inline bool NF_GetSpriteHflip(u8 screen, u8 id)
+static inline bool NF_GetSpriteHflip(int screen, u32 id)
 {
     return NF_SPRITEOAM[screen][id].hflip;
 }
@@ -184,7 +184,7 @@ static inline bool NF_GetSpriteHflip(u8 screen, u8 id)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param vflip Set to true to flip the sprite, false otherwise.
-static inline void NF_VflipSprite(u8 screen, u8 id, bool vflip)
+static inline void NF_VflipSprite(int screen, u32 id, bool vflip)
 {
     NF_SPRITEOAM[screen][id].vflip = vflip;
 }
@@ -200,7 +200,7 @@ static inline void NF_VflipSprite(u8 screen, u8 id, bool vflip)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @return vflip Returns true if the sprite is flipped, false otherwise.
-static inline bool NF_GetSpriteVflip(u8 screen, u8 id)
+static inline bool NF_GetSpriteVflip(int screen, u32 id)
 {
     return NF_SPRITEOAM[screen][id].vflip;
 }
@@ -216,7 +216,7 @@ static inline bool NF_GetSpriteVflip(u8 screen, u8 id)
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param frame The frame to show.
-void NF_SpriteFrame(u8 screen, u8 id, u16 frame);
+void NF_SpriteFrame(int screen, u32 id, u32 frame);
 
 /// Makes a sprite available to be rotated and scaled.
 ///
@@ -238,7 +238,7 @@ void NF_SpriteFrame(u8 screen, u8 id, u16 frame);
 /// @param sprite Sprite ID (0 - 127).
 /// @param id RotSet ID (0 - 31).
 /// @param doublesize Set to true to enable double size mode.
-void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize);
+void NF_EnableSpriteRotScale(int screen, u32 sprite, u32 id, bool doublesize);
 
 /// Disables the rotation and scalation of sprite.
 ///
@@ -250,7 +250,7 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize);
 ///
 /// @param screen Screen (0 - 1).
 /// @param sprite Sprite ID (0 - 127).
-void NF_DisableSpriteRotScale(u8 screen, u8 sprite);
+void NF_DisableSpriteRotScale(int screen, u32 sprite);
 
 /// Setup the rotation and scalation values of a RotSet.
 ///
@@ -274,7 +274,7 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite);
 /// @param angle Angle (-512 to 512).
 /// @param sx X scale (0 to 512), 100% = 256.
 /// @param sy Y scale (0 to 512), 100% = 256.
-void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy);
+void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy);
 
 /// @}
 

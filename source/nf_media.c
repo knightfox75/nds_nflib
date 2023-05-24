@@ -13,7 +13,7 @@
 #include "nf_bitmapbg.h"
 #include "nf_media.h"
 
-void NF_LoadBMP(const char *file, u8 slot)
+void NF_LoadBMP(const char *file, u32 slot)
 {
     // Temporary buffers
     char *buffer = NULL;
@@ -80,10 +80,10 @@ void NF_LoadBMP(const char *file, u8 slot)
         case 8: // 8 bits per pixel
         {
             // Calculate palette size
-            u32 colors = (bmp_header.offset - 0x36) >> 2;
-            char *palette = malloc(colors << 2);
+            u32 colors = (bmp_header.offset - 0x36) / 4; // Stored as RGBA
+            char *palette = malloc(colors * 4);
             if (palette == NULL)
-                NF_Error(102, NULL, colors << 2);
+                NF_Error(102, NULL, colors * 4);
 
             // Reopen file and read the palette
             file_id = fopen(filename, "rb");
@@ -91,7 +91,7 @@ void NF_LoadBMP(const char *file, u8 slot)
                 NF_Error(101, filename, 0);
 
             fseek(file_id, 0x36, SEEK_SET);
-            fread(palette, 1, colors << 2, file_id);
+            fread(palette, 1, colors * 4, file_id);
             fclose(file_id);
 
             u32 idx = 0;

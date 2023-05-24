@@ -15,7 +15,7 @@
 #include "nf_mixedbg.h"
 #include "nf_tiledbg.h"
 
-void NF_InitMixedBgSys(u8 screen)
+void NF_InitMixedBgSys(int screen)
 {
     // Define the number of banks of maps and tiles.
     //

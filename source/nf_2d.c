@@ -12,7 +12,7 @@
 #include "nf_sprite256.h"
 #include "nf_tiledbg.h"
 
-void NF_Set2D(u8 screen, u8 mode)
+void NF_Set2D(int screen, u32 mode)
 {
     if (screen == 0)
     {
@@ -48,7 +48,7 @@ void NF_Set2D(u8 screen, u8 mode)
     }
 }
 
-void NF_ShowBg(u8 screen, u8 layer)
+void NF_ShowBg(int screen, u32 layer)
 {
     if (screen == 0)
     {
@@ -90,7 +90,7 @@ void NF_ShowBg(u8 screen, u8 layer)
     }
 }
 
-void NF_HideBg(u8 screen, u8 layer)
+void NF_HideBg(int screen, u32 layer)
 {
     if (screen == 0)
     {
@@ -132,22 +132,20 @@ void NF_HideBg(u8 screen, u8 layer)
     }
 }
 
-void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y)
+void NF_ScrollBg(int screen, u32 layer, s32 x, s32 y)
 {
     // Temporary variables
-    s16 sx = x;
-    s16 sy = y;
+    s32 sx = x;
+    s32 sy = y;
 
     // If the map is infinite (> 512 tiles)
     if (NF_TILEDBG_LAYERS[screen][layer].bgtype > 0)
     {
         // Temporary variables for infinite backgrounds
         u32 address = 0;    // VRAM address
-        u16 blockx = 0;     // Number of block in the screen
-        u16 blocky = 0;
-        u32 mapmovex = 0;   // Data copy offset (block x 2048)
-        u32 mapmovey = 0;
-        u16 rowsize = 0;    // Size used by each row in RAM
+        u32 blockx = 0;     // Number of block in the screen
+        u32 blocky = 0;
+        u32 rowsize = 0;    // Size used by each row in RAM
 
         // Calculate base address of the map in VRAM
         if (screen == 0) // VRAM_A
@@ -178,7 +176,7 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y)
                 if (NF_TILEDBG_LAYERS[screen][layer].blockx != blockx)
                 {
                     // Calculate data offset
-                    mapmovex = blockx << 11;
+                    u32 mapmovex = blockx << 11;
 
                     // Copy blocks A and B (32x32) + (32x32) (2kb x 2 = 4kb)
                     NF_DmaMemCopy((void *)address,
@@ -202,7 +200,7 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y)
                 if (NF_TILEDBG_LAYERS[screen][layer].blocky != blocky)
                 {
                     // Calculate data offset
-                    mapmovey = blocky << 11;
+                    u32 mapmovey = blocky << 11;
 
                     // Copy blocks A and B (32x32) + (32x32) (2kb x 2 = 4kb)
                     NF_DmaMemCopy((void *)address,
@@ -226,12 +224,12 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y)
                 blocky = y >> 8;
 
                 // If you have changed block in any direction...
-                if ((NF_TILEDBG_LAYERS[screen][layer].blockx != blockx)
-                 || (NF_TILEDBG_LAYERS[screen][layer].blocky != blocky))
+                if ((NF_TILEDBG_LAYERS[screen][layer].blockx != blockx) ||
+                    (NF_TILEDBG_LAYERS[screen][layer].blocky != blocky))
                 {
                     // Calculate data offset
-                    mapmovex = (blocky * rowsize) + (blockx << 11);
-                    mapmovey = mapmovex + rowsize;
+                    u32 mapmovex = (blocky * rowsize) + (blockx << 11);
+                    u32 mapmovey = mapmovex + rowsize;
 
                     // Blocks A and B (32x32) + (32x32) (2kb x 2 = 4kb)
                     NF_DmaMemCopy((void *)address,
@@ -304,7 +302,7 @@ void NF_ScrollBg(u8 screen, u8 layer, s16 x, s16 y)
     }
 }
 
-void NF_SpriteFrame(u8 screen, u8 id, u16 frame)
+void NF_SpriteFrame(int screen, u32 id, u32 frame)
 {
     // Verify that the sprite ID is valid
     if (id > 127)
@@ -351,16 +349,15 @@ void NF_SpriteFrame(u8 screen, u8 id, u16 frame)
     }
 }
 
-void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize)
+void NF_EnableSpriteRotScale(int screen, u32 sprite, u32 id, bool doublesize)
 {
     // Verify that the sprite ID is valid
     if (sprite > 127)
         NF_Error(106, "Sprite", 127);
 
-    // Verifica el rango de Id's de Rotacion
-    if (id > 31) {
+    // Verify range of rotation IDs
+    if (id > 31)
         NF_Error(106, "RotScale", 127);
-    }
 
     // Verify that the sprite has been created
     if (!NF_SPRITEOAM[screen][sprite].created)
@@ -376,7 +373,7 @@ void NF_EnableSpriteRotScale(u8 screen, u8 sprite, u8 id, bool doublesize)
     NF_SPRITEOAM[screen][sprite].doublesize = doublesize;
 }
 
-void NF_DisableSpriteRotScale(u8 screen, u8 sprite)
+void NF_DisableSpriteRotScale(int screen, u32 sprite)
 {
     // Verify that the sprite ID is valid
     if (sprite > 127)
@@ -396,11 +393,11 @@ void NF_DisableSpriteRotScale(u8 screen, u8 sprite)
     NF_SPRITEOAM[screen][sprite].doublesize = false;
 }
 
-void NF_SpriteRotScale(u8 screen, u8 id, s16 angle, u16 sx, u16 sy)
+void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy)
 {
     // Temporary variables
-    s16 in = 0;     // Input angle
-    s16 out = 0;    // Converted angle
+    s32 in = 0;     // Input angle
+    s32 out = 0;    // Converted angle
 
     in = angle;
 

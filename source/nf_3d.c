@@ -11,7 +11,7 @@
 #include "nf_3d.h"
 #include "nf_basic.h"
 
-void NF_Set3D(u8 screen, u8 mode)
+void NF_Set3D(int screen, u32 mode)
 {
     // Only the main engine can use 3D, so we need to swap the screens if the
     // user wants the 3D output to be in the screen that isn't the main one.
@@ -69,7 +69,7 @@ void NF_InitOpenGL(void)
     NF_ShowBg(0, 0);
 }
 
-u16 NF_GetTextureSize(u16 textel)
+u32 NF_GetTextureSize(u32 textel)
 {
     // Return the texel size as a base 2 log: Real size = 8 << Returned size
     switch (textel)

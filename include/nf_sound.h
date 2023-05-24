@@ -67,12 +67,12 @@ void NF_ResetRawSoundBuffers(void);
 /// @param id Destination slot number (0 - 31)
 /// @param freq Frequency of the sample in Hz (11025, 22050, etc)
 /// @param format Sample format (0 -> 8 bits, 1 -> 16 bits, 2 -> ADPCM).
-void NF_LoadRawSound(const char *file, u16 id,  u16 freq, u8 format);
+void NF_LoadRawSound(const char *file, u32 id, u32 freq, u32 format);
 
 /// Deletes from RAM the sound file stored in the specified slot.
 ///
 /// @param id Slot number (0 - 31)
-void NF_UnloadRawSound(u8 id);
+void NF_UnloadRawSound(u32 id);
 
 /// Play the sound file loaded in the specified slot.
 ///
@@ -97,7 +97,7 @@ void NF_UnloadRawSound(u8 id);
 /// @param loop True if you want the sound to loop.
 /// @param loopfrom Loop starting point
 /// @return Channel number that is playing the sound.
-u8 NF_PlayRawSound(u8 id, u8 volume, u8 pan, bool loop, u16 loopfrom);
+u32 NF_PlayRawSound(u32 id, u32 volume, u32 pan, bool loop, u32 loopfrom);
 
 /// @}
 

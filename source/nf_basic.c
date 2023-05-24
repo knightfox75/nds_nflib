@@ -18,7 +18,7 @@
 // Folder used as root by NFLib
 char NF_ROOTFOLDER[64];
 
-__attribute__((noreturn)) void NF_Error(u16 code, const char *text, unsigned int value)
+__attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int value)
 {
     consoleDemoInit();      // Initialize demo text console
     setBrightness(3, 0);    // Set the brightness to the top
@@ -52,7 +52,7 @@ __attribute__((noreturn)) void NF_Error(u16 code, const char *text, unsigned int
             break;
 
         case 106: // Value out of range
-            iprintf("%s Id out\n", text);
+            iprintf("%s value out\n", text);
             iprintf("of range (%u max).\n", value);
             break;
 

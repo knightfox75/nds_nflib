@@ -53,7 +53,7 @@ extern char NF_ROOTFOLDER[64];
 /// @param code Error code.
 /// @param text Description.
 /// @param value Additional info.
-__attribute__((noreturn)) void NF_Error(u16 code, const char *text, unsigned int value);
+__attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int value);
 
 /// Defines the root folder of your project (FAT or NitroFS).
 ///
@@ -102,7 +102,7 @@ void NF_DmaMemCopy(void *destination, const void *source, u32 size);
 /// 6 : Chinese
 ///
 /// @return The language ID.
-static inline u8 NF_GetLanguage(void)
+static inline u32 NF_GetLanguage(void)
 {
     return PersonalData->language;
 }

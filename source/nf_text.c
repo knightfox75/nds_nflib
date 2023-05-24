@@ -18,7 +18,7 @@
 // Structs that hold information about all text layers
 NF_TYPE_TEXT_INFO NF_TEXT[2][4];
 
-void NF_InitTextSys(u8 screen)
+void NF_InitTextSys(int screen)
 {
     for (int n = 0; n < 4; n++)
     {
@@ -32,8 +32,8 @@ void NF_InitTextSys(u8 screen)
     }
 }
 
-void NF_LoadTextFont(const char *file, const char *name, u16 width, u16 height,
-                     u8 rotation)
+void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
+                     u32 rotation)
 {
     // Look for a free slot
     u32 slot = 255;
@@ -135,7 +135,7 @@ void NF_UnloadTextFont(const char *name)
     NF_UnloadTiledBg(name);
 }
 
-void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name)
+void NF_CreateTextLayer(int screen, u32 layer, u32 rotation, const char *name)
 {
     // Create a background to use it as a text layer
     NF_CreateTiledBg(screen, layer, name);
@@ -159,8 +159,8 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name)
     NF_TEXT[screen][layer].rotation = rotation;
 
     // Save the background size in tiles (save the index of the last row/column)
-    NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width >> 3) - 1;
-    NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height >> 3) - 1;
+    NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width / 8) - 1;
+    NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height / 8) - 1;
 
     // Save slot where the font is stored
     NF_TEXT[screen][layer].slot = slot;
@@ -169,7 +169,7 @@ void NF_CreateTextLayer(u8 screen, u8 layer, u8 rotation, const char *name)
     NF_TEXT[screen][layer].exist = true;
 }
 
-void NF_DeleteTextLayer(u8 screen, u8 layer)
+void NF_DeleteTextLayer(int screen, u32 layer)
 {
     // Verify that the selected text layer exists
     if (!NF_TEXT[screen][layer].exist)
@@ -186,19 +186,19 @@ void NF_DeleteTextLayer(u8 screen, u8 layer)
     NF_TEXT[screen][layer].exist = false;
 }
 
-void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text)
+void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
 {
     // Verify that the selected text layer exists
     if (!NF_TEXT[screen][layer].exist)
         NF_Error(114, NULL, screen);
 
-    u16 tsize = strlen(text); // Size of the temporary string buffer
+    u32 tsize = strlen(text); // Size of the temporary string buffer
     u8 *string = malloc(tsize); // Temporary string buffer
     if (string == NULL)
         NF_Error(102, NULL, tsize);
 
     // Store the text string in the temporary buffer
-    for (int n = 0; n < tsize; n++)
+    for (u32 n = 0; n < tsize; n++)
     {
         int value = text[n] - 32; // Skip the first 32 non-printable characters
         if (value < 0)
@@ -292,7 +292,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text)
             tx = x;
             ty = y;
 
-            for (int n = 0; n < tsize; n++)
+            for (u32 n = 0; n < tsize; n++)
             {
                 // If it's a valid character, put character
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
@@ -320,7 +320,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text)
             tx = NF_TEXT[screen][layer].width - y;
             ty = x;
 
-            for (int n = 0; n < tsize; n++)
+            for (u32 n = 0; n < tsize; n++)
             {
                 // If it's a valid character, put character
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
@@ -348,7 +348,7 @@ void NF_WriteText(u8 screen, u8 layer, u16 x, u16 y, const char *text)
             tx = y;
             ty = NF_TEXT[screen][layer].height - x;
 
-            for (int n = 0; n < tsize; n ++)
+            for (u32 n = 0; n < tsize; n ++)
             {
                 // If it's a valid character, put character
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
@@ -396,7 +396,7 @@ void NF_UpdateTextLayers(void)
     }
 }
 
-void NF_ClearTextLayer(u8 screen, u8 layer)
+void NF_ClearTextLayer(int screen, u32 layer)
 {
     // Verify that the selected text layer exists
     if (!NF_TEXT[screen][layer].exist)
@@ -412,31 +412,31 @@ void NF_ClearTextLayer(u8 screen, u8 layer)
     NF_TEXT[screen][layer].update = true;
 }
 
-void NF_DefineTextColor(u8 screen, u8 layer, u8 color, u8 r, u8 g, u8 b)
+void NF_DefineTextColor(int screen, u32 layer, u32 color, u32 r, u32 g, u32 b)
 {
     // Verify that the selected text layer exists
     if (!NF_TEXT[screen][layer].exist)
         NF_Error(114, NULL, screen);
 
     // Pack RGB value
-    u16 rgb = r | (g << 5) | (b << 10);
+    u32 rgb = r | (g << 5) | (b << 10);
 
     // Modify the palette of the selected screen
     if (screen == 0)
     {
         vramSetBankE(VRAM_E_LCD); // Enable CPU access to VRAM_E
-        u32 address = 0x06880000 + (layer << 13) + (color << 9); // First color
+        u32 address = 0x06880000 + (layer << 13) + (color * 256 * 2); // First color
         *((u16*)address) = (u16)0xFF00FF;
-        address = 0x06880000 + (layer << 13) + (color << 9) + 2; // Second color
+        address = 0x06880000 + (layer << 13) + (color * 256 * 2) + 2; // Second color
         *((u16*)address) = rgb;
         vramSetBankE(VRAM_E_BG_EXT_PALETTE);
     }
     else
     {
         vramSetBankH(VRAM_H_LCD); // Enable CPU access to VRAM_H
-        u32 address = 0x06898000 + (layer << 13) + (color << 9); // First color
+        u32 address = 0x06898000 + (layer << 13) + (color * 256 * 2); // First color
         *((u16*)address) = (u16)0xFF00FF;
-        address = 0x06898000 + (layer << 13) + (color << 9) + 2; // Second color
+        address = 0x06898000 + (layer << 13) + (color * 256 * 2) + 2; // Second color
         *((u16*)address) = rgb;
         vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
     }

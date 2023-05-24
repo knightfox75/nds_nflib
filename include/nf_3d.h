@@ -45,7 +45,7 @@ extern "C" {
 ///
 /// @param screen Screen (0 - 1).
 /// @param mode Mode (0, 2, 5).
-void NF_Set3D(u8 screen, u8 mode);
+void NF_Set3D(int screen, u32 mode);
 
 /// Initialitzes and configures OpenGL for 3D sprites.
 ///
@@ -55,7 +55,7 @@ void NF_InitOpenGL(void);
 
 // Internal use. It takes a texture size in pixels and returns the internal DS
 // hardware representation of that size.
-u16 NF_GetTextureSize(u16 textel);
+u32 NF_GetTextureSize(u32 textel);
 
 /// @}
 
