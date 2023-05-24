@@ -195,7 +195,7 @@ void NF_InitSpriteSys(int screen, ...);
 /// @param id Slot number (0 - 255).
 /// @param width Width of the graphics object (in pixels).
 /// @param height Height of the graphics object (in pixels).
-void NF_LoadSpriteGfx(const char *file, u16 id, u16 width, u16 height);
+void NF_LoadSpriteGfx(const char *file, u32 id, u32 width, u32 height);
 
 /// Delete from RAM the graphics of the selected slot and mark it as free.
 ///
@@ -209,7 +209,7 @@ void NF_LoadSpriteGfx(const char *file, u16 id, u16 width, u16 height);
 /// NF_UnloadSpriteGfx(100);
 /// ```
 /// @param id Slot number (0 - 255).
-void NF_UnloadSpriteGfx(u16 id);
+void NF_UnloadSpriteGfx(u32 id);
 
 /// Load a palette from the filesystem to RAM to be used for a sprite.
 ///
@@ -229,14 +229,14 @@ void NF_UnloadSpriteGfx(u16 id);
 ///
 /// @param file File name without extension.
 /// @param id Slot number (0 - 63).
-void NF_LoadSpritePal(const char *file, u8 id);
+void NF_LoadSpritePal(const char *file, u32 id);
 
 /// Delete the selected palette from RAM and mark it as free.
 ///
 /// You can delete it if you don't need it anymore or if it's already in VRAM.
 ///
 /// @param id Slot number (0 - 63).
-void NF_UnloadSpritePal(u8 id);
+void NF_UnloadSpritePal(u32 id);
 
 /// Copy a graphics object from RAM to VRAM of the selected screen to be used as
 /// a sprite.
@@ -255,7 +255,7 @@ void NF_UnloadSpritePal(u8 id);
 /// @param ram RAM slot (0 - 255).
 /// @param vram VRAM slot (0 - 127).
 /// @param keepframes For animated sprites. If true, copy all frames to VRAM.
-void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes);
+void NF_VramSpriteGfx(int screen, u32 ram, u32 vram, bool keepframes);
 
 /// Delete from VRAM the graphics object of the selected slot and a screen.
 ///
@@ -268,7 +268,7 @@ void NF_VramSpriteGfx(u8 screen, u16 ram, u16 vram, bool keepframes);
 /// ```
 /// @param screen Screen (0 - 1).
 /// @param id VRAM slot (0 - 127).
-void NF_FreeSpriteGfx(u8 screen, u16 id);
+void NF_FreeSpriteGfx(int screen, u32 id);
 
 /// Defragments the free VRAM used for sprite graphics.
 ///
@@ -277,10 +277,10 @@ void NF_FreeSpriteGfx(u8 screen, u16 id);
 /// function. You can get the state of VRAM reading the following variables:
 ///
 /// ```
-/// NF_SPRVRAM[u8 screen].free       // Total free VRAM
-/// NF_SPRVRAM[u8 screen].fragmented // Total fragmented free VRAM
-/// NF_SPRVRAM[u8 screen].inarow     // Largest free block of VRAM at the end
-/// NF_SPRVRAM[u8 screen].lost       // Unusable free VRAM because fragmentation
+/// NF_SPRVRAM[int screen].free       // Total free VRAM
+/// NF_SPRVRAM[int screen].fragmented // Total fragmented free VRAM
+/// NF_SPRVRAM[int screen].inarow     // Largest free block of VRAM at the end
+/// NF_SPRVRAM[int screen].lost       // Unusable free VRAM because fragmentation
 /// ```
 ///
 /// Example:
@@ -290,7 +290,7 @@ void NF_FreeSpriteGfx(u8 screen, u16 id);
 /// ```
 ///
 /// @param screen Screen (0 - 1).
-void NF_VramSpriteGfxDefrag(u8 screen);
+void NF_VramSpriteGfxDefrag(int screen);
 
 /// Copy the palette from RAM to a slot of extended palettes in VRAM.
 ///
@@ -305,7 +305,7 @@ void NF_VramSpriteGfxDefrag(u8 screen);
 /// @param screen Screen (0 - 1).
 /// @param id VRAM slot (0 - 64).
 /// @param slot VRAM slot (0 - 15).
-void NF_VramSpritePal(u8 screen, u8 id, u8 slot);
+void NF_VramSpritePal(int screen, u32 id, u32 slot);
 
 /// Create a sprite with the specified ID in the selcted screen.
 ///
@@ -326,7 +326,7 @@ void NF_VramSpritePal(u8 screen, u8 id, u8 slot);
 /// @param pal Palette (0 - 15).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y);
+void NF_CreateSprite(int screen, u32 id, u32 gfx, u32 pal, s32 x, s32 y);
 
 /// Delete the selected sprite ID from the specified screen.
 ///
@@ -340,7 +340,7 @@ void NF_CreateSprite(u8 screen, u8 id, u16 gfx, u8 pal, s16 x, s16 y);
 ///
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
-void NF_DeleteSprite(u8 screen, u8 id);
+void NF_DeleteSprite(int screen, u32 id);
 
 /// Copy data from the shadow OAM used by NFLib to the real OAM of libnds.
 ///
@@ -360,7 +360,7 @@ void NF_DeleteSprite(u8 screen, u8 id);
 /// handler.
 ///
 /// @param screen Screen (0 - 1).
-void NF_SpriteOamSet(u8 screen);
+void NF_SpriteOamSet(int screen);
 
 /// Changes a color of a sprite palette in the specified screen.
 ///
@@ -379,7 +379,7 @@ void NF_SpriteOamSet(u8 screen);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_SpriteSetPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b);
+void NF_SpriteSetPalColor(int screen, u32 pal, u32 number, u32 r, u32 g, u32 b);
 
 /// Changes the value of one color in a sprite palettes of the specified screen.
 ///
@@ -400,7 +400,7 @@ void NF_SpriteSetPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_SpriteEditPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b);
+void NF_SpriteEditPalColor(int screen, u32 pal, u32 number, u32 r, u32 g, u32 b);
 
 /// Updates a sprite palette in VRAM with the copy in RAM of it.
 ///
@@ -412,7 +412,7 @@ void NF_SpriteEditPalColor(u8 screen, u8 pal, u8 number, u8 r, u8 g, u8 b);
 ///
 /// @param screen Screen (0 - 1).
 /// @param pal Palette index (0 - 15).
-void NF_SpriteUpdatePalette(u8 screen, u8 pal);
+void NF_SpriteUpdatePalette(int screen, u32 pal);
 
 /// Gets the RGB value of a color of a sprites palette in RAM.
 ///
@@ -432,7 +432,7 @@ void NF_SpriteUpdatePalette(u8 screen, u8 pal);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_SpriteGetPalColor(u8 screen, u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
+void NF_SpriteGetPalColor(int screen, u32 pal, u32 number, u8 *r, u8 *g, u8 *b);
 
 /// @}
 
