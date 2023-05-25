@@ -2,12 +2,11 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de Fondos Affine
+// NightFox LIB - Affine background functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <nds.h>
 
@@ -16,605 +15,567 @@
 #include "nf_basic.h"
 #include "nf_tiledbg.h"
 
-// Estructura para almacenar los parametros de los fondos Affine
+// Struct that holds informatio about all affine backgrounds
 NF_TYPE_AFFINE_BG NF_AFFINE_BG[2][4];
 
-void NF_InitAffineBgSys(u8 screen) {
+void NF_InitAffineBgSys(int screen)
+{
+    // Define the number of banks of maps and tiles.
+    //
+    // Tile banks are 16 KB in size. Map banks are 2 KB in size. You can fit 8
+    // map banks in a tile bank. For that reason, the number of map banks must
+    // be a multiple of 8 banks.
+    //
+    // By default, use 8 tile banks and 16 map banks.
+    NF_BANKS_TILES[screen] = 8;
+    NF_BANKS_MAPS[screen] = 16;
 
-	u8 n = 0;
+    // Set all tile and map blocks as free
+    for (u32 n = 0; n < NF_BANKS_TILES[screen]; n++)
+        NF_TILEBLOCKS[screen][n] = 0;
+    for (u32 n = 0; n < NF_BANKS_MAPS[screen]; n++)
+        NF_MAPBLOCKS[screen][n] = 0;
 
-	// Define los bancos de Mapas y Tiles
-	NF_BANKS_TILES[screen] = 8;		// (1 banks = 16kb)	Cada banco de tiles puede alvergar 8 bancos de Mapas
-	NF_BANKS_MAPS[screen] = 16;		// (1 bank = 2kb)	Usar multiplos de 8. Cada set de 8 bancos consume 1 banco de tiles
-	// Por defecto Tiles = 8, Mapas = 16
-	// Esto nos deja 6 bancos de 16kb para tiles
-	// y 16 bancos de 2kb para mapas
+    // Reset state of all layers
+    for (int n = 0; n < 4; n++)
+    {
+        NF_TILEDBG_LAYERS[screen][n].tilebase = 0;
+        NF_TILEDBG_LAYERS[screen][n].tileblocks = 0;
+        NF_TILEDBG_LAYERS[screen][n].mapbase = 0;
+        NF_TILEDBG_LAYERS[screen][n].mapblocks = 0;
+        NF_TILEDBG_LAYERS[screen][n].bgwidth = 0;
+        NF_TILEDBG_LAYERS[screen][n].bgheight = 0;
+        NF_TILEDBG_LAYERS[screen][n].mapwidth = 0;
+        NF_TILEDBG_LAYERS[screen][n].mapheight = 0;
+        NF_TILEDBG_LAYERS[screen][n].bgtype = 0;
+        NF_TILEDBG_LAYERS[screen][n].bgslot = 0;
+        NF_TILEDBG_LAYERS[screen][n].blockx = 0;
+        NF_TILEDBG_LAYERS[screen][n].blocky = 0;
+        NF_TILEDBG_LAYERS[screen][n].created = false; // Mark as not created
+    }
 
-	// Inicializa el array de bloques libres de Tiles
-	for (n = 0; n < NF_BANKS_TILES[screen]; n ++) {
-		NF_TILEBLOCKS[screen][n] = 0;
-	}
+    // Now reserve as many VRAM banks as needed for maps. Each tile map is as
+    // big as 8 map banks.
 
-	// Inicializa el array de bloques libres de Mapas
-	for (n = 0; n < NF_BANKS_MAPS[screen]; n ++) {
-		NF_MAPBLOCKS[screen][n] = 0;
-	}
+    // Number of required tile maps to reserve for maps
+    u32 r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;
+    for (u32 n = 0; n < r_banks; n++)
+        NF_TILEBLOCKS[screen][n] = 128; // Mark as available for maps
 
-	// Inicializa el array de informacion de fondos en pantalla
-	for (n = 0; n < 4; n ++) {
-		NF_TILEDBG_LAYERS[screen][n].tilebase = 0;		// Base del Tileset
-		NF_TILEDBG_LAYERS[screen][n].tileblocks = 0;	// Bloques usados por el Tileset
-		NF_TILEDBG_LAYERS[screen][n].mapbase = 0;		// Base del Map
-		NF_TILEDBG_LAYERS[screen][n].mapblocks = 0;		// Bloques usados por el Map
-		NF_TILEDBG_LAYERS[screen][n].bgwidth = 0;		// Ancho del fondo
-		NF_TILEDBG_LAYERS[screen][n].bgheight = 0;		// Altura del fondo
-		NF_TILEDBG_LAYERS[screen][n].mapwidth = 0;		// Ancho del mapa
-		NF_TILEDBG_LAYERS[screen][n].mapheight = 0;		// Altura del mapa
-		NF_TILEDBG_LAYERS[screen][n].bgtype = 0;		// Tipo de mapa
-		NF_TILEDBG_LAYERS[screen][n].bgslot = 0;		// Buffer de graficos usado
-		NF_TILEDBG_LAYERS[screen][n].blockx = 0;		// Bloque de mapa actual (horizontal)
-		NF_TILEDBG_LAYERS[screen][n].blocky = 0;		// Bloque de mapa actual (vertical)
-		NF_TILEDBG_LAYERS[screen][n].created = false;	// Esta creado ?
-	}
-
-	// Ahora reserva los bancos necesarios de VRAM para mapas
-	// Cada bloque de 16kb (1 banco de tiles) permite 8 bancos de mapas (de 2kb cada uno)
-	u8 r_banks;
-	r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;		// Calcula los bancos de Tiles a reservar para Maps
-	for (n = 0; n < r_banks; n ++) {
-		NF_TILEBLOCKS[screen][n] = 128;				// Marca que bancos de VRAM son para MAPS
-	}
-
-	if (screen == 0) {
-		// Si es la pantalla 0 (Superior, Main engine)
-		vramSetBankA(VRAM_A_MAIN_BG);				// Banco A de la VRAM para fondos (128kb)
-		memset((void*)0x06000000, 0, 131072);		// Borra el contenido del banco A
-		for (n = 0; n < 4; n ++) {					// Oculta todas las 4 capas
-			NF_HideBg(0, n);
-		}
-	} else {
-		// Si es la pantalla 1 (Inferior, Sub engine)
-		vramSetBankC(VRAM_C_SUB_BG);					// Banco C de la VRAM para fondos (128kb)
-		memset((void*)0x06200000, 0, 131072);			// Borra el contenido del banco C
-		for (n = 0; n < 4; n ++) {						// Oculta todas las 4 capas
-			NF_HideBg(1, n);
-		}
-	}
-
+    if (screen == 0)
+    {
+        // Clear VRAM_A (128 KB)
+        vramSetBankA(VRAM_A_MAIN_BG);
+        memset((void *)0x06000000, 0, 131072);
+        for (int n = 0; n < 4; n++) // Hide all 4 layers
+            NF_HideBg(0, n);
+    }
+    else
+    {
+        // Clear VRAM_C (128 KB)
+        vramSetBankC(VRAM_C_SUB_BG);
+        memset((void *)0x06200000, 0, 131072);
+        for (int n = 0; n < 4; n++) // Hide all 4 layers
+            NF_HideBg(1, n);
+    }
 }
 
-void NF_LoadAffineBg(const char* file, const char* name, u16 width, u16 height) {
+void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height)
+{
+    // Verify that the background has the right size
+    if (!(((width == 256) && (height == 256)) || ((width == 512) && (height == 512))))
+        NF_Error(117, name, 0);
 
-	// Verifica si el fondo cumple las medidas correctas
-	if (((width == 256) && (height == 256)) || ((width == 512) && (height == 512))) {
-		// Medida Ok
-	} else {
-		// Error de tamaño
-		NF_Error(117, name, 0);
-	}
+    // Look for a free tiled background slot
+    u8 slot = 255;
+    for (u32 n = 0; n < NF_SLOTS_TBG; n++)
+    {
+        if (NF_TILEDBG[n].available)
+        {
+            NF_TILEDBG[n].available = false; // Mark it as used
+            slot = n;
+            break;
+        }
+    }
 
-	// Variable temporal del tamaño de la paleta
-	u32 pal_size = 0;
+    if (slot == 255) // No free slots, fail
+        NF_Error(103, "Tiled Bg", NF_SLOTS_TBG);
 
-	// Busca un slot libre
-	u8 n = 0;
-	u8 slot = 255;
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {		// Busca en todos los slots
-		if (NF_TILEDBG[n].available) {			// Si esta libre
-			NF_TILEDBG[n].available = false;	// Marcalo como en uso
-			slot = n;							// Guarda el slot a usar
-			n = NF_SLOTS_TBG;					// Deja de buscar
-		}
-	}
-	// Si no hay ningun slot libre, error
-	if (slot == 255) {
-		NF_Error(103, "Tiled Bg", NF_SLOTS_TBG);
-	}
+    // Free buffers if they were in use
+    free(NF_BUFFER_BGMAP[slot]);
+    NF_BUFFER_BGMAP[slot] = NULL;
+    free(NF_BUFFER_BGTILES[slot]);
+    NF_BUFFER_BGTILES[slot] = NULL;
+    free(NF_BUFFER_BGPAL[slot]);
+    NF_BUFFER_BGPAL[slot] = NULL;
 
-	// Vacia los buffers que se usaran
-	free(NF_BUFFER_BGMAP[slot]);		// Buffer para los mapas
-	NF_BUFFER_BGMAP[slot] = NULL;
-	free(NF_BUFFER_BGTILES[slot]);		// Buffer para los tiles
-	NF_BUFFER_BGTILES[slot] = NULL;
-	free(NF_BUFFER_BGPAL[slot]);		// Buffer para los paletas
-	NF_BUFFER_BGPAL[slot] = NULL;
+    // File path
+    char filename[256];
 
-	// Declara los punteros a los ficheros
-	FILE* file_id;
+    // Load .IMG file
+    snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
+    FILE *file_id = fopen(filename, "rb");
+    if (file_id == NULL) // If the file can't be opened
+        NF_Error(101, filename, 0);
 
-	// Variable para almacenar el path al archivo
-	char filename[256];
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    NF_TILEDBG[slot].tilesize = ftell(file_id);
+    rewind(file_id);
 
-	// Carga el archivo .IMG
-	snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		NF_TILEDBG[slot].tilesize = ftell(file_id);
-		rewind(file_id);
-		// Reserva el espacio en RAM
-		NF_BUFFER_BGTILES[slot] = (char*) calloc (NF_TILEDBG[slot].tilesize, sizeof(char));
-		if (NF_BUFFER_BGTILES[slot] == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_TILEDBG[slot].tilesize);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_BUFFER_BGTILES[slot], 1, NF_TILEDBG[slot].tilesize, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
-	// swiWaitForVBlank();		// Espera al cierre del archivo (Usar en caso de corrupcion de datos)
+    // Allocate space in RAM
+    NF_BUFFER_BGTILES[slot] = malloc(NF_TILEDBG[slot].tilesize);
+    if (NF_BUFFER_BGTILES[slot] == NULL) // Not enough RAM
+        NF_Error(102, NULL, NF_TILEDBG[slot].tilesize);
 
-	// Verifica el tamaño del tileset (Menos de 256 tiles)
-	if (NF_TILEDBG[slot].tilesize > 16384) NF_Error(117, name, 0);
+    // Read file into RAM
+    fread(NF_BUFFER_BGTILES[slot], 1, NF_TILEDBG[slot].tilesize, file_id);
+    fclose(file_id);
 
+    // Verify that the tileset is at most 256 tiles
+    if (NF_TILEDBG[slot].tilesize > 16384)
+        NF_Error(117, name, 0);
 
-	// Carga el archivo .MAP
-	snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		NF_TILEDBG[slot].mapsize = ((((ftell(file_id) - 1) >> 10) + 1) << 10);	// Ajusta el tamaño a bloques de 1kb
-		rewind(file_id);
-		// Reserva el espacio en RAM
-		NF_BUFFER_BGMAP[slot] = (char*) calloc (NF_TILEDBG[slot].mapsize, sizeof(char));
-		if (NF_BUFFER_BGMAP[slot] == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_TILEDBG[slot].mapsize);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_BUFFER_BGMAP[slot], 1, NF_TILEDBG[slot].mapsize, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
-	// swiWaitForVBlank();		// Espera al cierre del archivo (Usar en caso de corrupcion de datos)
+    // Load .MAP file
+    snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
+    file_id = fopen(filename, "rb");
+    if (file_id == NULL) // If the file can't be opened
+        NF_Error(101, filename, 0);
 
-	// Carga el archivo .PAL
-	snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		pal_size = ftell(file_id);
-		NF_TILEDBG[slot].palsize = pal_size;
-		rewind(file_id);
-		// Si el tamaño es inferior a 512 bytes, ajustalo
-		if (NF_TILEDBG[slot].palsize < 512) NF_TILEDBG[slot].palsize = 512;
-		// Reserva el espacio en RAM
-		NF_BUFFER_BGPAL[slot] = (char*) calloc (NF_TILEDBG[slot].palsize, sizeof(char));
-		if (NF_BUFFER_BGPAL[slot] == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_TILEDBG[slot].palsize);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_BUFFER_BGPAL[slot], 1, pal_size, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    NF_TILEDBG[slot].mapsize = (((ftell(file_id) - 1) >> 10) + 1) << 10; // 1 KB blocks
+    rewind(file_id);
 
-	// Guarda el nombre del Fondo
-	snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);
+    // Allocate space in RAM
+    NF_BUFFER_BGMAP[slot] = malloc (NF_TILEDBG[slot].mapsize);
+    if (NF_BUFFER_BGMAP[slot] == NULL) // Not enough available RAM
+        NF_Error(102, NULL, NF_TILEDBG[slot].mapsize);
 
-	// Y las medidas
-	NF_TILEDBG[slot].width = width;
-	NF_TILEDBG[slot].height = height;
+    // Read file into RAM
+    fread(NF_BUFFER_BGMAP[slot], 1, NF_TILEDBG[slot].mapsize, file_id);
+    fclose(file_id);
 
+    // Load .PAL file
+    snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
+    file_id = fopen(filename, "rb");
+    if (file_id == NULL) // If the file can't be opened
+        NF_Error(101, filename, 0);
+
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    u32 pal_size = ftell(file_id);
+    NF_TILEDBG[slot].palsize = pal_size;
+    rewind(file_id);
+
+    // If the size is smaller than 512 bytes (256 colors) adjust it to 512 bytes
+    if (NF_TILEDBG[slot].palsize < 512)
+        NF_TILEDBG[slot].palsize = 512;
+
+    // Allocate space in RAM and zero it in case the real palette size was small
+    NF_BUFFER_BGPAL[slot] = calloc(NF_TILEDBG[slot].palsize, sizeof(char));
+    if (NF_BUFFER_BGPAL[slot] == NULL)
+        NF_Error(102, NULL, NF_TILEDBG[slot].palsize);
+
+    // Read file into RAM
+    fread(NF_BUFFER_BGPAL[slot], 1, pal_size, file_id);
+    fclose(file_id);
+
+    // Save information of the tiled background
+    snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);
+
+    NF_TILEDBG[slot].width = width;
+    NF_TILEDBG[slot].height = height;
 }
 
-void NF_CreateAffineBg(u8 screen, u8 layer, const char* name, u8 wrap) {
+void NF_CreateAffineBg(int screen, u32 layer, const char *name, u32 wrap)
+{
+    // Verify that the destination layer is valid
+    if ((layer != 2) && (layer != 3))
+        NF_Error(118, name, 0);
 
-	// Variables
-	u8 n = 0;			// Bucle
-	u8 slot = 255;		// Slot seleccionado
-	char bg[32];		// Nombre
+    u32 slot = 255;
 
-	// Verifica la capa de destino
-	if ((layer != 2) && (layer != 3)) NF_Error(118, name, 0);
+    for (u32 n = 0; n < NF_SLOTS_TBG; n++)
+    {
+        if (strcmp(name, NF_TILEDBG[n].name) == 0)
+        {
+            slot = n;
+            break;
+        }
+    }
 
-	// Busca el fondo solicitado
-	snprintf(bg, sizeof(bg), "%s", name);				// Obten el nombre del fondo a buscar
-	for (n = 0; n < NF_SLOTS_TBG; n ++) {				// Busca en todos los slots
-		if (strcmp(bg, NF_TILEDBG[n].name) == 0) {		// Si lo encuentras
-			slot = n;									// Guarda el slot a usar
-			n = NF_SLOTS_TBG;							// Deja de buscar
-		}
-	}
-	// Si no se encuentra, error
-	if (slot == 255) {
-		NF_Error(104, name, 0);
-	}
+    if (slot == 255) // The slot hasn't been found, fail
+        NF_Error(104, name, 0);
 
-	// Si ya hay un fondo existente en esta pantalla y capa, borralo antes
-	if (NF_TILEDBG_LAYERS[screen][layer].created) {
-		NF_DeleteTiledBg(screen, layer);
-	}
+    // If there is already a background in this layer, delete it before
+    if (NF_TILEDBG_LAYERS[screen][layer].created)
+        NF_DeleteTiledBg(screen, layer);
 
-	// Variables de control de Tiles
-	u8 counter = 0;
-	u8 start = 255;
-	u8 tilesblocks = 0;
-	u8 basetiles = 0;
+    // Copy the size of the background
+    NF_TILEDBG_LAYERS[screen][layer].bgwidth = NF_TILEDBG[slot].width;
+    NF_TILEDBG_LAYERS[screen][layer].bgheight = NF_TILEDBG[slot].height;
+    NF_TILEDBG_LAYERS[screen][layer].mapwidth = NF_TILEDBG[slot].width;
+    NF_TILEDBG_LAYERS[screen][layer].mapheight = NF_TILEDBG[slot].height;
+    NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;
+    NF_TILEDBG_LAYERS[screen][layer].bgslot = slot;
 
-	// Transfiere el tamaño del fondo
-	NF_TILEDBG_LAYERS[screen][layer].bgwidth = NF_TILEDBG[slot].width;		// Ancho del fondo
-	NF_TILEDBG_LAYERS[screen][layer].bgheight = NF_TILEDBG[slot].height;	// Altura del fondo
-	NF_TILEDBG_LAYERS[screen][layer].mapwidth = NF_TILEDBG[slot].width;		// Ancho del mapa
-	NF_TILEDBG_LAYERS[screen][layer].mapheight = NF_TILEDBG[slot].height;	// Altura del mapa
-	NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;							// Tipo de fondo
-	NF_TILEDBG_LAYERS[screen][layer].bgslot = slot;							// Buffer de graficos usado
+    if ((NF_TILEDBG[slot].width == 256) && (NF_TILEDBG[slot].height == 256))
+    {
+        NF_TILEDBG_LAYERS[screen][layer].mapwidth = 256;
+        NF_TILEDBG_LAYERS[screen][layer].mapheight = 256;
+        NF_TILEDBG_LAYERS[screen][layer].bgtype = 11;
+    }
+    else if ((NF_TILEDBG[slot].width == 512) && (NF_TILEDBG[slot].height == 512))
+    {
+        NF_TILEDBG_LAYERS[screen][layer].mapwidth = 512;
+        NF_TILEDBG_LAYERS[screen][layer].mapheight = 512;
+        NF_TILEDBG_LAYERS[screen][layer].bgtype = 12;
+    }
+    else
+    {
+        NF_Error(117, name, 0);
+    }
 
-	// Calcula el tipo y tamaño del mapa
-	n = 0;
-	// ( 256 x 256 )
-	if ((NF_TILEDBG[slot].width == 256) && (NF_TILEDBG[slot].height == 256)) {
-		NF_TILEDBG_LAYERS[screen][layer].mapwidth = 256;
-		NF_TILEDBG_LAYERS[screen][layer].mapheight = 256;
-		NF_TILEDBG_LAYERS[screen][layer].bgtype = 11;
-		n = 1;
-	}
-	// ( 512 x 512 )
-	if ((NF_TILEDBG[slot].width == 512) && (NF_TILEDBG[slot].height == 512)) {
-		NF_TILEDBG_LAYERS[screen][layer].mapwidth = 512;
-		NF_TILEDBG_LAYERS[screen][layer].mapheight = 512;
-		NF_TILEDBG_LAYERS[screen][layer].bgtype = 12;
-		n = 1;
-	}
+    // Verify that the tileset is 256 tiles or fewer
+    if (NF_TILEDBG[slot].tilesize > 16384)
+        NF_Error(117, name, 0);
 
-	// Verifica el tamaño del tileset (Menos de 256 tiles)
-	if (NF_TILEDBG[slot].tilesize > 16384) n = 0;
+    // Calculate the required number of blocks
+    u32 tilesblocks = ((NF_TILEDBG[slot].tilesize - 1) >> 14) + 1;
 
-	// Si el fondo es de una medida incorrecta...
-	if (n == 0) NF_Error(117, name, 0);
+    // Determine a location for the new tileset
+    u32 counter = 0;
+    u32 start = 255;
+    for (u32 n = 0; n < NF_BANKS_TILES[screen]; n++)
+    {
+        if (NF_TILEBLOCKS[screen][n] == 0)
+        {
+            // If the block is free and this is the first free block, save the
+            // start address.
+            if (counter == 0)
+                start = n;
 
-	// Busca un los bloques libres para almacenar los Tiles en VRAM
-	tilesblocks = ((NF_TILEDBG[slot].tilesize - 1) >> 14) + 1;	// Bloques necesarios para el Tileset
+            // If enough blocks have been found stop the search
+            counter++;
+            if (counter == tilesblocks)
+                n = NF_BANKS_TILES[screen];
+        }
+        else
+        {
+            // If the block is not free, reset the counter and try again
+            start = 255;
+            counter = 0;
+        }
+    }
 
-	for (n = 0; n < NF_BANKS_TILES[screen]; n ++) {
-		if (NF_TILEBLOCKS[screen][n] == 0) {		// Si esta libre
-			if (counter == 0) {						// Y el contador esta a 0
-				start = n;							// Marca la posicion de inicio
-			}
-			counter ++;
-			if (counter == tilesblocks) {			// Si ya tienes suficientes bloques libres
-				n = NF_BANKS_TILES[screen];					// Termina de buscar
-			}
-		} else {									// Si el bloque no esta libre
-			start = 255;							// Borra el marcador
-			counter = 0;							// Y resetea el contador
-		}
-	}
+    // If no free blocks have been found
+    if ((start == 255) || (counter < tilesblocks))
+        NF_Error(107, name, tilesblocks);
 
-	// Si no se han encontrado bloques libres
-	if ((start == 255) || (counter < tilesblocks)) {
-		NF_Error(107, name, tilesblocks);
-	} else {
-		basetiles = start;		// Guarda donde empiezan los bloques libres
-	}
+    // Mark all required map banks as used
+    u32 basetiles = start;
+    for (u32 n = basetiles; n < (basetiles + tilesblocks); n ++)
+        NF_TILEBLOCKS[screen][n] = 255;
 
-	// Marca los bancos de Tiles usados por este fondo
-	for (n = basetiles; n < (basetiles + tilesblocks); n ++) {
-		NF_TILEBLOCKS[screen][n] = 255;	// Marca los bloques usados por tiles
-	}
+    // Calculate the required number of blocks
+    u32 mapblocks = ((NF_TILEDBG[slot].mapsize - 1) >> 11) + 1;
 
-	// Variables de control de Maps
-	u8 mapblocks = 0;
-	u8 basemap = 0;
-	counter = 0;
-	start = 255;
+    // Determine a location for the new map
+    counter = 0;
+    start = 255;
 
-	// Calcula los bloques para mapas necesarios
-	mapblocks = ((NF_TILEDBG[slot].mapsize - 1) >> 11) + 1;
+    for (u32 n = 0; n < NF_BANKS_MAPS[screen]; n++)
+    {
+        if (NF_MAPBLOCKS[screen][n] == 0)
+        {
+            // If the block is free and this is the first free block, save the
+            // start address.
+            if (counter == 0)
+                start = n;
 
-	for (n = 0; n < NF_BANKS_MAPS[screen]; n ++) {
-		if (NF_MAPBLOCKS[screen][n] == 0) {			// Si esta libre
-			if (counter == 0) {						// Y el contador esta a 0
-				start = n;							// Marca la posicion de inicio
-			}
-			counter ++;
-			if (counter == mapblocks) {				// Si ya tienes suficientes bloques libres
-				n = NF_BANKS_MAPS[screen];					// Termina de buscar
-			}
-		} else {									// Si el bloque no esta libre
-			start = 255;							// Borra el marcador
-			counter = 0;							// Y resetea el contador
-		}
-	}
+            // If enough blocks have been found stop the search
+            counter++;
+            if (counter == mapblocks)
+                n = NF_BANKS_MAPS[screen];
+        }
+        else
+        {
+            // If the block is not free, reset the counter and try again
+            start = 255;
+            counter = 0;
+        }
+    }
 
-	// Si no se han encontrado bloques libres
-	if ((start == 255) || (counter < mapblocks)) {
-		NF_Error(108, name, mapblocks);
-	} else {
-		basemap = start;							// Guarda donde empiezan los bloques libres
-	}
+    // If no free blocks have been found
+    if ((start == 255) || (counter < mapblocks))
+        NF_Error(108, name, mapblocks);
 
-	// Marca los bancos de Mapa usados por este fondo
-	for (n = basemap; n < (basemap + mapblocks); n ++) {
-		NF_MAPBLOCKS[screen][n] = 255;	// Marca los bloques usados por mapas
-	}
+    // Mark all required map banks as used
+    u32 basemap = start;
+    for (u32 n = basemap; n < (basemap + mapblocks); n++)
+        NF_MAPBLOCKS[screen][n] = 255;
 
+    // Check the size of the background
+    s32 bg_size;
+    if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 256) &&
+        (NF_TILEDBG_LAYERS[screen][layer].mapheight == 256))
+    {
+        bg_size = BG_RS_32x32;
+    }
+    else if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 512) &&
+             (NF_TILEDBG_LAYERS[screen][layer].mapheight == 512))
+    {
+        bg_size = BG_RS_64x64;
+    }
+    else
+    {
+        NF_Error(117, name, 0);
+    }
 
-	// Obten el tamaño del fondo
-	s32 bg_size = 0;
-	// 256x256
-	if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 256) && (NF_TILEDBG_LAYERS[screen][layer].mapheight == 256)) {
-		bg_size = BG_RS_32x32;
-	}
-	// 512x512
-	if ((NF_TILEDBG_LAYERS[screen][layer].mapwidth == 512) && (NF_TILEDBG_LAYERS[screen][layer].mapheight == 512)) {
-		bg_size = BG_RS_64x64;
-	}
+    // Decide if wrap is enabled or not
+    u32 wrap_mode = wrap == 0 ?  BG_WRAP_OFF : BG_WRAP_ON;
 
-	// Decide si se activa o no el WRAP
-	u32 wrap_mode = 0;
-	if (wrap == 0) {
-		wrap_mode = BG_WRAP_OFF;
-	} else {
-		wrap_mode = BG_WRAP_ON;
-	}
+    // Setup the background properties
+    if (screen == 0)
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2CNT = BgType_Rotation | bg_size | BG_PRIORITY_2 | BG_COLOR_256 |
+                             BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
+                break;
+            case 3:
+                REG_BG3CNT = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 |
+                             BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
+                break;
+        }
+    }
+    else
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2CNT_SUB = BgType_Rotation | bg_size | BG_PRIORITY_2 | BG_COLOR_256 |
+                                 BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
+                break;
+            case 3:
+                REG_BG3CNT_SUB = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 |
+                                 BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
+                break;
+        }
+    }
 
+    u32 address;
 
-	// Crea el fondo segun la pantalla, capa y demas caracteristicas dadas
-	// REG_BG0CNT	<- Carracteristicas del fondo
-	if (screen == 0) {
-		switch (layer) {
-			case 2:
-				REG_BG2CNT = BgType_Rotation | bg_size | BG_PRIORITY_2 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
-				break;
-			case 3:
-				REG_BG3CNT = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
-				break;
-		}
-	} else {
-		switch (layer) {
-			case 2:
-				REG_BG2CNT_SUB = BgType_Rotation | bg_size | BG_PRIORITY_2 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
-				break;
-			case 3:
-				REG_BG3CNT_SUB = BgType_Rotation | bg_size | BG_PRIORITY_3 | BG_COLOR_256 | BG_TILE_BASE(basetiles) | BG_MAP_BASE(basemap) | wrap_mode;
-				break;
-		}
-	}
+    // Transfer tileset to VRAM
+    if (screen == 0) // VRAM_A
+        address = 0x6000000 + (basetiles << 14);
+    else // VRAM_C
+        address = 0x6200000 + (basetiles << 14);
+    NF_DmaMemCopy((void *)address, NF_BUFFER_BGTILES[slot], NF_TILEDBG[slot].tilesize);
 
-	u32 address;		// Variable de direccion de VRAM;
+    // Transfer map to VRAM
+    if (screen == 0) // VRAM_A
+        address = 0x6000000 + (basemap << 11);
+    else // VRAM_C
+        address = 0x6200000 + (basemap << 11);
+    NF_DmaMemCopy((void *)address, NF_BUFFER_BGMAP[slot], NF_TILEDBG[slot].mapsize);
 
-	// Transfiere el Tileset a VRAM
-	if (screen == 0) {	// (VRAM_A)
-		address = (0x6000000) + (basetiles << 14);
-	} else {			// (VRAM_C)
-		address = (0x6200000) + (basetiles << 14);
-	}
-	NF_DmaMemCopy((void*)address, NF_BUFFER_BGTILES[slot], NF_TILEDBG[slot].tilesize);
+    // Tranfer palette to palette memory
+    if (screen == 0)
+        address = 0x05000000; // Main engine standard BG palette
+    else
+        address = 0x05000400; // Sub engine standard BG palette
+    NF_DmaMemCopy((void *)address, NF_BUFFER_BGPAL[slot], NF_TILEDBG[slot].palsize);
 
+    // Save information
+    NF_TILEDBG_LAYERS[screen][layer].tilebase = basetiles;
+    NF_TILEDBG_LAYERS[screen][layer].tileblocks = tilesblocks;
+    NF_TILEDBG_LAYERS[screen][layer].mapbase = basemap;
+    NF_TILEDBG_LAYERS[screen][layer].mapblocks = mapblocks;
+    NF_TILEDBG_LAYERS[screen][layer].created = true; // Mark as created
 
-	// Transfiere el Mapa a VRAM
-	if (screen == 0) {	// (VRAM_A)
-		address = (0x6000000) + (basemap << 11);
-	} else {			// (VRAM_C)
-		address = (0x6200000) + (basemap << 11);
-	}
-	NF_DmaMemCopy((void*)address, NF_BUFFER_BGMAP[slot], NF_TILEDBG[slot].mapsize);
+    // Reset affine parameters
+    NF_AffineBgTransform(screen, layer, 1 << 8, 1 << 8, 0, 0);
+    NF_AffineBgMove(screen, layer, 0, 0, 0);
 
-
-	// Tranfiere la Paleta a VRAM
-	if (screen == 0) {
-		address = (0x05000000);
-		NF_DmaMemCopy((void*)address, NF_BUFFER_BGPAL[slot], NF_TILEDBG[slot].palsize);
-	} else {	// Paletas de la pantalla 1 (VRAM_H)
-		address = (0x05000400);
-		NF_DmaMemCopy((void*)address, NF_BUFFER_BGPAL[slot], NF_TILEDBG[slot].palsize);
-	}
-
-	// Registra los datos del fondos en pantalla
-	NF_TILEDBG_LAYERS[screen][layer].tilebase = basetiles;				// Base del Tileset
-	NF_TILEDBG_LAYERS[screen][layer].tileblocks = tilesblocks;			// Bloques usados por el Tileset
-	NF_TILEDBG_LAYERS[screen][layer].mapbase = basemap;					// Base del Map
-	NF_TILEDBG_LAYERS[screen][layer].mapblocks = mapblocks;				// Bloques usados por el Map
-	NF_TILEDBG_LAYERS[screen][layer].created = true;					// Esta creado ?
-
-	// Resetea los parametros del affine
-	NF_AffineBgTransform(screen, layer, 256, 256, 0, 0);
-	NF_AffineBgMove(screen, layer, 0, 0, 0);
-
-	// Haz visible el fondo creado
-	NF_ShowBg(screen, layer);
-
+    // Make the newly created background visible
+    NF_ShowBg(screen, layer);
 }
 
-void NF_DeleteAffineBg(u8 screen, u8 layer) {
+void NF_DeleteAffineBg(int screen, u32 layer)
+{
+    // Verify that the background has been created
+    if (!NF_TILEDBG_LAYERS[screen][layer].created)
+    {
+        char text[32];
+        snprintf(text, sizeof(text), "%d", screen);
+        NF_Error(105, text, layer);
+    }
 
-	// Verifica que el fondo esta creado
-	if (!NF_TILEDBG_LAYERS[screen][layer].created) {
-		char text[32];
-		snprintf(text, sizeof(text), "%d", screen);
-		NF_Error(105, text, layer);		// Si no existe, error
-	}
+    // Hide background
+    NF_HideBg(screen, layer);
 
-	// Esconde el fondo creado
-	NF_HideBg(screen, layer);
+    // Clear tileset from VRAM
+    u32 basetiles = NF_TILEDBG_LAYERS[screen][layer].tilebase;
+    u32 tilesize = NF_TILEDBG_LAYERS[screen][layer].tileblocks << 14;
+    u32 address;
 
-	// Variables de uso general
-	u32 address;				// Direccion de VRAM;
-	u8 n;					// Uso general
-	u16 basetiles = 0;		// Base del Tileset
-	u16 basemap = 0;		// Base del Map
-	u16 tilesize = 0;		// Tamaño del Tileset
-	u16 mapsize = 0;		// Tamaño del Map
+    if (screen == 0) // VRAM_A
+        address = 0x6000000 + (basetiles << 14);
+    else // VRAM_C
+        address = 0x6200000 + (basetiles << 14);
 
-	// Borra el Tileset de la VRAM
-	basetiles = NF_TILEDBG_LAYERS[screen][layer].tilebase;
-	tilesize = (NF_TILEDBG_LAYERS[screen][layer].tileblocks << 14);
-	if (screen == 0) {	// (VRAM_A)
-		address = (0x6000000) + (basetiles << 14);
-	} else {			// (VRAM_C)
-		address = (0x6200000) + (basetiles << 14);
-	}
-	memset((void*)address, 0, tilesize);		// Pon a 0 todos los bytes de la area de VRAM
+    memset((void *)address, 0, tilesize);
 
-	// Borra el Mapa de la VRAM
-	basemap = NF_TILEDBG_LAYERS[screen][layer].mapbase;
-	mapsize = (NF_TILEDBG_LAYERS[screen][layer].mapblocks << 11);
-	if (screen == 0) {	// (VRAM_A)
-		address = (0x6000000) + (basemap << 11);
-	} else {			// (VRAM_C)
-		address = (0x6200000) + (basemap << 11);
-	}
-	memset((void*)address, 0, mapsize);		// Pon a 0 todos los bytes de la area de VRAM
+    // Clear map from VRAM
+    u32 basemap = NF_TILEDBG_LAYERS[screen][layer].mapbase;
+    u32 mapsize = NF_TILEDBG_LAYERS[screen][layer].mapblocks << 11;
 
-	// Marca como libres los bancos de Tiles usados por este fondo
-	tilesize = (basetiles + NF_TILEDBG_LAYERS[screen][layer].tileblocks);
-	for (n = basetiles; n < tilesize; n ++) {
-		NF_TILEBLOCKS[screen][n] = 0;
-	}
+    if (screen == 0) // VRAM_A
+        address = 0x6000000 + (basemap << 11);
+    else // VRAM_C
+        address = 0x6200000 + (basemap << 11);
 
-	// Marca como libres los bancos de Mapa usados por este fondo
-	mapsize = (basemap + NF_TILEDBG_LAYERS[screen][layer].mapblocks);
-	for (n = basemap; n < mapsize; n ++) {
-		NF_MAPBLOCKS[screen][n] = 0;
-	}
+    memset((void *)address, 0, mapsize);
 
-	// Borra los datos del fondos en pantalla
-	NF_TILEDBG_LAYERS[screen][layer].tilebase = 0;		// Base del Tileset
-	NF_TILEDBG_LAYERS[screen][layer].tileblocks = 0;	// Bloques usados por el Tileset
-	NF_TILEDBG_LAYERS[screen][layer].mapbase = 0;		// Base del Map
-	NF_TILEDBG_LAYERS[screen][layer].mapblocks = 0;		// Bloques usados por el Map
-	NF_TILEDBG_LAYERS[screen][layer].bgwidth = 0;		// Ancho del fondo
-	NF_TILEDBG_LAYERS[screen][layer].bgheight = 0;		// Altura del fondo
-	NF_TILEDBG_LAYERS[screen][layer].mapwidth = 0;		// Ancho del mapa
-	NF_TILEDBG_LAYERS[screen][layer].mapheight = 0;		// Altura del mapa
-	NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;		// Tipo de mapa
-	NF_TILEDBG_LAYERS[screen][layer].bgslot = 0;		// Buffer de graficos usado
-	NF_TILEDBG_LAYERS[screen][layer].blockx = 0;		// Bloque de mapa actual (horizontal)
-	NF_TILEDBG_LAYERS[screen][layer].blocky = 0;		// Bloque de mapa actual (vertical)
-	NF_TILEDBG_LAYERS[screen][layer].created = false;	// Esta creado ?
+    // Mark as free all the tile banks used by this background
+    tilesize = (basetiles + NF_TILEDBG_LAYERS[screen][layer].tileblocks);
+    for (u32 n = basetiles; n < tilesize; n++)
+        NF_TILEBLOCKS[screen][n] = 0;
 
+    // Mark as free all the map banks used by this background
+    mapsize = basemap + NF_TILEDBG_LAYERS[screen][layer].mapblocks;
+    for (u32 n = basemap; n < mapsize; n++)
+        NF_MAPBLOCKS[screen][n] = 0;
+
+    // Clear information of the background
+    NF_TILEDBG_LAYERS[screen][layer].tilebase = 0;
+    NF_TILEDBG_LAYERS[screen][layer].tileblocks = 0;
+    NF_TILEDBG_LAYERS[screen][layer].mapbase = 0;
+    NF_TILEDBG_LAYERS[screen][layer].mapblocks = 0;
+    NF_TILEDBG_LAYERS[screen][layer].bgwidth = 0;
+    NF_TILEDBG_LAYERS[screen][layer].bgheight = 0;
+    NF_TILEDBG_LAYERS[screen][layer].mapwidth = 0;
+    NF_TILEDBG_LAYERS[screen][layer].mapheight = 0;
+    NF_TILEDBG_LAYERS[screen][layer].bgtype = 0;
+    NF_TILEDBG_LAYERS[screen][layer].bgslot = 0;
+    NF_TILEDBG_LAYERS[screen][layer].blockx = 0;
+    NF_TILEDBG_LAYERS[screen][layer].blocky = 0;
+    NF_TILEDBG_LAYERS[screen][layer].created = false; // Mark as not created
 }
 
-void NF_AffineBgTransform(u8 screen, u8 layer, s32 x_scale, s32 y_scale, s32 x_tilt, s32 y_tilt) {
+void NF_AffineBgTransform(int screen, u32 layer, s32 x_scale, s32 y_scale,
+                          s32 x_tilt, s32 y_tilt)
+{
+    if (screen == 0)
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2PA = x_scale;
+                REG_BG2PB = x_tilt;
+                REG_BG2PC = y_tilt;
+                REG_BG2PD = y_scale;
+                break;
+            case 3:
+                REG_BG3PA = x_scale;
+                REG_BG3PB = x_tilt;
+                REG_BG3PC = y_tilt;
+                REG_BG3PD = y_scale;
+                break;
+        }
+    }
+    else
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2PA_SUB = x_scale;
+                REG_BG2PB_SUB = x_tilt;
+                REG_BG2PC_SUB = y_tilt;
+                REG_BG2PD_SUB = y_scale;
+                break;
+            case 3:
+                REG_BG3PA_SUB = x_scale;
+                REG_BG3PB_SUB = x_tilt;
+                REG_BG3PC_SUB = y_tilt;
+                REG_BG3PD_SUB = y_scale;
+                break;
+        }
+    }
 
-	if (screen == 0) {
-		switch (layer) {
-			case 2:
-				REG_BG2PA = x_scale;
-				REG_BG2PB = x_tilt;
-				REG_BG2PC = y_tilt;
-				REG_BG2PD = y_scale;
-				break;
-			case 3:
-				REG_BG3PA = x_scale;
-				REG_BG3PB = x_tilt;
-				REG_BG3PC = y_tilt;
-				REG_BG3PD = y_scale;
-				break;
-		}
-	} else {
-		switch (layer) {
-			case 2:
-				REG_BG2PA_SUB = x_scale;
-				REG_BG2PB_SUB = x_tilt;
-				REG_BG2PC_SUB = y_tilt;
-				REG_BG2PD_SUB = y_scale;
-				break;
-			case 3:
-				REG_BG3PA_SUB = x_scale;
-				REG_BG3PB_SUB = x_tilt;
-				REG_BG3PC_SUB = y_tilt;
-				REG_BG3PD_SUB = y_scale;
-				break;
-		}
-	}
-
-	// Registra los valores asignados
-	NF_AFFINE_BG[screen][layer].x_scale = x_scale;
-	NF_AFFINE_BG[screen][layer].x_tilt = x_tilt;
-	NF_AFFINE_BG[screen][layer].y_tilt = y_tilt;
-	NF_AFFINE_BG[screen][layer].y_scale = y_scale;
-
+    // Save values
+    NF_AFFINE_BG[screen][layer].x_scale = x_scale;
+    NF_AFFINE_BG[screen][layer].x_tilt = x_tilt;
+    NF_AFFINE_BG[screen][layer].y_tilt = y_tilt;
+    NF_AFFINE_BG[screen][layer].y_scale = y_scale;
 }
 
-void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle) {
+void NF_AffineBgMove(int screen, u32 layer, s32 x, s32 y, s32 angle)
+{
+    // Based on the original function of libnds by Dovoto and WinterMute
 
-	// Funcion de rotacion basada en la original de Libnds
-	// creada por Dovoto y Wintermute.
+    // Limit angle
+    if (angle < -2048)
+        angle += 2048;
+    if (angle > 2048)
+        angle -= 2048;
 
-	// Variables
-	s32 pa = 0;				// x_scale
-	s32 pb = 0;				// x_tilt
-	s32 pc = 0;				// y_tilt;
-	s32 pd = 0;				// y_scale;
-	s16 angle_sin = 0;		// Seno
-	s16 angle_cos = 0;		// Coseno
-	s16 in = 0;				// Angulo dado
-	s16 out = 0;			// Angulo convertido
-	s32 pos_x = 0;			// Posicion X del fondo
-	s32 pos_y = 0;			// Posicion Y del fondo
+    angle = -angle << 4; // Switch from base 2048 to base 32768
 
-	in = angle;
+    s32 angle_sin = sinLerp(angle);
+    s32 angle_cos = cosLerp(angle);
 
-	// Limites del angulo
-	if (in < -2048) {
-		in += 2048;
-	}
-	if (in > 2048) {
-		in -= 2048;
-	}
+    // Calculate and apply transformation matrix
+    s32 pa = (angle_cos * NF_AFFINE_BG[screen][layer].x_scale) >> 12;
+    s32 pb = (-angle_sin * NF_AFFINE_BG[screen][layer].x_scale) >> 12;
+    s32 pc = (angle_sin * NF_AFFINE_BG[screen][layer].y_scale) >> 12;
+    s32 pd = (angle_cos * NF_AFFINE_BG[screen][layer].y_scale) >> 12;
 
-	// Si es un numero negativo...
-	if (in < 0) {
-		in = -in;			// Pasa a positivo (para poder hacer el bitshift)
-		out = (in << 4);	// (in * 16); Pasa de base 2048 a base 32768
-		// Dejalo en positivo para que <0 gire a la izquierda
-	} else {
-		out = (in << 4);
-		out = -out;			// Pasalo a negativo para que >0 gire a la derecha
-	}
+    NF_AffineBgTransform(screen, layer, pa, pd, pb, pc);
 
-	// Calcula los senos y cosenos
-	angle_sin = sinLerp(out);
-	angle_cos = cosLerp(out);
+    // Calculate the position of the background
+    s32 pos_x = (x << 8) -
+                    (((pa * (NF_AFFINE_BG[screen][layer].x_center << 8)) +
+                      (pb * (NF_AFFINE_BG[screen][layer].y_center << 8))) >> 8);
+    s32 pos_y = (y << 8) -
+                    (((pc * (NF_AFFINE_BG[screen][layer].x_center << 8)) +
+                      (pd * (NF_AFFINE_BG[screen][layer].y_center << 8))) >> 8);
 
-	// Calcula la matriz de transformacion
-	pa = ( angle_cos * NF_AFFINE_BG[screen][layer].x_scale ) >> 12;
-	pb = (-angle_sin * NF_AFFINE_BG[screen][layer].x_scale ) >> 12;
-	pc = ( angle_sin * NF_AFFINE_BG[screen][layer].y_scale ) >> 12;
-	pd = ( angle_cos * NF_AFFINE_BG[screen][layer].y_scale ) >> 12;
+    // Set the position of the center
+    if (screen == 0)
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2X = pos_x;
+                REG_BG2Y = pos_y;
+                break;
+            case 3:
+                REG_BG3X = pos_x;
+                REG_BG3Y = pos_y;
+                break;
+        }
+    }
+    else
+    {
+        switch (layer)
+        {
+            case 2:
+                REG_BG2X_SUB = pos_x;
+                REG_BG2Y_SUB = pos_y;
+                break;
+            case 3:
+                REG_BG3X_SUB = pos_x;
+                REG_BG3Y_SUB = pos_y;
+                break;
+        }
+    }
 
-	// Aplica los parametros de tranformacion
-	NF_AffineBgTransform(screen, layer, pa, pd, pb, pc);
-
-	// Ahora calcula la posicion del fondo
-    pos_x = ((x << 8) - (((pa * (NF_AFFINE_BG[screen][layer].x_center << 8)) + (pb * (NF_AFFINE_BG[screen][layer].y_center << 8))) >> 8));
-	pos_y = ((y << 8) - (((pc * (NF_AFFINE_BG[screen][layer].x_center << 8)) + (pd * (NF_AFFINE_BG[screen][layer].y_center << 8))) >> 8));
-
-	// Aplica la posicion del centro
-	if (screen == 0) {
-		switch (layer) {
-			case 2:
-				REG_BG2X = pos_x;
-				REG_BG2Y = pos_y;
-				break;
-			case 3:
-				REG_BG3X = pos_x;
-				REG_BG3Y = pos_y;
-				break;
-		}
-	} else {
-		switch (layer) {
-			case 2:
-				REG_BG2X_SUB = pos_x;
-				REG_BG2Y_SUB = pos_y;
-				break;
-			case 3:
-				REG_BG3X_SUB = pos_x;
-				REG_BG3Y_SUB = pos_y;
-				break;
-		}
-	}
-
-	// Guarda los parametros
-	NF_AFFINE_BG[screen][layer].angle = out;
-	NF_AFFINE_BG[screen][layer].x = x;
-	NF_AFFINE_BG[screen][layer].y = y;
-
+    // Save parameters
+    NF_AFFINE_BG[screen][layer].angle = angle;
+    NF_AFFINE_BG[screen][layer].x = x;
+    NF_AFFINE_BG[screen][layer].y = y;
 }

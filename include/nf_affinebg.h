@@ -57,7 +57,7 @@ extern NF_TYPE_AFFINE_BG NF_AFFINE_BG[2][4];
 /// ```
 ///
 /// @param screen Screen (0 - 1).
-void NF_InitAffineBgSys(u8 screen);
+void NF_InitAffineBgSys(int screen);
 
 /// Load an affine background to RAM from the filesystem.
 ///
@@ -80,7 +80,7 @@ void NF_InitAffineBgSys(u8 screen);
 /// @param name Name used for the BG for other functions.
 /// @param width BG width.
 /// @param height BG height.
-void NF_LoadAffineBg(const char *file, const char *name, u16 width, u16 height);
+void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height);
 
 /// Deletes the specified affine background from RAM.
 ///
@@ -111,7 +111,7 @@ static inline void NF_UnloadAffineBg(const char *name)
 /// @param layer Layer (2 - 3).
 /// @param name Name of the background.
 /// @param wrap True to enable wrap around mode.
-void NF_CreateAffineBg(u8 screen, u8 layer, const char *name, u8 wrap);
+void NF_CreateAffineBg(int screen, u32 layer, const char *name, u32 wrap);
 
 /// Deletes from VRAM the background of the specified screen and layer.
 ///
@@ -123,7 +123,7 @@ void NF_CreateAffineBg(u8 screen, u8 layer, const char *name, u8 wrap);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (2 - 3).
-void NF_DeleteAffineBg(u8 screen, u8 layer);
+void NF_DeleteAffineBg(int screen, u32 layer);
 
 /// Modify the transformation matrix of the specified background.
 ///
@@ -141,7 +141,8 @@ void NF_DeleteAffineBg(u8 screen, u8 layer);
 /// @param y_scale Scale Y: 0 - 256 (original) - 512 (or more)
 /// @param x_tilt Tilt X: 0 - 512 (or more)
 /// @param y_tilt Tilt Y: 0 - 512 (or more)
-void NF_AffineBgTransform(u8 screen, u8 layer, s32 x_scale, s32 y_scale, s32 x_tilt, s32 y_tilt);
+void NF_AffineBgTransform(int screen, u32 layer, s32 x_scale, s32 y_scale,
+                          s32 x_tilt, s32 y_tilt);
 
 /// Moves the affine background to the specified position.
 ///
@@ -160,7 +161,7 @@ void NF_AffineBgTransform(u8 screen, u8 layer, s32 x_scale, s32 y_scale, s32 x_t
 /// @param x X coordinate.
 /// @param y Y coordinate.
 /// @param angle Rotation angle (-2048 to 2048).
-void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle);
+void NF_AffineBgMove(int screen, u32 layer, s32 x, s32 y, s32 angle);
 
 /// Define the rotation center of the specified affine background.
 ///
@@ -175,7 +176,7 @@ void NF_AffineBgMove(u8 screen, u8 layer, s32 x, s32 y, s32 angle);
 /// @param layer Layer (2 - 3).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-static inline void NF_AffineBgCenter(u8 screen, u8 layer, s32 x, s32 y)
+static inline void NF_AffineBgCenter(int screen, u32 layer, s32 x, s32 y)
 {
     NF_AFFINE_BG[screen][layer].x_center = x;
     NF_AFFINE_BG[screen][layer].y_center = y;
