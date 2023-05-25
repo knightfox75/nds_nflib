@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones basicas y de Debug
+// NightFox LIB - Basic and debug functions
 // http://www.nightfoxandco.com/
 
 #ifdef BLOCKSDS

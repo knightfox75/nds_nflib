@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de funciones 2D comunes
+// NightFox LIB - Common 2D functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

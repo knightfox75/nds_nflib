@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de funciones de fondos en modo Bitmap
+// NightFox LIB - Bitmap background functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>

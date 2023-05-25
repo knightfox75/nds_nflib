@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de Sprites a 256 colores
+// NightFox LIB - 256 color sprites functions
 // http://www.nightfoxandco.com/
 
 #include <stdarg.h>

@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de funciones de WI-FI
+// NightFox LIB - Wi-Fi functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include General
+// NightFox LIB - Global include
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

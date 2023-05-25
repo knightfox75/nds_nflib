@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Includes de Fondos Affine
+// NightFox LIB - Affine backgrounds functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

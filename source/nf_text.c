@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de Textos
+// NightFox LIB - 8x8 font text support functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>

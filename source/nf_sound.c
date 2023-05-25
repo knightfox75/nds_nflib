@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de de funciones de sonido
+// NightFox LIB - Sound effect functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>

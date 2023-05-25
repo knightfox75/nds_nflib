@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de Textos de 16 pixels
+// NightFox LIB - 8x16 font text support functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

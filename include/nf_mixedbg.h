@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de Fondos mixtos (Tiled / Bitmap 8 bits)
+// NightFox LIB - Mixed (tiled and 8-bit bitmap) background functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

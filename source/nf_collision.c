@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de Colisiones
+// NightFox LIB - Collision maps functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>

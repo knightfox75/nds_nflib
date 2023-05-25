@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Include de funciones de carga de archivos multimedia
+// NightFox LIB - Media file loading functions
 // http://www.nightfoxandco.com/
 
 #ifdef __cplusplus

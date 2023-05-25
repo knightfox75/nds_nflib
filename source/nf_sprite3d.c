@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones 2D comunes
+// NightFox LIB - 3D sprite functions
 // http://www.nightfoxandco.com/
 
 #include <stdio.h>
