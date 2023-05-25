@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
 //
-// NightFox LIB - Funciones de WI-FI
+// NightFox LIB - Wi-Fi functions
 // http://www.nightfoxandco.com/
 
 #include <netinet/in.h>
@@ -17,181 +17,169 @@
 
 #include "nf_wifi.h"
 
-// Parametros de la RED
-struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;		// Datos de la LAN
+// Network parameters
+struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;
 
-// Estructura del socket
-s32 NF_SOCKET;			// Id del socket (servidor)
-s32 NF_CONNECTED;		// Resultado de la conexion
-int NF_SINSIZE;			// Tamaño de la Struct .SIN
-s32 NF_BYTES_RECIEVED;	// Bytes recibidos
+// Socket information
+s32 NF_SOCKET;          // ID of the server socket
+s32 NF_CONNECTED;       // Result of the connection
+int NF_SINSIZE;         // Size of the .SIN struct
+s32 NF_BYTES_RECIEVED;  // Received bytes
 
-struct sockaddr_in NF_SA_SERVER;		// Estructura Socket Adress In (Servidor)
-struct sockaddr_in NF_SA_CLIENT;		// Estructura Socket Adress In (Cliente)
+struct sockaddr_in NF_SA_SERVER; // Socket address structure (server)
+struct sockaddr_in NF_SA_CLIENT; // Socket address structure (client)
 
-char NF_SEND_BUFFER[NF_WIFI_BUFFER_SIZE];	// Buffer de envio
-char NF_RECV_BUFFER[NF_WIFI_BUFFER_SIZE];	// Buffer de recepcion
+char NF_SEND_BUFFER[NF_WIFI_BUFFER_SIZE]; // Send buffer
+char NF_RECV_BUFFER[NF_WIFI_BUFFER_SIZE]; // Receive buffer
 
-bool NF_WIFI_IS_SERVER;	// Almacena si eres servidor o cliente
+bool NF_WIFI_IS_SERVER; // Keeps track of whether you're a server or client
 
-s32 NF_MAXFD;				// Numero maximo de sockets a examinar por select();
-fd_set NF_READFDS;			// Estructura donde se almacenaran los datos de los sockets para select();
-struct timeval NF_TIMEOUT;	// Almacena el valor del time out
+s32 NF_MAXFD;       // Max number of sockets to examine with select()
+fd_set NF_READFDS;  // Struct where socket data is stored for select()
+struct timeval NF_TIMEOUT; // Stores the value of the timeout
 
+bool NF_WiFiConnectDefaultAp(void)
+{
+    // Try to connect to the default access point
+    if (Wifi_InitDefault(WFC_CONNECT))
+    {
+        // Get connection information
+        NF_IP = Wifi_GetIPInfo(&NF_GATEWAY, &NF_MASK, &NF_DNS1, &NF_DNS2);
+        return true;
+    }
 
-bool NF_WiFiConnectDefaultAp(void) {
-
-	// Variables locales
-	bool connect = false;
-
-	// Intenta conectarte al punto de acceso por defecto
-	if (Wifi_InitDefault(WFC_CONNECT)) {
-		// Obten los datos de la conexion
-		NF_IP = Wifi_GetIPInfo(&NF_GATEWAY, &NF_MASK, &NF_DNS1, &NF_DNS2);
-		connect = true;
-	}
-
-	// Devuelve el resultado
-	return connect;
-
+    return false;
 }
 
-void NF_WiFiDisconnectAp(void) {
-
-	// Desconectate del punto de acceso
-	Wifi_DisconnectAP();
-	// Y apagala WIFI
-	Wifi_DisableWifi();
-
+void NF_WiFiDisconnectAp(void)
+{
+    // Disconnect from the access point and disable the WiFI hardware
+    Wifi_DisconnectAP();
+    Wifi_DisableWifi();
 }
 
-bool NF_WIFI_CreateUdpSender(const char* address, u16 port) {
+bool NF_WIFI_CreateUdpSender(const char *address, u16 port)
+{
+    // Get host IP
+    char ip[24];
+    sprintf(ip, "%s", address);
 
-	// Variables locales
-	bool status = true;
-	char ip[24];
+    // Cleanup sockets before starting
+    memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
+    memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
 
-	// Obtiene la direccion de host
-	sprintf(ip, "%s", address);
+    // Tell the socket where to connect
 
-	// Seguidamente, comunicale al Socket donde debe conectarse
-	// *** Vacia la estructura antes que nada ***
-	memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
-	memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
-	// *** Tipo de conexion *** "  .sin_family = AF_INET" especifica que el tipo de socket IPv4 Internet.
-	NF_SA_SERVER.sin_family = AF_INET;
-	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order"
-	NF_SA_SERVER.sin_port = htons(port);
-	// *** Direccion IP de la conexion ***
-	// "inet_addr()" convierte una direccion IPv4 en formato texto ("192.168.0.1") al formato IN_ADDR
-	// "inet_ntoa()" convierte al formato texto la direccion almacenada en "struct sockaddr_in"
-	NF_SA_SERVER.sin_addr.s_addr = inet_addr(ip);
+    // IPv4 internet connection
+    NF_SA_SERVER.sin_family = AF_INET;
 
-	// Crea el socket
-	if ((NF_SOCKET = socket(AF_INET, SOCK_DGRAM, 0)) == -1) status = false;
+    // Specify the port in network byte order
+    NF_SA_SERVER.sin_port = htons(port);
 
-	// Marca esta DS como cliente (envia los datos a una IP conocida [SERVIDOR])
-	NF_WIFI_IS_SERVER = false;
+    // Specify the IP address in the right format (converted from ASCII)
+    NF_SA_SERVER.sin_addr.s_addr = inet_addr(ip);
 
-	// Devuelve el estado de la funcion
-	return status;
+    // Try to create socket
+    if ((NF_SOCKET = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
+        return false;
 
+    // Save that this DS is acting as a client
+    NF_WIFI_IS_SERVER = false;
+
+    // Return success
+    return true;
 }
 
-bool NF_WIFI_CreateUdpListener(u16 port) {
+bool NF_WIFI_CreateUdpListener(u16 port)
+{
+    // Cleanup sockets before starting
+    memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
+    memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
 
-	// Variables locales
-	bool status = true;
+    // IPv4 internet connection
+    NF_SA_SERVER.sin_family = AF_INET;
 
-	// *** Vacia la estructura antes que nada ***
-	memset(&NF_SA_SERVER, 0, sizeof(NF_SA_SERVER));
-	memset(&NF_SA_CLIENT, 0, sizeof(NF_SA_CLIENT));
-	// *** Tipo de conexion *** "  .sin_family = AF_INET" especifica que el tipo de socket IPv4 Internet.
-	NF_SA_SERVER.sin_family = AF_INET;
-	// *** Puerto de conexion ***  "htons()" convierte el valor de u16 a "TCP/IP network byte order"
-	NF_SA_SERVER.sin_port = htons(port);
-	// *** Direccion IP de la conexion ***
-	// "inet_addr()" convierte una direccion IPv4 en formato texto ("192.168.0.1") al formato IN_ADDR
-	// "inet_ntoa()" convierte al formato texto la direccion almacenada en "struct sockaddr_in"
-	// "INADDR_ANY" como servidor, acepta conexiones desde cualquier IP
-	NF_SA_SERVER.sin_addr.s_addr = htonl(INADDR_ANY);
+    // Specify the port in network byte order
+    NF_SA_SERVER.sin_port = htons(port);
 
-	// Crea el socket
-	if ((NF_SOCKET = socket(AF_INET, SOCK_DGRAM, 0)) == -1) status = false;
+    // Specify the IP address in the right format (converted from ASCII).
+    // INADDR_ANY means that, as a server, it accepts connections from any IP
+    // address.
+    NF_SA_SERVER.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	// Enlaza el socket a un puerto concreto
-	if ((bind(NF_SOCKET, (struct sockaddr*) &NF_SA_SERVER, sizeof(NF_SA_SERVER))) == -1) status = false;
+    // Try to create socket
+    if ((NF_SOCKET = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
+        return false;
 
-	// Tamaño del struct sockaddr
-	NF_SINSIZE = sizeof(struct sockaddr);
+    // Bind socket to the specified port
+    if ((bind(NF_SOCKET, (struct sockaddr *)&NF_SA_SERVER, sizeof(NF_SA_SERVER))) == -1)
+        return false;
 
-	// Marca esta DS como servidor (recibe datos desde cualquier IP [CLIENTE])
-	NF_WIFI_IS_SERVER = true;
+    // Save size of struct sockaddr
+    NF_SINSIZE = sizeof(struct sockaddr);
 
-	return status;
+    // Save that this DS is acting as a server
+    NF_WIFI_IS_SERVER = true;
 
+    return true;
 }
 
-bool NF_WIFI_UdpSend(const char* data) {
+bool NF_WIFI_UdpSend(const char *data)
+{
+    // Clear send buffer and copy the string being sent
+    memset(&NF_SEND_BUFFER, 0, sizeof(NF_SEND_BUFFER));
+    snprintf(NF_SEND_BUFFER, sizeof(NF_SEND_BUFFER), "%s", data);
 
-	// Borra el buffer de envio
-	memset(&NF_SEND_BUFFER, 0, sizeof(NF_SEND_BUFFER));
+    // Send data through the currently open UDP port
+    if (NF_WIFI_IS_SERVER)
+    {
+        // If this DS is a server, it is in listening mode. Send the string to
+        // the last IP where it received data from.
+        sendto(NF_SOCKET, NF_SEND_BUFFER, strlen(NF_SEND_BUFFER), 0,
+               (struct sockaddr *)&NF_SA_CLIENT, sizeof(struct sockaddr));
+    }
+    else
+    {
+        // Send data to the IP of the server (this DS is in sender mode).
+        sendto(NF_SOCKET, NF_SEND_BUFFER, strlen(NF_SEND_BUFFER), 0,
+               (struct sockaddr *)&NF_SA_SERVER, sizeof(struct sockaddr));
+    }
 
-	// Pon los datos en el buffer de envio
-	sprintf(NF_SEND_BUFFER, "%s", data);
-
-	// Envia los datos a traves del puerto UDP abierto
-	if (NF_WIFI_IS_SERVER) {
-		// Envia los datos a la IP desde la cual has recibido datos (esta DS esta en modo LISTENER)
-		sendto(NF_SOCKET, NF_SEND_BUFFER, strlen(NF_SEND_BUFFER), 0, (struct sockaddr *)&NF_SA_CLIENT, sizeof(struct sockaddr));
-	} else {
-		// Envia los datos a la IP del servidor (esta DS esta en modo SENDER)
-		sendto(NF_SOCKET, NF_SEND_BUFFER, strlen(NF_SEND_BUFFER), 0, (struct sockaddr *)&NF_SA_SERVER, sizeof(struct sockaddr));
-	}
-
-	// Devuelte el estado
-	return true;
-
+    // Return success
+    return true;
 }
 
-s32 NF_WIFI_UdpListen(u32 timeout) {
+s32 NF_WIFI_UdpListen(u32 timeout)
+{
+    // Clear the previous result of select()
+    FD_ZERO(&NF_READFDS);
 
-	s32 status = 0;
+    // Specify the listener socket
+    FD_SET(NF_SOCKET, &NF_READFDS);
 
-	// Borra el estado de select();
-	FD_ZERO(&NF_READFDS);
+    // Calculate the maximum value to listen to
+    NF_MAXFD = NF_SOCKET + 1;
 
-	// Asigna el socket a la escucha
-	FD_SET(NF_SOCKET, &NF_READFDS);
+    // Specify the timeout
+    NF_TIMEOUT.tv_sec = 0;
+    NF_TIMEOUT.tv_usec = timeout;
 
-	// Calcula el valor maximo a escuchar
-	NF_MAXFD = (NF_SOCKET + 1);
+    // Select this socket
+    s32 status = select(NF_MAXFD, &NF_READFDS, NULL, NULL, &NF_TIMEOUT);
 
-	// Y ahora aplica el timeout
-	NF_TIMEOUT.tv_sec = 0;
-	NF_TIMEOUT.tv_usec = timeout;
+    // If there is data available to be read
+    if ((status > 0) && FD_ISSET(NF_SOCKET, &NF_READFDS))
+    {
+        // Clear the previous value of the reception buffer
+        memset(&NF_RECV_BUFFER, 0, sizeof(NF_RECV_BUFFER));
 
-	// Ejecuta el comando select
-	status = select(NF_MAXFD, &NF_READFDS, NULL, NULL, &NF_TIMEOUT);
+        // Receive data and save it to the buffer, but leave the last byte
+        // unused to be able to store a '\0'
+        NF_BYTES_RECIEVED = recvfrom(NF_SOCKET, NF_RECV_BUFFER, NF_WIFI_BUFFER_SIZE - 1,
+                                     0, (struct sockaddr *)&NF_SA_CLIENT, &NF_SINSIZE);
+        NF_RECV_BUFFER[NF_BYTES_RECIEVED] = '\0';
+    }
 
-	// Si hay datos disponibles para ser leidos
-	if ((status > 0) && FD_ISSET(NF_SOCKET, &NF_READFDS)) {
-
-		// Borra el buffer de recepcion
-		memset(&NF_RECV_BUFFER, 0, sizeof(NF_RECV_BUFFER));
-
-		// Recive los datos y ponlos en el buffer
-		NF_BYTES_RECIEVED = recvfrom(NF_SOCKET, NF_RECV_BUFFER, NF_WIFI_BUFFER_SIZE, 0, (struct sockaddr *)&NF_SA_CLIENT, &NF_SINSIZE);
-
-		// Marca el final del buffer de recepcion
-		NF_RECV_BUFFER[NF_BYTES_RECIEVED] = '\0';
-
-		// Fuerza el vaciado de los buffers
-		fflush(stdout);
-
-	}
-
-	// Devuelte el estado
-	return status;
-
+    // Return result
+    return status;
 }

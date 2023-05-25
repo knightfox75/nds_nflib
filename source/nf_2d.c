@@ -395,17 +395,13 @@ void NF_DisableSpriteRotScale(int screen, u32 sprite)
 
 void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy)
 {
-    // Temporary variables
-    s32 in = 0;     // Input angle
-    s32 out = 0;    // Converted angle
-
-    in = angle;
-
     // Angle limits
-    if (in < -512)
-        in += 512;
-    if (in > 512)
-        in -= 512;
+    if (angle < -512)
+        angle += 512;
+    if (angle > 512)
+        angle -= 512;
+
+    angle = -angle << 6; // Switch from base 512 to base 32768
 
     // Scale X limits
     if (sx > 512)
@@ -415,21 +411,9 @@ void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy)
     if (sy > 512)
         sy = 512;
 
-    if (in < 0) // If the angle is negative
-    {
-        in = -in; // Make it positive (to be able to do a bitshift)
-        out = in << 6; // (in * 64); Switch from base 512 to base 32768
-        // Leave it positive so that <0 rotates counter-clockwise
-    }
-    else
-    {
-        out = in << 6;
-        out = -out; // Make it negative so that <0 rotates clockwise
-    }
-
     // Update rotation and scale in OAM
     if (screen == 0)
-        oamRotateScale(&oamMain, id, out, 512 - sx, 512 - sy);
+        oamRotateScale(&oamMain, id, angle, 512 - sx, 512 - sy);
     else
-        oamRotateScale(&oamSub, id, out, 512 - sx, 512 - sy);
+        oamRotateScale(&oamSub, id, angle, 512 - sx, 512 - sy);
 }
