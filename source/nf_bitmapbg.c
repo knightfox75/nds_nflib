@@ -48,7 +48,7 @@ void NF_Reset16bitsBgBuffers(void)
     NF_Init16bitsBgBuffers();
 }
 
-void NF_Init16bitsBackBuffer(u8 screen)
+void NF_Init16bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -56,7 +56,7 @@ void NF_Init16bitsBackBuffer(u8 screen)
     NF_16BITS_BACKBUFFER[screen] = NULL;
 }
 
-void NF_Enable16bitsBackBuffer(u8 screen)
+void NF_Enable16bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -73,7 +73,7 @@ void NF_Enable16bitsBackBuffer(u8 screen)
         NF_Error(102, NULL, 131072);
 }
 
-void NF_Disble16bitsBackBuffer(u8 screen)
+void NF_Disble16bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -83,7 +83,7 @@ void NF_Disble16bitsBackBuffer(u8 screen)
     NF_16BITS_BACKBUFFER[screen] = NULL;
 }
 
-void NF_Flip16bitsBackBuffer(u8 screen)
+void NF_Flip16bitsBackBuffer(int screen)
 {
     // Copy contents of the backuffer to VRAM
     if (screen == 0)
@@ -92,7 +92,7 @@ void NF_Flip16bitsBackBuffer(u8 screen)
         NF_DmaMemCopy((void *)0x06200000, NF_16BITS_BACKBUFFER[1], 131072);
 }
 
-void NF_InitBitmapBgSys(u8 screen, u8 mode)
+void NF_InitBitmapBgSys(int screen, u32 mode)
 {
     // Setup layer 3 (and optionally layer 2) of the selected screen as a bitmap
 
@@ -181,17 +181,17 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode)
     }
 }
 
-void NF_Load16bitsBg(const char *file, u8 slot)
+void NF_Load16bitsBg(const char *file, u32 slot)
 {
     NF_Load16bImgData(file, slot, 256, 256, 0);
 }
 
-void NF_Load16bitsImage(const char *file, u8 slot, u16 size_x, u16 size_y)
+void NF_Load16bitsImage(const char *file, u32 slot, u32 size_x, u32 size_y)
 {
     NF_Load16bImgData(file, slot, size_x, size_y, 1);
 }
 
-void NF_Load16bImgData(const char *file, u8 slot, u16 x, u16 y, u8 type)
+void NF_Load16bImgData(const char *file, u32 slot, u32 x, u32 y, u32 type)
 {
     // Verify that the slot is in the valid range
     if (slot >= NF_SLOTS_BG16B)
@@ -245,7 +245,7 @@ void NF_Load16bImgData(const char *file, u8 slot, u16 x, u16 y, u8 type)
     NF_BG16B[slot].inuse = true; // Set slot as being used
 }
 
-void NF_Unload16bitsBg(u8 slot)
+void NF_Unload16bitsBg(u32 slot)
 {
     // Verify that the slot contains data
     if (!NF_BG16B[slot].inuse)
@@ -259,7 +259,7 @@ void NF_Unload16bitsBg(u8 slot)
     NF_BG16B[slot].inuse = false; // Mark slot as being free
 }
 
-void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot)
+void NF_Copy16bitsBuffer(int screen, int destination, u32 slot)
 {
     // Verify that the slot contains data
     if (!NF_BG16B[slot].inuse)
@@ -281,7 +281,7 @@ void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot)
     }
 }
 
-void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha)
+void NF_Draw16bitsImage(int screen, u32 slot, s32 x, s32 y, bool alpha)
 {
     // Verify that the slot contains data
     if (!NF_BG16B[slot].inuse)
@@ -339,7 +339,7 @@ void NF_Reset8bitsBgBuffers(void)
     NF_Init8bitsBgBuffers();
 }
 
-void NF_Load8bitsBg(const char *file, u8 slot)
+void NF_Load8bitsBg(const char *file, u32 slot)
 {
     // Verify that the slot is in the valid range
     if (slot >= NF_SLOTS_BG8B)
@@ -410,7 +410,7 @@ void NF_Load8bitsBg(const char *file, u8 slot)
     NF_BG8B[slot].inuse = true;
 }
 
-void NF_Unload8bitsBg(u8 slot)
+void NF_Unload8bitsBg(u32 slot)
 {
     // Verify that the slot contains data
     if (!NF_BG8B[slot].inuse)
@@ -427,7 +427,7 @@ void NF_Unload8bitsBg(u8 slot)
     NF_BG8B[slot].inuse = false; // Mark slot as free
 }
 
-void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot)
+void NF_Copy8bitsBuffer(int screen, int destination, u32 slot)
 {
     // Verify that the slot contains data
     if (!NF_BG8B[slot].inuse) NF_Error(110, "8 Bits Bg", slot);
@@ -468,7 +468,7 @@ void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot)
     }
 }
 
-void NF_Init8bitsBackBuffer(u8 screen)
+void NF_Init8bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -477,7 +477,7 @@ void NF_Init8bitsBackBuffer(u8 screen)
     NF_8BITS_BACKBUFFER[screen].pal = NULL;
 }
 
-void NF_Enable8bitsBackBuffer(u8 screen)
+void NF_Enable8bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -499,7 +499,7 @@ void NF_Enable8bitsBackBuffer(u8 screen)
         NF_Error(102, NULL, 512);
 }
 
-void NF_Disble8bitsBackBuffer(u8 screen)
+void NF_Disble8bitsBackBuffer(int screen)
 {
     if (screen > 1)
         screen = 1;
@@ -511,7 +511,7 @@ void NF_Disble8bitsBackBuffer(u8 screen)
     NF_8BITS_BACKBUFFER[screen].pal = NULL;
 }
 
-void NF_Flip8bitsBackBuffer(u8 screen, u8 destination)
+void NF_Flip8bitsBackBuffer(int screen, int destination)
 {
     // Copy contents of the backuffer to VRAM
 

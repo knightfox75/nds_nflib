@@ -72,12 +72,12 @@ void NF_ResetCmapBuffers(void);
 /// @param id Slot number (0 - 31)
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
-void NF_LoadCollisionMap(const char *file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionMap(const char *file, u32 id, u32 width, u32 height);
 
 /// Unload from RAM the collision map at the specified slot.
 ///
 /// @param id Slot number (0 - 31)
-void NF_UnloadCollisionMap(u8 id);
+void NF_UnloadCollisionMap(u32 id);
 
 /// Return the tile number at the specified position.
 ///
@@ -87,7 +87,7 @@ void NF_UnloadCollisionMap(u8 id);
 /// @param x X coordinate in pixels.
 /// @param y Y coordinate in pixels.
 /// @return Tile index.
-u16 NF_GetTile(u8 slot, s32 x, s32 y);
+u32 NF_GetTile(u32 slot, s32 x, s32 y);
 
 /// Set the value of the tile of a collision map at the specified position.
 ///
@@ -95,7 +95,7 @@ u16 NF_GetTile(u8 slot, s32 x, s32 y);
 /// @param x X coordinate in pixels.
 /// @param y Y coordinate in pixels.
 /// @param value New tile.
-void NF_SetTile(u8 slot, s32 x, s32 y, u16 value);
+void NF_SetTile(u32 slot, s32 x, s32 y, u32 value);
 
 /// Load a collision background to RAM at the specified slot.
 ///
@@ -111,12 +111,12 @@ void NF_SetTile(u8 slot, s32 x, s32 y, u16 value);
 /// @param id Slot number (0 - 31)
 /// @param width Map width (in pixels)
 /// @param height Map height (in pixels)
-void NF_LoadCollisionBg(const char *file, u8 id, u16 width, u16 height);
+void NF_LoadCollisionBg(const char *file, u32 id, u32 width, u32 height);
 
 /// Unload from RAM the collision background at the specified slot.
 ///
 /// @param id Slot number (0 - 31)
-void NF_UnloadCollisionBg(u8 id);
+void NF_UnloadCollisionBg(u32 id);
 
 /// Returns the color number at the specified coordinates.
 ///
@@ -126,7 +126,7 @@ void NF_UnloadCollisionBg(u8 id);
 /// @param x X coordinate in pixels.
 /// @param y Y coordinate in pixels.
 /// @return Tile index (0 - 255).
-u8 NF_GetPoint(u8 slot, s32 x, s32 y);
+u8 NF_GetPoint(u32 slot, s32 x, s32 y);
 
 // Defines for backwards compatibility
 #define NF_LoadColisionMap NF_LoadCollisionMap

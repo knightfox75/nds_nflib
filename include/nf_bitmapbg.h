@@ -81,21 +81,21 @@ void NF_Reset16bitsBgBuffers(void);
 /// Use this function once before using the backbuffer.
 ///
 /// @param screen Screen (0 - 1).
-void NF_Init16bitsBackBuffer(u8 screen);
+void NF_Init16bitsBackBuffer(int screen);
 
 /// Enables the 16-bit backbuffer of the selected screen.
 ///
 /// If the backbuffer is already enabled, the contents are cleared.
 ///
 /// @param screen Screen (0 - 1).
-void NF_Enable16bitsBackBuffer(u8 screen);
+void NF_Enable16bitsBackBuffer(int screen);
 
 /// Disables the 16-bit backbuffer of selected screen.
 ///
 /// It frees the RAM used by it (128 KB).
 ///
 /// @param screen Screen (0 - 1).
-void NF_Disble16bitsBackBuffer(u8 screen);
+void NF_Disble16bitsBackBuffer(int screen);
 
 /// Sends the 16-bit backbuffer to the VRAM of the selected screen.
 ///
@@ -103,7 +103,7 @@ void NF_Disble16bitsBackBuffer(u8 screen);
 /// on the screen without showing the drawing process (which may be very slow).
 ///
 /// @param screen Screen (0 - 1).
-void NF_Flip16bitsBackBuffer(u8 screen);
+void NF_Flip16bitsBackBuffer(int screen);
 
 /// Initializes the selected screen in "bitmap" mode.
 ///
@@ -119,7 +119,7 @@ void NF_Flip16bitsBackBuffer(u8 screen);
 ///
 /// @param screen Screen (0 - 1).
 /// @param mode Depth mode (0: 8 bits / 256 colors; 1: 16 bits)
-void NF_InitBitmapBgSys(u8 screen, u8 mode);
+void NF_InitBitmapBgSys(int screen, u32 mode);
 
 /// Loads a 16-bit bitmap from the filesystem.
 ///
@@ -142,11 +142,11 @@ void NF_InitBitmapBgSys(u8 screen, u8 mode);
 ///
 /// @param file File name without extension.
 /// @param slot Slot number (0 - 15).
-void NF_Load16bitsBg(const char *file, u8 slot);
+void NF_Load16bitsBg(const char *file, u32 slot);
 
 /// Loads a 16 bits image into a RAM slot.
 ///
-/// The image must be in ".img" format, and it has a max size of 256x256 pixels 
+/// The image must be in ".img" format, and it has a max size of 256x256 pixels
 /// You must also specify the size of the image. The image will be loaded into
 /// the specified 16-bits bitmap background slot.
 ///
@@ -163,10 +163,10 @@ void NF_Load16bitsBg(const char *file, u8 slot);
 /// @param slot Slot number (0 - 15).
 /// @param size_x Width in pixels.
 /// @param size_y Height in pixels.
-void NF_Load16bitsImage(const char *file, u8 slot, u16 size_x, u16 size_y);
+void NF_Load16bitsImage(const char *file, u32 slot, u32 size_x, u32 size_y);
 
 // Internal use only. Generic loader of 16-bit data to RAM.
-void NF_Load16bImgData(const char *file, u8 slot, u16 x, u16 y, u8 type);
+void NF_Load16bImgData(const char *file, u32 slot, u32 x, u32 y, u32 type);
 
 /// Deletes from RAM the 16-bit image stored in the selected slot.
 ///
@@ -180,7 +180,7 @@ void NF_Load16bImgData(const char *file, u8 slot, u16 x, u16 y, u8 type);
 /// ```
 ///
 /// @param slot Slot number (0 - 15).
-void NF_Unload16bitsBg(u8 slot);
+void NF_Unload16bitsBg(u32 slot);
 
 /// Copy the selected 16-bit slot to VRAM or the backbuffer.
 ///
@@ -193,7 +193,7 @@ void NF_Unload16bitsBg(u8 slot);
 /// @param screen Screen (0 - 1).
 /// @param destination Use 0 for VRAM or 1 for backbuffer.
 /// @param slot Slot number (0 - 15).
-void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot);
+void NF_Copy16bitsBuffer(int screen, int destination, u32 slot);
 
 /// Draws the image in a slot into the backbuffer of the selected screen.
 ///
@@ -213,7 +213,7 @@ void NF_Copy16bitsBuffer(u8 screen, u8 destination, u8 slot);
 /// @param x X coordinate.
 /// @param y Y coordinate.
 /// @param alpha True to make magenta pixels transparent.
-void NF_Draw16bitsImage(u8 screen, u8 slot, s16 x, s16 y, bool alpha);
+void NF_Draw16bitsImage(int screen, u32 slot, s32 x, s32 y, bool alpha);
 
 /// Initialize buffers to store 8-bit bitmap backgrounds.
 ///
@@ -256,7 +256,7 @@ void NF_Reset8bitsBgBuffers(void);
 ///
 /// @param file File name without extension.
 /// @param slot Slot number (0 - 15).
-void NF_Load8bitsBg(const char *file, u8 slot);
+void NF_Load8bitsBg(const char *file, u32 slot);
 
 /// Deletes from RAM the 8-bit image stored in the selected slot.
 ///
@@ -270,7 +270,7 @@ void NF_Load8bitsBg(const char *file, u8 slot);
 /// ```
 ///
 /// @param slot Slot number (0 - 15).
-void NF_Unload8bitsBg(u8 slot);
+void NF_Unload8bitsBg(u32 slot);
 
 /// Copy the selected 8-bit slot to VRAM or the backbuffer.
 ///
@@ -283,28 +283,28 @@ void NF_Unload8bitsBg(u8 slot);
 /// @param screen Screen (0 - 1).
 /// @param destination Use 0 for VRAM or 1 for backbuffer.
 /// @param slot Slot number (0 - 15).
-void NF_Copy8bitsBuffer(u8 screen, u8 destination, u8 slot);
+void NF_Copy8bitsBuffer(int screen, int destination, u32 slot);
 
 /// Initialize the 8 bit background backbuffer of the selected screen.
 ///
 /// Use this function once before using the backbuffer.
 ///
 /// @param screen Screen (0 - 1).
-void NF_Init8bitsBackBuffer(u8 screen);
+void NF_Init8bitsBackBuffer(int screen);
 
 /// Enables the 8-bit backbuffer of the selected screen.
 ///
 /// If the backbuffer is already enabled, the contents are cleared.
 ///
 /// @param screen Screen (0 - 1).
-void NF_Enable8bitsBackBuffer(u8 screen);
+void NF_Enable8bitsBackBuffer(int screen);
 
 /// Disables the 8-bit backbuffer of selected screen.
 ///
 /// It frees the RAM used by it (64 KB).
 ///
 /// @param screen Screen (0 - 1).
-void NF_Disble8bitsBackBuffer(u8 screen);
+void NF_Disble8bitsBackBuffer(int screen);
 
 /// Sends the 8-bit backbuffer to the VRAM of the selected screen.
 ///
@@ -315,7 +315,7 @@ void NF_Disble8bitsBackBuffer(u8 screen);
 ///
 /// @param screen Screen (0 - 1).
 /// @param destination Destination layer (0: layer 2, 1: layer 3).
-void NF_Flip8bitsBackBuffer(u8 screen, u8 destination);
+void NF_Flip8bitsBackBuffer(int screen, int destination);
 
 /// @}
 

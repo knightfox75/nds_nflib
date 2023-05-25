@@ -7,321 +7,268 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <nds.h>
 
 #include "nf_basic.h"
 #include "nf_collision.h"
 
-// Define los buffers y estructuras de control de los mapas de colision
+// Struct that holds information about all collision maps
 NF_TYPE_CMAP_INFO NF_CMAP[NF_SLOTS_CMAP];
 
-
-void NF_InitCmapBuffers(void) {
-	for (int n = 0; n < NF_SLOTS_CMAP; n ++) {
-		NF_CMAP[n].tiles = NULL;		// Inicializa los punteros de los buffers
-		NF_CMAP[n].map = NULL;
-		NF_CMAP[n].tiles_size = 0;		// Tamaño de archivo
-		NF_CMAP[n].map_size = 0;
-		NF_CMAP[n].width = 0;			// Ancho del mapa
-		NF_CMAP[n].height = 0;			// Alto del mapa
-		NF_CMAP[n].inuse = false;		// Esta en uso el slot?
-	}
+void NF_InitCmapBuffers(void)
+{
+    for (int n = 0; n < NF_SLOTS_CMAP; n++)
+    {
+        NF_CMAP[n].tiles = NULL;
+        NF_CMAP[n].map = NULL;
+        NF_CMAP[n].tiles_size = 0;
+        NF_CMAP[n].map_size = 0;
+        NF_CMAP[n].width = 0;
+        NF_CMAP[n].height = 0;
+        NF_CMAP[n].inuse = false; // Mark as unused
+    }
 }
 
-void NF_ResetCmapBuffers(void) {
-	for (int n = 0; n < NF_SLOTS_CMAP; n ++) {
-		free(NF_CMAP[n].tiles);		// Vacia los buffers
-		free(NF_CMAP[n].map);
-	}
-	NF_InitCmapBuffers();			// Y reinicia todas las variables
+void NF_ResetCmapBuffers(void)
+{
+    // Free all buffers
+    for (int n = 0; n < NF_SLOTS_CMAP; n++)
+    {
+        free(NF_CMAP[n].tiles);
+        free(NF_CMAP[n].map);
+    }
+
+    // Reset state of the collision maps
+    NF_InitCmapBuffers();
 }
 
-void NF_LoadCollisionMap(const char* file, u8 id, u16 width, u16 height) {
+void NF_LoadCollisionMap(const char *file, u32 id, u32 width, u32 height)
+{
+    // Verify that the slot ID is valid
+    if (id >= NF_SLOTS_CMAP)
+        NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 
-	// Verifica el rango de Id's
-	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
-	}
+    // Verify that this slot is free
+    if (NF_CMAP[id].inuse)
+        NF_Error(109, "Collision Map", id);
 
-	// Verifica si la Id esta libre
-	if (NF_CMAP[id].inuse) {
-		NF_Error(109, "Collision Map", id);
-	}
+    // Free buffers if they were in use
+    free(NF_CMAP[id].map);
+    NF_CMAP[id].map = NULL;
 
-	// Vacia los buffers que se usaran
-	free(NF_CMAP[id].map);
-	NF_CMAP[id].map = NULL;
+    // File path
+    char filename[256];
 
-	// Declara los punteros a los ficheros
-	FILE* file_id;
+    // Load .CMP file (tilemap)
+    snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
+    FILE *file_id = fopen(filename, "rb");
+    if (file_id == NULL)
+        NF_Error(101, filename, 0);
 
-	// Variable para almacenar el path al archivo
-	char filename[256];
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    NF_CMAP[id].map_size = ftell(file_id);
+    rewind(file_id);
 
-	// Carga el archivo .CMP
-	snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		NF_CMAP[id].map_size = ftell(file_id);
-		rewind(file_id);
-		// Reserva el espacio en RAM
-		NF_CMAP[id].map = (char*) calloc (NF_CMAP[id].map_size, sizeof(char));
-		if (NF_CMAP[id].map == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_CMAP[id].map_size);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
+    // Allocate space in RAM
+    NF_CMAP[id].map = malloc(NF_CMAP[id].map_size);
+    if (NF_CMAP[id].map == NULL)
+        NF_Error(102, NULL, NF_CMAP[id].map_size);
 
-	// Guarda las medidas
-	NF_CMAP[id].width = width;
-	NF_CMAP[id].height = height;
+    // Load file into RAM
+    fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
+    fclose(file_id);
 
-	// Y marca esta ID como usada
-	NF_CMAP[id].inuse = true;
+    // Save map size
+    NF_CMAP[id].width = width;
+    NF_CMAP[id].height = height;
 
+    // Mark this slot as in use
+    NF_CMAP[id].inuse = true;
 }
 
-void NF_UnloadCollisionMap(u8 id) {
+void NF_UnloadCollisionMap(u32 id)
+{
+    // Verify that the slot ID is valid
+    if (id >= NF_SLOTS_CMAP)
+        NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
 
-	// Verifica el rango de Id's
-	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
-	}
+    // Verify that this slot is used
+    if (!NF_CMAP[id].inuse)
+        NF_Error(110, "Collision Map", id);
 
-	// Verifica si la Id esta libre
-	if (!NF_CMAP[id].inuse) {
-		NF_Error(110, "Collision Map", id);
-	}
+    // Free buffer
+    free(NF_CMAP[id].map);
+    NF_CMAP[id].map = NULL;
 
-	// Vacia los buffers que se usaran
-	free(NF_CMAP[id].map);
-	NF_CMAP[id].map = NULL;
-
-	// Y marca esta ID como usada
-	NF_CMAP[id].inuse = false;
-
+    // Mark this slot as free
+    NF_CMAP[id].inuse = false;
 }
 
-u16 NF_GetTile(u8 slot, s32 x, s32 y) {
+u32 NF_GetTile(u32 slot, s32 x, s32 y)
+{
+    // If the coordinate is outside of the map, return 0
+    if ((x < 0) || (y < 0) || (x >= NF_CMAP[slot].width) || (y >= NF_CMAP[slot].height))
+        return 0;
 
-	// Si la coordenada esta fuera de rango, devuelve 0
-	if (
-		(x < 0)
-		||
-		(y < 0)
-		||
-		(x >= NF_CMAP[slot].width)
-		||
-		(y >= NF_CMAP[slot].height)
-		) {
-			// Devuelve 0
-			return 0;
+    // Calculate width of the map in tiles
+    u32 columns = NF_CMAP[slot].width / 8;
 
-	} else {	// Si la coordenada esta dentro del rango...
+    // Calculate tile where the pixel is located
+    u32 tile_x = x / 8;
+    u32 tile_y = (y / 8) + 1; // Skip first row, it's used for the tile reference
 
-		// Calcula el ancho en tiles del mapa
-		u16 columns = (NF_CMAP[slot].width >> 3);		// (width / 8);
+    // Calculate the address of the tile in the map
+    u32 address = ((tile_y * columns) + tile_x) * 2;
 
-		// Calcula los tiles de posicion	(x / 8); (y / 8);
-		u16 tile_x = (x >> 3);
-		u16 tile_y = (y >> 3) + 1;		// +1, por que la primera fila se reserva para la referencia de tiles
+    // Read tile number
+    u32 lobyte = *(NF_CMAP[slot].map + address);
+    u32 hibyte = *(NF_CMAP[slot].map + (address + 1));
 
-		// Calcula el nº de tile
-		u32 address = (((tile_y * columns) + tile_x) << 1);
-
-		// Obten los bytes
-		u8 lobyte = *(NF_CMAP[slot].map + address);
-		u8 hibyte = *(NF_CMAP[slot].map + (address + 1));
-
-		// Devuelve el valor del tile
-		return ((hibyte << 8) | lobyte);
-
-	}
-
+    return (hibyte << 8) | lobyte;
 }
 
-void NF_SetTile(u8 slot, s32 x, s32 y, u16 value) {
+void NF_SetTile(u32 slot, s32 x, s32 y, u32 value)
+{
+    // If the coordinate is outside of the map, return
+    if ((x < 0) && (y < 0) && (x >= NF_CMAP[slot].width) && (y >= NF_CMAP[slot].height))
+        return;
 
-	// Si la coordenada esta dentro del rango...
-	if (
-		(x >= 0)
-		&&
-		(y >= 0)
-		&&
-		(x < NF_CMAP[slot].width)
-		&&
-		(y < NF_CMAP[slot].height)
-		) {
+    // Calculate width of the map in tiles
+    u32 columns = NF_CMAP[slot].width / 8;
 
-		// Calcula el ancho en tiles del mapa
-		u16 columns = (NF_CMAP[slot].width >> 3);		// (width / 8);
+    // Calculate tile where the pixel is located
+    u32 tile_x = x / 8;
+    u32 tile_y = (y / 8) + 1; // Skip first row, it's used for the tile reference
 
-		// Calcula los tiles de posicion	(x / 8); (y / 8);
-		u16 tile_x = (x >> 3);
-		u16 tile_y = (y >> 3) + 1;		// +1, por que la primera fila se reserva para la referencia de tiles
+    // Calculate the address of the tile in the map
+    s32 address = ((tile_y * columns) + tile_x) * 2; // Each tile uses 2 bytes
 
-		// Calcula el nº de tile
-		u32 address = (((tile_y * columns) + tile_x) << 1);
-		// nº de tile x2, dado que el mapa es de 16 bits (2 bytes por dato) y el buffer
-		// es de 8 bits, se lee el 2do byte, por eso se multiplica por 2.
+    // Split new tile number
+    u32 hibyte = (value >> 8) & 0xff;
+    u32 lobyte = value & 0xff;
 
-		// Calcula los valores de los bytes
-		u8 hibyte = ((value >> 8) & 0xff);		// HI Byte
-		u8 lobyte = (value & 0xff);				// LO Byte
-
-		// Escribe el nuevo valor en el mapa de colisiones
-		*(NF_CMAP[slot].map + address) = lobyte;
-		*(NF_CMAP[slot].map + (address + 1)) = hibyte;
-
-	}
-
+    // Write the new tile number
+    *(NF_CMAP[slot].map + address) = lobyte;
+    *(NF_CMAP[slot].map + (address + 1)) = hibyte;
 }
 
-void NF_LoadCollisionBg(const char* file, u8 id, u16 width, u16 height) {
+void NF_LoadCollisionBg(const char *file, u32 id, u32 width, u32 height)
+{
+    // Verify that the slot ID is valid
+    if (id >= NF_SLOTS_CMAP)
+        NF_Error(106, "Collision map", NF_SLOTS_CMAP);
 
-	// Verifica el rango de Id's
-	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
-	}
+    // Verify that this slot is free
+    if (NF_CMAP[id].inuse)
+        NF_Error(109, "Collision map", id);
 
-	// Verifica si la Id esta libre
-	if (NF_CMAP[id].inuse) {
-		NF_Error(109, "Collision Map", id);
-	}
+    // Free buffers if they were in use
+    free(NF_CMAP[id].tiles);
+    NF_CMAP[id].tiles = NULL;
+    free(NF_CMAP[id].map);
+    NF_CMAP[id].map = NULL;
 
-	// Vacia los buffers que se usaran
-	free(NF_CMAP[id].tiles);
-	NF_CMAP[id].tiles = NULL;
-	free(NF_CMAP[id].map);
-	NF_CMAP[id].map = NULL;
+    // File path
+    char filename[256];
 
-	// Declara los punteros a los ficheros
-	FILE* file_id;
+    // Load .DAT file (tileset)
+    snprintf(filename, sizeof(filename),  "%s/%s.dat", NF_ROOTFOLDER, file);
+    FILE *file_id = fopen(filename, "rb");
+    if (file_id == NULL)
+        NF_Error(101, filename, 0);
 
-	// Variable para almacenar el path al archivo
-	char filename[256];
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    NF_CMAP[id].tiles_size = ftell(file_id);
+    rewind(file_id);
 
-	// Carga el archivo .DAT (TILES)
-	snprintf(filename, sizeof(filename),  "%s/%s.dat", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		NF_CMAP[id].tiles_size = ftell(file_id);
-		rewind(file_id);
-		// Reserva el espacio en RAM
-		NF_CMAP[id].tiles = (char*) calloc (NF_CMAP[id].tiles_size, sizeof(char));
-		if (NF_CMAP[id].tiles == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_CMAP[id].tiles_size);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_CMAP[id].tiles, 1, NF_CMAP[id].tiles_size, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
+    // Allocate space in RAM
+    NF_CMAP[id].tiles = malloc(NF_CMAP[id].tiles_size);
+    if (NF_CMAP[id].tiles == NULL)
+        NF_Error(102, NULL, NF_CMAP[id].tiles_size);
 
-	// Carga el archivo .CMP
-	snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
-	file_id = fopen(filename, "rb");
-	if (file_id) {	// Si el archivo existe...
-		// Obten el tamaño del archivo
-		fseek(file_id, 0, SEEK_END);
-		NF_CMAP[id].map_size = ftell(file_id);
-		rewind(file_id);
-		// Reserva el espacio en RAM
-		NF_CMAP[id].map = (char*) calloc (NF_CMAP[id].map_size, sizeof(char));
-		if (NF_CMAP[id].map == NULL) {		// Si no hay suficiente RAM libre
-			NF_Error(102, NULL, NF_CMAP[id].map_size);
-		}
-		// Lee el archivo y ponlo en la RAM
-		fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
-	} else {	// Si el archivo no existe...
-		NF_Error(101, filename, 0);
-	}
-	fclose(file_id);		// Cierra el archivo
+    // Load file into RAM
+    fread(NF_CMAP[id].tiles, 1, NF_CMAP[id].tiles_size, file_id);
+    fclose(file_id);
 
-	// Guarda las medidas
-	NF_CMAP[id].width = width;
-	NF_CMAP[id].height = height;
+    // Load .CMP file (tilemap)
+    snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
+    file_id = fopen(filename, "rb");
+    if (file_id == NULL)
+        NF_Error(101, filename, 0);
 
-	// Y marca esta ID como usada
-	NF_CMAP[id].inuse = true;
+    // Get file size
+    fseek(file_id, 0, SEEK_END);
+    NF_CMAP[id].map_size = ftell(file_id);
+    rewind(file_id);
 
+    // Allocate space in RAM
+    NF_CMAP[id].map = malloc(NF_CMAP[id].map_size);
+    if (NF_CMAP[id].map == NULL)
+        NF_Error(102, NULL, NF_CMAP[id].map_size);
+
+    // Load file into RAM
+    fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
+    fclose(file_id);
+
+    // Save map size
+    NF_CMAP[id].width = width;
+    NF_CMAP[id].height = height;
+
+    // Mark this slot as in use
+    NF_CMAP[id].inuse = true;
 }
 
-void NF_UnloadCollisionBg(u8 id) {
+void NF_UnloadCollisionBg(u32 id)
+{
+    // Verify that the slot ID is valid
+    if (id >= NF_SLOTS_CMAP)
+        NF_Error(106, "Collision map", NF_SLOTS_CMAP);
 
-	// Verifica el rango de Id's
-	if (id >= NF_SLOTS_CMAP) {
-		NF_Error(106, "Collision Map", NF_SLOTS_CMAP);
-	}
+    // Verify that this slot is used
+    if (!NF_CMAP[id].inuse)
+        NF_Error(110, "Collision map", id);
 
-	// Verifica si la Id esta libre
-	if (!NF_CMAP[id].inuse) {
-		NF_Error(110, "Collision Map", id);
-	}
+    // Free the buffers
+    free(NF_CMAP[id].tiles);
+    NF_CMAP[id].tiles = NULL;
+    free(NF_CMAP[id].map);
+    NF_CMAP[id].map = NULL;
 
-	// Vacia los buffers que se usaran
-	free(NF_CMAP[id].tiles);
-	NF_CMAP[id].tiles = NULL;
-	free(NF_CMAP[id].map);
-	NF_CMAP[id].map = NULL;
-
-	// Y marca esta ID como usada
-	NF_CMAP[id].inuse = false;
-
+    // Mark this map as unused
+    NF_CMAP[id].inuse = false;
 }
 
-u8 NF_GetPoint(u8 slot, s32 x, s32 y) {
+u8 NF_GetPoint(u32 slot, s32 x, s32 y)
+{
+    // If the coordinate is outside of the map, return 0
+    if ((x < 0) || (y < 0) || (x >= NF_CMAP[slot].width) || (y >= NF_CMAP[slot].height))
+        return 0;
 
-	// Si la coordenada esta fuera de rango, devuelve 0
-	if (
-		(x < 0)
-		||
-		(y < 0)
-		||
-		(x >= NF_CMAP[slot].width)
-		||
-		(y >= NF_CMAP[slot].height)
-		) {
-			// Devuelve 0
-			return 0;
+    // Calculate width of the map in tiles
+    u32 columns = NF_CMAP[slot].width / 8;
 
-	} else {	// Si la coordenada esta dentro del rango...
+    // Calculate tile where the pixel is located
+    u32 tile_x = x / 8;
+    u32 tile_y = (y / 8) + 1; // Skip first row, it's used for the tile reference
 
-		// Calcula el ancho en tiles del mapa
-		u16 columns = (NF_CMAP[slot].width >> 3);		// (width / 8);
+    // Calculate pixel coordinates inside the tile
+    u32 pixel_x = x & 7;
+    u32 pixel_y = y & 7;
 
-		// Calcula los tiles de posicion	(x / 8); (y / 8);
-		u16 tile_x = (x >> 3);
-		u16 tile_y = (y >> 3) + 1;			// +1, por que la primera fila se reserva para la referencia de tiles
+    // Calculate the address of the tile in the map
+    s32 address = ((tile_y * columns) + tile_x) * 2; // Each tile uses 2 bytes
 
-		// Calcula los pixeles relativos
-		u16 pixel_x = x - (tile_x << 3);
-		u16 pixel_y = (y + 8) - (tile_y << 3);
+    // Read tile number
+    u32 lobyte = *(NF_CMAP[slot].map + address);
+    u32 hibyte = *(NF_CMAP[slot].map + (address + 1));
+    u32 tile = (hibyte << 8) | lobyte;
 
-		// Calcula la posicion de tile dentro del archivo de mapa
-		s32 address = (((tile_y * columns) + tile_x) << 1);
-		u8 lobyte = *(NF_CMAP[slot].map + address);
-		u8 hibyte = *(NF_CMAP[slot].map + (address + 1));
-		u16 tile = ((hibyte << 8) | lobyte);
+    // Read value of the pixel inside the tile
+    address = (tile * 64) + (pixel_y * 8) + pixel_x;
+    lobyte = *(NF_CMAP[slot].tiles + address);
 
-		// Obten el valor del pixel leyendola del archivo de tiles
-		address = ((tile << 6) + (pixel_y << 3) + pixel_x);	// (tile * 64) + (y * 8) + x
-		lobyte = *(NF_CMAP[slot].tiles + address);
-
-		// Devuelve el valor del pixel
-		return lobyte;
-
-	}
-
+    return lobyte;
 }
