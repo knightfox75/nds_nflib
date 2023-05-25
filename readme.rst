@@ -84,7 +84,7 @@ Features:
 
 - Documentation:
 
-  - Available in PDF format in English and Spanish.
+  - Doxygen documentation in English.
 
 - License:
 
