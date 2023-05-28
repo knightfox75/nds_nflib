@@ -15,987 +15,900 @@
 #include "nf_sprite256.h"
 #include "nf_sprite3d.h"
 
-// Estructura de control de los sprites 3d
+// 3D sprite control structs
 NF_TYPE_3DSPRITE_INFO NF_3DSPRITE[NF_3DSPRITES];
 
-// Estructura de control de las texturas en VRAM
+// Structs that handle textures in VRAM
 NF_TYPE_TEX256VRAM_INFO NF_TEX256VRAM[NF_3DSPRITES];
 
-// Estructura de control de las paletas en VRAM
+// Structs that handle palettes in VRAM
 NF_TYPE_3DSPRPALSLOT_INFO NF_TEXPALSLOT[32];
 
-// Estructura de control de la VRAM de texturas
+// Texture VRAM allocator information
 NF_TYPE_TEXVRAM_INFO NF_TEXVRAM;
 
-// Define la estructura de control de los sprites 3d creados
+// 3D sprite handler
 NF_TYPE_CREATED_3DSPRITE_INFO NF_CREATED_3DSPRITE;
 
+void NF_Init3dSpriteSys(void)
+{
+    // Reset all sprite control structures
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        NF_3DSPRITE[n].x = 0;
+        NF_3DSPRITE[n].y = 0;
+        NF_3DSPRITE[n].z = 0;
+        NF_3DSPRITE[n].rx = 0;
+        NF_3DSPRITE[n].ry = 0;
+        NF_3DSPRITE[n].rz = 0;
+        NF_3DSPRITE[n].rot = false;
+        NF_3DSPRITE[n].sx = 64 << 6;
+        NF_3DSPRITE[n].sy = 64 << 6;
+        NF_3DSPRITE[n].scale = false;
+        NF_3DSPRITE[n].width = 0;
+        NF_3DSPRITE[n].height = 0;
+        NF_3DSPRITE[n].inuse = false; // Mark as unused
+        NF_3DSPRITE[n].show = false;
+        NF_3DSPRITE[n].gfx_tex_format = 0;
+        NF_3DSPRITE[n].gfx = 0;
+        NF_3DSPRITE[n].gfxid = 0;
+        NF_3DSPRITE[n].frame = 0;
+        NF_3DSPRITE[n].newframe = 0;
+        NF_3DSPRITE[n].framesize = 0;
+        NF_3DSPRITE[n].lastframe = 0;
+        NF_3DSPRITE[n].gfx_pal_format = 0;
+        NF_3DSPRITE[n].pal = 0;
+        NF_3DSPRITE[n].palid = 0;
+        NF_3DSPRITE[n].prio = 0;
+        NF_3DSPRITE[n].poly_id = 0;
+        NF_3DSPRITE[n].alpha = 31;
 
-void NF_Init3dSpriteSys(void) {
+        NF_TEX256VRAM[n].size = 0;
+        NF_TEX256VRAM[n].width = 0;
+        NF_TEX256VRAM[n].height = 0;
+        NF_TEX256VRAM[n].address = 0;
+        NF_TEX256VRAM[n].ramid = 0;
+        NF_TEX256VRAM[n].framesize = 0;
+        NF_TEX256VRAM[n].lastframe = 0;
+        NF_TEX256VRAM[n].keepframes = false;
+        NF_TEX256VRAM[n].inuse = false; // Mark as unused
 
-	// Inicializaciones
-	for (int n = 0; n < NF_3DSPRITES; n ++) {
+        NF_CREATED_3DSPRITE.id[n] = 0;
+        NF_CREATED_3DSPRITE.bck[n] = 0;
+    }
 
-		// Inicializa las estructuras de control de los sprites
-		NF_3DSPRITE[n].x = 0;				// Coordenada X
-		NF_3DSPRITE[n].y = 0;				// Coordenada Y
-		NF_3DSPRITE[n].z = 0;				// Coordenada Z
-		NF_3DSPRITE[n].rx = 0;				// Rotacion Eje X
-		NF_3DSPRITE[n].ry = 0;				// Rotacion Eje Y
-		NF_3DSPRITE[n].rz = 0;				// Rotacion Eje Z
-		NF_3DSPRITE[n].rot = false;			// Rotacion en uso
-		NF_3DSPRITE[n].sx = (64 << 6);		// Escala X
-		NF_3DSPRITE[n].sy = (64 << 6);		// Escala X
-		NF_3DSPRITE[n].scale = false;		// Escalado en uso
-		NF_3DSPRITE[n].width = 0;			// Ancho del sprite
-		NF_3DSPRITE[n].height = 0;			// Altura del sprite
-		NF_3DSPRITE[n].inuse = false;		// Esta este sprite en uso?
-		NF_3DSPRITE[n].show = false;		// Debe mostrarse?
-		NF_3DSPRITE[n].gfx_tex_format = 0;	// Guarda el formato de la textura
-		NF_3DSPRITE[n].gfx = 0;				// Direccion en VRAM del GFX usado
-		NF_3DSPRITE[n].gfxid = 0;			// Numero de Gfx usado
-		NF_3DSPRITE[n].frame = 0;			// Frame actual
-		NF_3DSPRITE[n].newframe = 0;		// Frame al que cambiar
-		NF_3DSPRITE[n].framesize = 0;		// Tamaño del frame (en bytes)
-		NF_3DSPRITE[n].lastframe = 0;		// Ultimo frame
-		NF_3DSPRITE[n].gfx_pal_format = 0;	// Guarda el formato de la paleta
-		NF_3DSPRITE[n].pal = 0;				// Direccion en VRAM de la paleta usada
-		NF_3DSPRITE[n].palid = 0;			// Numero de paleta usada
-		NF_3DSPRITE[n].prio = 0;			// Prioridad del Sprtie
-		NF_3DSPRITE[n].poly_id = 0;			// Identificador unico para el Alpha (0 por defecto, 63 prohibido)
-		NF_3DSPRITE[n].alpha = 31;			// Nivel de alpha (0 - 31) (31 por defecto)
+    // Initialize the VRAM information struct
+    NF_TEXVRAM.free = 131072;       // Available VRAM (128 KB)
+    NF_TEXVRAM.last = 0;            // Last used position
+    NF_TEXVRAM.deleted = 0;         // No graphics deleted
+    NF_TEXVRAM.fragmented = 0;      // Fragmented VRAM
+    NF_TEXVRAM.inarow = 131072;     // Contiguous VRAM
 
-		// Inicializa las estructuras de control de la VRAM de texturas
-		NF_TEX256VRAM[n].size = 0;				// Tamaño (en bytes) del Gfx
-		NF_TEX256VRAM[n].width = 0;				// Ancho del Gfx
-		NF_TEX256VRAM[n].height = 0;			// Altura del Gfx
-		NF_TEX256VRAM[n].address = 0;			// Posicion en la VRAM
-		NF_TEX256VRAM[n].ramid = 0;				// Numero de Slot en RAM del que provienes
-		NF_TEX256VRAM[n].framesize = 0;			// Tamaño del frame (en bytes)
-		NF_TEX256VRAM[n].lastframe = 0;			// Ultimo frame
-		NF_TEX256VRAM[n].keepframes = false;	// Si es un Sprite animado, debes de mantener los frames en RAM ?
-		NF_TEX256VRAM[n].inuse = false;			// Esta en uso ?
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        NF_TEXVRAM.pos[n] = 0;
+        NF_TEXVRAM.size[n] = 0;
+    }
 
-		// Inicializa las esctructuras de control de los sprites creados
-		NF_CREATED_3DSPRITE.id[n] = 0;
-		NF_CREATED_3DSPRITE.bck[n] = 0;
+    NF_TEXVRAM.next = 0x06820000; // Next VRAM address to be used for allocations
 
-	}
+    // Initialize palette slots
+    for (int n = 0; n < 32; n++)
+    {
+        NF_TEXPALSLOT[n].inuse = false;
+        NF_TEXPALSLOT[n].ramslot = 0;
+    }
 
-	// Inicializa la estructura de datos de la VRAM de Sprites
-	NF_TEXVRAM.free = 131072;		// Memoria VRAM libre (128kb)
-	NF_TEXVRAM.last = 0;			// Ultima posicion usada
-	NF_TEXVRAM.deleted = 0;			// Ningun Gfx borrado
-	NF_TEXVRAM.fragmented = 0;		// Memoria VRAM fragmentada
-	NF_TEXVRAM.inarow = 131072;		// Memoria VRAM contigua
-	for (int n = 0; n < NF_3DSPRITES; n ++) {
-		NF_TEXVRAM.pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_TEXVRAM.size[n] = 0;		// Tamaño del bloque libre para reusar
-	}
+    // Reset the number of created sprites
+    NF_CREATED_3DSPRITE.total = 0;
 
-	// Inicializa los datos de las paletas
-	for (int n = 0; n < 32; n ++) {
-		NF_TEXPALSLOT[n].inuse = false;
-		NF_TEXPALSLOT[n].ramslot = 0;
-	}
+    // Clear VRAM_B and VRAM_F, used for textures and palettes
+    vramSetBankB(VRAM_B_LCD);
+    memset((void *)0x06820000, 0, 131072);
+    vramSetBankB(VRAM_B_TEXTURE_SLOT1);
 
-	// Inicializa el numero de sprites creados
-	NF_CREATED_3DSPRITE.total = 0;
+    vramSetBankF(VRAM_F_LCD);
+    memset((void *)0x06890000, 0, 16384);
+    vramSetBankF(VRAM_F_TEX_PALETTE);
 
-	// VRAM para TEXTURAS en el Banco B
-	vramSetBankB(VRAM_B_LCD);					// Bloquea el banco para la escritura
-	memset((void*)0x06820000, 0, 131072);		// Borra el contenido del banco B
-	NF_TEXVRAM.next = (0x06820000);				// Guarda la primera posicion de VRAM para Gfx
-	vramSetBankB(VRAM_B_TEXTURE_SLOT1);			// Banco B de la VRAM para Texturas (128kb)
-
-	// VRAM para PALETAS
-	vramSetBankF(VRAM_F_LCD);					// Bloquea el banco para la escritura
-	memset((void*)0x06890000, 0, 16384);		// Borra el contenido del banco F
-	vramSetBankF(VRAM_F_TEX_PALETTE);			// Banco F de la VRAM para paletas extendidas (Texturas) (16kb)
-
-	// Inicializa el OpenGL
-	NF_InitOpenGL();
-
+    NF_InitOpenGL();
 }
 
-void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes) {
+void NF_Vram3dSpriteGfx(u32 ram, u32 vram, bool keepframes)
+{
+    if (ram >= NF_SLOTS_SPR256GFX)
+        NF_Error(106, "Sprite GFX", NF_SLOTS_SPR256GFX - 1);
 
-	// Verifica el rango de Id's de RAM
-	if (ram >= NF_SLOTS_SPR256GFX) {
-		NF_Error(106, "Sprite GFX", (NF_SLOTS_SPR256GFX - 1));
-	}
+    if (NF_SPR256GFX[ram].available)
+        NF_Error(110, "Sprite GFX", ram);
 
-	// Verifica si slot de RAM esta vacio
-	if (NF_SPR256GFX[ram].available) {
-		NF_Error(110, "Sprite GFX", ram);
-	}
+    if (vram >= NF_3DSPRITES)
+        NF_Error(106, "VRAM GFX", NF_3DSPRITES - 1);
 
-	// Verifica el rango de Id's de VRAM
-	if (vram >= NF_3DSPRITES) {
-		NF_Error(106, "VRAM GFX", (NF_3DSPRITES - 1));
-	}
+    if (NF_TEX256VRAM[vram].inuse)
+        NF_Error(109, "VRAM", vram);
 
-	// Verifica si el slot de VRAM esta libre
-	if (NF_TEX256VRAM[vram].inuse) {
-		NF_Error(109, "VRAM", vram);
-	}
+    // Check that the texture size is valid
+    if ((NF_GetTextureSize(NF_SPR256GFX[ram].width) == 255) ||
+        (NF_GetTextureSize(NF_SPR256GFX[ram].height) == 255))
+    {
+        NF_Error(119, NULL, ram);
+    }
 
-	// Verifica que la textura tengo un tamaño valido
-	if (
-		(NF_GetTextureSize(NF_SPR256GFX[ram].width) == 255)
-		||
-		(NF_GetTextureSize(NF_SPR256GFX[ram].height) == 255)
-		) {
-			NF_Error(119, NULL, ram);
-	}
+    // Let the CPU access VRAM_B
+    vramSetBankB(VRAM_B_LCD);
 
-	// Bloquea el banco de VRAM (modo LCD) para permitir la escritura
-	vramSetBankB(VRAM_B_LCD);
+    // Calculate the size of one frame
+    u32 width = NF_SPR256GFX[ram].width / 8;
+    u32 height = NF_SPR256GFX[ram].height / 8;
+    NF_TEX256VRAM[vram].framesize = (width * height) * 64;
 
-	// Variables de uso general
-	s16 n = 0;				// General
-	s16 id = 255;			// Id del posible bloque libre
-	s16 last_reuse = 0;		// Nº del ultimo bloque reusable
-	u32 gfxsize = 0;		// Tamaño de los datos que se copiaran
-	u32 size = 0;			// Diferencia de tamaños entre bloque libre y datos
-	u16 width = 0;			// Calculo de las medidas
-	u16 height = 0;
-	bool organize = true;	// Se debe de reorganizar el array de bloques libres ?
+    // Calculate the last frame of the animation
+    NF_TEX256VRAM[vram].lastframe =
+                (NF_SPR256GFX[ram].size / NF_TEX256VRAM[vram].framesize) - 1;
 
-	// Auto calcula el tamaño de 1 frame
-	width = (NF_SPR256GFX[ram].width >> 3);		// (width / 8)
-	height = (NF_SPR256GFX[ram].height >> 3);	// (height / 8)
-	NF_TEX256VRAM[vram].framesize = ((width * height) << 6);	// ((width * height) * 64)
-	// Auto calcula el ultimo frame de la animacion
-	NF_TEX256VRAM[vram].lastframe = ((int)(NF_SPR256GFX[ram].size / NF_TEX256VRAM[vram].framesize)) - 1;
-	NF_TEX256VRAM[vram].inuse = true;						// Slot ocupado
+    NF_TEX256VRAM[vram].inuse = true; // Mark this slot as used
 
-	// Calcula el tamaño del grafico a copiar segun si debes o no copiar todos los frames
-	if (keepframes) {	// Si debes de mantener los frames en RAM, solo copia el primero
-		gfxsize = NF_TEX256VRAM[vram].framesize;
-	} else {			// Si no, copialos todos
-		gfxsize = NF_SPR256GFX[ram].size;
-	}
+    // Calculate the size of the texture to copy to VRAM depending on whether
+    // frames need to be copied to VRAM or kept in RAM
+    u32 gfxsize;
+    if (keepframes) // Keep frames in RAM, copy only the first one to VRAM
+        gfxsize = NF_TEX256VRAM[vram].framesize;
+    else // Copy all frames to VRAM
+        gfxsize = NF_SPR256GFX[ram].size;
 
-	// Actualiza la VRAM disponible
-	NF_TEXVRAM.free -= gfxsize;
+    NF_TEXVRAM.free -= gfxsize;
 
-	// Si no hay suficiente VRAM, error
-	if (NF_TEXVRAM.free < 0) {
-		NF_Error(113, "Sprites", gfxsize);
-	}
+    // Fail if there isn't enough free VRAM
+    if (NF_TEXVRAM.free < 0)
+        NF_Error(113, "Sprites", gfxsize);
 
-	// Si hay que aprovechar algun bloque borrado... (tamaño identico, preferente)
-	if (NF_TEXVRAM.deleted > 0) {
-		// Busca un bloque vacio del tamaño identico
-		for (n = 0; n < NF_TEXVRAM.deleted; n ++) {
-			if (NF_TEXVRAM.size[n] == gfxsize) {		// Si el bloque tiene el tamaño suficiente
-				id = n;		// Guarda la Id
-				n = NF_TEXVRAM.deleted;	// y sal
-			}
-		}
-		// Si no habia ningun bloque de tamaño identico, busca el mas parecido (produce fragmentacion)
-		if (id != 255) {
-			for (n = 0; n < NF_TEXVRAM.deleted; n ++) {
-				if (NF_TEXVRAM.size[n] > gfxsize) {		// Si el bloque tiene el tamaño suficiente
-					id = n;		// Guarda la Id
-					n = NF_TEXVRAM.deleted;	// y sal
-				}
-			}
-		}
-	}
+    // Try to reuse any deleted block
+    int id = 255;
+    if (NF_TEXVRAM.deleted > 0)
+    {
+        // First, try to find a block with the same size
+        for (int n = 0; n < NF_TEXVRAM.deleted; n++)
+        {
+            if (NF_TEXVRAM.size[n] == gfxsize)
+            {
+                id = n;
+                break;
+            }
+        }
 
-	// Si hay algun bloque borrado libre del tamaño suficiente...
-	if (id != 255) {
+        // If not, look for a block with enough space (fragmenting it)
+        if (id != 255)
+        {
+            for (int n = 0; n < NF_TEXVRAM.deleted; n++)
+            {
+                if (NF_TEXVRAM.size[n] > gfxsize)
+                {
+                    id = n;
+                    break;
+                }
+            }
+        }
+    }
 
-		// Transfiere el grafico a la VRAM
-		NF_DmaMemCopy((void*)NF_TEXVRAM.pos[id], NF_BUFFER_SPR256GFX[ram], gfxsize);
-		// Guarda el puntero donde lo has almacenado
-		NF_TEX256VRAM[vram].address = NF_TEXVRAM.pos[id];
+    // If we have found a block to reuse
+    if (id != 255)
+    {
+        bool organize = true; // Do we need to reorganize the array of free blocks?
 
-		// Si no has usado todo el tamaño, deja constancia
-		if (gfxsize < NF_TEXVRAM.size[id]) {
+        // Copy texture to VRAM
+        NF_DmaMemCopy((void *)NF_TEXVRAM.pos[id], NF_BUFFER_SPR256GFX[ram], gfxsize);
 
-			// Calcula el tamaño del nuevo bloque libre
-			size = NF_TEXVRAM.size[id] - gfxsize;
-			// Actualiza los datos
-			NF_TEXVRAM.pos[id] += gfxsize;			// Nueva direccion
-			NF_TEXVRAM.size[id] = size;				// Nuevo tamaño
-			NF_TEXVRAM.fragmented -= gfxsize;		// Actualiza el contador de VRAM fragmentada
-			organize = false;	// No se debe de reorganizar el array de bloques
+        // Save the location of the texture
+        NF_TEX256VRAM[vram].address = NF_TEXVRAM.pos[id];
 
-		} else {	// Si has usado todo el tamaño, deja constancia
+        // If not all the free space has been used, register a new block
+        if (gfxsize < NF_TEXVRAM.size[id])
+        {
+            // Calculate remaining free space in the block
+            u32 size = NF_TEXVRAM.size[id] - gfxsize;
 
-			NF_TEXVRAM.fragmented -= NF_TEXVRAM.size[id];	// Actualiza el contador de VRAM fragmentada
+            // Update block information
+            NF_TEXVRAM.pos[id] += gfxsize;
+            NF_TEXVRAM.size[id] = size;
+            NF_TEXVRAM.fragmented -= gfxsize; // Reduce fragmented VRAM
+            organize = false; // Don't reorganize the array of free blocks
+        }
+        else
+        {
+            // All the space has been used
+            NF_TEXVRAM.fragmented -= NF_TEXVRAM.size[id];
+        }
 
-		}
+        // If we have to reorganize the array of free blocks
+        if (organize)
+        {
+            int last_reuse = NF_TEXVRAM.deleted - 1;
 
-		// Se tiene que reorganizar el array de bloques libres ?
-		if (organize) {
-			last_reuse = (NF_TEXVRAM.deleted - 1);
-			if (
-			(last_reuse > 0)	// Si hay mas de un bloque borrado
-			&&
-			(id != last_reuse)	// Y no es la ultima posicion
-			) {
-				// Coloca los valores de la ultima posicion en esta
-				NF_TEXVRAM.pos[id] = NF_TEXVRAM.pos[last_reuse];		// Nueva direccion
-				NF_TEXVRAM.size[id] = NF_TEXVRAM.size[last_reuse];		// Nuevo tamaño
-			}
-			NF_TEXVRAM.deleted --;		// Actualiza el contador de bloques libres, borrando el ultimo registro
-		}
+            // If there is more than one deleted block and it isn't the last
+            // position
+            if ((last_reuse > 0) && (id != last_reuse))
+            {
+                // Save the values of the last position here
+                NF_TEXVRAM.pos[id] = NF_TEXVRAM.pos[last_reuse];
+                NF_TEXVRAM.size[id] = NF_TEXVRAM.size[last_reuse];
+            }
 
-	} else {	// Si no habia ningun bloque borrado o con el tamaño suficiente, colacalo al final de la VRAM ocupada
+            // Reduce the number of deleted blocks
+            NF_TEXVRAM.deleted--;
+        }
+    }
+    else
+    {
+        // If there aren't deleted blocks, or they are too small, place the new
+        // texture at the end of the used VRAM
 
-		// Actualiza la VRAM contigua disponible (mayor bloque libre al final)
-		NF_TEXVRAM.inarow -= gfxsize;
+        // Update the value of contiguous available VRAM (at the end)
+        NF_TEXVRAM.inarow -= gfxsize;
 
-		// Si no hay suficiente VRAM (contigua), error
-		if (NF_TEXVRAM.inarow < 0) {
-			NF_Error(113, "Sprites", gfxsize);
-		}
+        // Fail if there isn't enough contiguous VRAM
+        if (NF_TEXVRAM.inarow < 0)
+            NF_Error(113, "Sprites", gfxsize);
 
-		// Transfiere el grafico a la VRAM
-		NF_DmaMemCopy((void*)NF_TEXVRAM.next, NF_BUFFER_SPR256GFX[ram], gfxsize);
-		// Guarda el puntero donde lo has almacenado
-		NF_TEX256VRAM[vram].address = NF_TEXVRAM.next;
-		// Guarda la direccion actual como la ultima usada
-		NF_TEXVRAM.last = NF_TEXVRAM.next;
-		// Calcula la siguiente posicion libre
-		NF_TEXVRAM.next += gfxsize;
+        // Transfer texture to VRAM
+        NF_DmaMemCopy((void *)NF_TEXVRAM.next, NF_BUFFER_SPR256GFX[ram], gfxsize);
 
-	}
+        // Save the address
+        NF_TEX256VRAM[vram].address = NF_TEXVRAM.next;
 
-	// Guarda los datos del Gfx que se copiara a la VRAM.
-	NF_TEX256VRAM[vram].size = gfxsize;						// Tamaño en bytes de los datos copiados
-	NF_TEX256VRAM[vram].width = NF_SPR256GFX[ram].width;	// Alto (px)
-	NF_TEX256VRAM[vram].height = NF_SPR256GFX[ram].height;	// Ancho (px)
-	NF_TEX256VRAM[vram].ramid = ram;						// Slot RAM de origen
-	NF_TEX256VRAM[vram].keepframes = keepframes;			// Debes guardar los frames en RAM o copiarlos a la VRAM?
+        // Use the current address as the last address used
+        NF_TEXVRAM.last = NF_TEXVRAM.next;
 
-	// Restaura el banco de VRAM en modo Textura
-	vramSetBankB(VRAM_B_TEXTURE_SLOT1);			// Banco B de la VRAM para Texturas (128kb)
+        // Calculate the next available address
+        NF_TEXVRAM.next += gfxsize;
+    }
 
+    // Save information about this texture
+    NF_TEX256VRAM[vram].size = gfxsize;
+    NF_TEX256VRAM[vram].width = NF_SPR256GFX[ram].width;
+    NF_TEX256VRAM[vram].height = NF_SPR256GFX[ram].height;
+    NF_TEX256VRAM[vram].ramid = ram;
+    NF_TEX256VRAM[vram].keepframes = keepframes;
+
+    // Setup VRAM_B as texture memory
+    vramSetBankB(VRAM_B_TEXTURE_SLOT1);
 }
 
-void NF_Free3dSpriteGfx(u16 id) {
+void NF_Free3dSpriteGfx(u32 id)
+{
+    if (!NF_TEX256VRAM[id].inuse)
+        NF_Error(110, "Sprite Gfx", id);
 
-	// Verifica si hay un grafico cargado en esa Id.
-	if (!NF_TEX256VRAM[id].inuse) {
-		NF_Error(110, "Sprite Gfx", id);
-	}
+    // Let the CPU access VRAM_B
+    vramSetBankB(VRAM_B_LCD);
 
-	// Bloquea el banco de VRAM (modo LCD) para permitir la escritura
-	vramSetBankB(VRAM_B_LCD);
+    // Clear graphics
+    memset((void *)NF_TEX256VRAM[id].address, 0, NF_TEX256VRAM[id].size);
 
-	// Borra el Gfx de la VRAM (pon a 0 todos los Bytes)
-	memset((void*)NF_TEX256VRAM[id].address, 0, NF_TEX256VRAM[id].size);
+    // Update the available VRAM
+    NF_TEXVRAM.free += NF_TEX256VRAM[id].size;
 
-	// Actualiza la cantidad de VRAM disponible
-	NF_TEXVRAM.free += NF_TEX256VRAM[id].size;
+    // Save the position and size of the deleted block to be reused
+    NF_TEXVRAM.pos[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].address;
+    NF_TEXVRAM.size[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].size;
 
-	// Guarda la posicion y tamaño del bloque borrado para su reutilizacion
-	NF_TEXVRAM.pos[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].address;
-	NF_TEXVRAM.size[NF_TEXVRAM.deleted] = NF_TEX256VRAM[id].size;
+    NF_TEXVRAM.deleted++;
 
-	// Incrementa en contador de bloques borrados
-	NF_TEXVRAM.deleted ++;
+    // Increment fragmented memory counter
+    NF_TEXVRAM.fragmented += NF_TEX256VRAM[id].size;
 
-	// Incrementa el contador de memoria fragmentada
-	NF_TEXVRAM.fragmented += NF_TEX256VRAM[id].size;
+    // Reset graphics information
+    NF_TEX256VRAM[id].size = 0;
+    NF_TEX256VRAM[id].width = 0;
+    NF_TEX256VRAM[id].height = 0;
+    NF_TEX256VRAM[id].address = 0;
+    NF_TEX256VRAM[id].framesize = 0;
+    NF_TEX256VRAM[id].lastframe = 0;
+    NF_TEX256VRAM[id].inuse = false; // Mark as unused
 
-	// Reinicia los datos de esta Id. de gfx
-	NF_TEX256VRAM[id].size = 0;			// Tamaño en bytes
-	NF_TEX256VRAM[id].width = 0;		// Alto (px)
-	NF_TEX256VRAM[id].height = 0;		// Ancho (px)
-	NF_TEX256VRAM[id].address = 0;		// Puntero en VRAM
-	NF_TEX256VRAM[id].framesize = 0;	// Tamaño del frame (en bytes)
-	NF_TEX256VRAM[id].lastframe = 0;	// Ultimo frame
-	NF_TEX256VRAM[id].inuse = false;
+    // Check if VRAM is too fragmented and it has to be defragmented
+    if (NF_TEXVRAM.fragmented >= (NF_TEXVRAM.inarow / 2))
+        NF_Vram3dSpriteGfxDefrag();
 
-	// Debes desfragmentar la VRAM
-	if (NF_TEXVRAM.fragmented >= (NF_TEXVRAM.inarow >> 1)) NF_Vram3dSpriteGfxDefrag();
-
-	// Restaura el banco de VRAM en modo Textura
-	vramSetBankB(VRAM_B_TEXTURE_SLOT1);			// Banco B de la VRAM para Texturas (128kb)
-
+    // Setup VRAM_B as texture memory
+    vramSetBankB(VRAM_B_TEXTURE_SLOT1);
 }
 
-void NF_Vram3dSpriteGfxDefrag(void) {
+void NF_Vram3dSpriteGfxDefrag(void)
+{
+    // Let the CPU access VRAM_B
+    vramSetBankB(VRAM_B_LCD);
 
-	// Bloquea el banco de VRAM (modo LCD) para permitir la escritura
-	vramSetBankB(VRAM_B_LCD);
+    // Calculate the size of the VRAM in use and create a temporary buffer
+    u32 used_vram = (131072 - NF_TEXVRAM.free) + 1;
+    char *buffer = calloc(used_vram, sizeof(char));
+    if (buffer == NULL)
+        NF_Error(102, NULL, used_vram);
 
-	// Calcula la VRAM en uso y crea un buffer para guardarla
-	u32 used_vram = ((131072 - NF_TEXVRAM.free) + 1);
-	char* buffer;
-	buffer = (char*) calloc (used_vram, sizeof(char));
-	if (buffer == NULL) {		// Si no hay suficiente RAM libre
-		NF_Error(102, NULL, used_vram);
-	}
+    char *address[NF_3DSPRITES]; // Array of texture addresses in VRAM
+    u32 size[NF_3DSPRITES];      // Array of texture sizes
 
-	char* address[NF_3DSPRITES];	// Guarda la direccion en RAM
-	u32 size[NF_3DSPRITES];			// Guarda el tamaño
-	u32 ram = 0;					// Puntero inicial de RAM
-	u16 n = 0;						// Variable General
-	u16 x_size = 0;					// Formato de la textura
-	u16 y_size = 0;
-	u32 gfx_address = 0;
+    // Copy textures in use from VRAM to the temporary buffer
+    u32 ram = 0; // Initial VRAM address
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        if (NF_TEX256VRAM[n].inuse)
+        {
+            address[n] = buffer + ram;
+            size[n] = NF_TEX256VRAM[n].size;
+            NF_DmaMemCopy(address[n], (void *)NF_TEX256VRAM[n].address, size[n]);
+            ram += size[n]; // Next position in RAM (relative)
+        }
+    }
 
-	// Copia los datos de la VRAM a la RAM
-	for (n = 0; n < NF_3DSPRITES; n ++) {
-		// Si esta en uso
-		if (NF_TEX256VRAM[n].inuse) {
-			// Copia el Gfx a la RAM
-			address[n] = (buffer + ram);		// Calcula el puntero
-			size[n] = NF_TEX256VRAM[n].size;		// Almacena el tamaño
-			NF_DmaMemCopy(address[n], (void*)NF_TEX256VRAM[n].address, size[n]);	// Copialo a la VRAM
-			ram += size[n];		// Siguiente posicion en RAM (relativa)
-		}
-	}
+    // Initialize the VRAM information struct
+    NF_TEXVRAM.free = 131072;       // Available VRAM (128 KB)
+    NF_TEXVRAM.last = 0;            // Last used position
+    NF_TEXVRAM.deleted = 0;         // No graphics deleted
+    NF_TEXVRAM.fragmented = 0;      // Fragmented VRAM
+    NF_TEXVRAM.inarow = 131072;     // Contiguous VRAM
 
-	// Inicializa la estructura de datos de la VRAM de Sprites
-	NF_TEXVRAM.free = 131072;		// Memoria VRAM libre (128kb)
-	NF_TEXVRAM.last = 0;			// Ultima posicion usada
-	NF_TEXVRAM.deleted = 0;			// Ningun Gfx borrado
-	NF_TEXVRAM.fragmented = 0;		// Memoria VRAM fragmentada
-	NF_TEXVRAM.inarow = 131072;		// Memoria VRAM contigua
-	for (n = 0; n < NF_3DSPRITES; n ++) {
-		NF_TEXVRAM.pos[n] = 0;		// Posicion en VRAM para reusar despues de un borrado
-		NF_TEXVRAM.size[n] = 0;		// Tamaño del bloque libre para reusar
-	}
-	// Aplica la direccion de inicio de la VRAM
-	NF_TEXVRAM.next = (0x06820000);
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        NF_TEXVRAM.pos[n] = 0;
+        NF_TEXVRAM.size[n] = 0;
+    }
 
-	// Ahora, copia de nuevo los datos a la VRAM, pero alineados
-	for (n = 0; n < NF_3DSPRITES; n ++) {
-		// Si esta en uso
-		if (NF_TEX256VRAM[n].inuse) {
-			NF_DmaMemCopy((void*)NF_TEXVRAM.next, address[n], size[n]);		// Vuelve a colocar la el Gfx en VRAM
-			NF_TEX256VRAM[n].address = NF_TEXVRAM.next;		// Guarda la nueva posicion en VRAM
-			NF_TEXVRAM.free -= size[n];		// Ram libre
-			NF_TEXVRAM.inarow -= size[n];	// Ram libre en bloque
-			NF_TEXVRAM.last = NF_TEXVRAM.next;	// Guarda la posicion como ultima usada
-			NF_TEXVRAM.next += size[n];		// Y calcula la siguiente posicion a escribir
-		}
-	}
+    NF_TEXVRAM.next = 0x06820000; // Next VRAM address to be used for allocations
 
-	// Realinea los Sprites con sus graficos
-	for (n = 0; n < NF_3DSPRITES; n ++) {
-		if (NF_3DSPRITE[n].inuse) {
-			// Asigna la nueva direccion de memoria
-			NF_3DSPRITE[n].gfx = NF_TEX256VRAM[NF_3DSPRITE[n].gfxid].address;
-			if (NF_TEX256VRAM[NF_3DSPRITE[n].gfxid].keepframes) {
-				gfx_address = NF_3DSPRITE[n].gfx;
-			} else {
-				gfx_address = (NF_3DSPRITE[n].gfx + (NF_3DSPRITE[n].framesize * NF_3DSPRITE[n].frame));
-			}
-			// Recalcula el formato de la textura
-			x_size = NF_GetTextureSize(NF_3DSPRITE[n].width);
-			y_size = NF_GetTextureSize(NF_3DSPRITE[n].height);
-			NF_3DSPRITE[n].gfx_tex_format = (((gfx_address >> 3) & 0xFFFF) | (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) | GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF);
-		}
-	}
+    // Copy textures to VRAM, but packed
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        if (NF_TEX256VRAM[n].inuse)
+        {
+            NF_DmaMemCopy((void *)NF_TEXVRAM.next, address[n], size[n]);
+            NF_TEX256VRAM[n].address = NF_TEXVRAM.next; // Next available VRAM address
+            NF_TEXVRAM.free -= size[n];
+            NF_TEXVRAM.inarow -= size[n];
+            NF_TEXVRAM.last = NF_TEXVRAM.next; // Save this address as the last one used
+            NF_TEXVRAM.next += size[n];        // Calculate the next address to use
+        }
+    }
 
-	// Vacia el buffer
-	free(buffer);
-	buffer = NULL;
+    // Reassign graphics to their sprites
+    for (int n = 0; n < NF_3DSPRITES; n++)
+    {
+        if (NF_3DSPRITE[n].inuse)
+        {
+            u32 gfx_address;
 
-	// Restaura el banco de VRAM en modo Textura
-	vramSetBankB(VRAM_B_TEXTURE_SLOT1);			// Banco B de la VRAM para Texturas (128kb)
+            NF_3DSPRITE[n].gfx = NF_TEX256VRAM[NF_3DSPRITE[n].gfxid].address;
+            if (NF_TEX256VRAM[NF_3DSPRITE[n].gfxid].keepframes)
+            {
+                gfx_address = NF_3DSPRITE[n].gfx;
+            }
+            else
+            {
+                gfx_address = NF_3DSPRITE[n].gfx +
+                              (NF_3DSPRITE[n].framesize * NF_3DSPRITE[n].frame);
+            }
 
+            // Build GPU texture command
+            u32 x_size = NF_GetTextureSize(NF_3DSPRITE[n].width);
+            u32 y_size = NF_GetTextureSize(NF_3DSPRITE[n].height);
+            NF_3DSPRITE[n].gfx_tex_format = ((gfx_address >> 3) & 0xFFFF) |
+                    (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) |
+                    GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF;
+        }
+    }
+
+    // Free the temporary buffer
+    free(buffer);
+
+    // Setup VRAM_B as texture memory
+    vramSetBankB(VRAM_B_TEXTURE_SLOT1);
 }
 
-void NF_Vram3dSpritePal(u8 id, u8 slot) {
+void NF_Vram3dSpritePal(u32 id, u32 slot)
+{
+    if (id >= NF_SLOTS_SPR256PAL)
+        NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
 
-	// Verifica el rango de Id's
-	if (id >= NF_SLOTS_SPR256PAL) {
-		NF_Error(106, "Sprite PAL", NF_SLOTS_SPR256PAL);
-	}
+    if (NF_SPR256PAL[id].available)
+        NF_Error(110, "Sprite PAL", id);
 
-	// Verifica si la Id esta libre
-	if (NF_SPR256PAL[id].available) {
-		NF_Error(110, "Sprite PAL", id);
-	}
+    if (slot > 31)
+        NF_Error(106, "Sprite Palette Slot", 31);
 
-	// Verifica si te has salido de rango (Paleta)
-	if (slot > 31) {
-		NF_Error(106, "Sprite Palette Slot", 31);
-	}
+    // Copy palette to VRAM to the right slot
+    u32 address = 0x06890000 + (slot << 9);
+    vramSetBankF(VRAM_F_LCD); // Let the CPU access VRAM_F
+    NF_DmaMemCopy((void *)address, NF_BUFFER_SPR256PAL[id], NF_SPR256PAL[id].size);
+    vramSetBankF(VRAM_F_TEX_PALETTE); // Setup VRAM_F for texture palettes
 
-	// Copia la paleta a la VRAM, segun el Slot
-	u32 address = (0x06890000) + (slot << 9);			// Calcula donde guardaras la paleta
-	vramSetBankF(VRAM_F_LCD);			// Bloquea el banco F para escribir las paletas
-	NF_DmaMemCopy((void*)address, NF_BUFFER_SPR256PAL[id], NF_SPR256PAL[id].size);	// Copia la paleta al banco F
-	vramSetBankF(VRAM_F_TEX_PALETTE);	// Banco F de la VRAM para paletas extendidas (Texturas)
-
-	// Guarda los parametros
-	NF_TEXPALSLOT[slot].inuse = true;			// Marca el SLOT de paleta como en uso
-	NF_TEXPALSLOT[slot].ramslot = id;			// Guarda el slot de RAM donde esta la paleta original
-
+    // Save parameters and mark as used
+    NF_TEXPALSLOT[slot].inuse = true;
+    NF_TEXPALSLOT[slot].ramslot = id;
 }
 
-void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y) {
+void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
+{
+    if (id > (NF_3DSPRITES - 1))
+        NF_Error(106, "3D sprite", (NF_3DSPRITES - 1));
 
-	// Verifica el rango de Id's de Sprites
-	if (id > (NF_3DSPRITES - 1)) {
-		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
-	}
+    if (gfx > (NF_3DSPRITES - 1))
+        NF_Error(106, "3D sprite gfx", (NF_3DSPRITES - 1));
 
-	// Verifica el rango de Id's de Gfx
-	if (gfx > (NF_3DSPRITES - 1)) {
-		NF_Error(106, "3D Sprite GFX", (NF_3DSPRITES - 1));
-	}
+    if (!NF_TEX256VRAM[gfx].inuse)
+        NF_Error(111, "3D Sprite GFX", gfx);
 
-	// Verifica si esta el Gfx en VRAM
-	if (!NF_TEX256VRAM[gfx].inuse) {
-		NF_Error(111, "3D Sprite GFX", gfx);
-	}
+    if (pal > 31)
+        NF_Error(106, "3D Sprite Palette Slot", 31);
 
-	// Verifica el rango de slots de paletas
-	if (pal > 31) {
-		NF_Error(106, "3D Sprite Palette Slot", 31);
-	}
+    if (!NF_TEXPALSLOT[pal].inuse)
+        NF_Error(111, "3D Sprite PAL", pal);
 
-	// Verifica si esta la paleta en VRAM
-	if (!NF_TEXPALSLOT[pal].inuse) {
-		NF_Error(111, "3D Sprite PAL", pal);
-	}
+    // Calculate palette address and save it in the sprite struct
+    u32 pal_address = pal * 256 * 2;
+    NF_3DSPRITE[id].pal = pal_address; // Offset to the address from the base of VRAM_F
+    NF_3DSPRITE[id].palid = pal;       // Number of palette
+    // GPU palette comand format
+    NF_3DSPRITE[id].gfx_pal_format = (pal_address >> 4) & 0x1FFF;
 
-	// Calcula la direccion de la paleta y almacenala en la estructura del sprite
-	u32 pal_address = (pal << 9);
-	NF_3DSPRITE[id].pal = pal_address;	// Direccion en VRAM de la paleta usada (relativa a VRAM_F)
-	NF_3DSPRITE[id].palid = pal;		// Numero de paleta usada
-	NF_3DSPRITE[id].gfx_pal_format = (pal_address >> 4) & 0x1FFF;	// Formato de la paleta
+    // Calculate texture address and save it in the sprite struct
+    u32 gfx_address = NF_TEX256VRAM[gfx].address;
+    NF_3DSPRITE[id].gfx = gfx_address; // Offset to the address from the base of VRAM_B
+    NF_3DSPRITE[id].gfxid = gfx;       // Number of the graphics used
+    u16 x_size = NF_GetTextureSize(NF_TEX256VRAM[gfx].width);
+    u16 y_size = NF_GetTextureSize(NF_TEX256VRAM[gfx].height);
+    // GPU texture command format
+    NF_3DSPRITE[id].gfx_tex_format = ((gfx_address >> 3) & 0xFFFF) |
+            (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) |
+            GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF;
 
-	// Calcula la direccion de la textura y almacenala en la estructura del sprite
-	u32 gfx_address = NF_TEX256VRAM[gfx].address;
-	NF_3DSPRITE[id].gfx = gfx_address;		// Direccion en VRAM del GFX usado
-	NF_3DSPRITE[id].gfxid = gfx;			// Numero de Gfx usado
-	u16 x_size = NF_GetTextureSize(NF_TEX256VRAM[gfx].width);
-	u16 y_size = NF_GetTextureSize(NF_TEX256VRAM[gfx].height);
-	NF_3DSPRITE[id].gfx_tex_format = (((gfx_address >> 3) & 0xFFFF) | (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) | GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF);
+    // Save sprite parameters
+    NF_3DSPRITE[id].x = x;
+    NF_3DSPRITE[id].y = y;
+    NF_3DSPRITE[id].z = 0;
+    NF_3DSPRITE[id].width = NF_TEX256VRAM[gfx].width;
+    NF_3DSPRITE[id].height = NF_TEX256VRAM[gfx].height;
+    NF_3DSPRITE[id].framesize = NF_TEX256VRAM[gfx].framesize;
+    NF_3DSPRITE[id].lastframe = NF_TEX256VRAM[gfx].lastframe;
+    NF_3DSPRITE[id].inuse = true;
+    NF_3DSPRITE[id].show = true;
+    NF_3DSPRITE[id].prio = NF_CREATED_3DSPRITE.total;
+    NF_3DSPRITE[id].poly_id = 0;
+    NF_3DSPRITE[id].alpha = 31;
 
-	// Guarda los demas parametros del sprite
-	NF_3DSPRITE[id].x = x;
-	NF_3DSPRITE[id].y = y;
-	NF_3DSPRITE[id].z = 0;
-	NF_3DSPRITE[id].width = NF_TEX256VRAM[gfx].width;
-	NF_3DSPRITE[id].height = NF_TEX256VRAM[gfx].height;
-	NF_3DSPRITE[id].framesize = NF_TEX256VRAM[gfx].framesize;
-	NF_3DSPRITE[id].lastframe = NF_TEX256VRAM[gfx].lastframe;
-	NF_3DSPRITE[id].inuse = true;
-	NF_3DSPRITE[id].show = true;
-	NF_3DSPRITE[id].prio = NF_CREATED_3DSPRITE.total;
-	NF_3DSPRITE[id].poly_id = 0;
-	NF_3DSPRITE[id].alpha = 31;
-
-	// Ahora registra su creacion
-	NF_CREATED_3DSPRITE.id[NF_CREATED_3DSPRITE.total] = id;
-	NF_CREATED_3DSPRITE.total ++;
-
+    // Register it as created
+    NF_CREATED_3DSPRITE.id[NF_CREATED_3DSPRITE.total] = id;
+    NF_CREATED_3DSPRITE.total++;
 }
 
-void NF_Delete3dSprite(u16 id) {
+void NF_Delete3dSprite(u32 id)
+{
+    if (id > (NF_3DSPRITES - 1))
+        NF_Error(106, "3D sprite", NF_3DSPRITES - 1);
 
-	// Verifica el rango de Id's de Sprites
-	if (id > (NF_3DSPRITES - 1)) {
-		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
-	}
+    if (!NF_3DSPRITE[id].inuse)
+        NF_Error(112, "3D sprite", id);
 
-	// Verifica si el Sprite esta creado
-	if (!NF_3DSPRITE[id].inuse) {
-		NF_Error(112, "3D", id);
-	}
+    // Reset sprite parameter
+    NF_3DSPRITE[id].x = 0;
+    NF_3DSPRITE[id].y = 0;
+    NF_3DSPRITE[id].z = 0;
+    NF_3DSPRITE[id].rx = 0;
+    NF_3DSPRITE[id].ry = 0;
+    NF_3DSPRITE[id].rz = 0;
+    NF_3DSPRITE[id].rot = false;
+    NF_3DSPRITE[id].sx = 64 << 6;
+    NF_3DSPRITE[id].sy = 64 << 6;
+    NF_3DSPRITE[id].scale = false;
+    NF_3DSPRITE[id].width = 0;
+    NF_3DSPRITE[id].height = 0;
+    NF_3DSPRITE[id].inuse = false;
+    NF_3DSPRITE[id].show = false;
+    NF_3DSPRITE[id].gfx_tex_format = 0;
+    NF_3DSPRITE[id].gfx = 0;
+    NF_3DSPRITE[id].gfxid = 0;
+    NF_3DSPRITE[id].frame = 0;
+    NF_3DSPRITE[id].newframe = 0;
+    NF_3DSPRITE[id].framesize = 0;
+    NF_3DSPRITE[id].lastframe = 0;
+    NF_3DSPRITE[id].gfx_pal_format = 0;
+    NF_3DSPRITE[id].pal = 0;
+    NF_3DSPRITE[id].palid = 0;
+    NF_3DSPRITE[id].prio = 0;
+    NF_3DSPRITE[id].poly_id = 0;
+    NF_3DSPRITE[id].alpha = 31;
 
-	// Resetea los parametros del Sprite dado
-	NF_3DSPRITE[id].x = 0;				// Coordenada X
-	NF_3DSPRITE[id].y = 0;				// Coordenada Y
-	NF_3DSPRITE[id].z = 0;				// Coordenada Z
-	NF_3DSPRITE[id].rx = 0;				// Rotacion Eje X
-	NF_3DSPRITE[id].ry = 0;				// Rotacion Eje Y
-	NF_3DSPRITE[id].rz = 0;				// Rotacion Eje Z
-	NF_3DSPRITE[id].rot = false;		// Rotacion en uso
-	NF_3DSPRITE[id].sx = (64 << 6);		// Escala X
-	NF_3DSPRITE[id].sy = (64 << 6);		// Escala X
-	NF_3DSPRITE[id].scale = false;		// Escalado en uso
-	NF_3DSPRITE[id].width = 0;			// Ancho del sprite
-	NF_3DSPRITE[id].height = 0;			// Altura del sprite
-	NF_3DSPRITE[id].inuse = false;		// Esta este sprite en uso?
-	NF_3DSPRITE[id].show = false;		// Debe mostrarse?
-	NF_3DSPRITE[id].gfx_tex_format = 0;	// Guarda el formato de la textura
-	NF_3DSPRITE[id].gfx = 0;			// Direccion en VRAM del GFX usado
-	NF_3DSPRITE[id].gfxid = 0;			// Numero de Gfx usado
-	NF_3DSPRITE[id].frame = 0;			// Frame actual
-	NF_3DSPRITE[id].newframe = 0;		// Frame al que cambiar
-	NF_3DSPRITE[id].framesize = 0;		// Tamaño del frame (en bytes)
-	NF_3DSPRITE[id].lastframe = 0;		// Ultimo frame
-	NF_3DSPRITE[id].gfx_pal_format = 0;	// Guarda el formato de la paleta
-	NF_3DSPRITE[id].pal = 0;			// Direccion en VRAM de la paleta usada
-	NF_3DSPRITE[id].palid = 0;			// Numero de paleta usada
-	NF_3DSPRITE[id].prio = 0;			// Prioridad del Sprtie
-	NF_3DSPRITE[id].poly_id = 0;		// Identificador unico para el Alpha (0 por defecto, 63 prohibido)
-	NF_3DSPRITE[id].alpha = 31;			// Nivel de alpha (0 - 31) (31 por defecto)
+    // Remove the selected sprite from the queue
 
-	// Ahora vamos a eliminar de la cola es sprite seleccionado
-	u16 n1 = 0;
-	u16 n2 = 0;
-	// Si hay mas de 1 Sprite creado...
-	if (NF_CREATED_3DSPRITE.total > 1) {
-		for (n1 = 0; n1 < NF_CREATED_3DSPRITE.total; n1 ++) {
-			// Si el Sprite no es el seleccionado, copialo al array temporal
-			if (NF_CREATED_3DSPRITE.id[n1] != id) {
-				NF_CREATED_3DSPRITE.bck[n2] = NF_CREATED_3DSPRITE.id[n1];
-				n2 ++;
-			}
-		}
-		// Marca que hay un sprite menos
-		NF_CREATED_3DSPRITE.total --;
+    if (NF_CREATED_3DSPRITE.total > 1)
+    {
+        // If there are more than one sprite
+        int n2 = 0;
+        for (int n1 = 0; n1 < NF_CREATED_3DSPRITE.total; n1++)
+        {
+            // If this is any other sprite than the selected one, copy it to the
+            // temporary array
+            if (NF_CREATED_3DSPRITE.id[n1] != id)
+            {
+                NF_CREATED_3DSPRITE.bck[n2] = NF_CREATED_3DSPRITE.id[n1];
+                n2++;
+            }
+        }
 
-		// Ahora, copia el array modificado al principal
-		for (n1 = 0; n1 < NF_CREATED_3DSPRITE.total; n1 ++) {
-			NF_CREATED_3DSPRITE.id[n1] = NF_CREATED_3DSPRITE.bck[n1];
-		}
-	} else {
-		// Si era el ultimo Sprite de la cola...
-		NF_CREATED_3DSPRITE.id[0] = 0;
-		NF_CREATED_3DSPRITE.total = 0;
-	}
+        NF_CREATED_3DSPRITE.total--;
 
+        // Copy the temporary array to the active array
+        for (int n1 = 0; n1 < NF_CREATED_3DSPRITE.total; n1++)
+            NF_CREATED_3DSPRITE.id[n1] = NF_CREATED_3DSPRITE.bck[n1];
+    }
+    else
+    {
+        // If this is the last sprite
+        NF_CREATED_3DSPRITE.id[0] = 0;
+        NF_CREATED_3DSPRITE.total = 0;
+    }
 }
 
-void NF_Sort3dSprites(void) {
+void NF_Sort3dSprites(void)
+{
+    // Return if the number of sprites isn't big enough
+    if (NF_CREATED_3DSPRITE.total < 2)
+        return;
 
-	// Variables
-	u16 n1 = 0;
-	u16 n2 = 0;
-	u16 id1 = 0;
-	u16 id2 = 0;
+    // Sort queue
+    for (int n1 = 0; n1 < (NF_CREATED_3DSPRITE.total - 1); n1++)
+    {
+        for (int n2 = n1 + 1; n2 < NF_CREATED_3DSPRITE.total; n2++)
+        {
+            if (NF_CREATED_3DSPRITE.id[n2] < NF_CREATED_3DSPRITE.id[n1])
+            {
+                // Swap IDs
+                u32 id2 = NF_CREATED_3DSPRITE.id[n2];
+                u32 id1 = NF_CREATED_3DSPRITE.id[n1];
 
-	// Si hay mas de 1 item...
-	if (NF_CREATED_3DSPRITE.total > 1) {
+                NF_CREATED_3DSPRITE.id[n1] = id2;
+                NF_CREATED_3DSPRITE.id[n2] = id1;
 
-		// Ordena la cola de sprites creados
-		for (n1 = 0; n1 < (NF_CREATED_3DSPRITE.total - 1); n1 ++) {
-			for (n2 = (n1 + 1); n2 < NF_CREATED_3DSPRITE.total; n2 ++) {
-				// Si es menor, reordenalo
-				if (NF_CREATED_3DSPRITE.id[n2] < NF_CREATED_3DSPRITE.id[n1]) {
-					id2 = NF_CREATED_3DSPRITE.id[n2];
-					id1 = NF_CREATED_3DSPRITE.id[n1];
-					// Guarda las IDs de ordenadas en la cola
-					NF_CREATED_3DSPRITE.id[n1] = id2;
-					NF_CREATED_3DSPRITE.id[n2] = id1;
-					// Actualiza la informacion de prioridades del sprite
-					NF_3DSPRITE[id2].prio = n1;
-					NF_3DSPRITE[id1].prio = n2;
-				}
-			}
-		}
-
-	}
-
+                // Update priorities
+                NF_3DSPRITE[id2].prio = n1;
+                NF_3DSPRITE[id1].prio = n2;
+            }
+        }
+    }
 }
 
-void NF_Set3dSpritePriority(u16 id, u16 prio) {
+void NF_Set3dSpritePriority(u32 id, u32 prio)
+{
+    // Create a backup of the queue
+    for (int n = 0; n < NF_CREATED_3DSPRITE.total; n++)
+        NF_CREATED_3DSPRITE.bck[n] = NF_CREATED_3DSPRITE.id[n];
 
-	// Variables
-	u16 n = 0;
-	u16 a = 0;
-	u16 b = 0;
+    NF_CREATED_3DSPRITE.id[prio] = id;
+    NF_3DSPRITE[id].prio = prio;
 
-	// Realiza una copia de seguridad de la cola
-	for (n = 0; n < NF_CREATED_3DSPRITE.total; n ++) {
-		NF_CREATED_3DSPRITE.bck[n] = NF_CREATED_3DSPRITE.id[n];
-	}
+    // Add sprite to the right position in the queue based on the priority
+    u32 a = 0;
+    u32 b = 0;
 
-	// Coloca el Sprite en la prioridad indicada
-	NF_CREATED_3DSPRITE.id[prio] = id;
-	NF_3DSPRITE[id].prio = prio;
-	for (n = 0; n < NF_CREATED_3DSPRITE.total; n ++) {
-		// Si no coinciden ni Id ni prioridad...
-		if ((a != prio) && (NF_CREATED_3DSPRITE.bck[b] != id)) {
-			NF_CREATED_3DSPRITE.id[a] = NF_CREATED_3DSPRITE.bck[b];
-			NF_3DSPRITE[NF_CREATED_3DSPRITE.id[a]].prio = a;
-			a ++;
-			b ++;
-		} else {
-			// Si coincide la prioridad, saltatela
-			if (a == prio) {
-				a ++;
-			}
-			// Si coincide la ID, saltatela
-			if (NF_CREATED_3DSPRITE.bck[b] == id) {
-				b ++;
-			}
-		}
-	}
+    for (int n = 0; n < NF_CREATED_3DSPRITE.total; n++)
+    {
+        if ((a != prio) && (NF_CREATED_3DSPRITE.bck[b] != id))
+        {
+            NF_CREATED_3DSPRITE.id[a] = NF_CREATED_3DSPRITE.bck[b];
+            NF_3DSPRITE[NF_CREATED_3DSPRITE.id[a]].prio = a;
+            a++;
+            b++;
+        }
+        else
+        {
+            // Skip entries with the same priority
+            if (a == prio)
+                a++;
 
+            // If the ID matches, skip it
+            if (NF_CREATED_3DSPRITE.bck[b] == id)
+                b++;
+        }
+    }
 }
 
-void NF_Swap3dSpritePriority(u16 id_a, u16 id_b) {
+void NF_Swap3dSpritePriority(u32 id_a, u32 id_b)
+{
+    // Swap priorities
+    u32 prio_a = NF_3DSPRITE[id_b].prio;
+    u32 prio_b = NF_3DSPRITE[id_a].prio;
 
-	// Variables, obten las prioridades a cambiar
-	u16 prio_a = NF_3DSPRITE[id_b].prio;
-	u16 prio_b = NF_3DSPRITE[id_a].prio;
+    NF_3DSPRITE[id_a].prio = prio_a;
+    NF_3DSPRITE[id_b].prio = prio_b;
 
-	// Asignalas en su nuevo orden
-	NF_3DSPRITE[id_a].prio = prio_a;
-	NF_3DSPRITE[id_b].prio = prio_b;
-
-	// Y por ultimo, modifica la cola de sprites
-	NF_CREATED_3DSPRITE.id[prio_a] = id_a;
-	NF_CREATED_3DSPRITE.id[prio_b] = id_b;
-
+    // Modify the sprite queue
+    NF_CREATED_3DSPRITE.id[prio_a] = id_a;
+    NF_CREATED_3DSPRITE.id[prio_b] = id_b;
 }
 
-void NF_Set3dSpriteFrame(u16 id, u16 frame) {
+void NF_Set3dSpriteFrame(u32 id, u32 frame)
+{
+    if (id > (NF_3DSPRITES - 1))
+        NF_Error(106, "3D sprite", NF_3DSPRITES - 1);
 
-	// Verifica el rango de Id's de Sprites
-	if (id > (NF_3DSPRITES - 1)) {
-		NF_Error(106, "3D Sprite", (NF_3DSPRITES - 1));
-	}
+    if (!NF_3DSPRITE[id].inuse)
+        NF_Error(112, "3D sprite", id);
 
-	// Verifica si el Sprite esta creado
-	if (!NF_3DSPRITE[id].inuse) {
-		NF_Error(112, "3D", id);
-	}
+    if (frame > NF_3DSPRITE[id].lastframe)
+        NF_Error(106, "Sprite frame", NF_3DSPRITE[id].lastframe);
 
-	// Verifica el rango de frames del Sprite
-	if (frame > NF_3DSPRITE[id].lastframe) {
-		NF_Error(106, "Sprite frame", NF_3DSPRITE[id].lastframe);
-	}
+    if (NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].keepframes)
+    {
+        // If the sprite frames are kept in RAM, mark the new frame as the
+        // desired frame so that it is copied to VRAM during the update of all
+        // 3D sprites.
+        NF_3DSPRITE[id].newframe = frame;
+    }
+    else
+    {
+        // If all frames are already in VRAM update the information in the
+        // sprite structure.
 
-	// Si debes de copiar el nuevo frame desde la RAM a la VRAM...
-	if (NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].keepframes) {
-
-		// Marca para que se copie la nueva textura a la VRAM durante la actualizacion de los Sprites 3D
-		NF_3DSPRITE[id].newframe = frame;
-
-	} else {	// Si todos los frames ya estan en VRAM...
-
-		// Calcula la direccion del Gfx del frame
-		u32 gfx_address = (NF_3DSPRITE[id].gfx + (NF_3DSPRITE[id].framesize * frame));
-		u16 x_size = NF_GetTextureSize(NF_3DSPRITE[id].width);
-		u16 y_size = NF_GetTextureSize(NF_3DSPRITE[id].height);
-		NF_3DSPRITE[id].gfx_tex_format = (((gfx_address >> 3) & 0xFFFF) | (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) | GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF);
-		// Guarda el numero de frame actual
-		NF_3DSPRITE[id].frame = frame;
-		NF_3DSPRITE[id].newframe = frame;
-
-	}
-
+        u32 gfx_address = NF_3DSPRITE[id].gfx + (NF_3DSPRITE[id].framesize * frame);
+        u16 x_size = NF_GetTextureSize(NF_3DSPRITE[id].width);
+        u16 y_size = NF_GetTextureSize(NF_3DSPRITE[id].height);
+        NF_3DSPRITE[id].gfx_tex_format = ((gfx_address >> 3) & 0xFFFF) |
+                    (x_size << 20) | (y_size << 23) | (GL_RGB256 << 26) |
+                    GL_TEXTURE_COLOR0_TRANSPARENT | TEXGEN_OFF;
+        NF_3DSPRITE[id].frame = frame;
+        NF_3DSPRITE[id].newframe = frame;
+    }
 }
 
-void NF_Draw3dSprites(void) {
+void NF_Draw3dSprites(void)
+{
+    // If there are no 3D sprites, return
+    if (NF_CREATED_3DSPRITE.total == 0)
+        return;
 
-	// Variables
-	u16 n = 0;		// Uso general
-	s16 x1 = 0;		// Vertices
-	s16 x2 = 0;
-	s16 y1 = 0;
-	s16 y2 = 0;
-	s16 x = 0;
-	s16 y = 0;
-	s16 z = 0;
-	u16 id = 0;
+    for (int n = 0; n < NF_CREATED_3DSPRITE.total; n++)
+    {
+        u32 id = NF_CREATED_3DSPRITE.id[n];
 
-	// Si hay Sprites 3D que dibujar...
-	if (NF_CREATED_3DSPRITE.total > 0) {
-		// Dibuja todos los sprites creados
-		for (n = 0; n < NF_CREATED_3DSPRITE.total; n ++) {
-			// Obten la ID del sprite actual
-			id = NF_CREATED_3DSPRITE.id[n];
-			// Si el sprite es visible...
-			if (NF_3DSPRITE[id].show) {
-				// Calcula la Z actual
-				z = (n + NF_3DSPRITE[id].z);
-				// Aplicale el alpha indicado
-				glPolyFmt(POLY_ALPHA(NF_3DSPRITE[id].alpha) | POLY_ID(NF_3DSPRITE[id].poly_id) | POLY_CULL_NONE);
-				// Hay que aplicarle rotacion o escalado?
-				if (NF_3DSPRITE[id].rot || NF_3DSPRITE[id].scale) {
-					// Guarda la matriz
-					glPushMatrix();
-					// Trasladate al centro del Sprite
-					x = (NF_3DSPRITE[id].x + (NF_3DSPRITE[id].width >> 1));
-					y = (NF_3DSPRITE[id].y + (NF_3DSPRITE[id].height >> 1));
-					glTranslatef32(x, y, z);
-					// Aplica la rotacion
-					if (NF_3DSPRITE[id].rot) {
-						glRotateXi(NF_3DSPRITE[id].rx);
-						glRotateYi(NF_3DSPRITE[id].ry);
-						glRotateZi(NF_3DSPRITE[id].rz);
-					}
-					// Aplica el escalado
-					if (NF_3DSPRITE[id].scale) {
-						glScalef32(NF_3DSPRITE[id].sx, NF_3DSPRITE[id].sy, 0);
-					}
-					// Vuelve a la posicion original
-					glTranslatef32(-x, -y, -z);
-				}
-				// Aplica la textura
-				GFX_PAL_FORMAT = NF_3DSPRITE[id].gfx_pal_format;
-				GFX_TEX_FORMAT = NF_3DSPRITE[id].gfx_tex_format;
-				// Calcula los vertices
-				x1 = NF_3DSPRITE[id].x;
-				x2 = (NF_3DSPRITE[id].x + NF_3DSPRITE[id].width);
-				y1 = NF_3DSPRITE[id].y;
-				y2 = (NF_3DSPRITE[id].y + NF_3DSPRITE[id].height);
-				// Dibuja el poligono en la pantalla
-				glBegin(GL_QUAD);
-					// Vertice 1 (arriba, izquierda)
-					glTexCoord2t16(inttot16(0), inttot16(0));
-					glVertex3v16(x1, y1, z);
-					// Vertice 2 (abajo, izquierda)
-					glTexCoord2t16(inttot16(0), inttot16(NF_3DSPRITE[id].height));
-					glVertex3v16(x1, y2, z);
-					// Vertice 3 (abajo, derecha)
-					glTexCoord2t16(inttot16(NF_3DSPRITE[id].width), inttot16(NF_3DSPRITE[id].height));
-					glVertex3v16(x2, y2, z);
-					// Vertice 4 (arriba, derecha)
-					glTexCoord2t16(inttot16(NF_3DSPRITE[id].width), inttot16(0));
-					glVertex3v16(x2, y1, z);
-				// Has aplicado rotacion o escalado?, restaura la matriz
-				if (NF_3DSPRITE[id].rot || NF_3DSPRITE[id].scale) {
-					// Restaura la matriz
-					glPopMatrix(1);
-				}
-			}
-		}
+        if (!NF_3DSPRITE[id].show)
+            continue;
 
-	}
+        // Calculate the current Z
+        u32 z = n + NF_3DSPRITE[id].z;
 
+        // Apply alpha value and disable culling so that the sprite is drawn
+        // regardless of the orientation
+        glPolyFmt(POLY_ALPHA(NF_3DSPRITE[id].alpha) | POLY_ID(NF_3DSPRITE[id].poly_id) |
+                             POLY_CULL_NONE);
+
+        if (NF_3DSPRITE[id].rot || NF_3DSPRITE[id].scale)
+        {
+            glPushMatrix();
+
+            // Translate to the center of the sprite
+            u32 x = NF_3DSPRITE[id].x + (NF_3DSPRITE[id].width / 2);
+            u32 y = NF_3DSPRITE[id].y + (NF_3DSPRITE[id].height / 2);
+
+            glTranslatef32(x, y, z);
+
+            if (NF_3DSPRITE[id].rot)
+            {
+                glRotateXi(NF_3DSPRITE[id].rx);
+                glRotateYi(NF_3DSPRITE[id].ry);
+                glRotateZi(NF_3DSPRITE[id].rz);
+            }
+
+            if (NF_3DSPRITE[id].scale)
+                glScalef32(NF_3DSPRITE[id].sx, NF_3DSPRITE[id].sy, 0);
+
+            // Do the opposite translation to complete the rotation and scale
+            glTranslatef32(-x, -y, -z);
+        }
+
+        // Apply texture and palette
+        GFX_PAL_FORMAT = NF_3DSPRITE[id].gfx_pal_format;
+        GFX_TEX_FORMAT = NF_3DSPRITE[id].gfx_tex_format;
+
+        // Calculate vertices
+        u32 x1 = NF_3DSPRITE[id].x;
+        u32 x2 = NF_3DSPRITE[id].x + NF_3DSPRITE[id].width;
+        u32 y1 = NF_3DSPRITE[id].y;
+        u32 y2 = NF_3DSPRITE[id].y + NF_3DSPRITE[id].height;
+
+        // Draw polygon
+        glBegin(GL_QUAD);
+
+            // Top left
+            glTexCoord2t16(inttot16(0), inttot16(0));
+            glVertex3v16(x1, y1, z);
+
+            // Bottom left
+            glTexCoord2t16(inttot16(0), inttot16(NF_3DSPRITE[id].height));
+            glVertex3v16(x1, y2, z);
+
+            // Bottom right
+            glTexCoord2t16(inttot16(NF_3DSPRITE[id].width),
+                           inttot16(NF_3DSPRITE[id].height));
+            glVertex3v16(x2, y2, z);
+
+            // Top right
+            glTexCoord2t16(inttot16(NF_3DSPRITE[id].width), inttot16(0));
+            glVertex3v16(x2, y1, z);
+
+        glEnd();
+
+        // Restore matrix if we have done a transformation before
+        if (NF_3DSPRITE[id].rot || NF_3DSPRITE[id].scale)
+            glPopMatrix(1);
+    }
 }
 
-void NF_Update3dSpritesGfx(void) {
+void NF_Update3dSpritesGfx(void)
+{
+    // If there is nothing to update, return
+    if (NF_CREATED_3DSPRITE.total == 0)
+        return;
 
-	// Variables
-	u16 n = 0;				// Uso general
-	u16 id = 0;
-	char* source;			// Puntero de origen
-	u32 destination = 0;	// Puntero de destino
-	u16 ramid = 0;			// Slot de RAM donde se encuentra el Gfx
+    // This function copies textures from RAM to VRAM if the animation frame has
+    // changed and all frames haven't been copied to VRAM.
 
-	// Si hay Sprites 3D que actualizar...
-	if (NF_CREATED_3DSPRITE.total > 0) {
+    // Let the CPU access VRAM_B
+    vramSetBankB(VRAM_B_LCD);
 
-		// Si es necesario, actualiza las texturas de la RAM a la VRAM
-		// Bloquea el banco de VRAM (modo LCD) para permitir la escritura
-		vramSetBankB(VRAM_B_LCD);
+    for (int n = 0; n < NF_CREATED_3DSPRITE.total; n++)
+    {
+        u32 id = NF_CREATED_3DSPRITE.id[n];
 
-		// Busca los frames a actualizar
-		for (n = 0; n < NF_CREATED_3DSPRITE.total; n ++) {
-			// Obten la ID del sprite actual
-			id = NF_CREATED_3DSPRITE.id[n];
-			// Si los frames adicionales estan en RAM y debe de cambiar de frame
-			if (
-				NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].keepframes
-				&&
-				(NF_3DSPRITE[id].frame != NF_3DSPRITE[id].newframe)
-				) {
-				// Calcula el origen y destino del nuevo frame a copiar
-				ramid =  NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].ramid;
-				source = NF_BUFFER_SPR256GFX[ramid] + (NF_3DSPRITE[id].framesize * NF_3DSPRITE[id].newframe);
-				destination = NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].address;
-				// Copialo
-				NF_DmaMemCopy((void*)destination, source, NF_3DSPRITE[id].framesize);
-				// Y actualiza el frame actual
-				NF_3DSPRITE[id].frame = NF_3DSPRITE[id].newframe;
-			}
-		}
+        // If frames are only stored in RAM and the frame has to change
+        if (NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].keepframes &&
+            (NF_3DSPRITE[id].frame != NF_3DSPRITE[id].newframe))
+        {
+            u32 ramid = NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].ramid;
+            char *source = NF_BUFFER_SPR256GFX[ramid] +
+                           (NF_3DSPRITE[id].framesize * NF_3DSPRITE[id].newframe);
+            u32 destination = NF_TEX256VRAM[NF_3DSPRITE[id].gfxid].address;
+            NF_DmaMemCopy((void *)destination, source, NF_3DSPRITE[id].framesize);
 
-		// Restaura el banco de VRAM en modo Textura
-		vramSetBankB(VRAM_B_TEXTURE_SLOT1);			// Banco B de la VRAM para Texturas (128kb)
+            // Update the current frame
+            NF_3DSPRITE[id].frame = NF_3DSPRITE[id].newframe;
+        }
+    }
 
-	}
-
+    // Set VRAM_B as a texture bank
+    vramSetBankB(VRAM_B_TEXTURE_SLOT1);
 }
 
-void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z) {
+void NF_Rotate3dSprite(u32 id, s32 x, s32 y, s32 z)
+{
+    NF_3DSPRITE[id].rx = x << 6;
+    NF_3DSPRITE[id].ry = y << 6;
+    NF_3DSPRITE[id].rz = z << 6;
 
-	// Variables locales
-	s16 temp = 0;
-	s16 rx = 0;
-	s16 ry = 0;
-	s16 rz = 0;
-
-	// Calcula la rotacion eje X
-	if (x < 0) {
-		temp = -x;
-		rx = (temp << 6);
-		rx = -rx;
-	} else {
-		rx = (x << 6);
-	}
-	NF_3DSPRITE[id].rx = rx;
-
-	// Calcula la rotacion eje Y
-	if (y < 0) {
-		temp = -y;
-		ry = (temp << 6);
-		ry = -ry;
-	} else {
-		ry = (y << 6);
-	}
-	NF_3DSPRITE[id].ry = ry;
-
-	// Calcula la rotacion eje Z
-	if (z < 0) {
-		temp = -z;
-		rz = (temp << 6);
-		rz = -rz;
-	} else {
-		rz = (z << 6);
-	}
-	NF_3DSPRITE[id].rz = rz;
-
-	// Cambia el estado del flag de rotacion
-	if ((NF_3DSPRITE[id].rx != 0) || (NF_3DSPRITE[id].ry != 0) || (NF_3DSPRITE[id].rz != 0)) {
-		NF_3DSPRITE[id].rot = true;
-	} else {
-		NF_3DSPRITE[id].rot = false;
-	}
-
+    // Flag the sprite as rotated if the scale values aren't the default
+    if (NF_3DSPRITE[id].rx | NF_3DSPRITE[id].ry | NF_3DSPRITE[id].rz)
+        NF_3DSPRITE[id].rot = true;
+    else
+        NF_3DSPRITE[id].rot = false;
 }
 
-void NF_Scale3dSprite(u16 id, u16 x, u16 y) {
+void NF_Scale3dSprite(u32 id, u32 x, u32 y)
+{
+    NF_3DSPRITE[id].sx = x << 6;
+    NF_3DSPRITE[id].sy = y << 6;
 
-	// Calcula la rotacion eje X
-	NF_3DSPRITE[id].sx = (x << 6);
-
-	// Calcula la rotacion eje Y
-	NF_3DSPRITE[id].sy = (y << 6);
-
-	// Cambia el estado del flag de rotacion
-	if ((NF_3DSPRITE[id].sx != (64 << 6)) || (NF_3DSPRITE[id].sy != (64 << 6))) {
-		NF_3DSPRITE[id].scale = true;
-	} else {
-		NF_3DSPRITE[id].scale = false;
-	}
-
+    // Flag the sprite as scaled if the scale values aren't the default
+    if ((NF_3DSPRITE[id].sx != (64 << 6)) || (NF_3DSPRITE[id].sy != (64 << 6)))
+        NF_3DSPRITE[id].scale = true;
+    else
+        NF_3DSPRITE[id].scale = false;
 }
 
-void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha) {
-	// Si el nivel de alpha es opaco o el ID es 0...
-	if ((poly_id == 0) || (alpha == 31)) {
-		NF_3DSPRITE[sprite].poly_id = 0;
-		NF_3DSPRITE[sprite].alpha = 31;
-	} else {
-		// De lo contrario, asignale el ID y alpha indicados
-		NF_3DSPRITE[sprite].poly_id = poly_id;
-		NF_3DSPRITE[sprite].alpha = alpha;
-	}
+void NF_Blend3dSprite(u32 sprite, u32 poly_id, u32 alpha)
+{
+    // Disable alpha if the alpha value is 31 or the polygon ID is 0
+    if ((poly_id == 0) || (alpha == 31))
+    {
+        NF_3DSPRITE[sprite].poly_id = 0;
+        NF_3DSPRITE[sprite].alpha = 31;
+    }
+    else
+    {
+        NF_3DSPRITE[sprite].poly_id = poly_id;
+        NF_3DSPRITE[sprite].alpha = alpha;
+    }
 }
 
-void NF_3dSpritesLayer(u8 layer) {
+void NF_3dSpritesLayer(u32 layer)
+{
+    // Clear priority bits from the control registers
+    REG_BG0CNT &= 0xFFFC;
+    REG_BG1CNT &= 0xFFFC;
+    REG_BG2CNT &= 0xFFFC;
+    REG_BG3CNT &= 0xFFFC;
 
-	// Resetea los BITS de control de prioridad en todos los fondos
-	REG_BG0CNT &= 0xfffc;		// Pon a 0 los bits 0 y 1 del registro
-	REG_BG1CNT &= 0xfffc;
-	REG_BG2CNT &= 0xfffc;
-	REG_BG3CNT &= 0xfffc;
-
-	// Reordena todas las capas segun la solicitud
-	switch (layer) {
-		case 0:		// 3D Sprites en la capa 0
-			REG_BG0CNT += BG_PRIORITY_0;
-			REG_BG1CNT += BG_PRIORITY_1;
-			REG_BG2CNT += BG_PRIORITY_2;
-			REG_BG3CNT += BG_PRIORITY_3;
-			break;
-		case 1:		// 3D Sprites en la capa 1
-			REG_BG0CNT += BG_PRIORITY_1;
-			REG_BG1CNT += BG_PRIORITY_0;
-			REG_BG2CNT += BG_PRIORITY_2;
-			REG_BG3CNT += BG_PRIORITY_3;
-			break;
-		case 2:		// 3D Sprites en la capa 2
-			REG_BG0CNT += BG_PRIORITY_2;
-			REG_BG1CNT += BG_PRIORITY_0;
-			REG_BG2CNT += BG_PRIORITY_1;
-			REG_BG3CNT += BG_PRIORITY_3;
-			break;
-		case 3:		// 3D Sprites en la capa 3
-			REG_BG0CNT += BG_PRIORITY_3;
-			REG_BG1CNT += BG_PRIORITY_0;
-			REG_BG2CNT += BG_PRIORITY_1;
-			REG_BG3CNT += BG_PRIORITY_2;
-			break;
-		default:	// 3D Sprites en la capa 0
-			REG_BG0CNT += BG_PRIORITY_0;
-			REG_BG1CNT += BG_PRIORITY_1;
-			REG_BG2CNT += BG_PRIORITY_2;
-			REG_BG3CNT += BG_PRIORITY_3;
-			break;
-	}
-
+    // Reorder layers based on the requested priority
+    switch (layer)
+    {
+        default:
+        case 0:
+            REG_BG0CNT |= BG_PRIORITY_0;
+            REG_BG1CNT |= BG_PRIORITY_1;
+            REG_BG2CNT |= BG_PRIORITY_2;
+            REG_BG3CNT |= BG_PRIORITY_3;
+            break;
+        case 1:
+            REG_BG0CNT |= BG_PRIORITY_1;
+            REG_BG1CNT |= BG_PRIORITY_0;
+            REG_BG2CNT |= BG_PRIORITY_2;
+            REG_BG3CNT |= BG_PRIORITY_3;
+            break;
+        case 2:
+            REG_BG0CNT |= BG_PRIORITY_2;
+            REG_BG1CNT |= BG_PRIORITY_0;
+            REG_BG2CNT |= BG_PRIORITY_1;
+            REG_BG3CNT |= BG_PRIORITY_3;
+            break;
+        case 3:
+            REG_BG0CNT |= BG_PRIORITY_3;
+            REG_BG1CNT |= BG_PRIORITY_0;
+            REG_BG2CNT |= BG_PRIORITY_1;
+            REG_BG3CNT |= BG_PRIORITY_2;
+            break;
+    }
 }
 
-void NF_3dSpriteEditPalColor(u8 pal, u8 number, u8 r, u8 g, u8 b) {
+void NF_3dSpriteEditPalColor(u32 pal, u32 number, u32 r, u32 g, u32 b)
+{
+    if (!NF_TEXPALSLOT[pal].inuse)
+        NF_Error(111, "Sprite palette", pal);
 
-	// Verifica si esta la paleta en VRAM
-	if (!NF_TEXPALSLOT[pal].inuse) {
-		NF_Error(111, "Sprite PAL", pal);
-	}
+    // Pack RGB value
+    u32 rgb = r | (g << 5) | (b << 10);
 
-	// Calcula el valor RGB
-	u16 rgb = ((r)|((g) << 5)|((b) << 10));
+    u32 hibyte = rgb >> 8;
+    u32 lobyte = rgb - (hibyte << 8);
 
-	// Calcula los valores para el HI-Byte y el LO-Byte
-	u16 hibyte = (rgb >> 8);
-	u16 lobyte = rgb - (hibyte << 8);
-
-	// Graba los bytes
-	*(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number << 1)) = lobyte;
-	*(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number << 1) + 1)) = hibyte;
-
+    *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number * 2)) = lobyte;
+    *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number * 2) + 1)) = hibyte;
 }
 
-void NF_3dSpriteUpdatePalette(u8 pal) {
+void NF_3dSpriteUpdatePalette(u32 pal)
+{
+    if (!NF_TEXPALSLOT[pal].inuse)
+        NF_Error(111, "Sprite palette", pal);
 
-	// Verifica si esta la paleta en VRAM
-	if (!NF_TEXPALSLOT[pal].inuse) {
-		NF_Error(111, "Sprite PAL", pal);
-	}
+    // Get slot where the palette is stored in RAM
+    u8 slot = NF_TEXPALSLOT[pal].ramslot;
 
-	// Obten el slot donde esta la paleta en RAM
-	u8 slot = NF_TEXPALSLOT[pal].ramslot;
-
-	// Actualiza la paleta en VRAM
-	u32 address = (0x06890000) + (pal << 9);			// Calcula donde guardaras la paleta
-	vramSetBankF(VRAM_F_LCD);			// Bloquea el banco F para escribir las paletas
-	NF_DmaMemCopy((void*)address, NF_BUFFER_SPR256PAL[slot], NF_SPR256PAL[slot].size);	// Copia la paleta al banco F
-	vramSetBankF(VRAM_F_TEX_PALETTE);	// Banco F de la VRAM para paletas extendidas (Texturas)
-
+    // Update palette in VRAM
+    u32 address = 0x06890000 + (pal * 256 * 2);
+    vramSetBankF(VRAM_F_LCD); // Let the CPU access VRAM_F
+    NF_DmaMemCopy((void *)address, NF_BUFFER_SPR256PAL[slot], NF_SPR256PAL[slot].size);
+    vramSetBankF(VRAM_F_TEX_PALETTE); // Setup VRAM_F for texture palettes
 }
 
-void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8* r, u8* g, u8* b) {
+void NF_3dSpriteGetPalColor(u32 pal, u32 number, u8 *r, u8 *g, u8 *b)
+{
+    if (!NF_TEXPALSLOT[pal].inuse)
+        NF_Error(111, "Sprite palette", pal);
 
-	// Verifica si esta la paleta en VRAM
-	if (!NF_TEXPALSLOT[pal].inuse) {
-		NF_Error(111, "Sprite PAL", pal);
-	}
+    u16 lobyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number * 2));
+    u16 hibyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number * 2) + 1));
 
-	// Obten los bytes
-	u16 lobyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number << 1));
-	u16 hibyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number << 1) + 1));
+    // Build RGB value
+    u16 rgb = (hibyte << 8) + lobyte;
 
-	// Calcula el RGB (compuesto)
-	u16 rgb = (hibyte << 8) + lobyte;
-
-	// Calcula los RGB
-	*r = (rgb & 0x1F);
-	*g = ((rgb >> 5) & 0x1F);
-	*b = ((rgb >> 10) & 0x1F);
-
+    *r = rgb & 0x1F;
+    *g = (rgb >> 5) & 0x1F;
+    *b = (rgb >> 10) & 0x1F;
 }
 
-void NF_3dSpriteSetDepth(u8 id, s16 z) {
+void NF_3dSpriteSetDepth(u32 id, s32 z)
+{
+    // Limit range
+    if (z < -512)
+        z = -512;
+    if (z > 512)
+        z = 512;
 
-	// Asigna la profundidad
-	NF_3DSPRITE[id].z = z;
-
-	// Verifica los limites
-	if (NF_3DSPRITE[id].z < -512) NF_3DSPRITE[id].z = -512;
-	if (NF_3DSPRITE[id].z > 512) NF_3DSPRITE[id].z = 512;
-
+    NF_3DSPRITE[id].z = z;
 }

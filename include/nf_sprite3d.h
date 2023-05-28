@@ -153,7 +153,7 @@ void NF_Init3dSpriteSys(void);
 /// @param ram RAM slot (0 - 255)
 /// @param vram VRAM slot (0 - 255)
 /// @param keepframes For animated sprites. If true, copy all frames to VRAM.
-void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes);
+void NF_Vram3dSpriteGfx(u32 ram, u32 vram, bool keepframes);
 
 /// Delete from VRAM the texture in the selected slot.
 ///
@@ -166,7 +166,7 @@ void NF_Vram3dSpriteGfx(u16 ram, u16 vram, bool keepframes);
 /// ```
 ///
 /// @param id VRAM slot (0 - 255)
-void NF_Free3dSpriteGfx(u16 id);
+void NF_Free3dSpriteGfx(u32 id);
 
 /// Defragments the free VRAM used for 3D sprite textures.
 ///
@@ -175,10 +175,10 @@ void NF_Free3dSpriteGfx(u16 id);
 /// function. You can get the state of VRAM reading the following variables:
 ///
 /// ```
-/// NF_TEXVRAM[u8 screen].free       // Total free VRAM
-/// NF_TEXVRAM[u8 screen].fragmented // Total fragmented free VRAM
-/// NF_TEXVRAM[u8 screen].inarow     // Largest free block of VRAM at the end
-/// NF_TEXVRAM[u8 screen].lost       // Unusable free VRAM because fragmentation
+/// NF_TEXVRAM[screen].free       // Total free VRAM
+/// NF_TEXVRAM[screen].fragmented // Total fragmented free VRAM
+/// NF_TEXVRAM[screen].inarow     // Largest free block of VRAM at the end
+/// NF_TEXVRAM[screen].lost       // Unusable free VRAM because fragmentation
 /// ```
 void NF_Vram3dSpriteGfxDefrag(void);
 
@@ -194,7 +194,7 @@ void NF_Vram3dSpriteGfxDefrag(void);
 ///
 /// @param id RAM slot (0 - 64)
 /// @param slot VRAM slot (0 - 31)
-void NF_Vram3dSpritePal(u8 id, u8 slot);
+void NF_Vram3dSpritePal(u32 id, u32 slot);
 
 /// Create a 3D sprite with the specified ID and display it on the screen.
 ///
@@ -210,7 +210,7 @@ void NF_Vram3dSpritePal(u8 id, u8 slot);
 /// @param pal Palette slot (0 - 31).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y);
+void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y);
 
 /// Remove the sprite with the specified ID from the screen.
 ///
@@ -223,7 +223,7 @@ void NF_Create3dSprite(u16 id, u16 gfx, u16 pal, s16 x, s16 y);
 /// ```
 ///
 /// @param id Sprite ID (0 - 255).
-void NF_Delete3dSprite(u16 id);
+void NF_Delete3dSprite(u32 id);
 
 /// Sets the priorities of 3D sprites based on their sprite IDs.
 ///
@@ -236,13 +236,13 @@ void NF_Sort3dSprites(void);
 ///
 /// @param id Sprite ID (0 - 255).
 /// @param prio Priority (0 - 255).
-void NF_Set3dSpritePriority(u16 id, u16 prio);
+void NF_Set3dSpritePriority(u32 id, u32 prio);
 
 /// Swaps the priority of two 3D sprites.
 ///
 /// @param id_a Sprite ID A (0 - 255).
 /// @param id_b Sprite ID B (0 - 255).
-void NF_Swap3dSpritePriority(u16 id_a, u16 id_b);
+void NF_Swap3dSpritePriority(u32 id_a, u32 id_b);
 
 /// Move a 3D sprite to the specified position.
 ///
@@ -255,7 +255,7 @@ void NF_Swap3dSpritePriority(u16 id_a, u16 id_b);
 /// @param id Sprite ID (0 - 255).
 /// @param x X coordinate.
 /// @param y Y coordinate.
-static inline void NF_Move3dSprite(u16 id, s16 x, s16 y)
+static inline void NF_Move3dSprite(u32 id, s32 x, s32 y)
 {
     NF_3DSPRITE[id].x = x;
     NF_3DSPRITE[id].y = y;
@@ -275,7 +275,7 @@ static inline void NF_Move3dSprite(u16 id, s16 x, s16 y)
 ///
 /// @param id Sprite ID (0 - 255).
 /// @param show True to show the sprite, false to hide it.
-static inline void NF_Show3dSprite(u16 id, bool show)
+static inline void NF_Show3dSprite(u32 id, bool show)
 {
     NF_3DSPRITE[id].show = show;
 }
@@ -290,7 +290,7 @@ static inline void NF_Show3dSprite(u16 id, bool show)
 ///
 /// @param id Sprite ID (0 - 255).
 /// @param frame Frame index.
-void NF_Set3dSpriteFrame(u16 id, u16 frame);
+void NF_Set3dSpriteFrame(u32 id, u32 frame);
 
 /// Draw all created 3D sprites on the screen.
 ///
@@ -321,7 +321,7 @@ void NF_Update3dSpritesGfx(void);
 /// @param x Rotation by X axis.
 /// @param y Rotation by Y axis.
 /// @param z Rotation by Z axis.
-void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z);
+void NF_Rotate3dSprite(u32 id, s32 x, s32 y, s32 z);
 
 /// Scales 3D sprite on X and Y axes.
 ///
@@ -330,7 +330,7 @@ void NF_Rotate3dSprite(u16 id, s16 x, s16 y, s16 z);
 /// @param id Sprite ID (0 - 255).
 /// @param x X axis scale.
 /// @param y Y axis scale.
-void NF_Scale3dSprite(u16 id, u16 x, u16 y);
+void NF_Scale3dSprite(u32 id, u32 x, u32 y);
 
 /// Set the alpha level of a 3D sprite.
 ///
@@ -343,7 +343,7 @@ void NF_Scale3dSprite(u16 id, u16 x, u16 y);
 /// @param sprite Sprite ID (0 - 255).
 /// @param poly_id Polygon ID (1 - 62).
 /// @param alpha Transparency (0 - 31).
-void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha);
+void NF_Blend3dSprite(u32 sprite, u32 poly_id, u32 alpha);
 
 /// Select the layer where 3D sprites are drawn.
 ///
@@ -351,7 +351,7 @@ void NF_Blend3dSprite(u8 sprite, u8 poly_id, u8 alpha);
 /// can only be sent to layer 0 because of how the hardware was designed.
 ///
 /// @param layer Layer (0 - 3).
-void NF_3dSpritesLayer(u8 layer);
+void NF_3dSpritesLayer(u32 layer);
 
 /// Changes one color of one 3D sprite palette.
 ///
@@ -370,7 +370,7 @@ void NF_3dSpritesLayer(u8 layer);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_3dSpriteEditPalColor(u8 pal, u8 number, u8 r, u8 g, u8 b);
+void NF_3dSpriteEditPalColor(u32 pal, u32 number, u32 r, u32 g, u32 b);
 
 /// Updates the VRAM copy of a palette with the RAM copy of it.
 ///
@@ -381,7 +381,7 @@ void NF_3dSpriteEditPalColor(u8 pal, u8 number, u8 r, u8 g, u8 b);
 /// ```
 ///
 /// @param pal Palette slot (0 - 31).
-void NF_3dSpriteUpdatePalette(u8 pal);
+void NF_3dSpriteUpdatePalette(u32 pal);
 
 /// Gets the RGB value of a color from a 3D sprite palette loaded in RAM.
 ///
@@ -400,7 +400,7 @@ void NF_3dSpriteUpdatePalette(u8 pal);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
+void NF_3dSpriteGetPalColor(u32 pal, u32 number, u8 *r, u8 *g, u8 *b);
 
 /// Sets the depth of the selected 3D sprite.
 ///
@@ -412,7 +412,7 @@ void NF_3dSpriteGetPalColor(u8 pal, u8 number, u8 *r, u8 *g, u8 *b);
 ///
 /// @param id Sprite ID (0 - 255).
 /// @param z Depth (-512 - 512)
-void NF_3dSpriteSetDepth(u8 id, s16 z);
+void NF_3dSpriteSetDepth(u32 id, s32 z);
 
 // Defines for backwards compatibility
 #define NF_3dSpriteSetDeep NF_3dSpriteSetDepth

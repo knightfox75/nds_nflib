@@ -154,7 +154,7 @@ void NF_CreateTextLayer(int screen, u32 layer, u32 rotation, const char *name)
 
     // If it hasn't been found, fail
     if (slot == 255)
-        NF_Error(103, "Tiled Bg", NF_SLOTS_TBG);
+        NF_Error(103, "Tiled BG", NF_SLOTS_TBG);
 
     NF_TEXT[screen][layer].rotation = rotation;
 
@@ -282,7 +282,7 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
     }
 
     // Variables to calculate the position of the text
-    int tx, ty;
+    s32 tx, ty;
 
     // Write text in the background map, according to the specified rotation
     switch (NF_TEXT[screen][layer].rotation)
@@ -313,7 +313,6 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
                 }
             }
             break;
-
 
         case 1: // 90 degrees of clockwise rotation
 
@@ -362,7 +361,7 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
                 if ((ty < 0) || (string[n] == 200))
                 {
                     ty = NF_TEXT[screen][layer].height;
-                    tx ++;
+                    tx++;
 
                     // If the last row is reached, return to the first one
                     if (tx > NF_TEXT[screen][layer].width)
@@ -402,7 +401,7 @@ void NF_ClearTextLayer(int screen, u32 layer)
     if (!NF_TEXT[screen][layer].exist)
         NF_Error(114, NULL, screen);
 
-    // Calculate buffer size
+    // Calculate buffer size (2 bytes per tile)
     u32 size = (NF_TEXT[screen][layer].width + 1) * (NF_TEXT[screen][layer].height + 1) * 2;
 
     // Zero the map
