@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
+// Copyright (c) 2023 Antonio Niño Díaz "AntonioND"
 //
 // NightFox LIB - Basic and debug functions
 // http://www.nightfoxandco.com/
