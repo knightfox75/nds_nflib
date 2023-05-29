@@ -168,7 +168,7 @@ void NF_ResetTiledBgBuffers(void);
 /// ```
 ///
 /// @param screen Screen (0 - 1).
-void NF_InitTiledBgSys(u8 screen);
+void NF_InitTiledBgSys(int screen);
 
 /// Load all files needed to create a tiled BG from FAT to RAM.
 ///
@@ -194,7 +194,7 @@ void NF_InitTiledBgSys(u8 screen);
 /// @param name Name used for the BG for other functions.
 /// @param width BG width.
 /// @param height BG height.
-void NF_LoadTiledBg(const char *file, const char *name, u16 width, u16 height);
+void NF_LoadTiledBg(const char *file, const char *name, u32 width, u32 height);
 
 /// Load a tilesed and palette from FAT to RAM.
 ///
@@ -217,8 +217,8 @@ void NF_LoadTiledBg(const char *file, const char *name, u16 width, u16 height);
 /// @param height Height of the BG in pixels.
 /// @param tile_start First tile to load.
 /// @param tile_end Last tile to load.
-void NF_LoadTilesForBg(const char *file, const char *name, u16 width, u16 height,
-                       u16 tile_start, u16 tile_end);
+void NF_LoadTilesForBg(const char *file, const char *name, u32 width, u32 height,
+                       u32 tile_start, u32 tile_end);
 
 /// Delete from RAM the BG with the specified name.
 ///
@@ -251,7 +251,7 @@ void NF_UnloadTiledBg(const char *name);
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
 /// @param name Name used for the BG.
-void NF_CreateTiledBg(u8 screen, u8 layer, const char *name);
+void NF_CreateTiledBg(int screen, u32 layer, const char *name);
 
 /// Delete the BG of the specified screen and layer.
 ///
@@ -265,7 +265,7 @@ void NF_CreateTiledBg(u8 screen, u8 layer, const char *name);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
-void NF_DeleteTiledBg(u8 screen, u8 layer);
+void NF_DeleteTiledBg(int screen, u32 layer);
 
 /// Gets the address of the tile at the specified position.
 ///
@@ -276,7 +276,7 @@ void NF_DeleteTiledBg(u8 screen, u8 layer);
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
 /// @return Tile address.
-u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
+u32 NF_GetTileMapAddress(int screen, u32 layer, u32 tile_x, u32 tile_y);
 
 /// Gets the value of the tile at the specified position.
 ///
@@ -292,7 +292,7 @@ u32 NF_GetTileMapAddress(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
 /// @return Tile index.
-u16 NF_GetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
+u32 NF_GetTileOfMap(int screen, u32 layer, u32 tile_x, u32 tile_y);
 
 /// Sets the value of the tile at the specified position.
 ///
@@ -307,7 +307,7 @@ u16 NF_GetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
 /// @param tile Tile index.
-void NF_SetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u16 tile);
+void NF_SetTileOfMap(int screen, u32 layer, u32 tile_x, u32 tile_y, u32 tile);
 
 /// Updates the map of the specified screen and layer specified.
 ///
@@ -322,7 +322,7 @@ void NF_SetTileOfMap(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u16 tile);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
-void NF_UpdateVramMap(u8 screen, u8 layer);
+void NF_UpdateVramMap(int screen, u32 layer);
 
 /// Changes the value of one color of the palette of a background.
 ///
@@ -343,7 +343,7 @@ void NF_UpdateVramMap(u8 screen, u8 layer);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
+void NF_BgSetPalColor(int screen, u32 layer, u32 number, u32 r, u32 g, u32 b);
 
 /// Changes the value of one color of the palete of the specified background.
 ///
@@ -364,7 +364,7 @@ void NF_BgSetPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
 /// @param r Red component (0 - 31).
 /// @param g Green component (0 - 31).
 /// @param b Blue component (0 - 31).
-void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
+void NF_BgEditPalColor(int screen, u32 layer, u32 number, u32 r, u32 g, u32 b);
 
 /// Updates the palette of a background from RAM to VRAM.
 ///
@@ -376,7 +376,7 @@ void NF_BgEditPalColor(u8 screen, u8 layer, u8 number, u8 r, u8 g, u8 b);
 ///
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
-void NF_BgUpdatePalette(u8 screen, u8 layer);
+void NF_BgUpdatePalette(int screen, u32 layer);
 
 /// Gets the RGB value of a color of the palette of the selected background,
 /// which is loaded in RAM.
@@ -397,7 +397,7 @@ void NF_BgUpdatePalette(u8 screen, u8 layer);
 /// @param r Red component result (0 - 31).
 /// @param g Green component result (0 - 31).
 /// @param b Blue component result (0 - 31).
-void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8 *r, u8 *g, u8 *b);
+void NF_BgGetPalColor(int screen, u32 layer, u32 number, u8 *r, u8 *g, u8 *b);
 
 /// Returns the number of extended palette used by specified tile.
 ///
@@ -415,7 +415,7 @@ void NF_BgGetPalColor(u8 screen, u8 layer, u8 number, u8 *r, u8 *g, u8 *b);
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
 /// @return Extended palette index (0 - 15).
-u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
+u32 NF_GetTilePal(int screen, u32 layer, u32 tile_x, u32 tile_y);
 
 /// Sets the extended palette to use for the tile especified.
 ///
@@ -435,7 +435,7 @@ u8 NF_GetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
 /// @param pal Extended palette index (0 - 15).
-void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
+void NF_SetTilePal(int screen, u32 layer, u32 tile_x, u32 tile_y, u32 pal);
 
 /// Load a palette from a file to RAM to use it as a background extended
 /// palette.
@@ -448,7 +448,7 @@ void NF_SetTilePal(u8 screen, u8 layer, u16 tile_x, u16 tile_y, u8 pal);
 ///
 /// @param file File (.pal extension).
 /// @param slot RAM slot (0 - 127)
-void NF_LoadExBgPal(const char *file, u8 slot);
+void NF_LoadExBgPal(const char *file, u32 slot);
 
 /// Deletes a loaded palette from RAM.
 ///
@@ -460,7 +460,7 @@ void NF_LoadExBgPal(const char *file, u8 slot);
 /// ```
 ///
 /// @param slot RAM slot (0 - 127)
-void NF_UnloadExBgPal(u8 slot);
+void NF_UnloadExBgPal(u32 slot);
 
 /// Transfers a palette from RAM to VRAM to be used as extended palette.
 ///
@@ -475,7 +475,7 @@ void NF_UnloadExBgPal(u8 slot);
 /// @param layer Layer (0 - 3).
 /// @param id Slot of the palette in RAM.
 /// @param slot Slot of extended palette in VRAM.
-void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot);
+void NF_VramExBgPal(int screen, u32 layer, u32 id, u32 slot);
 
 /// Sets the extended palette to be used in the specified background.
 ///
@@ -488,7 +488,7 @@ void NF_VramExBgPal(u8 screen, u8 layer, u8 id, u8 slot);
 /// @param screen Screen (0 - 1).
 /// @param layer Layer (0 - 3).
 /// @param pal Extended palette index (0 - 15).
-void NF_SetExBgPal(u8 screen, u8 layer, u8 pal);
+void NF_SetExBgPal(int screen, u32 layer, u32 pal);
 
 /// Inverts the horizontal flip status of a tile in the specified map.
 ///
@@ -506,7 +506,7 @@ void NF_SetExBgPal(u8 screen, u8 layer, u8 pal);
 /// @param layer Layer (0 - 3).
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
-void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
+void NF_SetTileHflip(int screen, u32 layer, u32 tile_x, u32 tile_y);
 
 /// Inverts the vertical flip status of a tile in the specified map.
 ///
@@ -524,7 +524,7 @@ void NF_SetTileHflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param layer Layer (0 - 3).
 /// @param tile_x X coordinate.
 /// @param tile_y Y coordinate.
-void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
+void NF_SetTileVflip(int screen, u32 layer, u32 tile_x, u32 tile_y);
 
 /// Rotates the graphics of a tile in RAM by the specified angle.
 ///
@@ -544,7 +544,7 @@ void NF_SetTileVflip(u8 screen, u8 layer, u16 tile_x, u16 tile_y);
 /// @param slot RAM slot (0 - 127).
 /// @param tile Tile index.
 /// @param rotation Rotation value.
-void NF_RotateTileGfx(u8 slot, u16 tile, u8 rotation);
+void NF_RotateTileGfx(u32 slot, u32 tile, u32 rotation);
 
 /// @}
 

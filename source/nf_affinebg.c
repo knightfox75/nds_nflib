@@ -67,7 +67,9 @@ void NF_InitAffineBgSys(int screen)
         // Clear VRAM_A (128 KB)
         vramSetBankA(VRAM_A_MAIN_BG);
         memset((void *)0x06000000, 0, 131072);
-        for (int n = 0; n < 4; n++) // Hide all 4 layers
+
+        // Hide all 4 layers
+        for (int n = 0; n < 4; n++)
             NF_HideBg(0, n);
     }
     else
@@ -75,7 +77,9 @@ void NF_InitAffineBgSys(int screen)
         // Clear VRAM_C (128 KB)
         vramSetBankC(VRAM_C_SUB_BG);
         memset((void *)0x06200000, 0, 131072);
-        for (int n = 0; n < 4; n++) // Hide all 4 layers
+
+        // Hide all 4 layers
+        for (int n = 0; n < 4; n++)
             NF_HideBg(1, n);
     }
 }
