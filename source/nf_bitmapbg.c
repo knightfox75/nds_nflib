@@ -209,31 +209,16 @@ void NF_Load16bImgData(const char *file, u32 slot, u32 x, u32 y, u32 type)
 
     // Load .IMG file
     char filename[256];
+    char *buffer;
+    size_t size;
     snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-    {
-        // If the file can't be found
-        NF_Error(101, filename, 0);
-    }
+    NF_FileLoad(filename, &buffer, &size, 0);
 
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    u32 size = ftell(file_id);
-    rewind(file_id);
-
-    // If the size is too big (over 128kb), fail
+    // If the size is too big (over 128 KB), fail
     if (size > 131072)
         NF_Error(116, filename, 131072);
 
-    // Allocate memory in RAM
-    NF_BG16B[slot].buffer = malloc(size);
-    if (NF_BG16B[slot].buffer == NULL)
-        NF_Error(102, NULL, size); // Not enough free RAM
-
-    // Read file to the RAM
-    fread(NF_BG16B[slot].buffer, 1, size, file_id);
-    fclose(file_id);
+    NF_BG16B[slot].buffer = (void *)buffer;
 
     // Ensure that the alpha bit is set to 1
     for (u32 n = 0; n < (size / 2); n++)
@@ -356,56 +341,23 @@ void NF_Load8bitsBg(const char *file, u32 slot)
     char filename[256];
 
     // Load .IMG file
+    size_t size;
+    char *buffer;
     snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file doesn't exist
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    u32 size = ftell(file_id);
-    rewind(file_id);
+    NF_FileLoad(filename, &buffer, &size, 0);
 
     // If it's too big (more than 64 KB), fail
     if (size > 65536)
         NF_Error(116, filename, 65536);
 
-    // Allocate space in RAM
-    NF_BG8B[slot].data = malloc(size);
-    if (NF_BG8B[slot].data == NULL) // Not enough memory
-        NF_Error(102, NULL, size);
-
-    // Read file and save it to RAM
-    fread(NF_BG8B[slot].data, 1, size, file_id);
-    fclose(file_id);
-
-    NF_BG8B[slot].data_size = size; // Save file size
+    NF_BG8B[slot].data = (void *)buffer;
+    NF_BG8B[slot].data_size = size;
 
     // Load .PAL file
     snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
-    file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file doesn't exist
-        NF_Error(101, filename, 0);
+    NF_FileLoad(filename, &buffer, &NF_BG8B[slot].pal_size, 256 * 2);
 
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    size = ftell(file_id);
-    rewind(file_id);
-
-    // If the size is smaller than the maximum size, adjust the size
-    if (size < 512)
-        size = 512;
-
-    // Allocate space in RAM
-    NF_BG8B[slot].pal = malloc(size);
-    if (NF_BG8B[slot].pal == NULL) // Not enough free RAM
-        NF_Error(102, NULL, size);
-
-    // Read file and save it to RAM
-    fread(NF_BG8B[slot].pal, 1, size, file_id);
-    fclose(file_id);
-
-    NF_BG8B[slot].pal_size = size; // Save file size
+    NF_BG8B[slot].pal = (void *)buffer;
 
     // Mark this slot as being in use
     NF_BG8B[slot].inuse = true;

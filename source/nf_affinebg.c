@@ -119,23 +119,7 @@ void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height)
 
     // Load .IMG file
     snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_TILEDBG[slot].tilesize = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_BUFFER_BGTILES[slot] = malloc(NF_TILEDBG[slot].tilesize);
-    if (NF_BUFFER_BGTILES[slot] == NULL) // Not enough RAM
-        NF_Error(102, NULL, NF_TILEDBG[slot].tilesize);
-
-    // Read file into RAM
-    fread(NF_BUFFER_BGTILES[slot], 1, NF_TILEDBG[slot].tilesize, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_BGTILES[slot], &NF_TILEDBG[slot].tilesize, 0);
 
     // Verify that the tileset is at most 256 tiles
     if (NF_TILEDBG[slot].tilesize > 16384)
@@ -143,7 +127,7 @@ void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height)
 
     // Load .MAP file
     snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
-    file_id = fopen(filename, "rb");
+    FILE *file_id = fopen(filename, "rb");
     if (file_id == NULL) // If the file can't be opened
         NF_Error(101, filename, 0);
 
@@ -163,28 +147,7 @@ void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height)
 
     // Load .PAL file
     snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
-    file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    u32 pal_size = ftell(file_id);
-    NF_TILEDBG[slot].palsize = pal_size;
-    rewind(file_id);
-
-    // If the size is smaller than 512 bytes (256 colors) adjust it to 512 bytes
-    if (NF_TILEDBG[slot].palsize < 512)
-        NF_TILEDBG[slot].palsize = 512;
-
-    // Allocate space in RAM and zero it in case the real palette size was small
-    NF_BUFFER_BGPAL[slot] = calloc(NF_TILEDBG[slot].palsize, sizeof(char));
-    if (NF_BUFFER_BGPAL[slot] == NULL)
-        NF_Error(102, NULL, NF_TILEDBG[slot].palsize);
-
-    // Read file into RAM
-    fread(NF_BUFFER_BGPAL[slot], 1, pal_size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_BGPAL[slot], &NF_TILEDBG[slot].palsize, 256 * 2);
 
     // Save information of the tiled background
     snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);

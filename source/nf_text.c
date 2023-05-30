@@ -103,23 +103,7 @@ void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
 
     // Load .PAL file
     snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
-    file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_TILEDBG[slot].palsize = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_BUFFER_BGPAL[slot] = malloc(NF_TILEDBG[slot].palsize);
-    if (NF_BUFFER_BGPAL[slot] == NULL) // If there isn't enough free RAM
-        NF_Error(102, NULL, NF_TILEDBG[slot].palsize);
-
-    // Read file to RAM
-    fread(NF_BUFFER_BGPAL[slot], 1, NF_TILEDBG[slot].palsize, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_BGPAL[slot], &NF_TILEDBG[slot].palsize, 0);
 
     // Save background name
     snprintf(NF_TILEDBG[slot].name, sizeof(NF_TILEDBG[slot].name), "%s", name);

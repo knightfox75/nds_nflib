@@ -60,9 +60,9 @@ extern char *NF_BUFFER_BGPAL[NF_SLOTS_TBG];
 /// Struct that holds information about regular tiled backgrounds.
 typedef struct {
     char name[32];      ///< Background name
-    u32 tilesize;       ///< Tileset size
-    u32 mapsize;        ///< Map size
-    u32 palsize;        ///< Palette size
+    size_t tilesize;    ///< Tileset size
+    size_t mapsize;     ///< Map size
+    size_t palsize;     ///< Palette size
     u16 width;          ///< Background width
     u16 height;         ///< Background height
     bool available;     ///< If the background is available it is true.
@@ -74,7 +74,7 @@ extern NF_TYPE_TBG_INFO NF_TILEDBG[NF_SLOTS_TBG];
 /// Struct that holds information about extended palettes.
 typedef struct {
     char *buffer;   ///< Buffer that holds the palette
-    u32 palsize;    ///< Palette size
+    size_t palsize; ///< Palette size
     bool inuse;     ///< True if the slot is in use.
 } NF_TYPE_EXBGPAL_INFO;
 

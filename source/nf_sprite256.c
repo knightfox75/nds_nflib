@@ -187,23 +187,7 @@ void NF_LoadSpriteGfx(const char *file, u32 id, u32 width, u32 height)
 
     // Load .IMG file
     snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_SPR256GFX[id].size = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_BUFFER_SPR256GFX[id] = malloc(NF_SPR256GFX[id].size);
-    if (NF_BUFFER_SPR256GFX[id] == NULL) // Not enough RAM
-        NF_Error(102, NULL, NF_SPR256GFX[id].size);
-
-    // Read file to RAM
-    fread(NF_BUFFER_SPR256GFX[id], 1, NF_SPR256GFX[id].size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_SPR256GFX[id], &NF_SPR256GFX[id].size, 0);
 
     // Save information about the graphics
     NF_SPR256GFX[id].width = width;
@@ -246,30 +230,9 @@ void NF_LoadSpritePal(const char *file, u32 id)
     // FIle path
     char filename[256];
 
-    // Load .PAL file
+    // Load .PAL file, and allocate space for at least 256 colors
     snprintf(filename, sizeof(filename), "%s/%s.pal", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    u32 pal_size = ftell(file_id);
-    NF_SPR256PAL[id].size = pal_size;
-    rewind(file_id);
-
-    // If the size is smaller than 512, increase it to 512 (256 colors * 2)
-    if (NF_SPR256PAL[id].size < 512)
-        NF_SPR256PAL[id].size = 512;
-
-    // Allocate space in RAM, but zero the buffer in case the file needs padding
-    NF_BUFFER_SPR256PAL[id] = calloc(NF_SPR256PAL[id].size, sizeof(char));
-    if (NF_BUFFER_SPR256PAL[id] == NULL) // Not enough RAM
-        NF_Error(102, NULL, NF_SPR256PAL[id].size);
-
-    // Read file to RAM
-    fread(NF_BUFFER_SPR256PAL[id], 1, pal_size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_SPR256PAL[id], &NF_SPR256PAL[id].size, 256 * 2);
 
     // Mark it as being in use
     NF_SPR256PAL[id].available = false;

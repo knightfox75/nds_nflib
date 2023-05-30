@@ -33,7 +33,7 @@ extern "C" {
 /// Struct that holds information about 16-bit bitmap backgrounds.
 typedef struct {
     u16 *buffer;    ///< Data buffer
-    u32 size;       ///< Size of the buffer
+    size_t size;    ///< Size of the buffer
     u16 width;      ///< Width of the image (max 256 pixels)
     u16 height;     ///< Height of the image (max 256 pixels)
     bool inuse;     ///< True if the slot is in use
@@ -48,9 +48,9 @@ extern u16* NF_16BITS_BACKBUFFER[2];
 /// Struct that holds information about 8-bit bitmap backgrounds.
 typedef struct {
     u8 *data;           ///< Data buffer
-    u32 data_size;      ///< Data buffer size
+    size_t data_size;   ///< Data buffer size
     u16 *pal;           ///< Palette buffer
-    u32 pal_size;       ///< Palette buffer size
+    size_t pal_size;    ///< Palette buffer size
     bool inuse;         ///< True if the slot is in use
 } NF_TYPE_BG8B_INFO;
 

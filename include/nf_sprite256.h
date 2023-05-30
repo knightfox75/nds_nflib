@@ -38,7 +38,7 @@ extern char *NF_BUFFER_SPR256PAL[NF_SLOTS_SPR256PAL];
 
 /// Struct that holds information about sprite graphics in RAM
 typedef struct {
-    u32 size;           ///< Size in bytes of the graphics data
+    size_t size;        ///< Size in bytes of the graphics data
     u16 width;          ///< Width of graphics data
     u16 height;         ///< Height of graphics data
     bool available;     ///< True if this slot is free, false otherwise
@@ -49,7 +49,7 @@ extern NF_TYPE_SPR256GFX_INFO NF_SPR256GFX[NF_SLOTS_SPR256GFX];
 
 /// Struct that holds information about sprite palettes in RAM
 typedef struct {
-    u32 size;           ///< Size in bytes of the palette
+    size_t size;        ///< Size in bytes of the palette
     bool available;     ///< True if this slot is free, false otherwise
 } NF_TYPE_SPR256PAL_INFO;
 

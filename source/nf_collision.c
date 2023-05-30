@@ -63,23 +63,7 @@ void NF_LoadCollisionMap(const char *file, u32 id, u32 width, u32 height)
 
     // Load .CMP file (tilemap)
     snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_CMAP[id].map_size = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_CMAP[id].map = malloc(NF_CMAP[id].map_size);
-    if (NF_CMAP[id].map == NULL)
-        NF_Error(102, NULL, NF_CMAP[id].map_size);
-
-    // Load file into RAM
-    fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_CMAP[id].map, &NF_CMAP[id].map_size, 0);
 
     // Save map size
     NF_CMAP[id].width = width;
@@ -176,43 +160,11 @@ void NF_LoadCollisionBg(const char *file, u32 id, u32 width, u32 height)
 
     // Load .DAT file (tileset)
     snprintf(filename, sizeof(filename),  "%s/%s.dat", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_CMAP[id].tiles_size = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_CMAP[id].tiles = malloc(NF_CMAP[id].tiles_size);
-    if (NF_CMAP[id].tiles == NULL)
-        NF_Error(102, NULL, NF_CMAP[id].tiles_size);
-
-    // Load file into RAM
-    fread(NF_CMAP[id].tiles, 1, NF_CMAP[id].tiles_size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_CMAP[id].tiles, &NF_CMAP[id].tiles_size, 0);
 
     // Load .CMP file (tilemap)
     snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
-    file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-        NF_Error(101, filename, 0);
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_CMAP[id].map_size = ftell(file_id);
-    rewind(file_id);
-
-    // Allocate space in RAM
-    NF_CMAP[id].map = malloc(NF_CMAP[id].map_size);
-    if (NF_CMAP[id].map == NULL)
-        NF_Error(102, NULL, NF_CMAP[id].map_size);
-
-    // Load file into RAM
-    fread(NF_CMAP[id].map, 1, NF_CMAP[id].map_size, file_id);
-    fclose(file_id);
+    NF_FileLoad(filename, &NF_CMAP[id].map, &NF_CMAP[id].map_size, 0);
 
     // Save map size
     NF_CMAP[id].width = width;

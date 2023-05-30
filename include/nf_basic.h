@@ -108,6 +108,9 @@ static inline u32 NF_GetLanguage(void)
     return PersonalData->language;
 }
 
+// Internal use. Used to load files and optionally pad the resulting buffer.
+void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size);
+
 /// @}
 
 #endif // NF_BASIC_H__

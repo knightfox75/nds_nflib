@@ -321,3 +321,38 @@ void NF_DmaMemCopy(void *destination, const void *source, u32 size)
         DC_InvalidateRange(destination, size);
     }
 }
+
+void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size)
+{
+    FILE *f = fopen(path, "rb");
+    if (f == NULL)
+        NF_Error(101, path, 0);
+
+    // Get file size
+    fseek(f, 0, SEEK_END);
+    size_t size_ = ftell(f);
+    rewind(f);
+
+    // If the file size is smaller than the minimum size, pad it with zeroes
+    // with calloc().
+    char *buffer_;
+    if (size_ < min_size)
+    {
+        buffer_ = calloc(min_size, sizeof(char));
+        *size = min_size;
+    }
+    else
+    {
+        buffer_ = malloc(size_);
+        *size = size_;
+    }
+
+    if (buffer_ == NULL)
+        NF_Error(102, NULL, size_);
+
+    *buffer = buffer_;
+
+    // Read full file to the start of the buffer
+    fread(buffer_, 1, size_, f);
+    fclose(f);
+}

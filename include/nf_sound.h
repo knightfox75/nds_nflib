@@ -33,7 +33,7 @@ extern char *NF_BUFFER_RAWSOUND[NF_SLOTS_RAWSOUND];
 /// Struct that holds information about the loaded sound files
 typedef struct {
     bool available;     ///< True if this slot is available
-    u32 size;           ///< Size of the sound effect in bytes
+    size_t size;        ///< Size of the sound effect in bytes
     u16 freq;           ///< Frecuency of the sample
     u8 format;          ///< Format of the sample (0: 8 bits, 1: 16 bits, 2: ADPCM)
 } NF_TYPE_RAWSOUND_INFO;

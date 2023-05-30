@@ -60,34 +60,13 @@ void NF_LoadRawSound(const char *file, u32 id, u32 freq, u32 format)
     // File path
     char filename[256];
 
-    // Try to load the .RAW file
+    // Load the .RAW file
     snprintf(filename, sizeof(filename), "%s/%s.raw", NF_ROOTFOLDER, file);
-    FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-    {
-        // The file doesn't exist
-        NF_Error(101, filename, 0);
-    }
-
-    // Get file size
-    fseek(file_id, 0, SEEK_END);
-    NF_RAWSOUND[id].size = ftell(file_id);
-    rewind(file_id);
+    NF_FileLoad(filename, &NF_BUFFER_RAWSOUND[id], &NF_RAWSOUND[id].size, 0);
 
     // If the size is over the limit
     if (NF_RAWSOUND[id].size > (256 * 1024))
         NF_Error(116, filename, 256 * 1024);
-
-    // Allocate space in RAM
-    NF_BUFFER_RAWSOUND[id] = malloc(NF_RAWSOUND[id].size);
-    if (NF_BUFFER_RAWSOUND[id] == NULL) // Not enough RAM
-        NF_Error(102, NULL, NF_RAWSOUND[id].size);
-
-    // Read file and save it in RAM
-    fread(NF_BUFFER_RAWSOUND[id], 1, NF_RAWSOUND[id].size, file_id);
-
-    // Close file
-    fclose(file_id);
 
     // Save sound parameters
     NF_RAWSOUND[id].freq = freq;
