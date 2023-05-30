@@ -36,10 +36,8 @@ extern "C" {
 typedef struct {
     char *tiles;        ///< Tileset data
     char *map;          ///< Map data
-    char *pal;          ///< Palette data (TODO: Remove, it looks unused)
     size_t tiles_size;  ///< Size of the tileset
     size_t map_size;    ///< Size of the map
-    size_t pal_size;    ///< Size of the palette (TODO: Remove, it looks unused)
     u16 width;          ///< Width of map in pixels
     u16 height;         ///< Height of map in pixels
     bool inuse;         ///< True if the slot is in use
