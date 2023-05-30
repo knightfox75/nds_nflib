@@ -227,7 +227,7 @@ void NF_Load16bImgData(const char *file, u32 slot, u32 x, u32 y, u32 type)
         NF_Error(116, filename, 131072);
 
     // Allocate memory in RAM
-    NF_BG16B[slot].buffer = calloc(size / 2, sizeof(u16));
+    NF_BG16B[slot].buffer = malloc(size);
     if (NF_BG16B[slot].buffer == NULL)
         NF_Error(102, NULL, size); // Not enough free RAM
 
@@ -371,7 +371,7 @@ void NF_Load8bitsBg(const char *file, u32 slot)
         NF_Error(116, filename, 65536);
 
     // Allocate space in RAM
-    NF_BG8B[slot].data = calloc(size, sizeof(u8));
+    NF_BG8B[slot].data = malloc(size);
     if (NF_BG8B[slot].data == NULL) // Not enough memory
         NF_Error(102, NULL, size);
 
@@ -397,7 +397,7 @@ void NF_Load8bitsBg(const char *file, u32 slot)
         size = 512;
 
     // Allocate space in RAM
-    NF_BG8B[slot].pal = calloc(size / 2, sizeof(u16));
+    NF_BG8B[slot].pal = malloc(size);
     if (NF_BG8B[slot].pal == NULL) // Not enough free RAM
         NF_Error(102, NULL, size);
 

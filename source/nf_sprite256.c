@@ -262,7 +262,7 @@ void NF_LoadSpritePal(const char *file, u32 id)
     if (NF_SPR256PAL[id].size < 512)
         NF_SPR256PAL[id].size = 512;
 
-    // Allocate space in RAM
+    // Allocate space in RAM, but zero the buffer in case the file needs padding
     NF_BUFFER_SPR256PAL[id] = calloc(NF_SPR256PAL[id].size, sizeof(char));
     if (NF_BUFFER_SPR256PAL[id] == NULL) // Not enough RAM
         NF_Error(102, NULL, NF_SPR256PAL[id].size);

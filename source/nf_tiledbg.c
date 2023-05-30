@@ -327,8 +327,8 @@ void NF_LoadTilesForBg(const char *file, const char *name, u32 width, u32 height
     // Create an empty .MAP file in RAM
     NF_TILEDBG[slot].mapsize = ((width / 8) * (height / 8)) * 2;
 
-    // Allocate space in RAM and zero it
-    NF_BUFFER_BGMAP[slot] = malloc(NF_TILEDBG[slot].mapsize);
+    // Allocate space in RAM and zero it as the initial state of the map
+    NF_BUFFER_BGMAP[slot] = calloc(NF_TILEDBG[slot].mapsize, sizeof(u8));
     if (NF_BUFFER_BGMAP[slot] == NULL)
         NF_Error(102, NULL, NF_TILEDBG[slot].mapsize);
 
@@ -349,8 +349,8 @@ void NF_LoadTilesForBg(const char *file, const char *name, u32 width, u32 height
     if (NF_TILEDBG[slot].palsize < 512)
         NF_TILEDBG[slot].palsize = 512;
 
-    // Allocate space in RAM
-    NF_BUFFER_BGPAL[slot] = malloc(NF_TILEDBG[slot].palsize);
+    // Allocate space in RAM and zero it in case the file needs padding
+    NF_BUFFER_BGPAL[slot] = calloc(NF_TILEDBG[slot].palsize, sizeof(u8));
     if (NF_BUFFER_BGPAL[slot] == NULL)
         NF_Error(102, NULL, NF_TILEDBG[slot].palsize);
 
@@ -1046,8 +1046,8 @@ void NF_LoadExBgPal(const char *file, u32 slot)
     if (NF_EXBGPAL[slot].palsize < 512)
         NF_EXBGPAL[slot].palsize = 512;
 
-    // Allocate memory in RAM
-    NF_EXBGPAL[slot].buffer = malloc(NF_EXBGPAL[slot].palsize);
+    // Allocate memory in RAM and zero it in case the file needs padding
+    NF_EXBGPAL[slot].buffer = calloc(NF_EXBGPAL[slot].palsize, sizeof(u8));
     if (NF_EXBGPAL[slot].buffer == NULL)
         NF_Error(102, NULL, NF_EXBGPAL[slot].palsize);
 

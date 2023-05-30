@@ -79,7 +79,7 @@ void NF_LoadRawSound(const char *file, u32 id, u32 freq, u32 format)
         NF_Error(116, filename, 256 * 1024);
 
     // Allocate space in RAM
-    NF_BUFFER_RAWSOUND[id] = calloc(NF_RAWSOUND[id].size, sizeof(char));
+    NF_BUFFER_RAWSOUND[id] = malloc(NF_RAWSOUND[id].size);
     if (NF_BUFFER_RAWSOUND[id] == NULL) // Not enough RAM
         NF_Error(102, NULL, NF_RAWSOUND[id].size);
 
