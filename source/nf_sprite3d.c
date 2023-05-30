@@ -430,10 +430,10 @@ void NF_Vram3dSpritePal(u32 id, u32 slot)
 void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
 {
     if (id > (NF_3DSPRITES - 1))
-        NF_Error(106, "3D sprite", (NF_3DSPRITES - 1));
+        NF_Error(106, "3D sprite", NF_3DSPRITES - 1);
 
     if (gfx > (NF_3DSPRITES - 1))
-        NF_Error(106, "3D sprite gfx", (NF_3DSPRITES - 1));
+        NF_Error(106, "3D sprite gfx", NF_3DSPRITES - 1);
 
     if (!NF_TEX256VRAM[gfx].inuse)
         NF_Error(111, "3D Sprite GFX", gfx);
