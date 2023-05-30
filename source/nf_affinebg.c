@@ -59,7 +59,7 @@ void NF_InitAffineBgSys(int screen)
     // big as 8 map banks.
 
     // Number of required tile maps to reserve for maps
-    u32 r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;
+    u32 r_banks = ((NF_BANKS_MAPS[screen] - 1) / 8) + 1;
     for (u32 n = 0; n < r_banks; n++)
         NF_TILEBLOCKS[screen][n] = 128; // Mark as available for maps
 

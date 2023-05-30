@@ -57,7 +57,7 @@ void NF_InitMixedBgSys(int screen)
     // big as 8 map banks.
 
     // Number of required tile maps to reserve for maps
-    u8 r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;
+    u8 r_banks = ((NF_BANKS_MAPS[screen] - 1) / 8) + 1;
     for (int n = 0; n < r_banks; n ++)
         NF_TILEBLOCKS[screen][n] = 128; // Flag them as "map" banks
 

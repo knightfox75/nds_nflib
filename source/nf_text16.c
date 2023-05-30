@@ -144,16 +144,16 @@ void NF_CreateTextLayer16(int screen, u32 layer, u32 rotation, const char* name)
     switch (rotation)
     {
         case 0: // No rotation
-            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width >> 3) - 1;
-            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height >> 4) - 1;
+            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width / 8) - 1;
+            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height / (8 * 2)) - 1;
             break;
         case 1: // 90 degrees clockwise
-            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width >> 4) - 1;
-            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height >> 3) - 1;
+            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width / (8 * 2)) - 1;
+            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height / 8) - 1;
             break;
         case 2: // 90 degrees counter-clockwise
-            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width >> 4) - 1;
-            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height >> 3) - 1;
+            NF_TEXT[screen][layer].width = (NF_TILEDBG[slot].width / (8 * 2)) - 1;
+            NF_TEXT[screen][layer].height = (NF_TILEDBG[slot].height / 8) - 1;
             break;
     }
 
@@ -277,7 +277,7 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                 {
                     // Calculate the position in the tilemap
                     s32 pos_x = tx;
-                    s32 pos_y = ty << 1;
+                    s32 pos_y = ty * 2;
 
                     // Print character
                     u32 value = (string[n] & ~31) + string[n];
@@ -311,7 +311,7 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR_16)
                 {
                     // Calculate the position in the tilemap
-                    s32 pos_x = tx << 1;
+                    s32 pos_x = tx * 2;
                     s32 pos_y = ty;
 
                     // Print character
@@ -346,7 +346,7 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                 // If it's a valid character, put character
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR_16)
                 {
-                    s32 pos_x = tx << 1;
+                    s32 pos_x = tx * 2;
                     s32 pos_y = ty;
 
                     // Print the character

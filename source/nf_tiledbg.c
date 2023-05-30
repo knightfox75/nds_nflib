@@ -121,7 +121,7 @@ void NF_InitTiledBgSys(int screen)
     // big as 8 map banks.
 
     // Number of required tile maps to reserve for maps
-    u8 r_banks = ((NF_BANKS_MAPS[screen] - 1) >> 3) + 1;
+    u8 r_banks = ((NF_BANKS_MAPS[screen] - 1) / 8) + 1;
     for (u32 n = 0; n < r_banks; n++)
         NF_TILEBLOCKS[screen][n] = 128; // Mark as available for maps
 
@@ -941,8 +941,8 @@ void NF_BgEditPalColor(int screen, u32 layer, u32 number, u32 r, u32 g, u32 b)
     u32 hibyte = (rgb >> 8) & 0xFF;
     u32 lobyte = rgb & 0xFF;
 
-    *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + (number << 1)) = lobyte;
-    *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + ((number << 1) + 1)) = hibyte;
+    *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + (number * 2)) = lobyte;
+    *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + ((number * 2) + 1)) = hibyte;
 }
 
 void NF_BgUpdatePalette(int screen, u32 layer)
@@ -983,8 +983,8 @@ void NF_BgGetPalColor(int screen, u32 layer, u32 number, u8 *r, u8 *g, u8 *b)
         NF_Error(105, text, layer);
     }
 
-    u32 lobyte = *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + (number << 1));
-    u32 hibyte = *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + ((number << 1) + 1));
+    u32 lobyte = *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + (number * 2));
+    u32 hibyte = *(NF_BUFFER_BGPAL[NF_TILEDBG_LAYERS[screen][layer].bgslot] + ((number * 2) + 1));
 
     // Get the combined RGB value
     u32 rgb = (hibyte << 8) | lobyte;
@@ -1182,8 +1182,8 @@ void NF_RotateTileGfx(u32 slot, u32 tile, u32 rotation)
             {
                 for (int xa = 0; xa < 8; xa++)
                 {
-                    int pos_a = (ya << 3) + xa;
-                    int pos_b = (yb << 3) + xb;
+                    int pos_a = (ya * 8) + xa;
+                    int pos_b = (yb * 8) + xb;
                     character_b[pos_b] = character_a[pos_a];
                     yb++;
                     if (yb > 7)
@@ -1202,8 +1202,8 @@ void NF_RotateTileGfx(u32 slot, u32 tile, u32 rotation)
             {
                 for (int xa = 0; xa < 8; xa++)
                 {
-                    int pos_a = (ya << 3) + xa;
-                    int pos_b = (yb << 3) + xb;
+                    int pos_a = (ya * 8) + xa;
+                    int pos_b = (yb * 8) + xb;
                     character_b[pos_b] = character_a[pos_a];
                     yb--;
                     if (yb < 0)
@@ -1222,8 +1222,8 @@ void NF_RotateTileGfx(u32 slot, u32 tile, u32 rotation)
             {
                 for (int xa = 0; xa < 8; xa++)
                 {
-                    int pos_a = (ya << 3) + xa;
-                    int pos_b = (yb << 3) + xb;
+                    int pos_a = (ya * 8) + xa;
+                    int pos_b = (yb * 8) + xb;
                     character_b[pos_b] = character_a[pos_a];
                     xb--;
                     if (xb < 0)

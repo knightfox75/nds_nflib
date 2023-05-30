@@ -75,8 +75,8 @@ void NF_LoadRawSound(const char *file, u32 id, u32 freq, u32 format)
     rewind(file_id);
 
     // If the size is over the limit
-    if (NF_RAWSOUND[id].size > (1 << 18))
-        NF_Error(116, filename, (1 << 18));
+    if (NF_RAWSOUND[id].size > (256 * 1024))
+        NF_Error(116, filename, 256 * 1024);
 
     // Allocate space in RAM
     NF_BUFFER_RAWSOUND[id] = calloc(NF_RAWSOUND[id].size, sizeof(char));

@@ -417,7 +417,7 @@ void NF_Vram3dSpritePal(u32 id, u32 slot)
         NF_Error(106, "Sprite Palette Slot", 31);
 
     // Copy palette to VRAM to the right slot
-    u32 address = 0x06890000 + (slot << 9);
+    u32 address = 0x06890000 + (slot * 256 * 2);
     vramSetBankF(VRAM_F_LCD); // Let the CPU access VRAM_F
     NF_DmaMemCopy((void *)address, NF_BUFFER_SPR256PAL[id], NF_SPR256PAL[id].size);
     vramSetBankF(VRAM_F_TEX_PALETTE); // Setup VRAM_F for texture palettes

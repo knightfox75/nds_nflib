@@ -308,10 +308,10 @@ void NF_VramSpriteGfx(int screen, u32 ram, u32 vram, bool keepframes)
 
     s16 id = 255; // This will hold the ID of a free slot
 
-    // Calculate the size of one frame
+    // Calculate the size of one frame. One time is 64 bytes (8 * 8)
     u32 width = NF_SPR256GFX[ram].width / 8;
     u32 height = NF_SPR256GFX[ram].height / 8;
-    NF_SPR256VRAM[screen][vram].framesize = (width * height) << 6;
+    NF_SPR256VRAM[screen][vram].framesize = (width * height) * 64;
 
     // Calculate the last frame of the animation
     NF_SPR256VRAM[screen][vram].lastframe =

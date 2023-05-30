@@ -75,7 +75,7 @@ void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
         NF_Error(101, filename, 0);
 
     // Get file size
-    NF_TILEDBG[slot].tilesize = NF_TEXT_FONT_CHARS << 6; // 100 chars x 64 bytes
+    NF_TILEDBG[slot].tilesize = NF_TEXT_FONT_CHARS * 64;
 
     // Allocate space in RAM
     NF_BUFFER_BGTILES[slot] = malloc(NF_TILEDBG[slot].tilesize);
@@ -93,10 +93,8 @@ void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
             NF_RotateTileGfx(slot, n, rotation);
     }
 
-    // Create an empty map in RAM
-
-    // (width / 8) * (height / 8) * 2
-    NF_TILEDBG[slot].mapsize = ((width >> 3) * (height >> 3)) << 1;
+    // Create an empty map in RAM. Each map entry is 2 bytes in size
+    NF_TILEDBG[slot].mapsize = ((width / 8) * (height / 8)) * 2;
 
     // Allocate space in RAM and zero it (calloc returns zeroed memory)
     NF_BUFFER_BGMAP[slot] = calloc(NF_TILEDBG[slot].mapsize, sizeof(char));

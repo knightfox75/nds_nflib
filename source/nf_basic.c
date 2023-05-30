@@ -116,7 +116,7 @@ __attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int
             iprintf("File %s\n", text);
             iprintf("is too big.\n");
             iprintf("Max size for\n");
-            iprintf("file is %u KB.\n", value >> 10);
+            iprintf("file is %u KB.\n", value / 1024);
             break;
 
         case 117: // Invalid affine background size (only 256x256 and 512x512 allowed)

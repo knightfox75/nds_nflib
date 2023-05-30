@@ -104,7 +104,7 @@ void NF_LoadBMP(const char *file, u32 slot)
                 {
                     u32 offset = (((bmp_header.height - 1) - y) * bmp_header.width) + x;
 
-                    u32 pixel = buffer[idx] << 2;
+                    u32 pixel = buffer[idx] * 4; // RGBA
 
                     // Split BGR (not RGB) value
                     u32 b = palette[pixel] >> 3;
