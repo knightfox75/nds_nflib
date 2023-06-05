@@ -404,6 +404,9 @@ void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
     if (!NF_TEXPALSLOT[pal].inuse)
         NF_Error(111, "3D Sprite PAL", pal);
 
+    if (NF_3DSPRITE[id].inuse)
+        NF_Delete3dSprite(id);
+
     // Calculate palette address and save it in the sprite struct
     u32 pal_address = pal * 256 * 2;
     NF_3DSPRITE[id].pal = pal_address; // Offset to the address from the base of VRAM_F
