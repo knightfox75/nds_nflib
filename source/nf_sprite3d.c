@@ -38,14 +38,6 @@ void NF_Init3dSpriteSys(void)
     {
         NF_3DSPRITE[n].inuse = false; // Mark as unused
 
-        NF_TEX256VRAM[n].size = 0;
-        NF_TEX256VRAM[n].width = 0;
-        NF_TEX256VRAM[n].height = 0;
-        NF_TEX256VRAM[n].address = 0;
-        NF_TEX256VRAM[n].ramid = 0;
-        NF_TEX256VRAM[n].framesize = 0;
-        NF_TEX256VRAM[n].lastframe = 0;
-        NF_TEX256VRAM[n].keepframes = false;
         NF_TEX256VRAM[n].inuse = false; // Mark as unused
 
         NF_CREATED_3DSPRITE.id[n] = 0;
@@ -272,14 +264,8 @@ void NF_Free3dSpriteGfx(u32 id)
     // Increment fragmented memory counter
     NF_TEXVRAM.fragmented += NF_TEX256VRAM[id].size;
 
-    // Reset graphics information
-    NF_TEX256VRAM[id].size = 0;
-    NF_TEX256VRAM[id].width = 0;
-    NF_TEX256VRAM[id].height = 0;
-    NF_TEX256VRAM[id].address = 0;
-    NF_TEX256VRAM[id].framesize = 0;
-    NF_TEX256VRAM[id].lastframe = 0;
-    NF_TEX256VRAM[id].inuse = false; // Mark as unused
+    // Mark as unused
+    NF_TEX256VRAM[id].inuse = false;
 
     // Check if VRAM is too fragmented and it has to be defragmented
     if (NF_TEXVRAM.fragmented >= (NF_TEXVRAM.inarow / 2))
@@ -444,8 +430,6 @@ void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
     NF_3DSPRITE[id].height = NF_TEX256VRAM[gfx].height;
     NF_3DSPRITE[id].framesize = NF_TEX256VRAM[gfx].framesize;
     NF_3DSPRITE[id].lastframe = NF_TEX256VRAM[gfx].lastframe;
-    NF_3DSPRITE[id].inuse = true;
-    NF_3DSPRITE[id].show = true;
     NF_3DSPRITE[id].prio = NF_CREATED_3DSPRITE.total;
     NF_3DSPRITE[id].poly_id = 0;
     NF_3DSPRITE[id].alpha = 31;
@@ -462,6 +446,8 @@ void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
     // Register it as created
     NF_CREATED_3DSPRITE.id[NF_CREATED_3DSPRITE.total] = id;
     NF_CREATED_3DSPRITE.total++;
+    NF_3DSPRITE[id].show = true;
+    NF_3DSPRITE[id].inuse = true;
 }
 
 void NF_Delete3dSprite(u32 id)
