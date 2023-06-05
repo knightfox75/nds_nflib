@@ -1,6 +1,7 @@
 #!/bin/sh
 
 grit blueball.png -ftb -fh! -gTFF00FF -gb -gB8 -m!
+grit redcar.png -ftb -fh! -gTFF00FF -gb -gB8 -m!
 
 for file in *.bin; do
     mv -- "$file" "${file%.bin}"
