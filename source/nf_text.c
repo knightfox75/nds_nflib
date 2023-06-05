@@ -281,7 +281,7 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
                 {
                     NF_SetTileOfMap(screen,layer, tx, ty,
-                                    (NF_TEXT[screen][layer].pal << 12) + string[n]);
+                                    (NF_TEXT[screen][layer].pal << 12) | string[n]);
                     tx++;
                 }
 
@@ -308,7 +308,7 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
                 {
                     NF_SetTileOfMap(screen,layer, tx, ty,
-                                    (NF_TEXT[screen][layer].pal << 12) + string[n]);
+                                    (NF_TEXT[screen][layer].pal << 12) | string[n]);
                     ty++;
                 }
 
@@ -336,7 +336,7 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
                 if (string[n] <= NF_TEXT_FONT_LAST_VALID_CHAR)
                 {
                     NF_SetTileOfMap(screen,layer, tx, ty,
-                                    (NF_TEXT[screen][layer].pal << 12) + string[n]);
+                                    (NF_TEXT[screen][layer].pal << 12) | string[n]);
                     ty --;
                 }
 

@@ -261,9 +261,9 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                     // Print character
                     u32 value = (string[n] & ~31) + string[n];
                     NF_SetTileOfMap(screen,layer, pos_x, pos_y,
-                                    (NF_TEXT[screen][layer].pal << 12) + value);
+                                    (NF_TEXT[screen][layer].pal << 12) | value);
                     NF_SetTileOfMap(screen,layer, pos_x, pos_y + 1,
-                                    (NF_TEXT[screen][layer].pal << 12) + (value + 32));
+                                    (NF_TEXT[screen][layer].pal << 12) | (value + 32));
                     tx++;
                 }
 
@@ -296,9 +296,9 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                     // Print character
                     u32 value = (string[n] & ~31) + string[n];
                     NF_SetTileOfMap(screen,layer, pos_x, pos_y,
-                                    (NF_TEXT[screen][layer].pal << 12) + value);
+                                    (NF_TEXT[screen][layer].pal << 12) | value);
                     NF_SetTileOfMap(screen,layer, pos_x - 1, pos_y,
-                                    (NF_TEXT[screen][layer].pal << 12) + (value + 32));
+                                    (NF_TEXT[screen][layer].pal << 12) | (value + 32));
                     ty++;
                 }
 
@@ -331,9 +331,9 @@ void NF_WriteText16(int screen, u32 layer, u32 x, u32 y, const char *text)
                     // Print the character
                     u32 value = (string[n] & ~31) + string[n];
                     NF_SetTileOfMap(screen,layer, pos_x, pos_y,
-                                    (NF_TEXT[screen][layer].pal << 12) + value);
+                                    (NF_TEXT[screen][layer].pal << 12) | value);
                     NF_SetTileOfMap(screen,layer, pos_x + 1, pos_y,
-                                    (NF_TEXT[screen][layer].pal << 12) + (value + 32));
+                                    (NF_TEXT[screen][layer].pal << 12) | (value + 32));
                     ty--;
                 }
 

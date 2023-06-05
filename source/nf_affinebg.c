@@ -137,7 +137,7 @@ void NF_LoadAffineBg(const char *file, const char *name, u32 width, u32 height)
     rewind(file_id);
 
     // Allocate space in RAM
-    NF_BUFFER_BGMAP[slot] = malloc (NF_TILEDBG[slot].mapsize);
+    NF_BUFFER_BGMAP[slot] = malloc(NF_TILEDBG[slot].mapsize);
     if (NF_BUFFER_BGMAP[slot] == NULL) // Not enough available RAM
         NF_Error(102, NULL, NF_TILEDBG[slot].mapsize);
 

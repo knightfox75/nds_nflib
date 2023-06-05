@@ -878,7 +878,7 @@ void NF_3dSpriteUpdatePalette(u32 pal)
         NF_Error(111, "Sprite palette", pal);
 
     // Get slot where the palette is stored in RAM
-    u8 slot = NF_TEXPALSLOT[pal].ramslot;
+    u32 slot = NF_TEXPALSLOT[pal].ramslot;
 
     // Update palette in VRAM
     u32 address = 0x06890000 + (pal * 256 * 2);
@@ -892,11 +892,11 @@ void NF_3dSpriteGetPalColor(u32 pal, u32 number, u8 *r, u8 *g, u8 *b)
     if (!NF_TEXPALSLOT[pal].inuse)
         NF_Error(111, "Sprite palette", pal);
 
-    u16 lobyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number * 2));
-    u16 hibyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number * 2) + 1));
+    u32 lobyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + (number * 2));
+    u32 hibyte = *(NF_BUFFER_SPR256PAL[NF_TEXPALSLOT[pal].ramslot] + ((number * 2) + 1));
 
     // Build RGB value
-    u16 rgb = (hibyte << 8) + lobyte;
+    u32 rgb = (hibyte << 8) + lobyte;
 
     *r = rgb & 0x1F;
     *g = (rgb >> 5) & 0x1F;
