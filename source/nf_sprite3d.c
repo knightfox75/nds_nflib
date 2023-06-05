@@ -36,33 +36,7 @@ void NF_Init3dSpriteSys(void)
     // Reset all sprite control structures
     for (int n = 0; n < NF_3DSPRITES; n++)
     {
-        NF_3DSPRITE[n].x = 0;
-        NF_3DSPRITE[n].y = 0;
-        NF_3DSPRITE[n].z = 0;
-        NF_3DSPRITE[n].rx = 0;
-        NF_3DSPRITE[n].ry = 0;
-        NF_3DSPRITE[n].rz = 0;
-        NF_3DSPRITE[n].rot = false;
-        NF_3DSPRITE[n].sx = 64 << 6;
-        NF_3DSPRITE[n].sy = 64 << 6;
-        NF_3DSPRITE[n].scale = false;
-        NF_3DSPRITE[n].width = 0;
-        NF_3DSPRITE[n].height = 0;
         NF_3DSPRITE[n].inuse = false; // Mark as unused
-        NF_3DSPRITE[n].show = false;
-        NF_3DSPRITE[n].gfx_tex_format = 0;
-        NF_3DSPRITE[n].gfx = 0;
-        NF_3DSPRITE[n].gfxid = 0;
-        NF_3DSPRITE[n].frame = 0;
-        NF_3DSPRITE[n].newframe = 0;
-        NF_3DSPRITE[n].framesize = 0;
-        NF_3DSPRITE[n].lastframe = 0;
-        NF_3DSPRITE[n].gfx_pal_format = 0;
-        NF_3DSPRITE[n].pal = 0;
-        NF_3DSPRITE[n].palid = 0;
-        NF_3DSPRITE[n].prio = 0;
-        NF_3DSPRITE[n].poly_id = 0;
-        NF_3DSPRITE[n].alpha = 31;
 
         NF_TEX256VRAM[n].size = 0;
         NF_TEX256VRAM[n].width = 0;
@@ -475,6 +449,15 @@ void NF_Create3dSprite(u32 id, u32 gfx, u32 pal, s32 x, s32 y)
     NF_3DSPRITE[id].prio = NF_CREATED_3DSPRITE.total;
     NF_3DSPRITE[id].poly_id = 0;
     NF_3DSPRITE[id].alpha = 31;
+    NF_3DSPRITE[id].rx = 0;
+    NF_3DSPRITE[id].ry = 0;
+    NF_3DSPRITE[id].rz = 0;
+    NF_3DSPRITE[id].rot = false;
+    NF_3DSPRITE[id].sx = 64 << 6;
+    NF_3DSPRITE[id].sy = 64 << 6;
+    NF_3DSPRITE[id].scale = false;
+    NF_3DSPRITE[id].frame = 0;
+    NF_3DSPRITE[id].newframe = 0;
 
     // Register it as created
     NF_CREATED_3DSPRITE.id[NF_CREATED_3DSPRITE.total] = id;
@@ -489,34 +472,8 @@ void NF_Delete3dSprite(u32 id)
     if (!NF_3DSPRITE[id].inuse)
         NF_Error(112, "3D sprite", id);
 
-    // Reset sprite parameter
-    NF_3DSPRITE[id].x = 0;
-    NF_3DSPRITE[id].y = 0;
-    NF_3DSPRITE[id].z = 0;
-    NF_3DSPRITE[id].rx = 0;
-    NF_3DSPRITE[id].ry = 0;
-    NF_3DSPRITE[id].rz = 0;
-    NF_3DSPRITE[id].rot = false;
-    NF_3DSPRITE[id].sx = 64 << 6;
-    NF_3DSPRITE[id].sy = 64 << 6;
-    NF_3DSPRITE[id].scale = false;
-    NF_3DSPRITE[id].width = 0;
-    NF_3DSPRITE[id].height = 0;
+    // Mark sprite as unused
     NF_3DSPRITE[id].inuse = false;
-    NF_3DSPRITE[id].show = false;
-    NF_3DSPRITE[id].gfx_tex_format = 0;
-    NF_3DSPRITE[id].gfx = 0;
-    NF_3DSPRITE[id].gfxid = 0;
-    NF_3DSPRITE[id].frame = 0;
-    NF_3DSPRITE[id].newframe = 0;
-    NF_3DSPRITE[id].framesize = 0;
-    NF_3DSPRITE[id].lastframe = 0;
-    NF_3DSPRITE[id].gfx_pal_format = 0;
-    NF_3DSPRITE[id].pal = 0;
-    NF_3DSPRITE[id].palid = 0;
-    NF_3DSPRITE[id].prio = 0;
-    NF_3DSPRITE[id].poly_id = 0;
-    NF_3DSPRITE[id].alpha = 31;
 
     // Remove the selected sprite from the queue
 
@@ -669,6 +626,9 @@ void NF_Draw3dSprites(void)
     for (int n = 0; n < NF_CREATED_3DSPRITE.total; n++)
     {
         u32 id = NF_CREATED_3DSPRITE.id[n];
+
+        if (!NF_3DSPRITE[id].inuse)
+            continue;
 
         if (!NF_3DSPRITE[id].show)
             continue;
