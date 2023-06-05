@@ -24,7 +24,7 @@ void hblank_handler(void)
         // Calculate fade value based on the line
         int fade = 0x0F - (((vline + 1) * 16) / 192);
 
-        REG_BLDY = fade >> 1;   // Top screen
+        REG_BLDY = fade / 2;   // Top screen
         REG_BLDY_SUB = fade;    // Bottom screen
     }
 }

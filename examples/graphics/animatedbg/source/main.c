@@ -39,9 +39,9 @@ void InitAnimatedBg(void)
         for (int x = 0; x < MAP_X; x++)
         {
             // Calculate the map 4x4 region to fill
-            int start_x = x << 2;
+            int start_x = x * 4;
             int end_x = start_x + 4;
-            int start_y = y << 2;
+            int start_y = y * 4;
             int end_y = start_y + 4;
 
             // Displacement
@@ -58,7 +58,7 @@ void InitAnimatedBg(void)
                     if (frame > 10)
                         frame = 10;
 
-                    NF_SetTileOfMap(1, 3, tile_x, tile_y, (frame << 4) + n);
+                    NF_SetTileOfMap(1, 3, tile_x, tile_y, (frame * 16) + n);
                     n++;
                 }
             }
@@ -86,9 +86,9 @@ void AnimateWater(void)
         for (int x = 0; x < MAP_X; x++)
         {
             // Calculate the map 4x4 region to fill
-            int start_x = x << 2;
+            int start_x = x * 4;
             int end_x = start_x + 4;
-            int start_y = y << 2;
+            int start_y = y * 4;
             int end_y = start_y + 4;
 
             // CAlculate the frame to draw
@@ -107,7 +107,7 @@ void AnimateWater(void)
                 {
                     for (int tile_x = start_x; tile_x < end_x; tile_x++)
                     {
-                        NF_SetTileOfMap(1, 3, tile_x, tile_y, (WATER_FRAME[x][y] << 4) + n);
+                        NF_SetTileOfMap(1, 3, tile_x, tile_y, (WATER_FRAME[x][y] * 16) + n);
                         n++;
                     }
                 }

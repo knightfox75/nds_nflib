@@ -34,7 +34,7 @@ void hblank_handler(void)
         if ((bgx[vline] < 1) || (bgx[vline] > 63))
             i[vline] *= -1;
 
-        NF_ScrollBg(0, 1, bg_x[1] + ((bgx[vline] >> 3) - 4), 0);
+        NF_ScrollBg(0, 1, bg_x[1] + ((bgx[vline] / 8) - 4), 0);
     }
 
     if ((vline >= 160) && (vline <= 191))
@@ -45,7 +45,7 @@ void hblank_handler(void)
         if ((bgx[vline] < 1) || (bgx[vline] > (vline - 156)))
             i[vline] *= -1;
 
-        NF_ScrollBg(0, 0, (bg_x[0] + (((vline - 156) >> 1) - bgx[vline])), 0);
+        NF_ScrollBg(0, 0, bg_x[0] + (((vline - 156) / 2) - bgx[vline]), 0);
     }
 }
 
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
         // Layer 0 calculations
         if ((y >= 160) && (y <= 191))
         {
-            bgx[y] = ((y - 156) >> 1);
+            bgx[y] = (y - 156) / 2;
             i[y] = inc;
             inc *= -1;
         }

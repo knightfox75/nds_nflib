@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
                     memcpy(NF_16BITS_BACKBUFFER[1] + offset,
                            NF_BG16B[1].buffer + offset,
-                           (sqr_xb - sqr_xa) << 1);
+                           (sqr_xb - sqr_xa) * 2);
                 }
             }
         }

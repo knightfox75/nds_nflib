@@ -78,13 +78,13 @@ int main(int argc, char **argv)
     {
         mini_x = right;
         mini_y = (NF_BG16B[0].height * right) / NF_BG16B[0].width;
-        disp_y = (192 - mini_y) >> 1;
+        disp_y = (192 - mini_y) / 2;
     }
     else
     {
         mini_x = (NF_BG16B[0].width * bottom) / NF_BG16B[0].height;
         mini_y = bottom;
-        disp_x = (256 - mini_x) >> 1;
+        disp_x = (256 - mini_x) / 2;
     }
 
     // Generate thumbnail

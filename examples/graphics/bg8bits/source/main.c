@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
     // Copy palette of the bottom screen to the palette of the backbuffer
     for (int n = 0; n < 256; n++)
-        NF_8BITS_BACKBUFFER[1].pal[n] = *((u16*)(0x05000400 + (n << 1)));
+        NF_8BITS_BACKBUFFER[1].pal[n] = *((u16*)(0x05000400 + (n * 2)));
 
     // Set last color of the palette to red to draw using read
     NF_8BITS_BACKBUFFER[1].pal[255] = RGB15(31, 0, 0);

@@ -31,7 +31,7 @@ void hblank_handler(void)
         if ((bgx[vline] < 1) || (bgx[vline] > 63))
             i[vline] *= -1;
 
-        NF_ScrollBg(1, 3, ((bgx[vline] >> 3) - 4), 0);
+        NF_ScrollBg(1, 3, (bgx[vline] / 8) - 4, 0);
     }
 }
 

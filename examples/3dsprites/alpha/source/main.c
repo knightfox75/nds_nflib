@@ -91,7 +91,7 @@ int main(int argc, char **argv)
             x[n] = x[n - 1];
             y[n] = y[n - 1];
 
-            NF_Blend3dSprite(n, n + 1, 31 - (n << 2));
+            NF_Blend3dSprite(n, n + 1, 31 - (n * 4));
             NF_Move3dSprite(n, x[n], y[n]);
         }
 

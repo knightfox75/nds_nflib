@@ -128,18 +128,18 @@ int main(int argc, char **argv)
 
         // Change the tile under the pointer if the user presses a button
         if (keys & KEY_B)
-            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 0);
+            NF_SetTileOfMap(1, 2, x / 8, y / 8, 0);
         if (keys & KEY_A)
-            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 1);
+            NF_SetTileOfMap(1, 2, x / 8, y / 8, 1);
         if (keys & KEY_Y)
-            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 2);
+            NF_SetTileOfMap(1, 2, x / 8, y / 8, 2);
         if (keys & KEY_X)
-            NF_SetTileOfMap(1, 2, x >> 3, y >> 3, 3);
+            NF_SetTileOfMap(1, 2, x / 8, y / 8, 3);
 
         NF_UpdateVramMap(1, 2);
 
         // Print the color of the tile under the pointer
-        int tilenum = NF_GetTileOfMap(1, 2, x >> 3, y >> 3);
+        int tilenum = NF_GetTileOfMap(1, 2, x / 8, y / 8);
         switch (tilenum)
         {
             case 0:
