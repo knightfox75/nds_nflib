@@ -6,6 +6,8 @@
 // NightFox LIB - Common 2D functions
 // http://www.nightfoxandco.com/
 
+#include <stdio.h>
+
 #include <nds.h>
 
 #include "nf_2d.h"
