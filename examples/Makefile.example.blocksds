@@ -21,7 +21,7 @@ GAME_ICON	:= $(BLOCKSDS)/sys/icon.bmp
 # -----------------
 
 SOURCEDIRS	?= source
-NITROFATDIR	?= nitrofiles
+NITROFSDIR	?= nitrofiles
 
 # DLDI and internal SD slot of DSi
 # --------------------------------

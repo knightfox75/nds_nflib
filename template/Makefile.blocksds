@@ -25,7 +25,7 @@ INCLUDEDIRS	:=
 GFXDIRS		:=
 BINDIRS		:=
 AUDIODIRS	:=
-NITROFATDIR	:= nitrofiles
+NITROFSDIR	:= nitrofiles
 
 # DLDI and internal SD slot of DSi
 # --------------------------------
