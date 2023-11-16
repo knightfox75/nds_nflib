@@ -1,3 +1,12 @@
+NightFox's Lib Ver. 1.1.0
+--------------------------------------------------------------------------------
+- Translate examples comments in library to English.
+- Cleanup examples and library files.
+- Improve deletion code of 3D sprites
+- Update BlocksDS makefiles.
+- A few minor fixes.
+
+
 NightFox's Lib Ver. 1.0.0
 --------------------------------------------------------------------------------
 - Add original assets and conversion scripts to all examples.
