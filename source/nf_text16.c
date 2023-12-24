@@ -51,11 +51,16 @@ void NF_LoadTextFont16(const char *file, const char *name, u32 width, u32 height
     // File path
     char filename[256];
 
-    // Load .FNT file
+    // Load .FNT/.IMG file
     snprintf(filename, sizeof(filename), "%s/%s.fnt", NF_ROOTFOLDER, file);
     FILE *file_id = fopen(filename, "rb");
-    if (file_id == NULL)
-        NF_Error(101, filename, 0);
+    if (file_id == NULL) // If the file can't be opened
+    {
+        snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
+        file_id = fopen(filename, "rb");
+        if (file_id == NULL) // If the file can't be opened
+            NF_Error(101, filename, 0);
+    }
 
     // Get file size. 256 colors, so 1 byte per pixel (8x16 pixels)
     NF_TILEDBG[slot].tilesize = NF_TEXT_FONT_CHARS_16 * 8 * 16;

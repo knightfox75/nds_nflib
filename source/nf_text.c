@@ -68,11 +68,16 @@ void NF_LoadTextFont(const char *file, const char *name, u32 width, u32 height,
     // File path
     char filename[256];
 
-    // Load .FNT file
+    // Load .FNT/.IMG file
     snprintf(filename, sizeof(filename), "%s/%s.fnt", NF_ROOTFOLDER, file);
     FILE *file_id = fopen(filename, "rb");
     if (file_id == NULL) // If the file can't be opened
-        NF_Error(101, filename, 0);
+    {
+        snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
+        file_id = fopen(filename, "rb");
+        if (file_id == NULL) // If the file can't be opened
+            NF_Error(101, filename, 0);
+    }
 
     // Get file size
     NF_TILEDBG[slot].tilesize = NF_TEXT_FONT_CHARS * 64;
