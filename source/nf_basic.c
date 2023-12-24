@@ -356,3 +356,13 @@ void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size)
     fread(buffer_, 1, size_, f);
     fclose(f);
 }
+
+bool NF_FileExists(const char *path)
+{
+    FILE *f = fopen(path, "rb");
+    if (f == NULL)
+        return false;
+
+    fclose(f);
+    return true;
+}

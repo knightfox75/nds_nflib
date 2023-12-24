@@ -111,6 +111,9 @@ static inline u32 NF_GetLanguage(void)
 // Internal use. Used to load files and optionally pad the resulting buffer.
 void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size);
 
+// Internal use. Returns true if the file exists and can be open for reading.
+bool NF_FileExists(const char *path);
+
 /// @}
 
 #endif // NF_BASIC_H__
