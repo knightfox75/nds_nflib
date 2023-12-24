@@ -61,8 +61,14 @@ void NF_LoadCollisionMap(const char *file, u32 id, u32 width, u32 height)
     // File path
     char filename[256];
 
-    // Load .CMP file (tilemap)
+    // Load .CMP/.MAP file (tilemap)
     snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
+    if (!NF_FileExists(filename))
+    {
+        snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
+        if (!NF_FileExists(filename))
+            NF_Error(101, filename, 0);
+    }
     NF_FileLoad(filename, &NF_CMAP[id].map, &NF_CMAP[id].map_size, 0);
 
     // Save map size
@@ -158,12 +164,24 @@ void NF_LoadCollisionBg(const char *file, u32 id, u32 width, u32 height)
     // File path
     char filename[256];
 
-    // Load .DAT file (tileset)
-    snprintf(filename, sizeof(filename),  "%s/%s.dat", NF_ROOTFOLDER, file);
+    // Load .DAT/.IMG file (tileset)
+    snprintf(filename, sizeof(filename), "%s/%s.dat", NF_ROOTFOLDER, file);
+    if (!NF_FileExists(filename))
+    {
+        snprintf(filename, sizeof(filename), "%s/%s.img", NF_ROOTFOLDER, file);
+        if (!NF_FileExists(filename))
+            NF_Error(101, filename, 0);
+    }
     NF_FileLoad(filename, &NF_CMAP[id].tiles, &NF_CMAP[id].tiles_size, 0);
 
-    // Load .CMP file (tilemap)
+    // Load .CMP/.MAP file (tilemap)
     snprintf(filename, sizeof(filename), "%s/%s.cmp", NF_ROOTFOLDER, file);
+    if (!NF_FileExists(filename))
+    {
+        snprintf(filename, sizeof(filename), "%s/%s.map", NF_ROOTFOLDER, file);
+        if (!NF_FileExists(filename))
+            NF_Error(101, filename, 0);
+    }
     NF_FileLoad(filename, &NF_CMAP[id].map, &NF_CMAP[id].map_size, 0);
 
     // Save map size
