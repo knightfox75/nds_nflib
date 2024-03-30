@@ -1,3 +1,8 @@
+NightFox's Lib Ver. 1.1.2
+-------------------------
+
+- Fix C++ builds with BlocksDS.
+
 NightFox's Lib Ver. 1.1.1
 -------------------------
 
