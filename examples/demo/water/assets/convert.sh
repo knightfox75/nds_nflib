@@ -1,11 +1,9 @@
 #!/bin/sh
 
-for file in *.png; do
-    grit "$file" -ftb -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
-done
+GRIT=/opt/blocksds/core/tools/grit/grit
 
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
+for file in *.png; do
+    $GRIT "$file" -ftB -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
 done
 
 mv *.pal *.img *.map ../nitrofiles/bg

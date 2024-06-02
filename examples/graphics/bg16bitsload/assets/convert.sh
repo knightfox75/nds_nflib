@@ -1,9 +1,7 @@
 #!/bin/sh
 
-grit bitmap16.jpg -ftb -fh! -gb -gB16
+GRIT=/opt/blocksds/core/tools/grit/grit
 
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
-done
+$GRIT bitmap16.jpg -ftB -fh! -gb -gB16
 
 mv *.img ../nitrofiles/bmp

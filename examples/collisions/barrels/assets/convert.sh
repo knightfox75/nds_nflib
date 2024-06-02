@@ -1,29 +1,15 @@
 #!/bin/sh
 
-grit whiteball.png -ftb -fh! -gTFF00FF -gt -gB8 -m!
+GRIT=/opt/blocksds/core/tools/grit/grit
 
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
-done
+$GRIT whiteball.png -ftB -fh! -gTFF00FF -gt -gB8 -m!
 
 mv *.pal *.img ../nitrofiles/sprite
 
-grit pdemo_bg.png -ftb -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
-
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
-done
+$GRIT pdemo_bg.png -ftB -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
 
 mv *.pal *.img *.map ../nitrofiles/bg
 
-grit pdemo_colmap.png -ftb -fh! -gt -gB8 -mRtp -mLf -p!
+$GRIT pdemo_colmap.png -ftB -fh! -gt -gB8 -mRtp -mLf -p!
 
-for file in *.img.bin; do
-    mv -- "$file" "${file%.img.bin}".dat
-done
-
-for file in *.map.bin; do
-    mv -- "$file" "${file%.map.bin}".cmp
-done
-
-mv *.dat *.cmp ../nitrofiles/maps
+mv *.img *.map ../nitrofiles/maps

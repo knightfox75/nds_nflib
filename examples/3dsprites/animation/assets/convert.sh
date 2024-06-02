@@ -1,18 +1,12 @@
 #!/bin/sh
 
-grit numbers.png -ftb -fh! -gTFF00FF -gb -gB8 -m!
+GRIT=/opt/blocksds/core/tools/grit/grit
 
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
-done
+$GRIT numbers.png -ftB -fh! -gTFF00FF -gb -gB8 -m!
 
 mv *.pal *.img ../nitrofiles/sprite
 
-grit nfl.png -ftb -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
-grit bg3.png -ftb -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
-
-for file in *.bin; do
-    mv -- "$file" "${file%.bin}"
-done
+$GRIT nfl.png -ftB -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
+$GRIT bg3.png -ftB -fh! -gTFF00FF -gt -gB8 -mR8 -mLs
 
 mv *.pal *.img *.map ../nitrofiles/bg
