@@ -92,8 +92,37 @@ Features:
   - The assets in this repository are licensed under the CC-BY-4.0 license.
   - The examples are licensed under the CC0 license.
 
+Setup instructions for BlocksDS
+===============================
+
+1. Clone this repository. If you have followed the getting started guide of
+   `BlocksDS <https://blocksds.github.io/docs/>`_, all you have to do is
+   go to the folder of NFlib and run:
+
+   .. code:: bash
+
+       make install
+
+2. That's it! Go to the folder of any of the examples and try to build it with:
+
+   .. code:: bash
+
+       make
+
+Note: The build system of the examples in this repository is make. The makefiles
+aren't very flexible, and they don't support saving graphics to the filesystem
+(you can only inject them as data to the ARM9, which isn't acceptable for big
+games).
+
+You can try `ArchitectDS <https://github.com/AntonioND/architectds>`. This
+build system written in Python is more flexible, and it allows you to save your
+converted graphics to NitroFS so that your game can grow as much as you want.
+
 Setup instructions for devkitPro
 ================================
+
+This option is discouraged. The implementation of NitroFS of devkitPro is buggy
+and it won't work in accurate emulators like **melonDS**.
 
 1. Clone this repository. Create a symbolic link to it inside the devkitPro
    folder in your system, and call it ``nflib``.
@@ -114,36 +143,10 @@ Setup instructions for devkitPro
 
    .. code:: bash
 
-       make
+       make -f Makefile.dkp
 
 3. That's it! Go to the folder of any of the examples and try to build it with:
 
    .. code:: bash
 
-       make
-
-Setup instructions for BlocksDS
-===============================
-
-1. Clone this repository. If you have followed the tutorial of `BlocksDS
-   <https://github.com/blocksds/sdk>`_, you should have the compiler in your
-   ``PATH``. All you have to do is go to the folder of the repository and run:
-
-   .. code:: bash
-
-       make -f Makefile.blocksds install
-
-2. That's it! Go to the folder of any of the examples and try to build it with:
-
-   .. code:: bash
-
-       make -f Makefile.blocksds
-
-Note: The build system of the examples in this repository is make. The makefiles
-aren't very flexible, and they don't support saving graphics to the filesystem
-(you can only inject them as data to the ARM9, which isn't acceptable for big
-games).
-
-You can try `ArchitectDS <https://github.com/AntonioND/architectds>`. This
-build system written in Python is more flexible, and it allows you to save your
-converted graphics to NitroFS so that your game can grow as much as you want.
+       make -f Makefile.dkp
