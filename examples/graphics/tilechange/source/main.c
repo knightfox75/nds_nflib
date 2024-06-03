@@ -128,13 +128,13 @@ int main(int argc, char **argv)
 
         // Change the tile under the pointer if the user presses a button
         if (keys & KEY_B)
-            NF_SetTileOfMap(1, 2, x / 8, y / 8, 0);
-        if (keys & KEY_A)
             NF_SetTileOfMap(1, 2, x / 8, y / 8, 1);
-        if (keys & KEY_Y)
+        if (keys & KEY_A)
             NF_SetTileOfMap(1, 2, x / 8, y / 8, 2);
-        if (keys & KEY_X)
+        if (keys & KEY_Y)
             NF_SetTileOfMap(1, 2, x / 8, y / 8, 3);
+        if (keys & KEY_X)
+            NF_SetTileOfMap(1, 2, x / 8, y / 8, 4);
 
         NF_UpdateVramMap(1, 2);
 
@@ -142,16 +142,17 @@ int main(int argc, char **argv)
         int tilenum = NF_GetTileOfMap(1, 2, x / 8, y / 8);
         switch (tilenum)
         {
-            case 0:
-                sprintf(mytext,"Tile: Vacio / Void / %d   ", tilenum);
-                break;
+            // Tile 0 is reserved as a transparent tile
             case 1:
-                sprintf(mytext,"Tile: Azul / Blue / %d   ", tilenum);
+                sprintf(mytext,"Tile: Negro / Black / %d   ", tilenum);
                 break;
             case 2:
-                sprintf(mytext,"Tile: Verde / Green / %d   ", tilenum);
+                sprintf(mytext,"Tile: Azul / Blue / %d   ", tilenum);
                 break;
             case 3:
+                sprintf(mytext,"Tile: Verde / Green / %d   ", tilenum);
+                break;
+            case 4:
                 sprintf(mytext,"Tile: Rojo / Red / %d   ", tilenum);
                 break;
         }
