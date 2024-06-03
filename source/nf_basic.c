@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 //
 // Copyright (c) 2009-2014 Cesar Rincon "NightFox"
-// Copyright (c) 2023 Antonio Niño Díaz "AntonioND"
+// Copyright (c) 2023-2024 Antonio Niño Díaz "AntonioND"
 //
 // NightFox LIB - Basic and debug functions
 // http://www.nightfoxandco.com/
@@ -143,6 +143,21 @@ __attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int
             iprintf("Sprite ID %u illegal size.\n", value);
             iprintf("8x8 Sprites can't be used\n");
             iprintf("in 1D_128 mode.\n");
+            break;
+
+        case 121: // Failed to fseek()
+            iprintf("fseek() failed:\n");
+            iprintf("%s\n", text);
+            break;
+
+        case 122: // Failed to fread()
+            iprintf("fread() failed:\n");
+            iprintf("%s\n", text);
+            break;
+
+        case 123: // Failed to fclose()
+            iprintf("fclose() failed:\n");
+            iprintf("%s\n", text);
             break;
     }
 
@@ -329,7 +344,9 @@ void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size)
         NF_Error(101, path, 0);
 
     // Get file size
-    fseek(f, 0, SEEK_END);
+    if (fseek(f, 0, SEEK_END) != 0)
+        NF_Error(121, path, 0);
+
     size_t size_ = ftell(f);
     rewind(f);
 
@@ -353,8 +370,11 @@ void NF_FileLoad(const char *path, char **buffer, size_t *size, size_t min_size)
     *buffer = buffer_;
 
     // Read full file to the start of the buffer
-    fread(buffer_, 1, size_, f);
-    fclose(f);
+    if (fread(buffer_, 1, size_, f) != size_)
+        NF_Error(122, path, 0);
+
+    if (fclose(f) != 0)
+        NF_Error(123, path, 0);
 }
 
 bool NF_FileExists(const char *path)
@@ -363,6 +383,8 @@ bool NF_FileExists(const char *path)
     if (f == NULL)
         return false;
 
-    fclose(f);
+    if (fclose(f) != 0)
+        NF_Error(123, path, 0);
+
     return true;
 }
