@@ -1,3 +1,10 @@
+NightFox's Lib Ver. 1.1.3
+-------------------------
+
+- Improve error checks when loading files from the filesystem.
+- The tilechange example has been fixed.
+- BlocksDS is now defined as the recommende toolchain to use with NFLib.
+
 NightFox's Lib Ver. 1.1.2
 -------------------------
 
