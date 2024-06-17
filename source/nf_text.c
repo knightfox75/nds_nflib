@@ -188,14 +188,18 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
     // Store the text string in the temporary buffer
     for (u32 n = 0; n < tsize; n++)
     {
-        int value = text[n] - 32; // Skip the first 32 non-printable characters
+        int value = 0;
+        if(text[n]==10) value = 10; // If newline found put the character to the newline --BG2CNT
+        else value = text[n] - 32; // Else, skip the first 32 non-printable characters --BG2CNT
+        
         if (value < 0)
             value = 0;
 
         string[n] = value;
 
         // Handle special characters
-        if (string[n] > 95)
+        if (string[n] > 95||
+        string[n]==10) //If the character is a newline, it's a special character --BG2CNT
         {
             switch (text[n])
             {
