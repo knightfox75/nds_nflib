@@ -35,7 +35,7 @@ extern "C" {
 /// grit image.png -ftb -fh! -gb -gu8 -gB8 -pu8 -gTFF00FF
 /// ```
 ///
-/// You can also use the same bat scripts as for 8 bit backgrounds.
+/// You can also use the same command used for 8 bit backgrounds.
 ///
 /// @{
 

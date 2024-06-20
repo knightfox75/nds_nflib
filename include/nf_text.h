@@ -72,7 +72,7 @@ void NF_InitTextSys(int screen);
 /// - 1: Rotate clockwise
 /// - 2: Rotate counter-clockwise
 ///
-/// The font uses two files, the tileset with extension ".fnt" and the palette
+/// The font uses two files, the tileset with extension ".img" and the palette
 /// with extension ".pal".
 ///
 /// You must load the font for every text layer you want to create. Every font

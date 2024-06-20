@@ -67,8 +67,7 @@ void NF_InitAffineBgSys(int screen);
 ///
 /// Affine backgrounds have to be 256x256 or 512x512 pixels in size and they can
 /// have up to 256 unique tiles. All backgrounds in the same screen must share
-/// the palette. Use the script "Convert_Affine.bat" in the GRIT folder to
-/// convert your backgrounds.
+/// the palette. Use the script grit to convert your backgrounds.
 ///
 /// Example:
 /// ```

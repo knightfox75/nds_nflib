@@ -64,8 +64,8 @@ void NF_ResetCmapBuffers(void);
 /// your collision map 8 pixels taller than your background and to use this
 /// first row of tiles to define your tileset for the collision map.
 ///
-/// Use the "Convert_CMaps.bat" script in the GRIT folder to convert your maps.
-/// You need to copy the ".cmp" file to your game data folder.
+/// Use grit to convert your maps. You need to copy the ".map" file to your game
+/// data folder.
 ///
 /// @param file File name
 /// @param id Slot number (0 - 31)
@@ -103,8 +103,8 @@ void NF_SetTile(u32 slot, s32 x, s32 y, u32 value);
 /// and to use this first row of tiles to define your color tileset for the
 /// collision background.
 ///
-/// Use the "Convert_CMaps.bat" script in the GRIT folder to convert you maps.
-/// You need to copy the ".cmp" and ".dat" files to your game data folder.
+/// Use grit to convert your maps. You need to copy the ".map" and ".img" files
+/// to your game data folder.
 ///
 /// @param file File name
 /// @param id Slot number (0 - 31)
