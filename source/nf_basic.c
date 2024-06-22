@@ -102,7 +102,7 @@ __attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int
 
         case 114: // Text layer doesn't exist
             iprintf("Text layer on screen\n");
-            iprintf("%u layer don't exist.\n", value);
+            iprintf("%u layer doesn't exist.\n", value);
             break;
 
         case 115: // Invalid tiled background size (not a multiple of 256)
