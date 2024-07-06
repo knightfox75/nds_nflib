@@ -189,21 +189,25 @@ void NF_WriteText(int screen, u32 layer, u32 x, u32 y, const char *text)
     for (u32 n = 0; n < tsize; n++)
     {
         int value = 0;
-        if(text[n]==10) value = 10; // If newline found put the character to the newline --BG2CNT
-        else value = text[n] - 32; // Else, skip the first 32 non-printable characters --BG2CNT
-        
+
+        // If newline found, put the character to the newline. If not, skip the
+        // first 32 characters.
+        if (text[n] == '\n')
+            value = '\n';
+        else
+            value = text[n] - 32;
+
         if (value < 0)
             value = 0;
 
         string[n] = value;
 
-        // Handle special characters
-        if (string[n] > 95||
-        string[n]==10) //If the character is a newline, it's a special character --BG2CNT
+        // Handle special characters (newline characters are special too)
+        if ((string[n] > 95) || (string[n] == 10))
         {
             switch (text[n])
             {
-                case 10: // \n
+                case '\n':
                     string[n] = 200;
                     break;
 
