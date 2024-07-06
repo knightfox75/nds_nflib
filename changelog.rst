@@ -1,3 +1,10 @@
+NightFox's Lib Ver. 1.1.4
+-------------------------
+
+- Fix "\n" not working in NF_WriteText() and NF_WriteText16().
+- Stop documenting old extensions of custom maps and fonts, use the default grit
+  extensions instead.
+
 NightFox's Lib Ver. 1.1.3
 -------------------------
 
