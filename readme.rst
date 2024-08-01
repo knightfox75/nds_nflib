@@ -114,7 +114,7 @@ aren't very flexible, and they don't support saving graphics to the filesystem
 (you can only inject them as data to the ARM9, which isn't acceptable for big
 games).
 
-You can try `ArchitectDS <https://github.com/AntonioND/architectds>`. This
+You can try `ArchitectDS <https://github.com/AntonioND/architectds>`_. This
 build system written in Python is more flexible, and it allows you to save your
 converted graphics to NitroFS so that your game can grow as much as you want.
 
