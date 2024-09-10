@@ -1,3 +1,8 @@
+NightFox's Lib Ver. 1.1.5
+-------------------------
+
+- Update BlocksDS makefiles.
+
 NightFox's Lib Ver. 1.1.4
 -------------------------
 
