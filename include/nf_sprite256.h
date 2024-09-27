@@ -304,7 +304,7 @@ void NF_VramSpriteGfxDefrag(int screen);
 /// ```
 ///
 /// @param screen Screen (0 - 1).
-/// @param id VRAM slot (0 - 64).
+/// @param id RAM slot (0 - 64).
 /// @param slot VRAM slot (0 - 15).
 void NF_VramSpritePal(int screen, u32 id, u32 slot);
 
