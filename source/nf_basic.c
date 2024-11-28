@@ -210,7 +210,7 @@ void NF_SetRootFolder(const char *folder)
                 iprintf("If not, try to launch the ROM\n");
                 iprintf("using the Homebrew Menu.\n\n");
             }
-            iprintf("http://sourceforge.net/projects/devkitpro/files/hbmenu/");
+            iprintf("https://github.com/devkitPro/nds-hb-menu/releases");
 
             // Stop program
             while (1)
