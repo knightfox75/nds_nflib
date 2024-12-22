@@ -33,13 +33,13 @@ extern "C" {
 /// Minor version of NightFox's Lib
 #define NF_LIB_MINOR (1)
 /// Patch version of NightFox's Lib
-#define NF_LIB_PATCH (5)
+#define NF_LIB_PATCH (6)
 
 /// Full version of NightFox's Lib
 #define NF_LIB_VERSION ((NF_LIB_MAJOR << 16) | (NF_LIB_MINOR << 8) | (NF_LIB_PATCH))
 
 /// String with the version of NightFox's Lib
-#define NF_LIB_VERSION_STRING "1.1.5"
+#define NF_LIB_VERSION_STRING "1.1.6"
 
 #endif // NF_LIB_H__
 

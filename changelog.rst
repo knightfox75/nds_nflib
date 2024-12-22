@@ -1,3 +1,10 @@
+NightFox's Lib Ver. 1.1.6
+-------------------------
+
+- Copy licenses when installing the library.
+- Update link to nds-hb-menu.
+- Fix doc typo in NF_VramSpritePal() documentation.
+
 NightFox's Lib Ver. 1.1.5
 -------------------------
 
