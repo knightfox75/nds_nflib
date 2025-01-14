@@ -95,6 +95,14 @@ Features:
 Setup instructions for BlocksDS
 ===============================
 
+You can install this library with ``wf-pacman`` directly:
+
+.. code:: bash
+
+    wf-pacman -Sy blocksds-nflib
+
+If you want to build the library from source, follow the instructions:
+
 1. Clone this repository. If you have followed the getting started guide of
    `BlocksDS <https://blocksds.github.io/docs/>`_, all you have to do is
    go to the folder of NFlib and run:
