@@ -129,8 +129,8 @@ converted graphics to NitroFS so that your game can grow as much as you want.
 Setup instructions for devkitPro
 ================================
 
-This option is discouraged. The implementation of NitroFS of devkitPro is buggy
-and it won't work in accurate emulators like **melonDS**.
+**NOTE**: This option is untested. It may not work with the last version of
+devkitARM.
 
 1. Clone this repository. Create a symbolic link to it inside the devkitPro
    folder in your system, and call it ``nflib``.
