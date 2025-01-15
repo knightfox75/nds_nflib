@@ -1,3 +1,9 @@
+NightFox's Lib Ver. 1.1.7
+-------------------------
+
+- Use the right `ar` binary when building the library.
+- Update setup instructions.
+
 NightFox's Lib Ver. 1.1.6
 -------------------------
 
