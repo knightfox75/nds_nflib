@@ -605,7 +605,7 @@ void NF_CreateSprite(int screen, u32 id, u32 gfx, u32 pal, s32 x, s32 y)
             { 8, 16, SpriteSize_8x16 },
             { 8, 32, SpriteSize_8x32 },
             { 16, 32, SpriteSize_16x32 },
-            { 32, 64, SpriteSize_16x32 },
+            { 32, 64, SpriteSize_32x64 },
             { 0, 0, 0 },
         };
 
