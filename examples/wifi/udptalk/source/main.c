@@ -200,7 +200,7 @@ s16 LookForServer(void)
         }
 
         // Close the socket
-        close(NF_SOCKET);
+        closesocket(NF_SOCKET);
 
         // If the user wants to cancel, exit
         if (keys & KEY_R)
@@ -333,7 +333,7 @@ int main(int argc, char **argv)
     }
 
     // Close the socket
-    close(NF_SOCKET);
+    closesocket(NF_SOCKET);
 
     // Stop WiFi
     NF_WiFiDisconnectAp();
