@@ -1,3 +1,10 @@
+NightFox's Lib Ver. 1.1.8
+-------------------------
+
+- Fix 32x64 size definition.
+- Add example of using all possible sprite sizes.
+- Fix crash in udptalk example.
+
 NightFox's Lib Ver. 1.1.7
 -------------------------
 
