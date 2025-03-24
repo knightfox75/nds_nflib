@@ -1,3 +1,10 @@
+NightFox's Lib Ver. DEV
+-----------------------
+
+- The devkitARM makefiles have been removed as they only work with old versions
+  of devkitARM, which aren't supported by its maintainers. The code and examples
+  of NFLib will probably need changes to work with current devkitARM.
+
 NightFox's Lib Ver. 1.1.8
 -------------------------
 

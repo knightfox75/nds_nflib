@@ -129,32 +129,7 @@ converted graphics to NitroFS so that your game can grow as much as you want.
 Setup instructions for devkitPro
 ================================
 
-**NOTE**: This option is untested. It may not work with the last version of
-devkitARM.
-
-1. Clone this repository. Create a symbolic link to it inside the devkitPro
-   folder in your system, and call it ``nflib``.
-
-   For example, in Linux, create a symlink so that ``/opt/devkitpro/nflib``
-   points to the folder with NFlib:
-
-   .. code:: bash
-
-       ln -sT /path/to/nds_nflib /opt/devkitpro/nflib
-
-   On Windows, the path should be ``C:\devkitpro\nflib``.
-
-   If this doesn't work, copy the folder of NFlib to the devkitPro folder and
-   rename it to ``nflib``.
-
-2. Go to the ``nflib`` folder and type this on the terminal:
-
-   .. code:: bash
-
-       make -f Makefile.dkp
-
-3. That's it! Go to the folder of any of the examples and try to build it with:
-
-   .. code:: bash
-
-       make -f Makefile.dkp
+**NOTE**: This option has been temporarily removed. The Makefiles that were
+present in the repository were only valid in old versions of devkitARM,
+unsupported by their maintainers. The code and examples will also need changes
+to work with the new version of their libraries.
