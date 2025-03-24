@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-GRIT=/opt/blocksds/core/tools/grit/grit
+BLOCKSDS="${BLOCKSDS:-/opt/blocksds/core/}"
+GRIT=$BLOCKSDS/tools/grit/grit
 
 # The two backgrounds in the same screen share the palette
 $GRIT navygrid.png waves512.png -ftB -fh! -gTFF00FF -gt -gB8 -mR8 -mLa -pS -Onavygrid

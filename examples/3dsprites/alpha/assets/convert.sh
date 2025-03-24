@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-GRIT=/opt/blocksds/core/tools/grit/grit
+BLOCKSDS="${BLOCKSDS:-/opt/blocksds/core/}"
+GRIT=$BLOCKSDS/tools/grit/grit
 
 $GRIT blueball.png -ftB -fh! -gTFF00FF -gb -gB8 -m!
 
