@@ -4,6 +4,8 @@ NightFox's Lib Ver. DEV
 - The devkitARM makefiles have been removed as they only work with old versions
   of devkitARM, which aren't supported by its maintainers. The code and examples
   of NFLib will probably need changes to work with current devkitARM.
+- In all scripts to convert assets, check if the environment variable
+  ``BLOCKSDS`` is set, which overrides the default path.
 
 NightFox's Lib Ver. 1.1.8
 -------------------------
