@@ -90,8 +90,16 @@ int main(int argc, char **argv)
                 scale = 0;
         }
 
-        NF_SpriteRotScale(1, 4, angle, scale, scale);
-        NF_SpriteRotScale(1, 5, -angle, scale, scale);
+        if (keys & KEY_SELECT)
+        {
+            NF_SpriteRotScale(1, 4, angle, -scale, -scale);
+            NF_SpriteRotScale(1, 5, -angle, -scale, -scale);
+        }
+        else
+        {
+            NF_SpriteRotScale(1, 4, angle, scale, scale);
+            NF_SpriteRotScale(1, 5, -angle, scale, scale);
+        }
 
         // Update OAM array
         NF_SpriteOamSet(0);
