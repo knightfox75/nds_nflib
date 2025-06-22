@@ -396,7 +396,7 @@ void NF_DisableSpriteRotScale(int screen, u32 sprite)
     NF_SPRITEOAM[screen][sprite].doublesize = false;
 }
 
-void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy)
+void NF_SpriteRotScale(int screen, u8 id, s32 angle, s32 sx, s32 sy)
 {
     // Angle limits
     if (angle < -512)
@@ -406,17 +406,35 @@ void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy)
 
     angle = -angle << 6; // Switch from base 512 to base 32768
 
-    // Scale X limits
-    if (sx > 512)
-        sx = 512;
+    if (sx > 0)
+    {
+        if (sx > 512)
+            sx = 512;
+        sx = 512 - sx;
+    }
+    else
+    {
+        if (sx < -511)
+            sx = -511;
+        sx = -511 - sx;
+    }
 
-    // Scale Y limits
-    if (sy > 512)
-        sy = 512;
+    if (sy > 0)
+    {
+        if (sy > 512)
+            sy = 512;
+        sy = 512 - sy;
+    }
+    else
+    {
+        if (sy < -511)
+            sy = -511;
+        sy = -511 - sy;
+    }
 
     // Update rotation and scale in OAM
     if (screen == 0)
-        oamRotateScale(&oamMain, id, angle, 512 - sx, 512 - sy);
+        oamRotateScale(&oamMain, id, angle, sx, sy);
     else
-        oamRotateScale(&oamSub, id, angle, 512 - sx, 512 - sy);
+        oamRotateScale(&oamSub, id, angle, sx, sy);
 }

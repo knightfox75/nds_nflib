@@ -273,9 +273,9 @@ void NF_DisableSpriteRotScale(int screen, u32 sprite);
 /// @param screen Screen (0 - 1).
 /// @param id Sprite ID (0 - 127).
 /// @param angle Angle (-512 to 512).
-/// @param sx X scale (0 to 512), 100% = 256.
-/// @param sy Y scale (0 to 512), 100% = 256.
-void NF_SpriteRotScale(int screen, u8 id, s32 angle, u32 sx, u32 sy);
+/// @param sx X scale (-512 to 512), 100% = 256, mirrored 100% = -256;
+/// @param sy Y scale (-512 to 512), 100% = 256, mirrored 100% = -256;
+void NF_SpriteRotScale(int screen, u8 id, s32 angle, s32 sx, s32 sy);
 
 /// @}
 
