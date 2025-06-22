@@ -1,3 +1,9 @@
+NightFox's Lib Ver. 1.1.10
+--------------------------
+
+- Support negative scales for 2D affine sprites.
+- Add example of how to use affine sprites.
+
 NightFox's Lib Ver. 1.1.9
 -------------------------
 
