@@ -59,7 +59,7 @@ extern s32 NF_SOCKET;
 extern s32 NF_CONNECTED;
 
 /// Size of struct .SIN
-extern int NF_SINSIZE;
+extern socklen_t NF_SINSIZE;
 
 /// Received bytes
 extern s32 NF_BYTES_RECIEVED;
