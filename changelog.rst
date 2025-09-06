@@ -1,3 +1,8 @@
+NightFox's Lib Ver. 1.1.11
+--------------------------
+
+- Fix type of a variable in the WiFi module to fix the build of the library.
+
 NightFox's Lib Ver. 1.1.10
 --------------------------
 
