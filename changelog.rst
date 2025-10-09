@@ -1,3 +1,9 @@
+NightFox's Lib Ver. 1.1.12
+--------------------------
+
+- Initialize DSi WiFi mode in UDP functions.
+- Update UDP example to use cothreads.
+
 NightFox's Lib Ver. 1.1.11
 --------------------------
 
