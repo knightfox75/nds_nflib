@@ -23,7 +23,7 @@ struct in_addr NF_IP, NF_GATEWAY, NF_MASK, NF_DNS1, NF_DNS2;
 
 // Socket information
 s32 NF_SOCKET;          // ID of the server socket
-s32 NF_CONNECTED;       // Result of the connection
+s32 NF_CONNECTED;       // Result of the connection TODO: This is never set
 socklen_t NF_SINSIZE;   // Size of the .SIN struct
 s32 NF_BYTES_RECIEVED;  // Received bytes
 
@@ -42,7 +42,7 @@ struct timeval NF_TIMEOUT; // Stores the value of the timeout
 bool NF_WiFiConnectDefaultAp(void)
 {
     // Try to connect to the default access point
-    if (Wifi_InitDefault(WFC_CONNECT))
+    if (Wifi_InitDefault(WFC_CONNECT | WIFI_ATTEMPT_DSI_MODE))
     {
         // Get connection information
         NF_IP = Wifi_GetIPInfo(&NF_GATEWAY, &NF_MASK, &NF_DNS1, &NF_DNS2);
