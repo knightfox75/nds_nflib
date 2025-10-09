@@ -23,7 +23,7 @@ bool ConnectWIFI(void)
     bool status = false;
 
     printf("Connecting to WFC...\n\n");
-    swiWaitForVBlank();
+    cothread_yield_irq(IRQ_VBLANK);
 
     if (NF_WiFiConnectDefaultAp())
     {
@@ -44,7 +44,7 @@ bool ConnectWIFI(void)
         printf("Failed to connect\n");
     }
 
-    swiWaitForVBlank();
+    cothread_yield_irq(IRQ_VBLANK);
     return status;
 }
 
@@ -54,7 +54,7 @@ u8 SelectMode(void)
     u8 modo = 0;
 
     printf("A - Client\nB - Server\n");
-    swiWaitForVBlank();
+    cothread_yield_irq(IRQ_VBLANK);
 
     while (modo == 0)
     {
@@ -66,7 +66,7 @@ u8 SelectMode(void)
         if (keys & KEY_B)
             modo = 2;
 
-        swiWaitForVBlank();
+        cothread_yield_irq(IRQ_VBLANK);
     }
 
     return modo;
@@ -170,7 +170,7 @@ s16 LookForServer(void)
         // Generate IP
         sprintf(temp, "%s%d", myip, n);
         printf("%s   ", temp);
-        swiWaitForVBlank();
+        cothread_yield_irq(IRQ_VBLANK);
 
         // Create sender socket
         NF_WIFI_CreateUdpSender(temp, myport);
@@ -328,7 +328,7 @@ int main(int argc, char **argv)
             }
 
             // Wait for the screen refresh
-            swiWaitForVBlank();
+            cothread_yield_irq(IRQ_VBLANK);
         }
     }
 
@@ -342,7 +342,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        swiWaitForVBlank();
+        cothread_yield_irq(IRQ_VBLANK);
     }
 
     return 0;
