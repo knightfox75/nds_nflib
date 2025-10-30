@@ -6,10 +6,6 @@
 // NightFox LIB - Basic and debug functions
 // http://www.nightfoxandco.com/
 
-#ifdef BLOCKSDS
-#define iprintf printf
-#endif
-
 #include <stdio.h>
 
 #include <nds.h>
@@ -27,142 +23,142 @@ __attribute__((noreturn)) void NF_Error(u32 code, const char *text, unsigned int
     switch (code)
     {
         case 101: // File not found
-            iprintf("File %s not found.\n", text);
+            printf("File %s not found.\n", text);
             break;
 
         case 102: // Not enough memory
-            iprintf("Out of memory.\n");
-            iprintf("%u bytes\n", value);
-            iprintf("can't be allocated.\n");
+            printf("Out of memory.\n");
+            printf("%u bytes\n", value);
+            printf("can't be allocated.\n");
             break;
 
         case 103: // Not enough free slots
-            iprintf("Out of %s slots.\n", text);
-            iprintf("All %u slots are in use.\n", value);
+            printf("Out of %s slots.\n", text);
+            printf("All %u slots are in use.\n", value);
             break;
 
         case 104: // Tiled background not found
-            iprintf("Tiled Bg %s\n", text);
-            iprintf("not found.\n");
+            printf("Tiled Bg %s\n", text);
+            printf("not found.\n");
             break;
 
         case 105: // Background hasn't been created
-            iprintf("Background number %u\n", value);
-            iprintf("on screen %s is\n", text);
-            iprintf("not created.\n");
+            printf("Background number %u\n", value);
+            printf("on screen %s is\n", text);
+            printf("not created.\n");
             break;
 
         case 106: // Value out of range
-            iprintf("%s value out\n", text);
-            iprintf("of range (%u max).\n", value);
+            printf("%s value out\n", text);
+            printf("of range (%u max).\n", value);
             break;
 
         case 107: // Not enough contiguous VRAM blocks (tiles)
-            iprintf("Can't allocate %d\n", (int)value);
-            iprintf("blocks of tiles for\n");
-            iprintf("%s background\n", text);
-            iprintf("Free %d KB of VRAM or try to\n", (value * 16384) / 1024);
-            iprintf("reload all BGs again\n");
+            printf("Can't allocate %d\n", (int)value);
+            printf("blocks of tiles for\n");
+            printf("%s background\n", text);
+            printf("Free %d KB of VRAM or try to\n", (value * 16384) / 1024);
+            printf("reload all BGs again\n");
             break;
 
         case 108: // Not enough contiguous VRAM blocks (maps)
-            iprintf("Can't allocate %d\n", (int)value);
-            iprintf("blocks of maps for\n");
-            iprintf("%s background\n", text);
-            iprintf("Free %d KB of VRAM or try to\n", (value * 2048) / 1024);
-            iprintf("reload all BGs again\n");
+            printf("Can't allocate %d\n", (int)value);
+            printf("blocks of maps for\n");
+            printf("%s background\n", text);
+            printf("Free %d KB of VRAM or try to\n", (value * 2048) / 1024);
+            printf("reload all BGs again\n");
             break;
 
         case 109: // ID in use
-            iprintf("%s ID %u\n", text, value);
-            iprintf("is already in use.\n");
+            printf("%s ID %u\n", text, value);
+            printf("is already in use.\n");
             break;
 
         case 110: // ID not loaded
-            iprintf("%s\n", text);
-            iprintf("%u not loaded.\n", value);
+            printf("%s\n", text);
+            printf("%u not loaded.\n", value);
             break;
 
         case 111: // ID not in VRAM
-            iprintf("%s\n", text);
-            iprintf("%u not in VRAM.\n", value);
+            printf("%s\n", text);
+            printf("%u not in VRAM.\n", value);
             break;
 
         case 112: // Sprite not created
-            iprintf("Sprite number %u\n", value);
-            iprintf("on screen %s is\n", text);
-            iprintf("not created.\n");
+            printf("Sprite number %u\n", value);
+            printf("on screen %s is\n", text);
+            printf("not created.\n");
             break;
 
         case 113: // Not enough VRAM
-            iprintf("Out of VRAM.\n");
-            iprintf("%u bytes for %s\n", value, text);
-            iprintf("can't be allocated.\n");
+            printf("Out of VRAM.\n");
+            printf("%u bytes for %s\n", value, text);
+            printf("can't be allocated.\n");
             break;
 
         case 114: // Text layer doesn't exist
-            iprintf("Text layer on screen\n");
-            iprintf("%u layer doesn't exist.\n", value);
+            printf("Text layer on screen\n");
+            printf("%u layer doesn't exist.\n", value);
             break;
 
         case 115: // Invalid tiled background size (not a multiple of 256)
-            iprintf("Tiled BG %s\n", text);
-            iprintf("has wrong size.\n");
-            iprintf("Your bg sizes must be\n");
-            iprintf("a multiple of 256 pixels.\n");
+            printf("Tiled BG %s\n", text);
+            printf("has wrong size.\n");
+            printf("Your bg sizes must be\n");
+            printf("a multiple of 256 pixels.\n");
             break;
 
         case 116: // File is too big
-            iprintf("File %s\n", text);
-            iprintf("is too big.\n");
-            iprintf("Max size for\n");
-            iprintf("file is %u KB.\n", value / 1024);
+            printf("File %s\n", text);
+            printf("is too big.\n");
+            printf("Max size for\n");
+            printf("file is %u KB.\n", value / 1024);
             break;
 
         case 117: // Invalid affine background size (only 256x256 and 512x512 allowed)
-            iprintf("Affine BG %s\n", text);
-            iprintf("has wrong size.\n");
-            iprintf("Your bg sizes must be\n");
-            iprintf("256x256 or 512x512 and\n");
-            iprintf("with 256 tiles or less.\n");
+            printf("Affine BG %s\n", text);
+            printf("has wrong size.\n");
+            printf("Your bg sizes must be\n");
+            printf("256x256 or 512x512 and\n");
+            printf("with 256 tiles or less.\n");
             break;
 
         case 118: // Invalid affine background layer
-            iprintf("Affine Bg %s\n", text);
-            iprintf("only can be created\n");
-            iprintf("on layers 2 or 3.\n");
+            printf("Affine Bg %s\n", text);
+            printf("only can be created\n");
+            printf("on layers 2 or 3.\n");
             break;
 
         case 119: // Invalid texture size
-            iprintf("Texture ID %u illegal size.\n", value);
-            iprintf("Only power of 2 sizes can\n");
-            iprintf("be used (8 to 1024).\n");
+            printf("Texture ID %u illegal size.\n", value);
+            printf("Only power of 2 sizes can\n");
+            printf("be used (8 to 1024).\n");
             break;
 
         case 120: // Invalid sprite size
-            iprintf("Sprite ID %u illegal size.\n", value);
-            iprintf("8x8 Sprites can't be used\n");
-            iprintf("in 1D_128 mode.\n");
+            printf("Sprite ID %u illegal size.\n", value);
+            printf("8x8 Sprites can't be used\n");
+            printf("in 1D_128 mode.\n");
             break;
 
         case 121: // Failed to fseek()
-            iprintf("fseek() failed:\n");
-            iprintf("%s\n", text);
+            printf("fseek() failed:\n");
+            printf("%s\n", text);
             break;
 
         case 122: // Failed to fread()
-            iprintf("fread() failed:\n");
-            iprintf("%s\n", text);
+            printf("fread() failed:\n");
+            printf("%s\n", text);
             break;
 
         case 123: // Failed to fclose()
-            iprintf("fclose() failed:\n");
-            iprintf("%s\n", text);
+            printf("fclose() failed:\n");
+            printf("%s\n", text);
             break;
     }
 
     // Print error code
-    iprintf("Error code %d.\n", (int)code);
+    printf("Error code %d.\n", (int)code);
 
     // Stop program
     while (1)
@@ -194,23 +190,23 @@ void NF_SetRootFolder(const char *folder)
 
             if (NF_GetLanguage() == 5)
             {
-                iprintf("Error iniciando NitroFS.\n");
-                iprintf("Programa detenido.\n\n");
-                iprintf("Verifica que tu flashcard\n");
-                iprintf("es compatible con Argv.\n");
-                iprintf("Si no lo es, intenta usar el\n");
-                iprintf("Homebrew Menu para ejecutarla.\n\n");
+                printf("Error iniciando NitroFS.\n");
+                printf("Programa detenido.\n\n");
+                printf("Verifica que tu flashcard\n");
+                printf("es compatible con Argv.\n");
+                printf("Si no lo es, intenta usar el\n");
+                printf("Homebrew Menu para ejecutarla.\n\n");
             }
             else
             {
-                iprintf("NitroFS Init Error.\n");
-                iprintf("Abnormal termination.\n\n");
-                iprintf("Check if your flashcard is\n");
-                iprintf("Argv compatible.\n");
-                iprintf("If not, try to launch the ROM\n");
-                iprintf("using the Homebrew Menu.\n\n");
+                printf("NitroFS Init Error.\n");
+                printf("Abnormal termination.\n\n");
+                printf("Check if your flashcard is\n");
+                printf("Argv compatible.\n");
+                printf("If not, try to launch the ROM\n");
+                printf("using the Homebrew Menu.\n\n");
             }
-            iprintf("https://github.com/devkitPro/nds-hb-menu/releases");
+            printf("https://github.com/devkitPro/nds-hb-menu/releases");
 
             // Stop program
             while (1)
@@ -278,19 +274,19 @@ void NF_SetRootFolder(const char *folder)
 
             if (NF_GetLanguage() == 5)
             {
-                iprintf("Error iniciando FAT.\n");
-                iprintf("Programa detenido.\n\n");
-                iprintf("Verifica que tu flashcard es\n");
-                iprintf("compatible con DLDI y la ROM\n");
-                iprintf("este parcheada correctamente.\n");
+                printf("Error iniciando FAT.\n");
+                printf("Programa detenido.\n\n");
+                printf("Verifica que tu flashcard es\n");
+                printf("compatible con DLDI y la ROM\n");
+                printf("este parcheada correctamente.\n");
             }
             else
             {
-                iprintf("FAT Init Error.\n");
-                iprintf("Abnormal termination.\n\n");
-                iprintf("Check if your flashcard is\n");
-                iprintf("DLDI compatible and the ROM\n");
-                iprintf("is correctly patched.\n");
+                printf("FAT Init Error.\n");
+                printf("Abnormal termination.\n\n");
+                printf("Check if your flashcard is\n");
+                printf("DLDI compatible and the ROM\n");
+                printf("is correctly patched.\n");
             }
 
             // Stop program
