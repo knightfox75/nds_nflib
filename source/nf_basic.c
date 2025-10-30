@@ -321,15 +321,15 @@ void NF_DmaMemCopy(void *destination, const void *source, u32 size)
         // Make sure that the data in the cache is sent to the main RAM
         DC_FlushRange(source, size);
 
+        // Prevent the destination from being in cache, it would corrupt the
+        // data when it is flushed
+        DC_FlushRange(destination, size);
+
         // Depending on the alignment use 32-bit or 16-bit copy modes
         if ((src | dst | size) & 3)
             dmaCopyHalfWords(3, source, destination, size);
         else
             dmaCopyWords(3, source, destination, size);
-
-        // Prevent the destination from being in cache, it would corrupt the
-        // data when it is flushed
-        DC_InvalidateRange(destination, size);
     }
 }
 

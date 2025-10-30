@@ -78,8 +78,11 @@ void NF_SetRootFolder(const char *folder);
 
 /// Function copy blocks of memory from RAM to VRAM fast.
 ///
-/// DMA copies from RAM to VRAM are the most efficient. The function checks if
-/// the data is aligned for the DMA copy. If not, it uses memcpy() insead.
+/// DMA copies from RAM to VRAM are the most efficient. Don't use it to copy
+/// data between buffers in RAM, use `memcpy()` instead.
+///
+/// The function checks if the data is aligned for the DMA copy. If not, it uses
+/// `memcpy()` insead.
 ///
 /// Example:
 /// ```
