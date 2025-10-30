@@ -1,3 +1,9 @@
+NightFox's Lib Ver. 1.1.13
+--------------------------
+
+- Fix cache management in `NF_DmaMemCopy()`.
+- Replace calls to `iprintf()` by `printf()`.
+
 NightFox's Lib Ver. 1.1.12
 --------------------------
 
