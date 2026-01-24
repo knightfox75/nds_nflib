@@ -104,8 +104,8 @@ You can install this library with ``wf-pacman`` directly:
 If you want to build the library from source, follow the instructions:
 
 1. Clone this repository. If you have followed the getting started guide of
-   `BlocksDS <https://blocksds.github.io/docs/>`_, all you have to do is
-   go to the folder of NFlib and run:
+   `BlocksDS <https://blocksds.skylyrac.net>`_, all you have to do is go to the
+   folder of NFlib and run:
 
    .. code:: bash
 
@@ -122,7 +122,7 @@ aren't very flexible, and they don't support saving graphics to the filesystem
 (you can only inject them as data to the ARM9, which isn't acceptable for big
 games).
 
-You can try `ArchitectDS <https://github.com/AntonioND/architectds>`_. This
+You can try `ArchitectDS <https://codeberg.org/blocksds/architectds>`_. This
 build system written in Python is more flexible, and it allows you to save your
 converted graphics to NitroFS so that your game can grow as much as you want.
 
