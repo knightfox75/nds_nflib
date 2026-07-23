@@ -24,7 +24,12 @@ int main(int argc, char **argv)
     swiWaitForVBlank();
 
     // Initialize NitroFS and set it as the root folder of the filesystem
-    nitroFSInit(NULL);
+    if (!nitroFSInit(NULL))
+    {
+        perror("nitroFSInit()");
+        while (1)
+            swiWaitForVBlank();
+    }
     NF_SetRootFolder("NITROFS");
 
     // Initialize 2D engine in both screens and use mode 5

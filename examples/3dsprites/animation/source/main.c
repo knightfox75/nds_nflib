@@ -29,7 +29,12 @@ int main(int argc, char **argv)
     swiWaitForVBlank();
 
     // Initialize NitroFS and set it as the root folder of the filesystem
-    nitroFSInit(NULL);
+    if (!nitroFSInit(NULL))
+    {
+        perror("nitroFSInit()");
+        while (1)
+            swiWaitForVBlank();
+    }
     NF_SetRootFolder("NITROFS");
 
     // Initialize 3D engine in the top screen in mode 0
