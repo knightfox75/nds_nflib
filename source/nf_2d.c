@@ -398,14 +398,11 @@ void NF_DisableSpriteRotScale(int screen, u32 sprite)
 
 void NF_SpriteRotScale(int screen, u8 id, s32 angle, s32 sx, s32 sy)
 {
-    // Angle limits
-    if (angle < -512)
-        angle += 512;
-    if (angle > 512)
-        angle -= 512;
-
+    // Handle angle
+    angle &= 511;
     angle = -angle << 6; // Switch from base 512 to base 32768
 
+    // Handle scale
     if (sx > 0)
     {
         if (sx > 512)
